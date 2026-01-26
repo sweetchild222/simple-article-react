@@ -2,36 +2,33 @@
 import axios from 'axios';
 
 import AuthContext from "../util/AuthContext.js";
-import { useLocation } from 'react-router-dom'
 import React, { useContext, useState, useEffect} from 'react';
 
 import * as api from '../util/Api.js'
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 import * as validator from '../util/Validator.js'
 
 export default function() {
 
-    const {auth, updateAuth} = useContext(AuthContext)
+    const {auth, updateAuth, validAuth} = useContext(AuthContext)
     
     const navigate = useNavigate();
 
     useEffect(() => {
         
-        if(auth !== ''){
-            if(Date.now() <= auth.expire_time)
-                navigate('/home', {replace:true})
-        }
+        if(validAuth(auth))
+            navigate('/home', {replace:true})
 
     }, [auth])
 
   
     const onClickLogin = async() => {
 
-        const username = input_username.value
-        const password = input_password.value
+        //const username = input_username.value
+        //const password = input_password.value
         
-        //const username = 'crazygun22@nate.com'
-        //const password = 'Sweetchild@22'
+        const username = 'crazygun22@nate.com'
+        const password = 'Sweetchild@22'
                 
         if(!validator.email(username)){            
             input_username.focus()

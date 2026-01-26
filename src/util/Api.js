@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import AuthContext from "./AuthContext";
 
 
-export async function getUser(user_id, jwt) {
+export async function getUser(jwt, user_id) {
 
   try{
 
@@ -107,5 +107,45 @@ export async function getVerifyEmail(email, code){
   catch(error){
 
     console.log(error)
+  }
+}
+
+
+
+export async function getUserPasswordCheck(jwt, user_id, password) {
+
+  try{
+
+    const authorization = 'Bearer '.concat(jwt);
+
+    const response = await axios.get('user/' + user_id + '/password/' + password, { headers: {Authorization: authorization} })
+    
+    return response.data
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null;
+  }
+}
+
+
+
+export async function patchUser(jwt, user_id, payload){
+
+  try{
+
+    const authorization = 'Bearer '.concat(jwt);
+    
+    const response = await axios.patch('user/' + user_id, payload, { headers: {Authorization: authorization}})
+
+    return response.data
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null
   }
 }

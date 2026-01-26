@@ -3,36 +3,21 @@ import axios from 'axios';
 
 import * as api from '../util/Api.js'
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 
 import AuthContext from "../util/AuthContext.js";
 
 export default function ({onClickSearch}) {
 
-    const {auth, updateAuth, removeAuth} = useContext(AuthContext)
+    const {auth, updateAuth, validAuth} = useContext(AuthContext)
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     
     const navigate = useNavigate();
+    
 
     useEffect(() => {
-        
-        if(auth == null)
-            console.log('nononononon')
-
-        if(auth === ''){
-            console.log('empty')
-            setIsLoggedIn(false)
-            return
-        }
-
-        if(Date.now() > auth.expire_time){
-            removeAuth()
-            setIsLoggedIn(false)            
-            console.log('exptime')
-            return
-        }
-
-        setIsLoggedIn(true)
+                
+        setIsLoggedIn(validAuth(auth))
 
     }, [auth]);
 
@@ -41,13 +26,18 @@ export default function ({onClickSearch}) {
 
         if(isLoggedIn){
 
-            api.getUser(auth.user_id, auth.jwt).then((payload) =>{
+            api.getUser(auth.jwt, auth.user_id).then((payload) =>{
 
                 if(payload == null)
                     return
 
+                if(payload.profile == null)
+                    img_profile.src = "/images/user.png"
+                else
+                    img_profile.src = payload.profile
+
                 console.log(payload)
-            })        
+            })
         }
 
 
@@ -65,34 +55,21 @@ export default function ({onClickSearch}) {
 
     const onClickLogIn = (e) =>{
 
+        console.log('asdfasf')
+
         navigate("/login", {state: false})
     }
 
 
-    const onClickLogOut = (e) =>{
+    const onClickProfile = (e) =>{
 
-        removeAuth()
-        navigate('/home');
+        console.log("go profile")
+    
+        navigate('/profile');
+
     }
 
 
-    const onClickTest = (e) =>{
-
-        //const key = 'auth'
-
-        //const value = 'close'
-
-        //console.log(storageData)
-
-        removeAuth()
-
-        //localStorage.setItem(key, value);
-        //setStorageData(value);
-
-        //setIsLoggedIn(false)
-        //console.log('logout')
-        
-    }
 
 
     const searchClick = (e) => {
@@ -123,11 +100,9 @@ export default function ({onClickSearch}) {
         <div style={{flexGrow:1, backgroundColor:'green'}} ></div>
         <input id="myInput" placeholder="검색" style={{color:'green', height:'50px', width:'100px'}} onKeyDown={onKeyDown}></input>
         <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={searchClick}>검색</button>
-
-        <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickTest}>테스트</button>
-
         {!isLoggedIn && <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickLogIn}>로그인</button>}
-        {isLoggedIn && <button style={{backgroundColor:'blue',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickLogOut}>로그아웃</button>}
+        {isLoggedIn && <img id="img_profile"  height='100%' width='60px' onClick={onClickProfile}/>}
+        
         </div>
     );    
 }

@@ -8,14 +8,12 @@ import AuthContext from './AuthContext';
 
 const AuthProvider = ({children}) => {
 
-    const key = 'authdgegeg'
+    const key = 'autrrtg'
     const logout = ''
 
     const [auth, setAuth] = useState(() => {
   
         const item = localStorage.getItem(key)
-
-        console.log('xxxxxxx')
         
         return (item === null || item === logout) ? logout : JSON.parse(item)
     })
@@ -23,7 +21,7 @@ const AuthProvider = ({children}) => {
     
     const updateAuth = (auth) => {
 
-        auth.expire_time = Date.now() + 1000 * 5;
+        auth.expire_time = Date.now() + 1000 * 60 * 60;
         localStorage.setItem(key, JSON.stringify(auth))
         setAuth(auth)
     }
@@ -33,6 +31,20 @@ const AuthProvider = ({children}) => {
 
         localStorage.setItem(key, logout)
         setAuth(logout)
+    }
+
+    
+    const validAuth = (auth) => {
+
+        if(auth === '')
+            return false
+
+        if(Date.now() > auth.expire_time){
+            removeAuth()
+            return false
+        }
+
+        return true
     }
 
 
@@ -54,7 +66,7 @@ const AuthProvider = ({children}) => {
     }, [])
 
     
-    const values = {auth, updateAuth, removeAuth}
+    const values = {auth, updateAuth, removeAuth, validAuth}
 
     return (
         <AuthContext.Provider value={values}>

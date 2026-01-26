@@ -11,17 +11,15 @@ import * as validator from '../util/Validator.js'
 export default function() {
 
   const navigate = useNavigate();
-  const {auth, updateAuth} = useContext(AuthContext)
+  const {auth, updateAuth, validAuth} = useContext(AuthContext)
 
   const [passwordValid, setPasswordValid] = useState(false);
   const [isVerified, setIsVerified] = useState(false)
 
   useEffect(() => {
-          
-    if(auth !== ''){
-        if(Date.now() <= auth.expire_time)
-            navigate('/home', {replace:true})
-    }
+    
+    if(validAuth(auth))
+        navigate('/home', {replace:true})
 
   }, [auth]);
 
@@ -136,7 +134,7 @@ export default function() {
     btn_regist.disabled = false
     
     if(auth)
-      updateAuth(auth)    
+      updateAuth(auth)
     else
       console.log('sdfsf')
   }

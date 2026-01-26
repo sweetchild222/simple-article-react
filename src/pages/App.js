@@ -8,6 +8,7 @@ import Home from './Home';
 import Login from './Login';
 import Logout from './Logout';
 import Error from './Error';
+import Profile from './Profile';
 import Regist from './Regist';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import AuthProvider from '../util/AuthProvider';
@@ -29,14 +30,6 @@ function App() {
     };
 
 
-    const onLogIn = () =>{
-
-      navigate('/home');
-
-    }
-
-    const onLogout = () => {navigate('/logout')}
-
   return (
     <div>
       <AuthProvider>
@@ -46,6 +39,7 @@ function App() {
             <Route path="/home" element={<Home />}></Route>
             <Route path="/login" element={<Login/>}></Route>
             <Route path="/regist" element={<Regist/>}></Route>
+            <Route path="/profile" element={<Profile/>}></Route>
             <Route path="/error" element={<Error/>}></Route>
         </Routes>
       </AuthProvider>
@@ -57,4 +51,5 @@ function App() {
 //{isLoggedIn === true && <Example />}
         //{isLoggedIn === true && <Example2 />}
 export default App;
+
 

@@ -1,32 +1,24 @@
-import React, { useState } from 'react';
-import Modal, {Type} from './Modal';
+// App.jsx
+import React from 'react';
+import ToastContainer from './ToastContainer';
 
 function App() {
+  const handleSuccessClick = () => {
+    window.showToast('Action successful!', 'success');
+  };
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const config = {
-    text: '안녕하세요? ㅎㅎㅎㅎㅎㅎ마닝럼니아러미ㅏㄴㅇㄹ',
-    type: Type.yesno,
-    isCloseOutsideClick: false
-  }
-
-
-  const onYesNo = (yes) => {
-    console.log('result', yes)
-    console.log(input_password.value)
-  }
+  const handleErrorClick = () => {
+    window.showToast('An error occurred.', 'error');
+  };
 
   return (
-    <div>
-      <h1>My App</h1>
-      <button onClick={()=>setIsModalOpen(true)}>Open Modal</button>
-      <Modal config={config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}>
-        <label htmlFor="input_password">Password</label>
-        <input id="input_password" type="text"/>
-      </Modal>
+    <div className="App">
+      <h1>Custom Toasts</h1>
+      <button onClick={handleSuccessClick}>Show Success Toast</button>
+      <button onClick={handleErrorClick}>Show Error Toast</button>
+      <ToastContainer />
     </div>
-  )
+  );
 }
 
 export default App;

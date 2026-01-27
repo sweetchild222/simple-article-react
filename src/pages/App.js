@@ -1,55 +1,32 @@
-import logo from '../resource/logo.svg';
-import '../css/App.css';
-
-import Header from './Header'
-import React, {useContext, useEffect, useState} from 'react';
-
-import Home from './Home';
-import Login from './Login';
-import Logout from './Logout';
-import Error from './Error';
-import Profile from './Profile';
-import Regist from './Regist';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import AuthProvider from '../util/AuthProvider';
-
-import AuthContext from "../util/AuthContext";
-
-
+import React, { useState } from 'react';
+import Modal, {Type} from './Modal';
 
 function App() {
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const navigate = useNavigate();
+  const config = {
+    text: '안녕하세요? ㅎㅎㅎㅎㅎㅎ마닝럼니아러미ㅏㄴㅇㄹ',
+    type: Type.yesno,
+    isCloseOutsideClick: false
+  }
 
-  const handleButtonClick = () => {
-    
-      console.log('clicl search')
-            
-      //console.log(a)
-    };
 
+  const onYesNo = (yes) => {
+    console.log('result', yes)
+    console.log(input_password.value)
+  }
 
   return (
     <div>
-      <AuthProvider>
-        <Header onClickSearch={handleButtonClick} />
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/home" element={<Home />}></Route>
-            <Route path="/login" element={<Login/>}></Route>
-            <Route path="/regist" element={<Regist/>}></Route>
-            <Route path="/profile" element={<Profile/>}></Route>
-            <Route path="/error" element={<Error/>}></Route>
-        </Routes>
-      </AuthProvider>
+      <h1>My App</h1>
+      <button onClick={()=>setIsModalOpen(true)}>Open Modal</button>
+      <Modal config={config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}>
+        <label htmlFor="input_password">Password</label>
+        <input id="input_password" type="text"/>
+      </Modal>
     </div>
-  );
+  )
 }
 
-
-//{isLoggedIn === true && <Example />}
-        //{isLoggedIn === true && <Example2 />}
 export default App;
-
-

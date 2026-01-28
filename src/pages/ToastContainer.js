@@ -1,39 +1,44 @@
-// components/ToastContainer.jsx
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, createElement } from 'react';
 import Toast from './Toast';
 import './ToastContainer.css'; // We will create this file next
 
-const ToastContainer = () => {
+export default function(){
+
   const [toasts, setToasts] = useState([]);
+  
+  let lastTime;
 
   const addToast = useCallback((message, type = 'info') => {
-    const id = Date.now();
+
+    const key = Date.now()
+
+    lastTime = key
+
+    const onClose = () => removeToast()
     
-    setToasts((prevToasts) => [...prevToasts, { id, message, type}]);
+    const props = {key, message, type, onClose}
+
+    setToasts((toasts) => [...toasts, createElement(Toast, props)]);
+
   }, []);
 
-  const removeToast = useCallback((id) => {
-    
-    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+
+  const removeToast = useCallback(() => {
+
+    const remain = 3000 - (Date.now() - lastTime)
+
+    if(remain <= 100)
+      setToasts([])
+
   }, []);
 
-  // Expose addToast function globally or via Context API for easy access
-  // A simple way for a demo is to attach it to window for easy calling in App.jsx
-  // In a real app, use Context or a custom hook.
-  window.showToast = addToast; 
+
+  window.showToast = addToast;
 
   return (
     <div className="toast-container">
-      {toasts.map((toast) => (
-        <Toast
-          key={toast.id}
-          message={toast.message}          
-          type={toast.type}          
-          onClose={() => removeToast(toast.id)}
-        />
-      ))}
+      {toasts}
     </div>
   );
 };
 
-export default ToastContainer;

@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import './Toast.css';
 
 
-const Toast = ({message, type, onClose}) => {
+export default function({message, type, onClose}){
     
-    const [isSlideIn, setIsSlideIn] = useState(true);
-
+    const [isSlideIn, setIsSlideIn] = useState(true)    
+        
     useEffect(() => {
 
         const timer = setTimeout(() => {
 
-            setIsSlideIn(false)
+            if(isSlideIn == true)
+                setIsSlideIn(false)
 
         }, 3000);
 
@@ -24,13 +25,17 @@ const Toast = ({message, type, onClose}) => {
         if(isSlideIn == false)
             onClose();
     }
+
+    const onClickRemove = () =>{
+
+        setIsSlideIn(false)
+    }
     
     return (
-        <div className={'toast toast-success ' + (isSlideIn ? 'toast-in' : 'toast-out')} onAnimationEnd={onAnimationEnd}>
+        <div className={`toast toast-${type} ` + (isSlideIn ? 'toast-in' : 'toast-out')} onAnimationEnd={onAnimationEnd}>
             <div style={{backgroundColor: 'lightblue'}}>{message}</div>
-            <button onClick={onClose} className="close-btn">&times;</button>
+            <button onClick={onClickRemove} className="close-btn">&times;</button>
         </div>
     )
 }
 
-export default Toast;

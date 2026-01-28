@@ -9,49 +9,42 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-rou
 import * as validator from '../util/Validator.js'
 
 import AuthContext from "../util/AuthContext.js";
+import Modal, {Type} from "./Modal.js"
 
 
 export default function() {
 
-    console.log('home')
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
-    
-    const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const navigate = useNavigate()
 
-    useEffect(() => {
-        
-        setIsLoggedIn(validAuth(auth))
+    useEffect(()=>{
 
-    }, [auth]);
+        if(!validAuth(auth))
+             navigate('/home', {replace:true})        
+    },[auth])
 
 
-    useEffect(() => {
 
-        console.log(isLoggedIn)
+    const config = {text: '로그 아웃?', type: Type.yesno}
 
-        if(isLoggedIn){
+    const onYesNo = (yes) => {
 
-            console.log('weee')
+        if(yes == true){
 
-            
+            removeAuth()
+            window.showToast('logout 완료', 'success')
         }
-        else
-            navigate('/home', {replace:true})
-        
-
-
-    }, [isLoggedIn])
-
-
-    
-    const onClickLogout = async(event)=>{
-
-        removeAuth()
     }
 
 
-    const onClickPasswordChange = async(event)=>{
+    const onClickLogout = ()=>{
+
+        setIsModalOpen(true)
+    }
+
+
+    const onClickPasswordChange = ()=>{
 
         navigate('/changePassword')
     }
@@ -59,42 +52,19 @@ export default function() {
 
     const onClickUserWithdraw = async() =>{
 
-        const password = input_widthdraw_password.value
-
-        if(password == '')
-            return
-
-        const resPasswordCheck = await api.getUserPasswordCheck(auth.jwt, auth.user_id, password)
-
-        if(resPasswordCheck == null)
-            return
-
-        if(resPasswordCheck.correct == false)
-            return
-
-        const payload = {withdraw:true}
-
-        const resUser = await api.patchUser(auth.jwt, auth.user_id, payload)
-
-        if(resUser == null)
-            return
-
-        console.log(resUser)
-
-        removeAuth()
+        navigate('/widthdraw')
     }
 
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-
         <img src="/images/user.png" alt='logo image' height='100px' width='100px'/>
         <button id="btn_logout" onClick={onClickLogout} >로그아웃</button>
+        <Modal config={config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
         <button id="btn_passwordChange" onClick={onClickPasswordChange} >비밀번호 변경</button>
+        <button id="btn_withdraw" onClick={onClickUserWithdraw} >회원 탈퇴</button>
 
-        <label htmlFor="input_widthdraw_password">Password</label>
-        <input id="input_widthdraw_password" type="text"/>
-        <button id="btn_userLeave" onClick={onClickUserWithdraw} >회원탈퇴</button> 
+        
       </div>
     );  
 }

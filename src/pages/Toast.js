@@ -5,7 +5,7 @@ import './Toast.css';
 export default function({message, type, onClose}){
     
     const [isSlideIn, setIsSlideIn] = useState(true)    
-        
+
     useEffect(() => {
 
         const timer = setTimeout(() => {
@@ -20,13 +20,13 @@ export default function({message, type, onClose}){
     }, [onClose])
 
 
-    const onAnimationEnd = () =>{
+    const onAnimationEnd = () => {
 
         if(isSlideIn == false)
             onClose();
     }
 
-    const onClickRemove = () =>{
+    const onClickRemove = () => {
 
         setIsSlideIn(false)
     }

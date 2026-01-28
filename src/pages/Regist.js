@@ -44,7 +44,7 @@ export default function() {
     const email = input_email.value
     
     if(!validator.email(email)){
-      console.log('invalid email')
+      window.showToast('잘못된 형식의 이메일', 'error')
       return
     }
     
@@ -57,8 +57,9 @@ export default function() {
     input_email.disabled = false
 
     if(!success)
-      console.log('eerorr')
-
+      window.showToast('인증 코드 발송 실패', 'error')
+    else
+      window.showToast('인증 코드 발송 성공', 'success')
   }
 
 
@@ -70,7 +71,7 @@ export default function() {
       return false
 
     if(resExist.exist == 1){
-      console.log('이미 존재하는 사용자')
+      window.showToast('이미 존재하는 사용자', 'error')
       return false
     }
 
@@ -85,24 +86,29 @@ export default function() {
     const email = input_email.value
     
     if(!validator.email(email)){
-      console.log('invalid email')
+      window.showToast('잘못된 형식의 이메일', 'error')
       return
     }
 
     const verifyCode = input_verifyCode.value
 
     if(!validator.verifyCode(verifyCode)){
-      console.log('invalid verifyCode')
+      window.showToast('잘못된 형식의 인증 코드', 'error')      
       return
     }
     
     btn_requestVerify.disabled = true
     input_verifyCode.disabled = true
 
-    const success = await requestVerify(email, verifyCode)    
+    const success = await requestVerify(email, verifyCode)
 
     btn_requestVerify.disabled = false
     input_verifyCode.disabled = false
+
+    if(success)
+      window.showToast('인증 성공', 'success')
+    else
+      window.showToast('인증 실패', 'error')
     
     setIsVerified(success)
   }
@@ -129,18 +135,21 @@ export default function() {
     
     btn_regist.disabled = true
 
-    const auth = await registCore(email, password)
+    const auth = await regist(email, password)
 
     btn_regist.disabled = false
-    
-    if(auth)
-      updateAuth(auth)
-    else
-      console.log('sdfsf')
+
+    if(auth == null){
+      window.showToast('회원 가입 실패', 'error')
+      return
+    }
+                
+    updateAuth(auth)
+    window.showToast('회원 가입 성공', 'success')
   }
 
   
-  const registCore = async(email, password) => {
+  const regist = async(email, password) => {
       
     const resExist = await api.getExistUser(email)
 
@@ -148,7 +157,7 @@ export default function() {
       return null
 
     if(resExist.exist == 1){
-      console.log('이미 존재하는 사용자')
+      window.showToast('이미 존재하는 사용자', 'error')
       return null
     }
 
@@ -213,7 +222,6 @@ export default function() {
     if(isVerified == true)
       btn_regist.disabled = !valid
   }
-
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

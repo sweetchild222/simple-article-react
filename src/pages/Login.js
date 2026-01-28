@@ -44,10 +44,12 @@ export default function() {
 
         const res = await api.postAuthenticate(username, password)
 
-        btn_login.disabled = true
+        btn_login.disabled = false
         
-        if(res != null)
+        if(res != null){
             updateAuth(res)        
+            window.showToast('login 완료', 'success')
+        }
     }
 
     const onKeyDownEnter = async(event)=>{
@@ -57,14 +59,12 @@ export default function() {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <label htmlFor="input_username">Username</label>
-            <input id="input_username" type="text"/>
-            <label htmlFor="input_password">Password</label>
-            <input id="input_password" type="password" onKeyDown={onKeyDownEnter}/>
-            <button id="btn_login" onClick={onClickLogin} >로그인</button>
-            <button id="btn_regist" onClick={() => {navigate('/regist', {replace:true})}}>회원가입</button>
+            <label htmlFor='input_username'>Username</label>
+            <input id='input_username' type='text'/>
+            <label htmlFor='input_password'>Password</label>
+            <input id='input_password' type='password' onKeyDown={onKeyDownEnter}/>
+            <button id='btn_login' onClick={onClickLogin} >로그인</button>
+            <button id='btn_regist' onClick={() => {navigate('/regist', {replace:true})}}>회원가입</button>
         </div>
     );    
 }
-
-

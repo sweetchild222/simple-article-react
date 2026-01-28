@@ -2,32 +2,35 @@ import React, { useState, useCallback, createElement } from 'react';
 import Toast from './Toast';
 import './ToastContainer.css'; // We will create this file next
 
+
 export default function(){
 
   const [toasts, setToasts] = useState([]);
-  
-  let lastTime;
+
+  let current_toasts = []
 
   const addToast = useCallback((message, type = 'info') => {
 
-    const key = Date.now()
+    const current = Date.now()
 
-    lastTime = key
-
-    const onClose = () => removeToast()
+    const key = current +  Math.floor(Math.random() * 1000)
+    
+    const onClose = () => removeToast(key)
     
     const props = {key, message, type, onClose}
+
+    current_toasts.push(key)
 
     setToasts((toasts) => [...toasts, createElement(Toast, props)]);
 
   }, []);
 
 
-  const removeToast = useCallback(() => {
+  const removeToast = useCallback((removedKey) => {
+    
+    current_toasts = current_toasts.filter((key) => removedKey != key)
 
-    const remain = 3000 - (Date.now() - lastTime)
-
-    if(remain <= 100)
+    if(current_toasts.length == 0)
       setToasts([])
 
   }, []);
@@ -36,7 +39,7 @@ export default function(){
   window.showToast = addToast;
 
   return (
-    <div className="toast-container">
+    <div id='container' className="toast-container">
       {toasts}
     </div>
   );

@@ -9,14 +9,8 @@ export const Type = {
 
 export default ({config, isOpen, onYesNo, onClose, children}) => {
 
-    if(config == null){
-
-        config = {
-            text: '완료되었습니다',
-            type: Type.confirm,
-            isCloseOutsideClick: true
-        }
-    }
+    if(config == null)
+        config = {text: '완료되었습니다',type: Type.confirm, isCloseOutsideClick: false}
     else{
 
         if(config.type == null)
@@ -26,10 +20,9 @@ export default ({config, isOpen, onYesNo, onClose, children}) => {
             config.text = (config.type == Type.confirm ? '완료되었습니다' : '선택하세요')
         
         if(config.isCloseOutsideClick == null)
-            config.isCloseOutsideClick = true
+            config.isCloseOutsideClick = false
     }
     
-        
     const dialogRef = useRef(null)
 
     useEffect(() => {

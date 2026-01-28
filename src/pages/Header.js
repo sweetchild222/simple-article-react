@@ -13,10 +13,9 @@ export default function ({onClickSearch}) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     
     const navigate = useNavigate();
-    
 
     useEffect(() => {
-                
+
         setIsLoggedIn(validAuth(auth))
 
     }, [auth]);
@@ -39,7 +38,9 @@ export default function ({onClickSearch}) {
                 console.log(payload)
             })
         }
-
+        //else{
+            //navigate('/home', {replace:true})
+        //}
 
     }, [isLoggedIn])
 

@@ -38,16 +38,11 @@ export default function ({onClickSearch}) {
                 console.log(payload)
             })
         }
-        //else{
-            //navigate('/home', {replace:true})
-        //}
 
     }, [isLoggedIn])
 
 
     const onKeyDown = (e) => {
-
-        
 
         if(e.key === 'Enter')
             onClickSearch(inputElement.value)

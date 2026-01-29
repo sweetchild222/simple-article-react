@@ -28,6 +28,7 @@ export default function() {
         
     },[auth])
 
+    
     const onClickUserWithdraw = async(event)=> {
 
         const password = input_widthdraw_password.value
@@ -55,8 +56,10 @@ export default function() {
 
         btn_widthdraw.disabled = false
 
-        if(result == null)
+        if(result == null){
+            window.showToast('회원 탈퇴 실패', 'error')
             return
+        }
         
         removeAuth()
 

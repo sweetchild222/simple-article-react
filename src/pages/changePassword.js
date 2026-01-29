@@ -44,8 +44,10 @@ export default function() {
 
         btn_passwordChange.disabled = false
 
-        if(result == null)
+        if(result == null){
+            window.showToast('비밀번호 변경 실패', 'error')
             return
+        }
 
         navigate(-1)
 
@@ -57,10 +59,10 @@ export default function() {
         
         const resPasswordCheck = await api.getUserPasswordCheck(auth.jwt, auth.user_id, current_password)
 
-        if(resPasswordCheck == null)            
+        if(resPasswordCheck == null)
             return null
         
-        if(resPasswordCheck.correct == false)            
+        if(resPasswordCheck.correct == false)
             return null
 
         const payload = {password: new_password}

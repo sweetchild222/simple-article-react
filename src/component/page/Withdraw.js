@@ -3,13 +3,13 @@ import axios from 'axios';
 import React, {useContext, useEffect } from "react";
 
 
-import * as api from '../util/Api.js'
+import * as api from '../tool/Api.js'
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
-import * as validator from '../util/Validator.js'
+import * as validator from '../tool/Validator.js'
 
-import AuthContext from "../util/AuthContext.js";
-import Modal, {Type} from "./Modal.js"
+import AuthContext from "../tool/AuthContext.js";
+import Modal, {Type} from "../common/Modal.js"
 
 
 export default function() {
@@ -19,11 +19,11 @@ export default function() {
 
     const navigate = useNavigate();
 
-    const config = {text: '회원 탈퇴?', type: Type.yesno}
+    const modal_config = {text: '회원 탈퇴?', type: Type.yesno}
 
     useEffect(()=>{
 
-        if(!validAuth(auth))            
+        if(!validAuth(auth))
              navigate('/home', {replace:true})
         
     },[auth])
@@ -88,8 +88,8 @@ export default function() {
         <label htmlFor='input_widthdraw_password'>{'비밀번호'}</label>
         <input id='input_widthdraw_password' type='text'/>
         <button id='btn_widthdraw' onClick={onClickUserWithdraw} >회원탈퇴</button>
-        <Modal config={config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
+        <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
       </div>
-    );  
+    )
 }
 

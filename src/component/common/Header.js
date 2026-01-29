@@ -1,13 +1,16 @@
 import React, {useContext, useEffect } from "react";
 import axios from 'axios';
 
-import * as api from '../util/Api.js'
+
+
+
+import * as api from '../tool/Api.js'
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 
-import AuthContext from "../util/AuthContext.js";
+import AuthContext from "../tool/AuthContext.js";
 
-export default function ({onClickSearch}) {
+export default function() {
 
     const {auth, updateAuth, validAuth} = useContext(AuthContext)
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,9 +32,9 @@ export default function ({onClickSearch}) {
 
                 if(payload == null)
                     return
-
+                
                 if(payload.profile == null)
-                    img_profile.src = "/images/user.png"
+                    img_profile.src = '/image/user.png'
                 else
                     img_profile.src = payload.profile
 
@@ -67,23 +70,14 @@ export default function ({onClickSearch}) {
 
 
 
+    const onClickSearch = (e) => {
 
-    const searchClick = (e) => {
 
-        const key = 'auth'
-
-        const value = 'close'
-
-        localStorage.setItem(key, value);
-        setStorageData(value);
         
-        //const inputElement = document.getElementById('myInput');
-
-        //onClickSearch(inputElement.value)
     }
 
 
-    const goHome = (e) =>{
+    const onClickHome = (e) =>{
 
         navigate('/home');
     }
@@ -92,10 +86,10 @@ export default function ({onClickSearch}) {
     return (
         <div style={{ display: 'flex', alignItems: 'center', height:'60px', backgroundColor: 'gray', paddingLeft:'30px'}}>
 
-        <img src="/images/a.jpg" alt='logo image' height='100%' width='60px' onClick={goHome}/>
+        <img src='/image/logo.svg' alt='logo image' height='100%' width='60px' onClick={onClickHome}/>
         <div style={{flexGrow:1, backgroundColor:'green'}} ></div>
         <input id="myInput" placeholder="검색" style={{color:'green', height:'50px', width:'100px'}} onKeyDown={onKeyDown}></input>
-        <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={searchClick}>검색</button>
+        <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickSearch}>검색</button>
         {!isLoggedIn && <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickLogIn}>로그인</button>}
         {isLoggedIn && <img id="img_profile"  height='100%' width='60px' onClick={onClickProfile}/>}
         

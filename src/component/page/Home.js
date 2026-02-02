@@ -1,20 +1,21 @@
 import React from "react";
 import axios from 'axios';
 
-
+import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 
 export default function Home() {
 
   let inputEmail = null
   let inputPassword = null
   let verifyCode = null
+
+  const navigate = useNavigate();
   
 
   const test = async() => {
 
 
-    window.showToast('login 완료', 'success')
-
+    navigate('/DraggableDiv')
     
   };
 
@@ -91,7 +92,7 @@ export default function Home() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-      <button onClick={test}>테스트1</button>
+      <button onClick={test}>imageRegion</button>
       <button onClick={test2}>테스트2</button>
       <button onClick={downFile}>다운로드</button>
       <input type="file" onChange={uploadFile} accept="image/*"/>

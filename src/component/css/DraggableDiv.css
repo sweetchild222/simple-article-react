@@ -1,8 +1,5 @@
 .container {
-  width: 700px;
-  height: 500px;
-  left: 120px;
-  top: 150px;
+
   position: relative;
   background-size: contain;
   background-repeat: no-repeat;
@@ -12,8 +9,8 @@
 
 
 .select{
-  width: 100px;
-  height: 100px;
+  /* width: 100px;
+  height: 100px; */
   z-index: 600;
   position: absolute;
   background-color: rgba(0, 128, 255);

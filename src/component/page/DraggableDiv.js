@@ -154,7 +154,7 @@ const DraggableDiv = () => {
       const imageRect = getImageRect()
 
 
-      if(selectEdge == 1){//left_top        
+      if(selectEdge == 1){ //left_top
         
         const maxX = lastRect.x + (lastRect.width - selectMinWidth)
         const maxY = lastRect.y + (lastRect.height - selectMinHeight)
@@ -173,7 +173,7 @@ const DraggableDiv = () => {
             const overHeight = (imageRect.y - newY)
             calcWidth -= overHeight
             newX += overHeight
-            newY = imageRect.y            
+            newY = imageRect.y
           }
 
           calcHeight = calcWidth
@@ -181,8 +181,8 @@ const DraggableDiv = () => {
         else{
 
           newX -= (calcHeight - calcWidth)
-                    
-          if(newX < imageRect.x){            
+
+          if(newX < imageRect.x){
             const overWidth = (imageRect.x - newX)
             calcHeight -= overWidth
             newY += overWidth

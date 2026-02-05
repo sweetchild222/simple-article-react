@@ -5,56 +5,122 @@ import { CgFontHeight } from 'react-icons/cg';
 
 
 const DraggableDiv = () => {
+  
+  const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
-  const [selectEdge, setSelectEdge] = useState(-1);
-  const selectRef = useRef(null);
-  const containRef = useRef(null);
+  const [selectEdge, setSelectEdge] = useState(-1)
+  const [containerCanvasUrl, setContainerCanvasUrl] = useState(transparent)
+  const [selectCanvasUrl, setSelectCanvasUrl] = useState(transparent)
+  const [coverSize, setCoverSize] = useState({width:0, height:0})  
 
-  const containerWidth = 600
-  const containerHeight = 300
-  const selectMinHeight = 100
-  const selectMinWidth = 100
-    
-  const [rect, setRect] = useState(()=> {
-
-    const centerX = (containerWidth - selectMinWidth) / 2
-    const centerY = (containerHeight - selectMinHeight) / 2
-
-    return { x: centerX, y: centerY, width: selectMinWidth, height: selectMinHeight}
-  });
   
 
-  useEffect(() => {
+  const selectRef = useRef(null);
+  const coverRef = useRef(null);
+  const containRef = useRef(null);
 
-    if(containRef.current == null)
-      return
-          
-    const imagePath = '/image/test.png'
-    containRef.current.style.backgroundImage = `url(${imagePath})`
-                
-    const image = new Image();
-    image.src = imagePath;
+  const containerWidth = 300
+  const containerHeight = 600
+  const selectMinHeight = 100
+  const selectMinWidth = 100
+  
+  const imagePath = '/image/test.png'
+    
+  const [rect, setRect] = useState(null);
 
-    image.onload = () => {
-        
-      const widthScale = containerWidth / image.width
-      const heightScale = containerHeight / image.height
+  const calcScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
+
+      const widthScale = containerWidth / imageNaturalWidth
+      const heightScale = containerHeight / imageNaturalHeight
       
-      const scale = widthScale < heightScale ? widthScale : heightScale
+      return widthScale < heightScale ? widthScale : heightScale
+  }
 
-      const imageWidth = image.width * scale
-      const imageHeight = image.height * scale
+
+  const calcScaledImageRect = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)=>{
+
+      const scale = calcScale(containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)
+
+      const imageWidth = imageNaturalWidth * scale
+      const imageHeight = imageNaturalHeight * scale
 
       const widthSpace = (containerWidth - imageWidth) / 2
       const heightSpace = (containerHeight - imageHeight) / 2
       
       const imageX = widthSpace
-      const imageY = heightSpace      
+      const imageY = heightSpace
 
-      setImageRect(Math.round(imageX), Math.round(imageY), Math.round(imageWidth), Math.round(imageHeight))            
+      return {x: Math.round(imageX), y: Math.round(imageY), width: Math.round(imageWidth), height: Math.round(imageHeight)}
+  }
+
+
+  const createCanvas = (image) => {
+
+      const canvas = document.createElement('canvas')
+
+      canvas.width = image.naturalWidth
+      canvas.height = image.naturalHeight
+      const ctx = canvas.getContext('2d')
+      ctx.drawImage(image, 0, 0)
+
+      return canvas
+  }
+
+
+  useEffect(()=>{
+
+    const image = new Image()
+    image.src = imagePath
+    
+    image.onload = () => {
+      
+      const canvas = createCanvas(image)
+      setContainerCanvasUrl(canvas.toDataURL())
+
+      const imageRect = calcScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
+
+      setImageRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height)
+      setCoverSize({width:imageRect.width, height:imageRect.height})
+
+      const centerX = (containerWidth - selectMinWidth) / 2
+      const centerY = (containerHeight - selectMinHeight) / 2
+
+      setRect({ x: centerX, y: centerY, width: selectMinWidth, height: selectMinHeight})
+
+      const cover = coverRef.current
+      cover.width = cover.clientWidth;
+      cover.height = cover.clientHeight;
     }
 
-  }, [])
+  }, [containerCanvasUrl])
+
+
+  useEffect(() => {
+
+    if(rect == null)
+      return
+
+    const imageRect = getImageRect();
+
+    const x = rect.x - imageRect.x
+    const y = rect.y - imageRect.y    
+
+    const ctx = coverRef.current.getContext("2d")
+    
+    ctx.reset()
+
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
+    
+    ctx.fillRect(0, 0, imageRect.width, y)
+    ctx.fillRect(0, y + rect.height, imageRect.width, imageRect.height - y - rect.height)  
+    ctx.fillRect(0, y, x, rect.height)
+    ctx.fillRect(x + rect.width, y, imageRect.width - rect.width - x, rect.height)
+
+    
+    
+    
+
+  }, [rect])
 
 
   const handleMouseDown = useCallback((event) => {    
@@ -65,9 +131,7 @@ const DraggableDiv = () => {
 
         const id = getEdgeID(event.clientX, event.clientY, selectRect)
         
-        setSelectEdge(id)
-
-        console.log('select edge ', id)
+        setSelectEdge(id)        
 
         if(id == 0)
           selectRef.current.style.cursor = 'grabbing'
@@ -222,7 +286,7 @@ const DraggableDiv = () => {
             calcWidth = maxWidth
             calcHeight -= overWidth
             newY += overWidth
-          }                  
+          }
         }
         else{
 
@@ -267,7 +331,7 @@ const DraggableDiv = () => {
             calcHeight = maxHeight
             calcWidth -= overHeight
             newX += overHeight
-          }                  
+          }
         }
         else{
 
@@ -407,12 +471,9 @@ const DraggableDiv = () => {
     setSelectEdge(-1)
 
     const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
-      
-    if(id != 0)
-      selectRef.current.style.cursor = cursor(id)
-    else
-      selectRef.current.style.cursor = 'grab'
-    
+          
+    selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
+        
   }, []);
 
 
@@ -455,13 +516,15 @@ const DraggableDiv = () => {
 
 
   return (
-    <div ref={containRef} className="container" style={{left:'120px', top:'100px', width: `${containerWidth}px`, height: `${containerHeight}px`}}>
-      <div
-        ref={selectRef} className='select' onMouseDown={handleMouseDown}
-        style={{ left: `${rect.x}px`, top: `${rect.y}px`, width: `${rect.width}px`, height: `${rect.height}px`}}
+    <div ref={containRef} className="container" style={{left:'120px', top:'100px', width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`}}>
+    <canvas id='canvas' ref={coverRef} className="cover" style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}></canvas>
+      {rect != null && 
+      <div ref={selectRef} className='select' onMouseDown={handleMouseDown}
+        style={{ left: `${rect.x}px`, top: `${rect.y}px`, width: `${rect.width}px`, height: `${rect.height}px`, backgroundImage: `url(${selectCanvasUrl})`}}
       >
-        <div className='edge'></div>
+      <div className='edge'></div>
       </div>
+      }
       
     </div>
   );

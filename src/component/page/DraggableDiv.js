@@ -10,24 +10,22 @@ const DraggableDiv = () => {
 
   const [selectEdge, setSelectEdge] = useState(-1)
   const [containerCanvasUrl, setContainerCanvasUrl] = useState(transparent)
-  const [selectCanvasUrl, setSelectCanvasUrl] = useState(transparent)
-  const [coverSize, setCoverSize] = useState({width:0, height:0})  
-
-  
+  const [showUrl, setShowUrl] = useState(transparent)
+  const [coverSize, setCoverSize] = useState({width:0, height:0})
+  const [selectRect, setSelectRect] = useState(null)
 
   const selectRef = useRef(null);
+  const showRef = useRef(null);
   const coverRef = useRef(null);
   const containRef = useRef(null);
 
-  const containerWidth = 300
-  const containerHeight = 600
+  const containerWidth = 600
+  const containerHeight = 300
   const selectMinHeight = 100
   const selectMinWidth = 100
   
   const imagePath = '/image/test.png'
-    
-  const [rect, setRect] = useState(null);
-
+  
   const calcScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
       const widthScale = containerWidth / imageNaturalWidth
@@ -79,17 +77,17 @@ const DraggableDiv = () => {
 
       const imageRect = calcScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
 
-      setImageRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height)
+      setPropertyImageRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height)
       setCoverSize({width:imageRect.width, height:imageRect.height})
 
       const centerX = (containerWidth - selectMinWidth) / 2
       const centerY = (containerHeight - selectMinHeight) / 2
 
-      setRect({ x: centerX, y: centerY, width: selectMinWidth, height: selectMinHeight})
+      setSelectRect({ x: centerX, y: centerY, width: selectMinWidth, height: selectMinHeight})
 
       const cover = coverRef.current
-      cover.width = cover.clientWidth;
-      cover.height = cover.clientHeight;
+      cover.width = cover.clientWidth
+      cover.height = cover.clientHeight
     }
 
   }, [containerCanvasUrl])
@@ -97,13 +95,13 @@ const DraggableDiv = () => {
 
   useEffect(() => {
 
-    if(rect == null)
+    if(selectRect == null)
       return
 
-    const imageRect = getImageRect();
+    const imageRect = getPropertyImageRect()
 
-    const x = rect.x - imageRect.x
-    const y = rect.y - imageRect.y    
+    const x = selectRect.x - imageRect.x
+    const y = selectRect.y - imageRect.y
 
     const ctx = coverRef.current.getContext("2d")
     
@@ -112,56 +110,72 @@ const DraggableDiv = () => {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
     
     ctx.fillRect(0, 0, imageRect.width, y)
-    ctx.fillRect(0, y + rect.height, imageRect.width, imageRect.height - y - rect.height)  
-    ctx.fillRect(0, y, x, rect.height)
-    ctx.fillRect(x + rect.width, y, imageRect.width - rect.width - x, rect.height)
+    ctx.fillRect(0, y + selectRect.height, imageRect.width, imageRect.height - y - selectRect.height)
+    ctx.fillRect(0, y, x, selectRect.height)
+    ctx.fillRect(x + selectRect.width, y, imageRect.width - selectRect.width - x, selectRect.height)
 
-    
-    
-    
+    const image = new Image()
+    image.src = containerCanvasUrl
 
-  }, [rect])
+    image.onload = () => {
+    
+      const inversScale = 1/calcScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
+
+      const canvas = document.createElement('canvas')
+      canvas.width = selectRect.height * inversScale
+      canvas.height = selectRect.width * inversScale
+      const ctx = canvas.getContext('2d')
+      
+      const x = (selectRect.x - imageRect.x) * inversScale
+      const y = (selectRect.y - imageRect.y) * inversScale
+
+       ctx.drawImage(image, x, y, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height)
+
+       //setShowUrl(canvas.toDataURL())
+    }
+
+  }, [selectRect])
 
 
   const handleMouseDown = useCallback((event) => {    
 
     if(event.target.className == 'select'){
 
-        const selectRect = event.target.getBoundingClientRect()
+        const clientRect = event.target.getBoundingClientRect()
 
-        const id = getEdgeID(event.clientX, event.clientY, selectRect)
+        const id = getEdgeID(event.clientX, event.clientY, clientRect)
         
-        setSelectEdge(id)        
+        setSelectEdge(id)
 
         if(id == 0)
           selectRef.current.style.cursor = 'grabbing'
 
-        const offsetX = event.clientX - rect.x;
-        const offsetY = event.clientY - rect.y;
+        const offsetX = event.clientX - selectRect.x
+        const offsetY = event.clientY - selectRect.y
         
         const containerRect = containRef.current.getBoundingClientRect()
 
-        const x = selectRect.x - containerRect.x
-        const y = selectRect.y - containerRect.y
+        const x = clientRect.x - containerRect.x
+        const y = clientRect.y - containerRect.y
 
-        const width = selectRect.width
-        const height = selectRect.height
+        const width = clientRect.width
+        const height = clientRect.height
 
-        setLastOffset(offsetX, offsetY)
-        setLastRect(x, y, width, height)
+        setPropertyOffset(offsetX, offsetY)
+        setPropertyLastRect(x, y, width, height)
     }
 
-  }, [rect]);
+  }, [selectRect]);
 
   
   const calcXY = (clientX, clientY) => {
 
-    const offset = getLastOffset()
+    const offset = getPropertyOffset()
     
     const x = clientX - offset.x
     const y = clientY - offset.y
 
-    const imageRect = getImageRect()
+    const imageRect = getPropertyImageRect()
     
     const endX = imageRect.x + imageRect.width - selectRef.current.offsetWidth
     const endY = imageRect.y + imageRect.height - selectRef.current.offsetHeight
@@ -179,9 +193,9 @@ const DraggableDiv = () => {
   
       const newXY = calcXY(event.clientX, event.clientY)
       
-      const lastRect = getLastRect()
+      const lastRect = getPropertyLastRect()
     
-      setRect({x: newXY.x, y: newXY.y, width: lastRect.width, height: lastRect.height});
+      setSelectRect({x: newXY.x, y: newXY.y, width: lastRect.width, height: lastRect.height});
     }
     else if(selectEdge ==  -1 && event.target.className == 'select'){
 
@@ -195,10 +209,10 @@ const DraggableDiv = () => {
     else{
 
         if(selectEdge > 0 && selectEdge <= 4){
-          const rect = selectRect(event.clientX, event.clientY, selectEdge)          
+          const rect = dragEdge(event.clientX, event.clientY, selectEdge)          
 
           if(rect != null)
-            setRect(rect)
+            setSelectRect(rect)
         }
     }
 
@@ -206,17 +220,16 @@ const DraggableDiv = () => {
 
   const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 
-  const selectRect = (clientX, clientY, selectEdge) => {
+  const dragEdge = (clientX, clientY, selectEdge) => {
 
-      const offset = getLastOffset()
+      const offset = getPropertyOffset()
 
       const x = clientX - offset.x
       const y = clientY - offset.y
 
-      const lastRect = getLastRect()
+      const lastRect = getPropertyLastRect()
 
-      const imageRect = getImageRect()
-
+      const imageRect = getPropertyImageRect()
 
       if(selectEdge == 1){ //left_top
         
@@ -384,7 +397,7 @@ const DraggableDiv = () => {
       return null
   }
 
-  const setLastOffset = (offsetX, offsetY) => {
+  const setPropertyOffset = (offsetX, offsetY) => {
 
     const style = selectRef.current.style
     
@@ -393,7 +406,7 @@ const DraggableDiv = () => {
   }
 
 
-  const getLastOffset = () => {
+  const getPropertyOffset = () => {
 
     const style = selectRef.current.style
 
@@ -404,7 +417,7 @@ const DraggableDiv = () => {
   }
 
 
-  const setImageRect = (x, y, width, height) => {
+  const setPropertyImageRect = (x, y, width, height) => {
 
     const style = containRef.current.style
 
@@ -415,7 +428,7 @@ const DraggableDiv = () => {
   }
 
 
-  const getImageRect =() => {
+  const getPropertyImageRect =() => {
 
     const style = containRef.current.style
 
@@ -428,7 +441,7 @@ const DraggableDiv = () => {
 
   }
 
-  const setLastRect = (x, y, width, height) => {
+  const setPropertyLastRect = (x, y, width, height) => {
 
     const style = selectRef.current.style
 
@@ -438,7 +451,7 @@ const DraggableDiv = () => {
     style.setProperty('--height', height);
   }
 
-  const getLastRect = () => {
+  const getPropertyLastRect = () => {
 
     const style = selectRef.current.style
 
@@ -453,13 +466,13 @@ const DraggableDiv = () => {
 
   const cursor = (edgeID) => {
 
-    if(edgeID == 1)
+    if(edgeID == 1) //left-top
       return 'nw-resize'
-    else if(edgeID == 2)
+    else if(edgeID == 2)//right-top
       return 'ne-resize'
-    else if(edgeID == 3)
+    else if(edgeID == 3)//left-bottom
       return 'sw-resize'
-    else if(edgeID == 4)
+    else if(edgeID == 4)//right-bottom
       return 'se-resize'
     else
       return 'default'
@@ -505,27 +518,29 @@ const DraggableDiv = () => {
 
   useEffect(() => {
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
     };
-  }, [handleMouseMove, handleMouseUp]);
+  }, [handleMouseMove, handleMouseUp])
 
 
   return (
+    <div>
+    <div ref={showRef} style={{left:'120px', top:'100px', width: `300px`, height: `300px`, backgroundColor: `red`, backgroundImage: `url(${showUrl})`}}></div>
     <div ref={containRef} className="container" style={{left:'120px', top:'100px', width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`}}>
     <canvas id='canvas' ref={coverRef} className="cover" style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}></canvas>
-      {rect != null && 
+      {selectRect != null && 
       <div ref={selectRef} className='select' onMouseDown={handleMouseDown}
-        style={{ left: `${rect.x}px`, top: `${rect.y}px`, width: `${rect.width}px`, height: `${rect.height}px`, backgroundImage: `url(${selectCanvasUrl})`}}
+        style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
       >
       <div className='edge'></div>
       </div>
-      }
-      
+      }      
+    </div>
     </div>
   );
 };

@@ -10,12 +10,11 @@ export default function Home() {
   let verifyCode = null
 
   const navigate = useNavigate();
-  
 
   const test = async() => {
 
 
-    navigate('/DraggableDiv')
+    navigate('/image_region')
     
   };
 

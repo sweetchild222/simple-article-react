@@ -16,7 +16,6 @@ export default function() {
 
     const navigate = useNavigate();
 
-
     useEffect(()=>{
 
         if(validAuth(auth))

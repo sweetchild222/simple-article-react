@@ -1,0 +1,57 @@
+#container {
+
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(255, 255, 0);  
+  align-items: center;
+  justify-content: center;  
+  display:flex;
+}
+
+
+#cover{
+  padding:0px;
+  margin:0px;
+  z-index: 500;
+  /*object-fit: cover; */  
+}
+
+
+
+#select{
+  /* width: 100px;
+  height: 100px; */
+  z-index: 600;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0);
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  display:flex;
+}
+
+
+
+#edge{
+  width:100%;
+  height:100%;
+  z-index: 800;
+  pointer-events: none; 
+
+  --b: 5px;
+  --c: red;
+  --w: 20px;
+
+  border: var(--b) solid #0000;
+  --_g: #0000 90deg, var(--c) 0;
+  --_p: var(--w) var(--w) border-box no-repeat;
+
+  background:
+    conic-gradient(from 90deg  at top    var(--b) left  var(--b),var(--_g)) 0 var(--b) / var(--_p),
+    conic-gradient(from 180deg at top    var(--b) right var(--b),var(--_g)) 100% var(--b) / var(--_p),
+    conic-gradient(from 0deg   at bottom var(--b) left  var(--b),var(--_g)) 0 calc(100% - var(--b)) / var(--_p),
+    conic-gradient(from -90deg at bottom var(--b) right var(--b),var(--_g)) 100% calc(100% - var(--b)) / var(--_p);
+}
+

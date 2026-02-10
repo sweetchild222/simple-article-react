@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 
-import '../css/DraggableDiv.css'
+import '../css/ImageRegion.css'
 import { CgFontHeight } from 'react-icons/cg';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 
 
-const DraggableDiv = () => {
+export default function() {
   
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
@@ -14,10 +15,10 @@ const DraggableDiv = () => {
   const [coverSize, setCoverSize] = useState({width:0, height:0})
   const [selectRect, setSelectRect] = useState(null)
 
-  const selectRef = useRef(null);
-  const showRef = useRef(null);
-  const coverRef = useRef(null);
-  const containRef = useRef(null);
+  const selectRef = useRef(null)
+  const showRef = useRef(null)
+  const coverRef = useRef(null)
+  const containRef = useRef(null)
 
   const containerWidth = 600
   const containerHeight = 300
@@ -25,6 +26,8 @@ const DraggableDiv = () => {
   const selectMinWidth = 100
   
   const imagePath = '/image/test.png'
+
+  const navigate = useNavigate();
   
   const calcScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
@@ -119,7 +122,7 @@ const DraggableDiv = () => {
 
     image.onload = () => {
     
-      const inversScale = 1/calcScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
+      const inversScale = 1 / calcScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
 
       const canvas = document.createElement('canvas')
       canvas.width = selectRect.height * inversScale
@@ -131,7 +134,7 @@ const DraggableDiv = () => {
 
        ctx.drawImage(image, x, y, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height)
 
-       //setShowUrl(canvas.toDataURL())
+       setShowUrl(canvas.toDataURL())
     }
 
   }, [selectRect])
@@ -139,7 +142,7 @@ const DraggableDiv = () => {
 
   const handleMouseDown = useCallback((event) => {    
 
-    if(event.target.className == 'select'){
+    if(event.target.id == 'select'){
 
         const clientRect = event.target.getBoundingClientRect()
 
@@ -197,7 +200,7 @@ const DraggableDiv = () => {
     
       setSelectRect({x: newXY.x, y: newXY.y, width: lastRect.width, height: lastRect.height});
     }
-    else if(selectEdge ==  -1 && event.target.className == 'select'){
+    else if(selectEdge ==  -1 && event.target.id == 'select'){
 
       const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
 
@@ -528,21 +531,32 @@ const DraggableDiv = () => {
   }, [handleMouseMove, handleMouseUp])
 
 
+  const onClickOK = () => {
+
+  }
+
+
+  const onClickCancel = () => {
+
+    navigate(-1)
+  }
+
+
   return (
     <div>
     <div ref={showRef} style={{left:'120px', top:'100px', width: `300px`, height: `300px`, backgroundColor: `red`, backgroundImage: `url(${showUrl})`}}></div>
-    <div ref={containRef} className="container" style={{left:'120px', top:'100px', width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`}}>
-    <canvas id='canvas' ref={coverRef} className="cover" style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}></canvas>
+    <div id='container' ref={containRef} style={{left:'120px', top:'100px', width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`}}>
+    <canvas id='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}></canvas>
       {selectRect != null && 
-      <div ref={selectRef} className='select' onMouseDown={handleMouseDown}
+      <div id='select' ref={selectRef} onMouseDown={handleMouseDown}
         style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
       >
-      <div className='edge'></div>
+      <div id='edge'></div>
       </div>
       }      
     </div>
+    <button onClick={onClickOK}>ok</button>
+    <button onClick={onClickCancel}>cancel</button>
     </div>
   );
 };
-
-export default DraggableDiv;

@@ -12,7 +12,7 @@ import Regist from './Regist.js';
 import Password from './Password.js'
 import Withdraw from './Withdraw.js'
 
-import DraggableDiv from './DraggableDiv.js'
+import ImageRegion from './ImageRegion.js'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import AuthProvider from '../tool/AuthProvider';
 import AuthContext from "../tool/AuthContext";
@@ -35,7 +35,7 @@ function App() {
             <Route path="/login" element={<Login/>}></Route>
             <Route path="/regist" element={<Regist/>}></Route>
             <Route path="/profile" element={<Profile/>}></Route>            
-            <Route path="/DraggableDiv" element={<DraggableDiv/>}></Route>
+            <Route path="/image_region" element={<ImageRegion/>}></Route>
             <Route path="/widthdraw" element={<Withdraw/>}></Route>
             <Route path="/password" element={<Password/>}></Route>
             <Route path="/*" element={<PageNotFound/>}></Route>

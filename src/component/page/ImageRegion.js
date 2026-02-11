@@ -18,13 +18,13 @@ export default function() {
 
   const [selectEdge, setSelectEdge] = useState(-1)
   const [isImageLoad, setIsImageLoad] = useState(false)
-  const [containerCanvasUrl, setContainerCanvasUrl] = useState(transparent)
-  const [showUrl, setShowUrl] = useState(transparent)
+  const [containerCanvasUrl, setContainerCanvasUrl] = useState(null)  
   const [coverSize, setCoverSize] = useState({width:0, height:0})
   const [selectRect, setSelectRect] = useState(null)
+  const [selectImage, setSelectImage] = useState(null)
 
   const selectRef = useRef(null)
-  const showRef = useRef(null)
+  const previewRef = useRef(null)
   const coverRef = useRef(null)
   const containRef = useRef(null)
 
@@ -36,47 +36,47 @@ export default function() {
   const selectImageHeight = 256  
 
   const {auth, validAuth} = useContext(AuthContext)
-    
+  
   const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     
   const navigate = useNavigate()
   
   const calcScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
-      const widthScale = containerWidth / imageNaturalWidth
-      const heightScale = containerHeight / imageNaturalHeight
-      
-      return widthScale < heightScale ? widthScale : heightScale
+    const widthScale = containerWidth / imageNaturalWidth
+    const heightScale = containerHeight / imageNaturalHeight
+    
+    return widthScale < heightScale ? widthScale : heightScale
   }
 
 
   const calcScaledImageRect = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)=>{
 
-      const scale = calcScale(containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)
+    const scale = calcScale(containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)
 
-      const imageWidth = imageNaturalWidth * scale
-      const imageHeight = imageNaturalHeight * scale
+    const imageWidth = imageNaturalWidth * scale
+    const imageHeight = imageNaturalHeight * scale
 
-      const widthSpace = (containerWidth - imageWidth) / 2
-      const heightSpace = (containerHeight - imageHeight) / 2
-      
-      const imageX = widthSpace
-      const imageY = heightSpace
+    const widthSpace = (containerWidth - imageWidth) / 2
+    const heightSpace = (containerHeight - imageHeight) / 2
+    
+    const imageX = widthSpace
+    const imageY = heightSpace
 
-      return {x: Math.round(imageX), y: Math.round(imageY), width: Math.round(imageWidth), height: Math.round(imageHeight)}
+    return {x: Math.round(imageX), y: Math.round(imageY), width: Math.round(imageWidth), height: Math.round(imageHeight)}
   }
 
 
   const createCanvas = (image) => {
+    
+    const canvas = document.createElement('canvas')
 
-      const canvas = document.createElement('canvas')
+    canvas.width = image.naturalWidth
+    canvas.height = image.naturalHeight
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(image, 0, 0)
 
-      canvas.width = image.naturalWidth
-      canvas.height = image.naturalHeight
-      const ctx = canvas.getContext('2d')
-      ctx.drawImage(image, 0, 0)
-
-      return canvas
+    return canvas
   }
 
 
@@ -87,15 +87,12 @@ export default function() {
         return
     }
 
-    const image = new Image()    
+    const image = new Image()
     const url = URL.createObjectURL(imageFile)
     image.src = url
 
     image.onload = () => {
-
-      const canvas = createCanvas(image)
-      setContainerCanvasUrl(canvas.toDataURL())
-
+      
       const imageRect = calcScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
 
       setPropertyImageRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height)
@@ -113,8 +110,10 @@ export default function() {
         cover.height = cover.clientHeight
       }
 
-      setIsImageLoad(true)
+      const canvas = createCanvas(image)
+      setContainerCanvasUrl(canvas.toDataURL())
       URL.revokeObjectURL(url)
+      setIsImageLoad(true)
     }
 
   }, [auth])
@@ -141,31 +140,40 @@ export default function() {
     ctx.fillRect(0, y, x, selectRect.height)
     ctx.fillRect(x + selectRect.width, y, imageRect.width - selectRect.width - x, selectRect.height)
 
+    if(selectImage == null)
+      return
+    
+    const inversScale = 1 / calcScale(containerWidth, containerHeight, selectImage.naturalWidth, selectImage.naturalHeight)
+
+    const canvasPreview = document.createElement('canvas')
+    canvasPreview.width = selectImageWidth
+    canvasPreview.height = selectImageHeight
+    const selectNaturalWidth = selectRect.width * inversScale
+    const selectNaturalHeight = selectRect.height * inversScale
+    const selectNaturalX = (selectRect.x - imageRect.x) * inversScale
+    const selectNaturalY = (selectRect.y - imageRect.y) * inversScale
+
+    const ctxPreview = canvasPreview.getContext('2d')
+            
+    ctxPreview.drawImage(selectImage, selectNaturalX, selectNaturalY, selectNaturalWidth, selectNaturalHeight, 0, 0, selectImageWidth, selectImageHeight)
+    
+    previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
+
+  }, [selectRect, selectImage])
+
+  useEffect(() => {
+
+    if(containerCanvasUrl == null)
+      return
+    
     const image = new Image()
     image.src = containerCanvasUrl
 
     image.onload = () => {
-    
-      const inversScale = 1 / calcScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
-
-      const canvas = document.createElement('canvas')      
-      canvas.width = selectImageWidth
-      canvas.height = selectImageHeight
-      const selectNaturalWidth = selectRect.width * inversScale
-      const selectNaturalHeight = selectRect.height * inversScale
-      const selectNaturalX = (selectRect.x - imageRect.x) * inversScale
-      const selectNaturalY = (selectRect.y - imageRect.y) * inversScale
-
-      const ctx = canvas.getContext('2d')
-            
-       ctx.drawImage(image, selectNaturalX, selectNaturalY, selectNaturalWidth, selectNaturalHeight, 0, 0, selectImageWidth, selectImageHeight)       
-
-       setShowUrl(canvas.toDataURL())
+      setSelectImage(image)
     }
 
-  }, [selectRect])
-
-
+  }, [containerCanvasUrl])
 
 
 
@@ -603,7 +611,7 @@ export default function() {
 
   const onClickOK = async() => {
 
-    const imageUrl = showRef.current.style.backgroundImage
+    const imageUrl = previewRef.current.style.backgroundImage
     
     const match = imageUrl.match(/url\(['"]?(.*?)['"]?\)/)
   
@@ -652,9 +660,9 @@ export default function() {
 
   return validAuth(auth) ? (
       <div>
-        <div className='show' ref={showRef} style={{backgroundImage: `url(${showUrl})`}}/>
+        <div className='preview' ref={previewRef} style={{backgroundImage: `url(${transparent})`}}/>
         <h2>real image</h2>
-        <div className='container' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`}}>
+        <div className='container' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl != null ? containerCanvasUrl : transparent})`}}>
         <canvas className='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
           {selectRect != null && 
           <div id='select' className='select' ref={selectRef} onMouseDown={onMouseDown}

@@ -31,7 +31,7 @@
   display:flex;
 }
 
-.show {
+.preview {
   left: 500px;
   top: 500px;
   width: 256px;

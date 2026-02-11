@@ -39,7 +39,7 @@ export default function(){
   window.showToast = addToast;
 
   return (
-    <div id='container' className="toast-container">
+    <div className="toast-container">
       {toasts}
     </div>
   );

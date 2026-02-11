@@ -1,4 +1,4 @@
-#container {
+.container {
   left:120px;
   top:100px;
   position: absolute;
@@ -12,7 +12,7 @@
 }
 
 
-#cover{
+.cover{
   padding:0px;
   margin:0px;
   z-index: 500;
@@ -21,7 +21,7 @@
 
 
 
-#select{  
+.select{  
   z-index: 600;
   position: absolute;
   background-color: rgba(0, 0, 0, 0);
@@ -31,7 +31,7 @@
   display:flex;
 }
 
-#show {
+.show {
   left: 500px;
   top: 500px;
   width: 256px;
@@ -43,7 +43,7 @@
   background-color: rgba(255, 255, 0);  
 }
 
-#edge{
+.edge{
   width:100%;
   height:100%;
   z-index: 800;

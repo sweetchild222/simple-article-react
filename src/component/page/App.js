@@ -15,6 +15,7 @@ import Withdraw from './Withdraw.js'
 import ImageRegion from './ImageRegion.js'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import AuthProvider from '../tool/AuthProvider';
+import ProfileContext from '../tool/ProfileProvider';
 import AuthContext from "../tool/AuthContext";
 
 import ToastContainer from '../common/ToastContainer';
@@ -27,6 +28,7 @@ function App() {
   return (
     <div>
       <AuthProvider>
+        <ProfileContext>
         <ToastContainer />
         <Header/>
           <Routes>
@@ -40,6 +42,7 @@ function App() {
             <Route path="/password" element={<Password/>}></Route>
             <Route path="/*" element={<PageNotFound/>}></Route>
         </Routes>
+        </ProfileContext>
       </AuthProvider>
       
     </div>

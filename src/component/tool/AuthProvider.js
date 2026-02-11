@@ -3,12 +3,9 @@ import React, {useEffect, useState} from 'react';
 import AuthContext from './AuthContext';
 
 
-
-
-
 const AuthProvider = ({children}) => {
 
-    const key = 'autrrtg'
+    const key = 'auth'
     const logout = ''
 
     const [auth, setAuth] = useState(() => {

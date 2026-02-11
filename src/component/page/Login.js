@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 import AuthContext from "../tool/AuthContext.js";
+import ProfileContext from "../tool/ProfileContext.js";
 import React, { useContext, useState, useEffect} from 'react';
 
 import * as api from '../tool/Api.js'
@@ -11,6 +12,7 @@ import * as validator from '../tool/Validator.js'
 export default function() {
 
     const {auth, updateAuth, validAuth} = useContext(AuthContext)
+    const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     
     const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ export default function() {
         const username = 'crazygun22@nate.com'
         const password = 'Sweetchild@22'
                 
-        if(!validator.email(username)){            
+        if(!validator.email(username)){
             input_username.focus()
             return
         }
@@ -42,20 +44,64 @@ export default function() {
 
         btn_login.disabled = true
 
-        const res = await api.postAuthenticate(username, password)
+        const resAuth = await api.postAuthenticate(username, password)
+        
+        if(resAuth == null) {
+            btn_login.disabled = false
+            window.showToast('login 실패', 'error')
+            return
+        }
+        
+        const resUser = await api.getUser(resAuth.jwt, resAuth.user_id)
+        
+        if(resUser == null) {
+            btn_login.disabled = false
+            window.showToast('login 실패', 'error')
+            return
+        }
+
+        if(resUser.profile == null){
+            btn_login.disabled = false
+            removeProfile()
+            updateAuth(resAuth)
+            window.showToast('login 완료', 'success')
+            return
+        }
+
+        const profileId = resUser.profile + '?size=64x64'
+
+        const resProfile = await api.getProfile(resAuth.jwt, profileId)
 
         btn_login.disabled = false
         
-        if(res != null){
-            updateAuth(res)        
-            window.showToast('login 완료', 'success')
+        if(resProfile == null){            
+            window.showToast('login 실패', 'error')
+            return
         }
+                
+        const base64 = await convertBlobToBase64(resProfile)
+        updateProfile(base64)
+        updateAuth(resAuth)
+        window.showToast('login 완료', 'success')
+
     }
+
+    const convertBlobToBase64 = (blob) => {
+
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onloadend = () => {resolve(reader.result)}
+            reader.onerror = reject
+            reader.readAsDataURL(blob)
+        })
+    }
+
 
     const onKeyDownEnter = async(event)=>{
         if (event.key === 'Enter')
             await onClickLogin()
     }
+    
 
     return !validAuth(auth) ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

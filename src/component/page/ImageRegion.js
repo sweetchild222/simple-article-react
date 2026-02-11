@@ -1,10 +1,11 @@
-import AuthContext from "../tool/AuthContext.js";
+import ProfileContext from "../tool/ProfileContext.js";
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 
 import '../css/ImageRegion.css'
 
 import { useNavigate} from 'react-router-dom';
 import * as api from '../tool/Api.js'
+import AuthContext from "../tool/AuthContext.js";
 
 
 export default function() {
@@ -32,6 +33,8 @@ export default function() {
   const imagePath = '/image/test.png'
 
   const {auth, validAuth} = useContext(AuthContext)
+    
+  const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     
   const navigate = useNavigate()
   
@@ -563,11 +566,13 @@ export default function() {
     const imageUrl = showRef.current.style.backgroundImage
     
     const match = imageUrl.match(/url\(['"]?(.*?)['"]?\)/)
-
+  
     if(match == null)
       return
 
-    const blob = uriDataToBlob(match[1])
+    const base64 = match[1]
+
+    const blob = uriDataToBlob(base64)
 
     const formData = new FormData()
     formData.append('image', blob)
@@ -589,15 +594,15 @@ export default function() {
     postProfile.disabled = false
 
     if(resUser == null){
-      window.showToast('프로필 변경 실패', 'error')      
-      return 
+      window.showToast('프로필 변경 실패', 'error')
+      return
     }
 
     window.showToast('프로필 변경 완료', 'success')
+    
+    updateProfile(base64)
 
-    navigate(-1)      
   }
-
 
   const onClickCancel = () => {
 
@@ -607,15 +612,15 @@ export default function() {
 
   return validAuth(auth) ? (
       <div>
-        <div id='show' ref={showRef} style={{backgroundImage: `url(${showUrl})`}}/>
+        <div className='show' ref={showRef} style={{backgroundImage: `url(${showUrl})`}}/>
         <h2>real image</h2>
-        <div id='container' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`}}>
-        <canvas id='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
+        <div className='container' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`}}>
+        <canvas className='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
           {selectRect != null && 
-          <div id='select' ref={selectRef} onMouseDown={onMouseDown}
+          <div id='select' className='select' ref={selectRef} onMouseDown={onMouseDown}
             style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
           >
-          <div id='edge'></div>
+          <div className='edge'></div>
           </div>
           }      
         </div>

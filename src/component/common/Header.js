@@ -1,9 +1,6 @@
 import React, {useContext, useEffect } from "react";
 import axios from 'axios';
 
-
-
-
 import * as api from '../tool/Api.js'
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
@@ -35,10 +32,18 @@ export default function() {
                 
                 if(payload.profile == null)
                     img_profile.src = '/image/user.png'
-                else
-                    img_profile.src = payload.profile
+                else{
+      
+                    const id = payload.profile + '?size=64x64'
 
-                console.log(payload)
+                    api.getProfile(auth.jwt, id).then((payload) => {
+                        
+                        if(payload == null)
+                            return
+                        
+                        img_profile.src = URL.createObjectURL(payload)
+                    })
+                }
             })
         }
 
@@ -84,9 +89,8 @@ export default function() {
 
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', height:'60px', backgroundColor: 'gray', paddingLeft:'30px'}}>
-
-        <img src='/image/logo.svg' alt='logo image' height='100%' width='60px' onClick={onClickHome}/>
+        <div style={{ display: 'flex', alignItems: 'center', height:'64px', backgroundColor: 'gray', paddingLeft:'30px'}}>
+        <img src='/image/logo.svg' alt='logo image' height='100%' width='64px' onClick={onClickHome}/>
         <div style={{flexGrow:1, backgroundColor:'green'}} ></div>
         <input id="myInput" placeholder="검색" style={{color:'green', height:'50px', width:'100px'}} onKeyDown={onKeyDown}></input>
         <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickSearch}>검색</button>

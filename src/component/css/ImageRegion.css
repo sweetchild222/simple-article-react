@@ -1,12 +1,13 @@
 #container {
-
+  left:120px;
+  top:100px;
   position: absolute;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(255, 255, 0);  
   align-items: center;
-  justify-content: center;  
+  justify-content: center;
   display:flex;
 }
 
@@ -15,14 +16,12 @@
   padding:0px;
   margin:0px;
   z-index: 500;
-  /*object-fit: cover; */  
+  /*object-fit: cover; */
 }
 
 
 
-#select{
-  /* width: 100px;
-  height: 100px; */
+#select{  
   z-index: 600;
   position: absolute;
   background-color: rgba(0, 0, 0, 0);
@@ -32,7 +31,17 @@
   display:flex;
 }
 
-
+#show {
+  left: 500px;
+  top: 500px;
+  width: 256px;
+  height: 256px;
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(255, 255, 0);  
+}
 
 #edge{
   width:100%;

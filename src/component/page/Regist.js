@@ -16,15 +16,13 @@ export default function() {
   const [passwordValid, setPasswordValid] = useState(false);
   const [isVerified, setIsVerified] = useState(false)
 
-  useEffect(() => {
-    
-    if(validAuth(auth))
-        navigate('/home', {replace:true})
-
-  }, [auth]);
-
   
   useEffect(() => {
+
+    if(validAuth(auth)){
+        navigate('/home', {replace:true})
+        return
+    }
 
     if(isVerified == true){
       input_email.disabled = true
@@ -35,7 +33,7 @@ export default function() {
     else
       btn_regist.disabled = true
 
-  }, [isVerified])
+  }, [auth, isVerified])
 
 
 
@@ -223,7 +221,7 @@ export default function() {
       btn_regist.disabled = !valid
   }
 
-  return (
+  return !validAuth(auth) ? (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <input id='input_email' type="text" maxLength="254" onChange={onChangeEmail} placeholder="이메일"/>
@@ -245,7 +243,7 @@ export default function() {
 
       <div style={{height:30}}></div>
     </div>
-  )
+  ) : null
 }
 
 

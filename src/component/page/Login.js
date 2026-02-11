@@ -57,7 +57,7 @@ export default function() {
             await onClickLogin()
     }
 
-    return (
+    return !validAuth(auth) ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <label htmlFor='input_username'>Username</label>
             <input id='input_username' type='text'/>
@@ -66,5 +66,5 @@ export default function() {
             <button id='btn_login' onClick={onClickLogin} >로그인</button>
             <button id='btn_regist' onClick={() => {navigate('/regist', {replace:true})}}>회원가입</button>
         </div>
-    );    
+    ) : null
 }

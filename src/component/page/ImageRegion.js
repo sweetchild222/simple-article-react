@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import AuthContext from "../tool/AuthContext.js";
+import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 
 import '../css/ImageRegion.css'
-import { CgFontHeight } from 'react-icons/cg';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
+
+import { useNavigate} from 'react-router-dom';
+import * as api from '../tool/Api.js'
 
 
 export default function() {
@@ -21,13 +23,17 @@ export default function() {
   const containRef = useRef(null)
 
   const containerWidth = 600
-  const containerHeight = 300
-  const selectMinHeight = 100
-  const selectMinWidth = 100
+  const containerHeight = 300  
+  const selectMinWidth = 128
+  const selectMinHeight = 128
+  const selectImageWidth = 256
+  const selectImageHeight = 256  
   
   const imagePath = '/image/test.png'
 
-  const navigate = useNavigate();
+  const {auth, validAuth} = useContext(AuthContext)
+    
+  const navigate = useNavigate()
   
   const calcScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
@@ -68,7 +74,12 @@ export default function() {
   }
 
 
-  useEffect(()=>{
+  useEffect(()=> {    
+
+    if(!validAuth(auth)){
+        navigate('/login', {replace:true})
+        return
+    }
 
     const image = new Image()
     image.src = imagePath
@@ -93,7 +104,7 @@ export default function() {
       cover.height = cover.clientHeight
     }
 
-  }, [containerCanvasUrl])
+  }, [auth, containerCanvasUrl])
 
 
   useEffect(() => {
@@ -124,15 +135,17 @@ export default function() {
     
       const inversScale = 1 / calcScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
 
-      const canvas = document.createElement('canvas')
-      canvas.width = selectRect.height * inversScale
-      canvas.height = selectRect.width * inversScale
-      const ctx = canvas.getContext('2d')
-      
-      const x = (selectRect.x - imageRect.x) * inversScale
-      const y = (selectRect.y - imageRect.y) * inversScale
+      const canvas = document.createElement('canvas')      
+      canvas.width = selectImageWidth
+      canvas.height = selectImageHeight
+      const selectNaturalWidth = selectRect.width * inversScale
+      const selectNaturalHeight = selectRect.height * inversScale
+      const selectNaturalX = (selectRect.x - imageRect.x) * inversScale
+      const selectNaturalY = (selectRect.y - imageRect.y) * inversScale
 
-       ctx.drawImage(image, x, y, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height)
+      const ctx = canvas.getContext('2d')
+            
+       ctx.drawImage(image, selectNaturalX, selectNaturalY, selectNaturalWidth, selectNaturalHeight, 0, 0, selectImageWidth, selectImageHeight)       
 
        setShowUrl(canvas.toDataURL())
     }
@@ -140,7 +153,7 @@ export default function() {
   }, [selectRect])
 
 
-  const handleMouseDown = useCallback((event) => {    
+  const onMouseDown = useCallback((event) => {    
 
     if(event.target.id == 'select'){
 
@@ -190,7 +203,7 @@ export default function() {
   }
 
 
-  const handleMouseMove = useCallback((event) => {
+  const eventMouseMove = useCallback((event) => {
 
     if(selectEdge == 0){
   
@@ -421,7 +434,7 @@ export default function() {
 
 
   const setPropertyImageRect = (x, y, width, height) => {
-
+    
     const style = containRef.current.style
 
     style.setProperty('--x', x)
@@ -482,7 +495,7 @@ export default function() {
   }
 
 
-  const handleMouseUp = useCallback((event) => {    
+  const eventMouseUp = useCallback((event) => {    
 
     setSelectEdge(-1)
 
@@ -521,18 +534,68 @@ export default function() {
 
   useEffect(() => {
 
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mouseup', handleMouseUp)
+    window.addEventListener('mousemove', eventMouseMove)
+    window.addEventListener('mouseup', eventMouseUp)
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('mouseup', handleMouseUp)
+      window.removeEventListener('mousemove', eventMouseMove)
+      window.removeEventListener('mouseup', eventMouseUp)
     };
-  }, [handleMouseMove, handleMouseUp])
+  }, [eventMouseMove, eventMouseUp])
 
 
-  const onClickOK = () => {
+  const uriDataToBlob = (uri_data) => {
+    
+    const parts = uri_data.split(',')
+    const mimeType = parts[0].match(/:(.*?);/)[1]
+    const byteString = atob(parts[1])
+    const arrayBuffer = new ArrayBuffer(byteString.length)
+    const uint8Array = new Uint8Array(arrayBuffer)
+    
+    for (let i = 0; i < byteString.length; i++)
+        uint8Array[i] = byteString.charCodeAt(i)
 
+    return new Blob([arrayBuffer], {type: mimeType})
+  }
+
+  const onClickOK = async() => {
+
+    const imageUrl = showRef.current.style.backgroundImage
+    
+    const match = imageUrl.match(/url\(['"]?(.*?)['"]?\)/)
+
+    if(match == null)
+      return
+
+    const blob = uriDataToBlob(match[1])
+
+    const formData = new FormData()
+    formData.append('image', blob)
+
+    postProfile.disabled = true
+
+    const res = await api.postProfile(auth.jwt, formData)
+
+    if(res == null){
+      postProfile.disabled = false
+      window.showToast('프로필 변경 실패', 'error')
+      return
+    }
+
+    const payload = {profile: res.id}
+
+    const resUser = await api.patchUser(auth.jwt, auth.user_id, payload)
+
+    postProfile.disabled = false
+
+    if(resUser == null){
+      window.showToast('프로필 변경 실패', 'error')      
+      return 
+    }
+
+    window.showToast('프로필 변경 완료', 'success')
+
+    navigate(-1)      
   }
 
 
@@ -542,21 +605,23 @@ export default function() {
   }
 
 
-  return (
-    <div>
-    <div ref={showRef} style={{left:'120px', top:'100px', width: `300px`, height: `300px`, backgroundColor: `red`, backgroundImage: `url(${showUrl})`}}></div>
-    <div id='container' ref={containRef} style={{left:'120px', top:'100px', width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`}}>
-    <canvas id='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}></canvas>
-      {selectRect != null && 
-      <div id='select' ref={selectRef} onMouseDown={handleMouseDown}
-        style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
-      >
-      <div id='edge'></div>
+  return validAuth(auth) ? (
+      <div>
+        <div id='show' ref={showRef} style={{backgroundImage: `url(${showUrl})`}}/>
+        <h2>real image</h2>
+        <div id='container' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`}}>
+        <canvas id='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
+          {selectRect != null && 
+          <div id='select' ref={selectRef} onMouseDown={onMouseDown}
+            style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
+          >
+          <div id='edge'></div>
+          </div>
+          }      
+        </div>
+        <button id='postProfile' onClick={onClickOK}>ok</button>
+        <button onClick={onClickCancel}>cancel</button>
       </div>
-      }      
-    </div>
-    <button onClick={onClickOK}>ok</button>
-    <button onClick={onClickCancel}>cancel</button>
-    </div>
-  );
-};
+    )
+    : null
+}

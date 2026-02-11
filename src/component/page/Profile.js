@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import React, {useContext, useEffect } from "react";
+import React, {useContext, useEffect, useRef } from "react";
 
 
 import * as api from '../tool/Api.js'
@@ -13,20 +13,67 @@ import Modal, {Type} from "../common/Modal.js"
 
 
 
-
 export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const profile = useRef(null)
+
+
+    //const [profileUrl, setProfileUrl] = useState('/image/user.png');
+
+
     const navigate = useNavigate()
 
     useEffect(()=>{
 
-        if(!validAuth(auth))
-             navigate('/home', {replace:true})
+        if(!validAuth(auth)){
+             navigate('/login', {replace:true})
+             return
+        }
+
+        console.log('zzz')
+
+        api.getUser(auth.jwt, auth.user_id).then((payload) =>{
+
+            if(payload == null)
+                return
+            
+            if(payload.profile == null)
+                profile.current.src = '/image/user.png'
+            else{
+    
+                const id = payload.profile + '?size=256x256'
+
+                console.log(id)
+
+                api.getProfile(auth.jwt, id).then((payload) => {
+                    
+                    if(payload == null)
+                        return
+                                        
+                    profile.current.src = URL.createObjectURL(payload)
+                })
+            }
+        })
 
     },[auth])
 
+
+
+
+    
+
+
+    useEffect(()=>{
+
+
+        console.log('adsfaf')
+
+
+
+    })
 
     const modal_config = {text: '로그 아웃?', type: Type.yesno}
 
@@ -48,7 +95,7 @@ export default function() {
 
     const onClickPasswordChange = ()=>{
 
-        navigate('/changePassword')
+        navigate('/password')
     }
 
 
@@ -57,15 +104,14 @@ export default function() {
         navigate('/widthdraw')
     }
 
-
-    return (
+    return validAuth(auth) ? (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <img src='/image/user.png' alt='logo image' height='100px' width='100px'/>
+        <img ref={profile} alt='logo image' src='/image/user.png' height='256px' width='256px'/>
         <button id="btn_logout" onClick={onClickLogout} >로그아웃</button>
         <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
         <button id="btn_passwordChange" onClick={onClickPasswordChange} >비밀번호 변경</button>
         <button id="btn_withdraw" onClick={onClickUserWithdraw} >회원 탈퇴</button>        
       </div>
-    );  
+    ) : null
 }
 

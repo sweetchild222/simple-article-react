@@ -46,12 +46,14 @@ export default function Home() {
       const token = response.data.jwt
     
       const authStr = 'Bearer '.concat(token);
-
-      console.log(authStr)
     
       const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
       
       const response2 = await axios.post(`/file/profile`, formData, { headers: headers})
+
+      console.log(formData)
+
+      console.log(response2)
     }
     catch(error){      
       console.log(error)

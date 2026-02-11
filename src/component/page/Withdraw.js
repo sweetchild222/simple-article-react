@@ -24,7 +24,7 @@ export default function() {
     useEffect(()=>{
 
         if(!validAuth(auth))
-             navigate('/home', {replace:true})
+             navigate('/login', {replace:true})
         
     },[auth])
 
@@ -83,13 +83,13 @@ export default function() {
     }
 
 
-    return (
+    return validAuth(auth) ? (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <label htmlFor='input_widthdraw_password'>{'비밀번호'}</label>
         <input id='input_widthdraw_password' type='text'/>
         <button id='btn_widthdraw' onClick={onClickUserWithdraw} >회원탈퇴</button>
         <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
       </div>
-    )
+    ) : null
 }
 

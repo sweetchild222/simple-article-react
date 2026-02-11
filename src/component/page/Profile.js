@@ -65,8 +65,38 @@ export default function() {
     }
 
     const onClickProfile = async() =>{
+
+
+
+        try{
+            const options = {
+                types: [{
+                    description: 'Images',
+                    accept: {'image/png': ['.png'], 'image/jpeg': ['.jpeg', '.jpg'], 'image/gif': ['.gif']}}
+                ],
+                excludeAcceptAllOption: false,
+                multiple: false
+            }
+
+            const [fileHandle] = await window.showOpenFilePicker(options)
+            const file = await fileHandle.getFile()            
+            //const url = URL.createObjectURL(file)
+            //console.log(url.length)
+
+            
+
+            navigate('/image_region', {state: file})
+        }
+        catch(error){
+
+            console.log(error)
+
+
+        }
+
         
-        navigate('/image_region')
+        
+        //
     }
 
     return validAuth(auth) ? (

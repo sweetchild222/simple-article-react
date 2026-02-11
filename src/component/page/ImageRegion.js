@@ -1,6 +1,6 @@
 import ProfileContext from "../tool/ProfileContext.js";
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
-
+import { useLocation } from 'react-router-dom';
 import '../css/ImageRegion.css'
 
 import { useNavigate} from 'react-router-dom';
@@ -9,10 +9,15 @@ import AuthContext from "../tool/AuthContext.js";
 
 
 export default function() {
+
+  const location = useLocation()
+
+  const imageFile = location.state
   
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
   const [selectEdge, setSelectEdge] = useState(-1)
+  const [isImageLoad, setIsImageLoad] = useState(false)
   const [containerCanvasUrl, setContainerCanvasUrl] = useState(transparent)
   const [showUrl, setShowUrl] = useState(transparent)
   const [coverSize, setCoverSize] = useState({width:0, height:0})
@@ -24,13 +29,11 @@ export default function() {
   const containRef = useRef(null)
 
   const containerWidth = 600
-  const containerHeight = 300  
+  const containerHeight = 300
   const selectMinWidth = 128
   const selectMinHeight = 128
   const selectImageWidth = 256
   const selectImageHeight = 256  
-  
-  const imagePath = '/image/test.png'
 
   const {auth, validAuth} = useContext(AuthContext)
     
@@ -84,11 +87,12 @@ export default function() {
         return
     }
 
-    const image = new Image()
-    image.src = imagePath
-    
+    const image = new Image()    
+    const url = URL.createObjectURL(imageFile)
+    image.src = url
+
     image.onload = () => {
-      
+
       const canvas = createCanvas(image)
       setContainerCanvasUrl(canvas.toDataURL())
 
@@ -103,11 +107,17 @@ export default function() {
       setSelectRect({ x: centerX, y: centerY, width: selectMinWidth, height: selectMinHeight})
 
       const cover = coverRef.current
-      cover.width = cover.clientWidth
-      cover.height = cover.clientHeight
+
+      if(cover != null){
+        cover.width = cover.clientWidth
+        cover.height = cover.clientHeight
+      }
+
+      setIsImageLoad(true)
+      URL.revokeObjectURL(url)
     }
 
-  }, [auth, containerCanvasUrl])
+  }, [auth])
 
 
   useEffect(() => {
@@ -156,7 +166,13 @@ export default function() {
   }, [selectRect])
 
 
-  const onMouseDown = useCallback((event) => {    
+
+
+
+  const onMouseDown = useCallback((event) => {
+    
+    if(isImageLoad == false)
+      return
 
     if(event.target.id == 'select'){
 
@@ -207,6 +223,9 @@ export default function() {
 
 
   const eventMouseMove = useCallback((event) => {
+    
+    if(isImageLoad == false)
+      return
 
     if(selectEdge == 0){
   
@@ -220,10 +239,8 @@ export default function() {
 
       const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
 
-      if(id != 0)
-        selectRef.current.style.cursor = cursor(id)
-      else
-        selectRef.current.style.cursor = 'grab'
+      if(selectRef.current != null)
+        selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
     }
     else{
 
@@ -241,182 +258,185 @@ export default function() {
 
   const dragEdge = (clientX, clientY, selectEdge) => {
 
-      const offset = getPropertyOffset()
+    const offset = getPropertyOffset()
 
-      const x = clientX - offset.x
-      const y = clientY - offset.y
+    const x = clientX - offset.x
+    const y = clientY - offset.y
 
-      const lastRect = getPropertyLastRect()
+    const lastRect = getPropertyLastRect()
 
-      const imageRect = getPropertyImageRect()
+    const imageRect = getPropertyImageRect()
 
-      if(selectEdge == 1){ //left_top
-        
-        const maxX = lastRect.x + (lastRect.width - selectMinWidth)
-        const maxY = lastRect.y + (lastRect.height - selectMinHeight)
+    if(selectEdge == 1){ //left_top
+      
+      const maxX = lastRect.x + (lastRect.width - selectMinWidth)
+      const maxY = lastRect.y + (lastRect.height - selectMinHeight)
 
-        let newX = clamp(x, imageRect.x, maxX)
-        let newY = clamp(y, imageRect.y, maxY)
-        
-        let calcWidth = lastRect.width + (lastRect.x - newX)
-        let calcHeight = lastRect.height + (lastRect.y - newY)
+      let newX = clamp(x, imageRect.x, maxX)
+      let newY = clamp(y, imageRect.y, maxY)
+      
+      let calcWidth = lastRect.width + (lastRect.x - newX)
+      let calcHeight = lastRect.height + (lastRect.y - newY)
 
-        if(calcWidth > calcHeight){
+      if(calcWidth > calcHeight){
 
-          newY -= (calcWidth - calcHeight)
+        newY -= (calcWidth - calcHeight)
 
-          if(newY < imageRect.y){
-            const overHeight = (imageRect.y - newY)
-            calcWidth -= overHeight
-            newX += overHeight
-            newY = imageRect.y
-          }
-
-          calcHeight = calcWidth
-        }
-        else{
-
-          newX -= (calcHeight - calcWidth)
-
-          if(newX < imageRect.x){
-            const overWidth = (imageRect.x - newX)
-            calcHeight -= overWidth
-            newY += overWidth
-            newX = imageRect.x
-          }
-
-          calcWidth = calcHeight
+        if(newY < imageRect.y){
+          const overHeight = (imageRect.y - newY)
+          calcWidth -= overHeight
+          newX += overHeight
+          newY = imageRect.y
         }
 
-        const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-        const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-
-        return {x: newX, y: newY, width:newWidth, height:newHeight}
+        calcHeight = calcWidth
       }
-      else if(selectEdge == 2){//right_top
+      else{
 
-        const maxY = lastRect.y + (lastRect.height - selectMinHeight)
+        newX -= (calcHeight - calcWidth)
 
-        const newX = lastRect.x
-        let newY = clamp(y, imageRect.y, maxY)
-        
-        let calcWidth = lastRect.width + (x - newX)
-        let calcHeight = lastRect.height + (lastRect.y - newY)
+        if(newX < imageRect.x){
+          const overWidth = (imageRect.x - newX)
+          calcHeight -= overWidth
+          newY += overWidth
+          newX = imageRect.x
+        }
 
-        const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
+        calcWidth = calcHeight
+      }
 
-        if(calcWidth > maxWidth)
+      const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
+      const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
+
+      return {x: newX, y: newY, width:newWidth, height:newHeight}
+    }
+    else if(selectEdge == 2){//right_top
+
+      const maxY = lastRect.y + (lastRect.height - selectMinHeight)
+
+      const newX = lastRect.x
+      let newY = clamp(y, imageRect.y, maxY)
+      
+      let calcWidth = lastRect.width + (x - newX)
+      let calcHeight = lastRect.height + (lastRect.y - newY)
+
+      const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
+
+      if(calcWidth > maxWidth)
+        calcWidth = maxWidth
+
+      if(calcHeight > calcWidth){
+
+        calcWidth = calcHeight
+
+        if(calcWidth > maxWidth){
+
+          const overWidth = (calcWidth - maxWidth)
           calcWidth = maxWidth
-
-        if(calcHeight > calcWidth){
-
-          calcWidth = calcHeight
-
-          if(calcWidth > maxWidth){
-
-            const overWidth = (calcWidth - maxWidth)
-            calcWidth = maxWidth
-            calcHeight -= overWidth
-            newY += overWidth
-          }
+          calcHeight -= overWidth
+          newY += overWidth
         }
-        else{
-
-          newY -= (calcWidth - calcHeight)
-                    
-          if(newY < imageRect.y){
-            const overHeight = (imageRect.y - newY)
-            calcWidth -= overHeight
-            newY = imageRect.y
-          }
-
-          calcHeight = calcWidth
-        }
-
-        const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-        const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-                                          
-        return {x: newX, y: newY, width:newWidth, height:newHeight}
       }
-      else if(selectEdge == 3){//left_bottom
+      else{
 
-        const maxX = lastRect.x + (lastRect.width - selectMinWidth)
-        
-        let newX = clamp(x, imageRect.x, maxX)
-        const newY = lastRect.y
-        
-        let calcWidth = lastRect.width + (lastRect.x - newX)
-        let calcHeight = lastRect.height + (y - newY)
-
-        const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
-        
-        if(calcHeight > maxHeight)
-          calcHeight = maxHeight                
-
-        if(calcWidth > calcHeight){
-
-          calcHeight = calcWidth
-
-          if(calcHeight > maxHeight){
-
-            const overHeight = (calcHeight - maxHeight)
-            calcHeight = maxHeight
-            calcWidth -= overHeight
-            newX += overHeight
-          }
-        }
-        else{
-
-          newX -= (calcHeight - calcWidth)
-                    
-          if(newX < imageRect.x){
-            const overWidth = (imageRect.x - newX)
-            calcHeight -= overWidth
-            newX = imageRect.x
-          }
-
-          calcWidth = calcHeight
+        newY -= (calcWidth - calcHeight)
+                  
+        if(newY < imageRect.y){
+          const overHeight = (imageRect.y - newY)
+          calcWidth -= overHeight
+          newY = imageRect.y
         }
 
-        const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-        const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-
-        return {x: newX, y: newY, width:newWidth, height:newHeight}
-      }
-      else if(selectEdge == 4){//right_bottom
-
-        const newX = lastRect.x
-        const newY = lastRect.y
-        
-        let calcWidth = lastRect.width + (x - newX)
-        let calcHeight = lastRect.height + (y - newY)
-        
-        const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
-        const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
-
-        const max = maxWidth > maxHeight ? maxHeight : maxWidth
-        
-        if(calcWidth > max)
-          calcWidth = max
-
-        if(calcHeight > max)
-          calcHeight = max
-        
-        if(calcWidth > calcHeight)
-          calcHeight = calcWidth
-        else
-          calcWidth = calcHeight
-
-        const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-        const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-
-        return {x: newX, y: newY, width:newWidth, height:newHeight}
+        calcHeight = calcWidth
       }
 
-      return null
+      const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
+      const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
+                                        
+      return {x: newX, y: newY, width:newWidth, height:newHeight}
+    }
+    else if(selectEdge == 3){//left_bottom
+
+      const maxX = lastRect.x + (lastRect.width - selectMinWidth)
+      
+      let newX = clamp(x, imageRect.x, maxX)
+      const newY = lastRect.y
+      
+      let calcWidth = lastRect.width + (lastRect.x - newX)
+      let calcHeight = lastRect.height + (y - newY)
+
+      const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
+      
+      if(calcHeight > maxHeight)
+        calcHeight = maxHeight                
+
+      if(calcWidth > calcHeight){
+
+        calcHeight = calcWidth
+
+        if(calcHeight > maxHeight){
+
+          const overHeight = (calcHeight - maxHeight)
+          calcHeight = maxHeight
+          calcWidth -= overHeight
+          newX += overHeight
+        }
+      }
+      else{
+
+        newX -= (calcHeight - calcWidth)
+                  
+        if(newX < imageRect.x){
+          const overWidth = (imageRect.x - newX)
+          calcHeight -= overWidth
+          newX = imageRect.x
+        }
+
+        calcWidth = calcHeight
+      }
+
+      const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
+      const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
+
+      return {x: newX, y: newY, width:newWidth, height:newHeight}
+    }
+    else if(selectEdge == 4){//right_bottom
+
+      const newX = lastRect.x
+      const newY = lastRect.y
+      
+      let calcWidth = lastRect.width + (x - newX)
+      let calcHeight = lastRect.height + (y - newY)
+      
+      const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
+      const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
+
+      const max = maxWidth > maxHeight ? maxHeight : maxWidth
+      
+      if(calcWidth > max)
+        calcWidth = max
+
+      if(calcHeight > max)
+        calcHeight = max
+      
+      if(calcWidth > calcHeight)
+        calcHeight = calcWidth
+      else
+        calcWidth = calcHeight
+
+      const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
+      const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
+
+      return {x: newX, y: newY, width:newWidth, height:newHeight}
+    }
+
+    return null
   }
 
   const setPropertyOffset = (offsetX, offsetY) => {
+
+    if(selectRef.current == null)
+      return
 
     const style = selectRef.current.style
     
@@ -426,6 +446,9 @@ export default function() {
 
 
   const getPropertyOffset = () => {
+
+    if(selectRef.current == null)
+      return
 
     const style = selectRef.current.style
 
@@ -437,6 +460,9 @@ export default function() {
 
 
   const setPropertyImageRect = (x, y, width, height) => {
+
+    if(containRef.current == null)
+      return
     
     const style = containRef.current.style
 
@@ -448,6 +474,9 @@ export default function() {
 
 
   const getPropertyImageRect =() => {
+
+    if(containRef.current == null)
+      return
 
     const style = containRef.current.style
 
@@ -462,6 +491,9 @@ export default function() {
 
   const setPropertyLastRect = (x, y, width, height) => {
 
+    if(selectRef.current == null)
+      return
+
     const style = selectRef.current.style
 
     style.setProperty('--x', x);
@@ -471,6 +503,9 @@ export default function() {
   }
 
   const getPropertyLastRect = () => {
+
+    if(selectRef.current == null)
+      return
 
     const style = selectRef.current.style
 
@@ -498,15 +533,19 @@ export default function() {
   }
 
 
-  const eventMouseUp = useCallback((event) => {    
+  const eventMouseUp = useCallback((event) => {
+    
+    if(isImageLoad == false)
+      return
 
     setSelectEdge(-1)
 
     const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
-          
-    selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
+
+    if(selectRef.current != null)
+      selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
         
-  }, []);
+  }, [selectEdge]);
 
 
   const getEdgeIDCore = (x, y, width, height) =>{
@@ -560,6 +599,7 @@ export default function() {
 
     return new Blob([arrayBuffer], {type: mimeType})
   }
+
 
   const onClickOK = async() => {
 

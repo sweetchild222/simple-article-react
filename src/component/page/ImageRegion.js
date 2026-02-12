@@ -9,10 +9,8 @@ import * as api from '../tool/Api.js'
 import AuthContext from "../tool/AuthContext.js";
 
 
-
 export default function({ref, file, onSelectImage, containerWidth=600, containerHeight=300}) {
 
-      
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
   const [selectEdge, setSelectEdge] = useState(-1)
@@ -131,8 +129,7 @@ export default function({ref, file, onSelectImage, containerWidth=600, container
       if(containRef.current.classList[1] == 'loading')
         containRef.current.classList.remove('loading')
     }
-    
-    
+        
     const inversScale = 1 / calcScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
     
     const selectX = (selectRect.x - imageRect.x) * inversScale

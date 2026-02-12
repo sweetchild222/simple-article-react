@@ -12,6 +12,7 @@ import * as validator from '../tool/Validator.js'
 import AuthContext from "../tool/AuthContext.js";
 import ProfileContext from "../tool/ProfileContext.js";
 import Modal, {Type} from "../common/Modal.js"
+import '../css/Profile.css'
 
 export default function() {
 
@@ -20,11 +21,9 @@ export default function() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [profileHigh, setProfileHigh] = useState('/image/user.png')
 
-
-    const img_profile = useRef(null)
+    const rootRef = useRef(null)
 
     const navigate = useNavigate()
-
 
     const getHighQualityProfile = async(auth) =>{
 
@@ -55,7 +54,13 @@ export default function() {
         }
 
         getHighQualityProfile(auth).then((profile)=>{
+            
             setProfileHigh(profile)
+
+            if(rootRef.current.classList.length >= 1) {
+                if(rootRef.current.classList[1] == 'loading')
+                rootRef.current.classList.remove('loading')
+            }
         })
     }, [auth])
 
@@ -88,9 +93,11 @@ export default function() {
         navigate('/widthdraw')
     }
 
-    const onClickProfile = async() =>{
+
+    const selectFile = async() => {
 
         try{
+            
             const options = {
                 types: [{
                     description: 'Images',
@@ -102,22 +109,30 @@ export default function() {
 
             const [fileHandle] = await window.showOpenFilePicker(options)
             const file = await fileHandle.getFile()
-
+            
             const format = await getImageFormat(file)
 
-
-            if(format == 'unknown' || format == 'error'){
-
-                console.log('unknown')
-                return
-            }
-            else{
-                navigate('/profile_region', {state: file})
-            }
+            if(format == 'unknown' || format == 'error')
+                return null
+            else
+                return file
         }
-        catch(error){
+        catch(error) {
             console.log(error)
+            return null
         }
+    }
+
+    const onClickProfile = async() =>{
+
+        const file = await selectFile()
+
+        if(file == null){
+            window.showToast('파일을 사용할 수 없습니다', 'error')
+            return
+        }
+
+        navigate('/profile_region', {state: file})
     }
 
 
@@ -130,13 +145,13 @@ export default function() {
             reader.onload = (event) => {
 
                 const bytes = new Uint8Array(event.target.result)
-
-                if (bytes[0] === 0xFF && bytes[1] === 0xD8) 
+                
+                if (bytes[0] === 0xFF && bytes[1] === 0xD8)
                     resolve('image/jpeg')
                 else if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47)
                     resolve('image/png')
                 else if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46)
-                    resolve('image/gif');
+                    resolve('image/gif')
                 else
                     reject('unknown')
             }
@@ -150,9 +165,9 @@ export default function() {
     }
 
     return validAuth(auth) ? (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <img ref={img_profile} alt='logo image' src={profileHigh} onClick={onClickProfile} height='256px' width='256px'/>
-        <button id="btn_logout" onClick={onClickLogout} >로그아웃</button>
+      <div ref={rootRef} className='profile loading' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>        
+        <img alt='logo image' src={profileHigh} onClick={onClickProfile} height='256px' width='256px'/>
+        <button  id="btn_logout" onClick={onClickLogout} >로그아웃</button>
         <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
         <button id="btn_passwordChange" onClick={onClickPasswordChange} >비밀번호 변경</button>
         <button id="btn_withdraw" onClick={onClickUserWithdraw} >회원 탈퇴</button>

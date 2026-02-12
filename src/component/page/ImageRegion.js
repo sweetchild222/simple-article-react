@@ -2,6 +2,7 @@ import ProfileContext from "../tool/ProfileContext.js";
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import { useLocation } from 'react-router-dom';
 import '../css/ImageRegion.css'
+import * as blobToBase64 from '../tool/BlobToBase64.js'
 
 import { useNavigate} from 'react-router-dom';
 import * as api from '../tool/Api.js'
@@ -10,15 +11,11 @@ import AuthContext from "../tool/AuthContext.js";
 
 export default function() {
 
-  const location = useLocation()
-
-  const imageFile = location.state
-  
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
   const [selectEdge, setSelectEdge] = useState(-1)
   const [isImageLoad, setIsImageLoad] = useState(false)
-  const [containerCanvasUrl, setContainerCanvasUrl] = useState(null)  
+  const [containerCanvasUrl, setContainerCanvasUrl] = useState(null)
   const [coverSize, setCoverSize] = useState({width:0, height:0})
   const [selectRect, setSelectRect] = useState(null)
   const [selectImage, setSelectImage] = useState(null)
@@ -30,8 +27,8 @@ export default function() {
 
   const containerWidth = 600
   const containerHeight = 300
-  const selectMinWidth = 128
-  const selectMinHeight = 128
+  const selectMinWidth = 64
+  const selectMinHeight = 64
   const selectImageWidth = 256
   const selectImageHeight = 256  
 
@@ -40,7 +37,14 @@ export default function() {
   const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     
   const navigate = useNavigate()
-  
+
+  const location = useLocation()
+
+  const imageFile = location.state
+
+  if(imageFile == null)
+    return (<div>wrong access page</div>)
+
   const calcScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
     const widthScale = containerWidth / imageNaturalWidth
@@ -80,19 +84,19 @@ export default function() {
   }
 
 
-  useEffect(()=> {    
+  useEffect(()=> {
 
     if(!validAuth(auth)){
         navigate('/login', {replace:true})
         return
-    }
+    }    
 
     const image = new Image()
     const url = URL.createObjectURL(imageFile)
     image.src = url
 
     image.onload = () => {
-      
+            
       const imageRect = calcScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
 
       setPropertyImageRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height)
@@ -103,16 +107,10 @@ export default function() {
 
       setSelectRect({ x: centerX, y: centerY, width: selectMinWidth, height: selectMinHeight})
 
-      const cover = coverRef.current
-
-      if(cover != null){
-        cover.width = cover.clientWidth
-        cover.height = cover.clientHeight
-      }
-
       const canvas = createCanvas(image)
       setContainerCanvasUrl(canvas.toDataURL())
       URL.revokeObjectURL(url)
+      
       setIsImageLoad(true)
     }
 
@@ -122,24 +120,32 @@ export default function() {
   useEffect(() => {
 
     if(selectRect == null)
+      return    
+
+    const cover = coverRef.current
+
+    if(cover == null)
       return
+    
+    cover.width = cover.clientWidth
+    cover.height = cover.clientHeight
 
     const imageRect = getPropertyImageRect()
-
+    
     const x = selectRect.x - imageRect.x
     const y = selectRect.y - imageRect.y
 
-    const ctx = coverRef.current.getContext("2d")
+    const ctx = cover.getContext("2d")
     
     ctx.reset()
 
     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
-    
+
     ctx.fillRect(0, 0, imageRect.width, y)
     ctx.fillRect(0, y + selectRect.height, imageRect.width, imageRect.height - y - selectRect.height)
     ctx.fillRect(0, y, x, selectRect.height)
     ctx.fillRect(x + selectRect.width, y, imageRect.width - selectRect.width - x, selectRect.height)
-
+    
     if(selectImage == null)
       return
     
@@ -158,8 +164,14 @@ export default function() {
     ctxPreview.drawImage(selectImage, selectNaturalX, selectNaturalY, selectNaturalWidth, selectNaturalHeight, 0, 0, selectImageWidth, selectImageHeight)
     
     previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
+    
+    if(previewRef.current.classList.length >= 2){
+      if(previewRef.current.classList[1] == 'loading')
+        previewRef.current.classList.remove('loading')
+    }
 
   }, [selectRect, selectImage])
+
 
   useEffect(() => {
 
@@ -170,7 +182,13 @@ export default function() {
     image.src = containerCanvasUrl
 
     image.onload = () => {
+      
       setSelectImage(image)
+
+      if(containRef.current.classList.length >= 2){
+        if(containRef.current.classList[1] == 'loading')
+          containRef.current.classList.remove('loading')
+      }
     }
 
   }, [containerCanvasUrl])
@@ -184,28 +202,28 @@ export default function() {
 
     if(event.target.id == 'select'){
 
-        const clientRect = event.target.getBoundingClientRect()
+      const clientRect = event.target.getBoundingClientRect()
 
-        const id = getEdgeID(event.clientX, event.clientY, clientRect)
-        
-        setSelectEdge(id)
+      const id = getEdgeID(event.clientX, event.clientY, clientRect)
+      
+      setSelectEdge(id)
 
-        if(id == 0)
-          selectRef.current.style.cursor = 'grabbing'
+      if(id == 0)
+        selectRef.current.style.cursor = 'grabbing'
 
-        const offsetX = event.clientX - selectRect.x
-        const offsetY = event.clientY - selectRect.y
-        
-        const containerRect = containRef.current.getBoundingClientRect()
+      const offsetX = event.clientX - selectRect.x
+      const offsetY = event.clientY - selectRect.y
+      
+      const containerRect = containRef.current.getBoundingClientRect()
 
-        const x = clientRect.x - containerRect.x
-        const y = clientRect.y - containerRect.y
+      const x = clientRect.x - containerRect.x
+      const y = clientRect.y - containerRect.y
 
-        const width = clientRect.width
-        const height = clientRect.height
+      const width = clientRect.width
+      const height = clientRect.height
 
-        setPropertyOffset(offsetX, offsetY)
-        setPropertyLastRect(x, y, width, height)
+      setPropertyOffset(offsetX, offsetY)
+      setPropertyLastRect(x, y, width, height)
     }
 
   }, [selectRect]);
@@ -627,29 +645,37 @@ export default function() {
 
     postProfile.disabled = true
 
-    const res = await api.postProfile(auth.jwt, formData)
+    const resProfile = await api.postProfile(auth.jwt, formData)
 
-    if(res == null){
+    if(resProfile == null){      
       postProfile.disabled = false
-      window.showToast('프로필 변경 실패', 'error')
+      window.showToast('프로필 변경 실패', 'error')      
       return
     }
 
-    const payload = {profile: res.id}
-
+    const payload = {profile: resProfile.id}
     const resUser = await api.patchUser(auth.jwt, auth.user_id, payload)
 
-    postProfile.disabled = false
-
     if(resUser == null){
-      window.showToast('프로필 변경 실패', 'error')
+      postProfile.disabled = false
+      window.showToast('프로필 변경 실패', 'error')      
       return
     }
 
-    window.showToast('프로필 변경 완료', 'success')
-    
-    updateProfile(base64)
+    const profileId = resProfile.id + '?size=64x64'
+    const profile = await api.getProfile(auth.jwt, profileId)
 
+    if(profile == null) {
+      postProfile.disabled = false
+      window.showToast('프로필 가져오기 실패', 'error')      
+      return
+    }
+        
+    const base64Profile = await blobToBase64.convert(profile)
+    updateProfile(base64Profile)
+
+    postProfile.disabled = false
+    window.showToast('프로필 변경 완료', 'success')
   }
 
   const onClickCancel = () => {
@@ -657,12 +683,11 @@ export default function() {
     navigate(-1)
   }
 
-
   return validAuth(auth) ? (
       <div>
-        <div className='preview' ref={previewRef} style={{backgroundImage: `url(${transparent})`}}/>
+        <div className='preview loading' ref={previewRef} style={{backgroundImage: `url(${transparent})`}}/>
         <h2>real image</h2>
-        <div className='container' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl != null ? containerCanvasUrl : transparent})`}}>
+        <div className='container loading' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl != null ? containerCanvasUrl : transparent})`}}>
         <canvas className='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
           {selectRect != null && 
           <div id='select' className='select' ref={selectRef} onMouseDown={onMouseDown}

@@ -1,13 +1,18 @@
 import React from "react";
 import axios from 'axios';
-
+import '../css/Home.css'
+import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
+
+
 
 export default function Home() {
 
   let inputEmail = null
   let inputPassword = null
   let verifyCode = null
+
+  const selectRef = useRef(null)
 
   const navigate = useNavigate();
 
@@ -21,44 +26,26 @@ export default function Home() {
   const test2 = async() => {
 
     window.showToast('login 완료', 'error')
-    
+    selectRef.current.classList.remove('loading')
   };
 
   
-  const uploadFile = async(event) => {
 
-    const file = event.target.files[0];
+  const test3 = async() => {
 
-    if (file.length == 0)
-      return
+    //selectRef.current.classList.add()
 
-    const formData = new FormData();
-
-    formData.append('image-format', 'jpg');
-    formData.append('image', file);
-
-    try {
-
-      const auth_url = 'authenticate'
-
-      const response = await axios.post(auth_url, {username: "crazygun22@nate.com", password:"Sweetchild@22"})
-  
-      const token = response.data.jwt
+    selectRef.current.classList.add('loading')
     
-      const authStr = 'Bearer '.concat(token);
+
+    //console.log()
+
+
     
-      const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
-      
-      const response2 = await axios.post(`/file/profile`, formData, { headers: headers})
 
-      console.log(formData)
-
-      console.log(response2)
-    }
-    catch(error){      
-      console.log(error)
-    }
-  }
+    //window.showToast('login 완료', 'error')
+    
+  };
 
 
 
@@ -67,8 +54,9 @@ export default function Home() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
       <button onClick={test}>imageRegion</button>
-      <button onClick={test2}>테스트2</button>
-      <input type="file" onChange={uploadFile} accept="image/*"/>
+      <button onClick={test2}/>
+      <button ref={selectRef} onClick={test3} className="button">
+        <span className="btn_text">Save</span></button>
     </div>
   );  
 }

@@ -6,6 +6,7 @@ import ProfileContext from "../tool/ProfileContext.js";
 import React, { useContext, useState, useEffect} from 'react';
 
 import * as api from '../tool/Api.js'
+import * as blobToBase64 from '../tool/BlobToBase64.js'
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 import * as validator from '../tool/Validator.js'
 
@@ -79,23 +80,11 @@ export default function() {
             return
         }
                 
-        const base64 = await convertBlobToBase64(resProfile)
+        const base64 = await blobToBase64.convert(resProfile)
         updateProfile(base64)
         updateAuth(resAuth)
         window.showToast('login 완료', 'success')
-
     }
-
-    const convertBlobToBase64 = (blob) => {
-
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader()
-            reader.onloadend = () => {resolve(reader.result)}
-            reader.onerror = reject
-            reader.readAsDataURL(blob)
-        })
-    }
-
 
     const onKeyDownEnter = async(event)=>{
         if (event.key === 'Enter')

@@ -5,7 +5,7 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: rgba(255, 255, 0);  
+  background-color: rgba(255, 255, 0);
   align-items: center;
   justify-content: center;
   display:flex;
@@ -15,7 +15,7 @@
 .cover{
   padding:0px;
   margin:0px;
-  z-index: 500;
+  z-index: 500;    
   /*object-fit: cover; */
 }
 
@@ -43,6 +43,7 @@
   background-color: rgba(255, 255, 0);  
 }
 
+
 .edge{
   width:100%;
   height:100%;
@@ -64,3 +65,35 @@
     conic-gradient(from -90deg at bottom var(--b) right var(--b),var(--_g)) 100% calc(100% - var(--b)) / var(--_p);
 }
 
+
+.loading .container {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 4px solid transparent;
+  border-top-color: #0000FF;
+  border-radius: 50%;
+  animation: spin_animation 1s ease infinite;
+}
+
+
+@keyframes spin_animation {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}

@@ -112,7 +112,7 @@ export default function() {
                 return
             }
             else{
-                navigate('/image_region', {state: file})
+                navigate('/profile_region', {state: file})
             }
         }
         catch(error){

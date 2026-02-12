@@ -11,6 +11,7 @@ import Profile from './Profile.js';
 import Regist from './Regist.js';
 import Password from './Password.js'
 import Withdraw from './Withdraw.js'
+import ProfileRegion from './ProfileRegion.js'
 
 import ImageRegion from './ImageRegion.js'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
@@ -40,6 +41,7 @@ function App() {
             <Route path="/image_region" element={<ImageRegion/>}></Route>
             <Route path="/widthdraw" element={<Withdraw/>}></Route>
             <Route path="/password" element={<Password/>}></Route>
+            <Route path="/profile_region" element={<ProfileRegion/>}></Route>
             <Route path="/*" element={<PageNotFound/>}></Route>
         </Routes>
         </ProfileContext>

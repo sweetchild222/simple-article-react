@@ -1,5 +1,5 @@
 import ProfileContext from "../tool/ProfileContext.js";
-import {useContext, useState, useRef, useEffect, useCallback} from 'react';
+import {useContext, useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
 import { useLocation } from 'react-router-dom';
 import '../css/ImageRegion.css'
 import * as blobToBase64 from '../tool/BlobToBase64.js'
@@ -9,8 +9,10 @@ import * as api from '../tool/Api.js'
 import AuthContext from "../tool/AuthContext.js";
 
 
-export default function() {
 
+export default function({ref, file, onSelectImage, containerWidth=600, containerHeight=300}) {
+
+      
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
   const [selectEdge, setSelectEdge] = useState(-1)
@@ -18,32 +20,14 @@ export default function() {
   const [containerCanvasUrl, setContainerCanvasUrl] = useState(null)
   const [coverSize, setCoverSize] = useState({width:0, height:0})
   const [selectRect, setSelectRect] = useState(null)
-  const [selectImage, setSelectImage] = useState(null)
+  const [image, setImage] = useState(null)
 
-  const selectRef = useRef(null)
-  const previewRef = useRef(null)
+  const selectRef = useRef(null)  
   const coverRef = useRef(null)
   const containRef = useRef(null)
 
-  const containerWidth = 600
-  const containerHeight = 300
   const selectMinWidth = 64
   const selectMinHeight = 64
-  const selectImageWidth = 256
-  const selectImageHeight = 256  
-
-  const {auth, validAuth} = useContext(AuthContext)
-  
-  const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
-    
-  const navigate = useNavigate()
-
-  const location = useLocation()
-
-  const imageFile = location.state
-
-  if(imageFile == null)
-    return (<div>wrong access page</div>)
 
   const calcScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
@@ -83,16 +67,11 @@ export default function() {
     return canvas
   }
 
-
+  
   useEffect(()=> {
 
-    if(!validAuth(auth)){
-        navigate('/login', {replace:true})
-        return
-    }    
-
     const image = new Image()
-    const url = URL.createObjectURL(imageFile)
+    const url = URL.createObjectURL(file)
     image.src = url
 
     image.onload = () => {
@@ -109,18 +88,20 @@ export default function() {
 
       const canvas = createCanvas(image)
       setContainerCanvasUrl(canvas.toDataURL())
+
+      setImage(image)
       URL.revokeObjectURL(url)
       
       setIsImageLoad(true)
     }
 
-  }, [auth])
+  }, [])
 
 
   useEffect(() => {
 
     if(selectRect == null)
-      return    
+      return
 
     const cover = coverRef.current
 
@@ -146,53 +127,32 @@ export default function() {
     ctx.fillRect(0, y, x, selectRect.height)
     ctx.fillRect(x + selectRect.width, y, imageRect.width - selectRect.width - x, selectRect.height)
     
-    if(selectImage == null)
-      return
-    
-    const inversScale = 1 / calcScale(containerWidth, containerHeight, selectImage.naturalWidth, selectImage.naturalHeight)
-
-    const canvasPreview = document.createElement('canvas')
-    canvasPreview.width = selectImageWidth
-    canvasPreview.height = selectImageHeight
-    const selectNaturalWidth = selectRect.width * inversScale
-    const selectNaturalHeight = selectRect.height * inversScale
-    const selectNaturalX = (selectRect.x - imageRect.x) * inversScale
-    const selectNaturalY = (selectRect.y - imageRect.y) * inversScale
-
-    const ctxPreview = canvasPreview.getContext('2d')
-            
-    ctxPreview.drawImage(selectImage, selectNaturalX, selectNaturalY, selectNaturalWidth, selectNaturalHeight, 0, 0, selectImageWidth, selectImageHeight)
-    
-    previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
-    
-    if(previewRef.current.classList.length >= 2){
-      if(previewRef.current.classList[1] == 'loading')
-        previewRef.current.classList.remove('loading')
+    if(containRef.current.classList.length >= 2){
+      if(containRef.current.classList[1] == 'loading')
+        containRef.current.classList.remove('loading')
     }
-
-  }, [selectRect, selectImage])
-
-
-  useEffect(() => {
-
-    if(containerCanvasUrl == null)
-      return
     
-    const image = new Image()
-    image.src = containerCanvasUrl
+    
+    const inversScale = 1 / calcScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
+    
+    const selectX = (selectRect.x - imageRect.x) * inversScale
+    const selectY = (selectRect.y - imageRect.y) * inversScale
+    const selectWidth = selectRect.width * inversScale
+    const selectHeight = selectRect.height * inversScale
+    
+    onSelectImage(parseInt(selectX), parseInt(selectY), parseInt(selectWidth), parseInt(selectHeight))
+    
+  }, [selectRect])
 
-    image.onload = () => {
-      
-      setSelectImage(image)
+  
+  useImperativeHandle(ref, () => {
 
-      if(containRef.current.classList.length >= 2){
-        if(containRef.current.classList[1] == 'loading')
-          containRef.current.classList.remove('loading')
+    return {
+      image() {
+        return image
       }
     }
-
-  }, [containerCanvasUrl])
-
+  }, [image]);
 
 
   const onMouseDown = useCallback((event) => {
@@ -612,94 +572,16 @@ export default function() {
   }, [eventMouseMove, eventMouseUp])
 
 
-  const uriDataToBlob = (uri_data) => {
-    
-    const parts = uri_data.split(',')
-    const mimeType = parts[0].match(/:(.*?);/)[1]
-    const byteString = atob(parts[1])
-    const arrayBuffer = new ArrayBuffer(byteString.length)
-    const uint8Array = new Uint8Array(arrayBuffer)
-    
-    for (let i = 0; i < byteString.length; i++)
-        uint8Array[i] = byteString.charCodeAt(i)
-
-    return new Blob([arrayBuffer], {type: mimeType})
-  }
-
-
-  const onClickOK = async() => {
-
-    const imageUrl = previewRef.current.style.backgroundImage
-    
-    const match = imageUrl.match(/url\(['"]?(.*?)['"]?\)/)
-  
-    if(match == null)
-      return
-
-    const base64 = match[1]
-
-    const blob = uriDataToBlob(base64)
-
-    const formData = new FormData()
-    formData.append('image', blob)
-
-    postProfile.disabled = true
-
-    const resProfile = await api.postProfile(auth.jwt, formData)
-
-    if(resProfile == null){      
-      postProfile.disabled = false
-      window.showToast('프로필 변경 실패', 'error')      
-      return
-    }
-
-    const payload = {profile: resProfile.id}
-    const resUser = await api.patchUser(auth.jwt, auth.user_id, payload)
-
-    if(resUser == null){
-      postProfile.disabled = false
-      window.showToast('프로필 변경 실패', 'error')      
-      return
-    }
-
-    const profileId = resProfile.id + '?size=64x64'
-    const profile = await api.getProfile(auth.jwt, profileId)
-
-    if(profile == null) {
-      postProfile.disabled = false
-      window.showToast('프로필 가져오기 실패', 'error')      
-      return
-    }
-        
-    const base64Profile = await blobToBase64.convert(profile)
-    updateProfile(base64Profile)
-
-    postProfile.disabled = false
-    window.showToast('프로필 변경 완료', 'success')
-  }
-
-  const onClickCancel = () => {
-
-    navigate(-1)
-  }
-
-  return validAuth(auth) ? (
-      <div>
-        <div className='preview loading' ref={previewRef} style={{backgroundImage: `url(${transparent})`}}/>
-        <h2>real image</h2>
-        <div className='container loading' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl != null ? containerCanvasUrl : transparent})`}}>
-        <canvas className='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
-          {selectRect != null && 
-          <div id='select' className='select' ref={selectRef} onMouseDown={onMouseDown}
-            style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
-          >
-          <div className='edge'></div>
-          </div>
-          }      
+  return (      
+      <div className='container loading' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl != null ? containerCanvasUrl : transparent})`}}>
+      <canvas className='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
+        {selectRect != null && 
+        <div id='select' className='select' ref={selectRef} onMouseDown={onMouseDown}
+          style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
+        >
+        <div className='edge'></div>
         </div>
-        <button id='postProfile' onClick={onClickOK}>ok</button>
-        <button onClick={onClickCancel}>cancel</button>
-      </div>
-    )
-    : null
+        }      
+      </div>      
+  )
 }

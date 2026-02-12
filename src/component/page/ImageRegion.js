@@ -9,7 +9,9 @@ import * as api from '../tool/Api.js'
 import AuthContext from "../tool/AuthContext.js";
 
 
-export default function({ref, file, onSelectImage, containerWidth=600, containerHeight=300}) {
+export default function({ref, file, onSelectImage,
+                        containerWidth=600, containerHeight=300,
+                        selectMinWidth=64, selectMinHeight=64}) {
 
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
@@ -17,15 +19,13 @@ export default function({ref, file, onSelectImage, containerWidth=600, container
   const [isImageLoad, setIsImageLoad] = useState(false)
   const [containerCanvasUrl, setContainerCanvasUrl] = useState(null)
   const [coverSize, setCoverSize] = useState({width:0, height:0})
+  const [isContain, setContain] = useState(true)
   const [selectRect, setSelectRect] = useState(null)
   const [image, setImage] = useState(null)
 
-  const selectRef = useRef(null)  
+  const selectRef = useRef(null)
   const coverRef = useRef(null)
   const containRef = useRef(null)
-
-  const selectMinWidth = 64
-  const selectMinHeight = 64
 
   const calcScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
@@ -74,8 +74,15 @@ export default function({ref, file, onSelectImage, containerWidth=600, container
 
     image.onload = () => {
             
-      const imageRect = calcScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
+      let imageRect = calcScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
 
+      //console.log(imageRect)
+
+      if(imageRect.height < selectMinHeight || imageRect.width < selectMinWidth){
+        imageRect = {x:0, y:0, width:containerWidth, height:containerHeight}
+        setContain(false)
+      }
+      
       setPropertyImageRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height)
       setCoverSize({width:imageRect.width, height:imageRect.height})
 
@@ -130,16 +137,25 @@ export default function({ref, file, onSelectImage, containerWidth=600, container
         containRef.current.classList.remove('loading')
     }
         
+    if(isContain){
+      const rect = calcContainRect(selectRect, imageRect)
+      onSelectImage(rect)
+    }
+    
+  }, [selectRect])
+
+
+  const calcContainRect =(selectRect, imageRect) =>{
+
     const inversScale = 1 / calcScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
     
     const selectX = (selectRect.x - imageRect.x) * inversScale
     const selectY = (selectRect.y - imageRect.y) * inversScale
     const selectWidth = selectRect.width * inversScale
     const selectHeight = selectRect.height * inversScale
-    
-    onSelectImage(parseInt(selectX), parseInt(selectY), parseInt(selectWidth), parseInt(selectHeight))
-    
-  }, [selectRect])
+
+    return {x:parseInt(selectX), y: parseInt(selectY), width:parseInt(selectWidth), height:parseInt(selectHeight)}
+  }
 
   
   useImperativeHandle(ref, () => {
@@ -533,7 +549,7 @@ export default function({ref, file, onSelectImage, containerWidth=600, container
 
   const getEdgeIDCore = (x, y, width, height) =>{
 
-      const region = 20
+      const region = 20 //equal --w at edge in css
 
       if(x < region && y < region)
         return 1
@@ -570,7 +586,7 @@ export default function({ref, file, onSelectImage, containerWidth=600, container
 
 
   return (      
-      <div className='container loading' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl != null ? containerCanvasUrl : transparent})`}}>
+      <div className='container loading' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl != null ? containerCanvasUrl : transparent})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
       <canvas className='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
         {selectRect != null && 
         <div id='select' className='select' ref={selectRef} onMouseDown={onMouseDown}

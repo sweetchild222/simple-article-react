@@ -27,7 +27,7 @@ export default function({ref, file, onSelectImage,
   const coverRef = useRef(null)
   const containRef = useRef(null)
 
-  const calcScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
+  const calcContainScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
     const widthScale = containerWidth / imageNaturalWidth
     const heightScale = containerHeight / imageNaturalHeight
@@ -36,9 +36,9 @@ export default function({ref, file, onSelectImage,
   }
 
 
-  const calcScaledImageRect = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)=>{
+  const calcContainScaledImageRect = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)=>{
 
-    const scale = calcScale(containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)
+    const scale = calcContainScale(containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)
 
     const imageWidth = imageNaturalWidth * scale
     const imageHeight = imageNaturalHeight * scale
@@ -74,11 +74,9 @@ export default function({ref, file, onSelectImage,
 
     image.onload = () => {
             
-      let imageRect = calcScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
-
-      //console.log(imageRect)
-
-      if(imageRect.height < selectMinHeight || imageRect.width < selectMinWidth){
+      let imageRect = calcContainScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
+      
+      if(imageRect.width < selectMinWidth || imageRect.height < selectMinHeight){
         imageRect = {x:0, y:0, width:containerWidth, height:containerHeight}
         setContain(false)
       }
@@ -136,25 +134,54 @@ export default function({ref, file, onSelectImage,
       if(containRef.current.classList[1] == 'loading')
         containRef.current.classList.remove('loading')
     }
-        
-    if(isContain){
-      const rect = calcContainRect(selectRect, imageRect)
-      onSelectImage(rect)
-    }
-    
+            
+    const rect = isContain ? calcContainRect(selectRect, imageRect) : calcCoverRect(selectRect, imageRect)
+    onSelectImage(rect)
+
   }, [selectRect])
 
 
   const calcContainRect =(selectRect, imageRect) =>{
 
-    const inversScale = 1 / calcScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
+    const inversScale = 1 / calcContainScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
     
     const selectX = (selectRect.x - imageRect.x) * inversScale
     const selectY = (selectRect.y - imageRect.y) * inversScale
     const selectWidth = selectRect.width * inversScale
     const selectHeight = selectRect.height * inversScale
 
-    return {x:parseInt(selectX), y: parseInt(selectY), width:parseInt(selectWidth), height:parseInt(selectHeight)}
+    return {x:Math.round(selectX), y: Math.round(selectY), width:Math.round(selectWidth), height:Math.round(selectHeight)}
+  }
+
+
+  const calcCoverRect = (selectRect, imageRect) =>{
+
+    const scale = calcCoverScale(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
+
+    const inversScale = 1 / scale
+
+    const selectX = ((selectRect.x - imageRect.x) + (((image.naturalWidth * scale) - containerWidth) / 2))
+    const selectY = ((selectRect.y - imageRect.y) + (((image.naturalHeight * scale) - containerHeight) / 2))
+    
+    const selectImageX = selectX * inversScale
+    const selectImageY = selectY * inversScale
+    const selectImageWidth = selectRect.width * inversScale
+    const selectImageHeight = selectRect.height * inversScale        
+    
+
+    return {x:Math.round(selectImageX), y: Math.round(selectImageY), width:Math.round(selectImageWidth), height:Math.round(selectImageHeight)}
+
+  }
+
+
+
+  const calcCoverScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) => {
+    
+    const widthScale = containerWidth / imageNaturalWidth
+    const heightScale = containerHeight / imageNaturalHeight    
+    
+    return widthScale > heightScale ? widthScale : heightScale
+
   }
 
   
@@ -169,6 +196,8 @@ export default function({ref, file, onSelectImage,
 
 
   const onMouseDown = useCallback((event) => {
+
+    event.stopPropagation()
     
     if(isImageLoad == false)
       return
@@ -222,6 +251,8 @@ export default function({ref, file, onSelectImage,
 
 
   const eventMouseMove = useCallback((event) => {
+
+    event.stopPropagation()
     
     if(isImageLoad == false)
       return
@@ -533,6 +564,8 @@ export default function({ref, file, onSelectImage,
 
 
   const eventMouseUp = useCallback((event) => {
+
+    event.stopPropagation()
     
     if(isImageLoad == false)
       return

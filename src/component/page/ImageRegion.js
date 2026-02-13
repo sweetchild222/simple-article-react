@@ -39,9 +39,7 @@ export default function({ref, file, onSelectImage,
   const calcContainScaledImageRect = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)=>{
 
     const scale = calcContainScale(containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)
-
-    console.log('scale' + scale)
-
+    
     const imageWidth = imageNaturalWidth * scale
     const imageHeight = imageNaturalHeight * scale
 
@@ -49,9 +47,7 @@ export default function({ref, file, onSelectImage,
     const heightSpace = (containerHeight - imageHeight) / 2
     
     const imageX = widthSpace
-    const imageY = heightSpace
-
-    console.log(imageX, imageY, imageWidth, imageHeight)
+    const imageY = heightSpace  
 
     return {x: Math.round(imageX), y: Math.round(imageY), width: Math.round(imageWidth), height: Math.round(imageHeight)}
   }
@@ -80,11 +76,7 @@ export default function({ref, file, onSelectImage,
     image.onload = () => {
             
       let imageRect = calcContainScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
-
-      console.log(imageRect)
-
-
-      
+            
       if(imageRect.width < selectMinWidth || imageRect.height < selectMinHeight){
         imageRect = {x:0, y:0, width:containerWidth, height:containerHeight}
         setContain(false)
@@ -157,9 +149,7 @@ export default function({ref, file, onSelectImage,
     const selectX = (selectRect.x - imageRect.x) * inversScale
     const selectY = (selectRect.y - imageRect.y) * inversScale
     const selectWidth = selectRect.width * inversScale
-    const selectHeight = selectRect.height * inversScale
-
-    //console.log(selectX, selectY, selectWidth, selectHeight)
+    const selectHeight = selectRect.height * inversScale    
 
     return {x:Math.floor(selectX), y: Math.floor(selectY), width:Math.ceil(selectWidth), height:Math.ceil(selectHeight)}
   }
@@ -186,10 +176,9 @@ export default function({ref, file, onSelectImage,
   const calcCoverScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) => {
     
     const widthScale = containerWidth / imageNaturalWidth
-    const heightScale = containerHeight / imageNaturalHeight    
+    const heightScale = containerHeight / imageNaturalHeight  
     
     return widthScale > heightScale ? widthScale : heightScale
-
   }
 
   
@@ -471,6 +460,9 @@ export default function({ref, file, onSelectImage,
     return null
   }
 
+
+  
+
   const setPropertyOffset = (offsetX, offsetY) => {
 
     if(selectRef.current == null)
@@ -503,7 +495,7 @@ export default function({ref, file, onSelectImage,
       return
     
     const style = containRef.current.style
-
+    
     style.setProperty('--x', x)
     style.setProperty('--y', y)
     style.setProperty('--width', width)

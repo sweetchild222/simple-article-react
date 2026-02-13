@@ -2,11 +2,12 @@
   position: relative;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: rgba(255, 255, 0);
+  background-color: rgba(0, 0, 0, 0);
   align-items: center;
   justify-content: center;
   display:flex;
   image-rendering: pixelated;
+  border: solid rgba(0, 0, 255, 0.5);
 }
 
 
@@ -36,7 +37,7 @@
   pointer-events: none; 
 
   --b: 5px;
-  --c: rgba(0, 255, 0, 0.6);
+  --c: rgba(0, 255, 0, 0.4);
   --w: 20px;
 
   border: var(--b) solid #0000;

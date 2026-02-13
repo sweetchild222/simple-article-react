@@ -151,12 +151,13 @@ export default function() {
   }
 
   return validAuth(auth) ? (
-    <div>
-      <h2>asdfsf</h2>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <ImageRegion ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={800} containerHeight={600}/>      
       <div className='preview loading' ref={previewRef}  style={{backgroundImage: `url(${transparent})`}}/>
-      <ImageRegion ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={300} containerHeight={600}/>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <button id='postProfile' onClick={onClickOK}>ok</button>
       <button onClick={onClickCancel}>cancel</button>
+      </div>
     </div>
     ) : null
 }

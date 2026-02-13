@@ -1,7 +1,5 @@
-.container {
-  left:120px;
-  top:100px;
-  position: absolute;  
+.container {  
+  position: relative;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(255, 255, 0);
@@ -15,7 +13,7 @@
 .cover{
   padding:0px;
   margin:0px;
-  z-index: 500;    
+  z-index: 500;
   /*object-fit: cover; */
 }
 
@@ -38,7 +36,7 @@
   pointer-events: none; 
 
   --b: 5px;
-  --c: red;
+  --c: rgba(0, 255, 0, 0.6);
   --w: 20px;
 
   border: var(--b) solid #0000;

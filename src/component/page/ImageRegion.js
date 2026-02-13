@@ -36,6 +36,15 @@ export default function({ref, file, onSelectImage,
   }
 
 
+  const calcCoverScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) => {
+    
+    const widthScale = containerWidth / imageNaturalWidth
+    const heightScale = containerHeight / imageNaturalHeight  
+    
+    return widthScale > heightScale ? widthScale : heightScale
+  }
+
+  
   const calcContainScaledImageRect = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)=>{
 
     const scale = calcContainScale(containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)
@@ -47,7 +56,7 @@ export default function({ref, file, onSelectImage,
     const heightSpace = (containerHeight - imageHeight) / 2
     
     const imageX = widthSpace
-    const imageY = heightSpace  
+    const imageY = heightSpace
 
     return {x: Math.round(imageX), y: Math.round(imageY), width: Math.round(imageWidth), height: Math.round(imageHeight)}
   }
@@ -60,7 +69,7 @@ export default function({ref, file, onSelectImage,
     canvas.width = image.naturalWidth
     canvas.height = image.naturalHeight
     const ctx = canvas.getContext('2d')
-    ctx.imageSmoothingEnabled = false    
+    ctx.imageSmoothingEnabled = false
     ctx.drawImage(image, 0, 0)
 
     return canvas
@@ -74,7 +83,7 @@ export default function({ref, file, onSelectImage,
     image.src = url
 
     image.onload = () => {
-            
+      
       let imageRect = calcContainScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
             
       if(imageRect.width < selectMinWidth || imageRect.height < selectMinHeight){
@@ -173,15 +182,7 @@ export default function({ref, file, onSelectImage,
 
   }
 
-  const calcCoverScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) => {
-    
-    const widthScale = containerWidth / imageNaturalWidth
-    const heightScale = containerHeight / imageNaturalHeight  
-    
-    return widthScale > heightScale ? widthScale : heightScale
-  }
 
-  
   useImperativeHandle(ref, () => {
 
     return {
@@ -241,7 +242,7 @@ export default function({ref, file, onSelectImage,
     const endY = imageRect.y + imageRect.height - selectRef.current.offsetHeight
 
     const calcX = x < imageRect.x ? imageRect.x : (x > endX ? endX : x)
-    const calcY = y < imageRect.y ? imageRect.y : (y > endY ? endY : y)    
+    const calcY = y < imageRect.y ? imageRect.y : (y > endY ? endY : y)
 
     return {x:calcX, y:calcY}
   }
@@ -269,20 +270,17 @@ export default function({ref, file, onSelectImage,
       if(selectRef.current != null)
         selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
     }
-    else{
+    else if(selectEdge >= 1 && selectEdge <= 4) {
 
-        if(selectEdge > 0 && selectEdge <= 4){
-          const rect = dragEdge(event.clientX, event.clientY, selectEdge)          
+      const rect = dragEdge(event.clientX, event.clientY, selectEdge)
 
-          if(rect != null)
-            setSelectRect(rect)
-        }
+      if(rect != null)
+        setSelectRect(rect)
     }
 
   }, [selectEdge]);
 
-  const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
-
+  
   const dragEdge = (clientX, clientY, selectEdge) => {
 
     const offset = getPropertyOffset()
@@ -296,172 +294,195 @@ export default function({ref, file, onSelectImage,
 
     if(selectEdge == 1){ //left_top
       
-      const maxX = lastRect.x + (lastRect.width - selectMinWidth)
-      const maxY = lastRect.y + (lastRect.height - selectMinHeight)
-
-      let newX = clamp(x, imageRect.x, maxX)
-      let newY = clamp(y, imageRect.y, maxY)
-      
-      let calcWidth = lastRect.width + (lastRect.x - newX)
-      let calcHeight = lastRect.height + (lastRect.y - newY)
-
-      if(calcWidth > calcHeight){
-
-        newY -= (calcWidth - calcHeight)
-
-        if(newY < imageRect.y){
-          const overHeight = (imageRect.y - newY)
-          calcWidth -= overHeight
-          newX += overHeight
-          newY = imageRect.y
-        }
-
-        calcHeight = calcWidth
-      }
-      else{
-
-        newX -= (calcHeight - calcWidth)
-
-        if(newX < imageRect.x){
-          const overWidth = (imageRect.x - newX)
-          calcHeight -= overWidth
-          newY += overWidth
-          newX = imageRect.x
-        }
-
-        calcWidth = calcHeight
-      }
-
-      const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-      const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-
-      return {x: newX, y: newY, width:newWidth, height:newHeight}
+      return dragLeftTop(x, y, imageRect, lastRect)
     }
     else if(selectEdge == 2){//right_top
 
-      const maxY = lastRect.y + (lastRect.height - selectMinHeight)
-
-      const newX = lastRect.x
-      let newY = clamp(y, imageRect.y, maxY)
-      
-      let calcWidth = lastRect.width + (x - newX)
-      let calcHeight = lastRect.height + (lastRect.y - newY)
-
-      const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
-
-      if(calcWidth > maxWidth)
-        calcWidth = maxWidth
-
-      if(calcHeight > calcWidth){
-
-        calcWidth = calcHeight
-
-        if(calcWidth > maxWidth){
-
-          const overWidth = (calcWidth - maxWidth)
-          calcWidth = maxWidth
-          calcHeight -= overWidth
-          newY += overWidth
-        }
-      }
-      else{
-
-        newY -= (calcWidth - calcHeight)
-                  
-        if(newY < imageRect.y){
-          const overHeight = (imageRect.y - newY)
-          calcWidth -= overHeight
-          newY = imageRect.y
-        }
-
-        calcHeight = calcWidth
-      }
-
-      const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-      const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-                                        
-      return {x: newX, y: newY, width:newWidth, height:newHeight}
+      return dragRigthTop(x, y, imageRect, lastRect)
     }
     else if(selectEdge == 3){//left_bottom
 
-      const maxX = lastRect.x + (lastRect.width - selectMinWidth)
-      
-      let newX = clamp(x, imageRect.x, maxX)
-      const newY = lastRect.y
-      
-      let calcWidth = lastRect.width + (lastRect.x - newX)
-      let calcHeight = lastRect.height + (y - newY)
-
-      const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
-      
-      if(calcHeight > maxHeight)
-        calcHeight = maxHeight                
-
-      if(calcWidth > calcHeight){
-
-        calcHeight = calcWidth
-
-        if(calcHeight > maxHeight){
-
-          const overHeight = (calcHeight - maxHeight)
-          calcHeight = maxHeight
-          calcWidth -= overHeight
-          newX += overHeight
-        }
-      }
-      else{
-
-        newX -= (calcHeight - calcWidth)
-                  
-        if(newX < imageRect.x){
-          const overWidth = (imageRect.x - newX)
-          calcHeight -= overWidth
-          newX = imageRect.x
-        }
-
-        calcWidth = calcHeight
-      }
-
-      const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-      const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-
-      return {x: newX, y: newY, width:newWidth, height:newHeight}
+      return dragLeftBottom(x, y, imageRect, lastRect)
     }
     else if(selectEdge == 4){//right_bottom
 
-      const newX = lastRect.x
-      const newY = lastRect.y
-      
-      let calcWidth = lastRect.width + (x - newX)
-      let calcHeight = lastRect.height + (y - newY)
-      
-      const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
-      const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
-
-      const max = maxWidth > maxHeight ? maxHeight : maxWidth
-      
-      if(calcWidth > max)
-        calcWidth = max
-
-      if(calcHeight > max)
-        calcHeight = max
-      
-      if(calcWidth > calcHeight)
-        calcHeight = calcWidth
-      else
-        calcWidth = calcHeight
-
-      const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-      const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-
-      return {x: newX, y: newY, width:newWidth, height:newHeight}
+      return dragRigthBottom(x, y, imageRect, lastRect)    
     }
 
     return null
   }
 
+  const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 
+  const dragLeftTop = (x, y, imageRect, lastRect) => {
+
+    const maxX = lastRect.x + (lastRect.width - selectMinWidth)
+    const maxY = lastRect.y + (lastRect.height - selectMinHeight)
+
+    let newX = clamp(x, imageRect.x, maxX)
+    let newY = clamp(y, imageRect.y, maxY)
+    
+    let calcWidth = lastRect.width + (lastRect.x - newX)
+    let calcHeight = lastRect.height + (lastRect.y - newY)
+
+    if(calcWidth > calcHeight){
+
+      newY -= (calcWidth - calcHeight)
+
+      if(newY < imageRect.y){
+        const overHeight = (imageRect.y - newY)
+        calcWidth -= overHeight
+        newX += overHeight
+        newY = imageRect.y
+      }
+
+      calcHeight = calcWidth
+    }
+    else{
+
+      newX -= (calcHeight - calcWidth)
+
+      if(newX < imageRect.x){
+        const overWidth = (imageRect.x - newX)
+        calcHeight -= overWidth
+        newY += overWidth
+        newX = imageRect.x
+      }
+
+      calcWidth = calcHeight
+    }
+
+    const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
+    const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
+
+    return {x: newX, y: newY, width:newWidth, height:newHeight}
+  }
+
+
+  const dragRigthTop = (x, y, imageRect, lastRect) => {
+
+    const maxY = lastRect.y + (lastRect.height - selectMinHeight)
+
+    const newX = lastRect.x
+    let newY = clamp(y, imageRect.y, maxY)
+    
+    let calcWidth = lastRect.width + (x - newX)
+    let calcHeight = lastRect.height + (lastRect.y - newY)
+
+    const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
+
+    if(calcWidth > maxWidth)
+      calcWidth = maxWidth
+
+    if(calcHeight > calcWidth){
+
+      calcWidth = calcHeight
+
+      if(calcWidth > maxWidth){
+
+        const overWidth = (calcWidth - maxWidth)
+        calcWidth = maxWidth
+        calcHeight -= overWidth
+        newY += overWidth
+      }
+    }
+    else{
+
+      newY -= (calcWidth - calcHeight)
+                
+      if(newY < imageRect.y){
+        const overHeight = (imageRect.y - newY)
+        calcWidth -= overHeight
+        newY = imageRect.y
+      }
+
+      calcHeight = calcWidth
+    }
+
+    const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
+    const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
+                                      
+    return {x: newX, y: newY, width:newWidth, height:newHeight}
+  }
+
+
+  const dragLeftBottom = (x, y, imageRect, lastRect) => {
+
+    const maxX = lastRect.x + (lastRect.width - selectMinWidth)
+      
+    let newX = clamp(x, imageRect.x, maxX)
+    const newY = lastRect.y
+    
+    let calcWidth = lastRect.width + (lastRect.x - newX)
+    let calcHeight = lastRect.height + (y - newY)
+
+    const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
+    
+    if(calcHeight > maxHeight)
+      calcHeight = maxHeight                
+
+    if(calcWidth > calcHeight){
+
+      calcHeight = calcWidth
+
+      if(calcHeight > maxHeight){
+
+        const overHeight = (calcHeight - maxHeight)
+        calcHeight = maxHeight
+        calcWidth -= overHeight
+        newX += overHeight
+      }
+    }
+    else{
+
+      newX -= (calcHeight - calcWidth)
+                
+      if(newX < imageRect.x){
+        const overWidth = (imageRect.x - newX)
+        calcHeight -= overWidth
+        newX = imageRect.x
+      }
+
+      calcWidth = calcHeight
+    }
+
+    const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
+    const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
+
+    return {x: newX, y: newY, width:newWidth, height:newHeight}
+  }
   
+
+  const dragRigthBottom = (x, y, imageRect, lastRect) => {
+
+    const newX = lastRect.x
+    const newY = lastRect.y
+    
+    let calcWidth = lastRect.width + (x - newX)
+    let calcHeight = lastRect.height + (y - newY)
+    
+    const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
+    const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
+
+    const max = maxWidth > maxHeight ? maxHeight : maxWidth
+    
+    if(calcWidth > max)
+      calcWidth = max
+
+    if(calcHeight > max)
+      calcHeight = max
+    
+    if(calcWidth > calcHeight)
+      calcHeight = calcWidth
+    else
+      calcWidth = calcHeight
+
+    const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
+    const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
+
+    return {x: newX, y: newY, width:newWidth, height:newHeight}
+  }
+
 
   const setPropertyOffset = (offsetX, offsetY) => {
 
@@ -471,7 +492,7 @@ export default function({ref, file, onSelectImage,
     const style = selectRef.current.style
     
     style.setProperty('--offset_x', offsetX);
-    style.setProperty('--offset_y', offsetY);    
+    style.setProperty('--offset_y', offsetY);
   }
 
 

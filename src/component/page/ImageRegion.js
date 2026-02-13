@@ -40,6 +40,8 @@ export default function({ref, file, onSelectImage,
 
     const scale = calcContainScale(containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight)
 
+    console.log('scale' + scale)
+
     const imageWidth = imageNaturalWidth * scale
     const imageHeight = imageNaturalHeight * scale
 
@@ -48,6 +50,8 @@ export default function({ref, file, onSelectImage,
     
     const imageX = widthSpace
     const imageY = heightSpace
+
+    console.log(imageX, imageY, imageWidth, imageHeight)
 
     return {x: Math.round(imageX), y: Math.round(imageY), width: Math.round(imageWidth), height: Math.round(imageHeight)}
   }
@@ -60,6 +64,7 @@ export default function({ref, file, onSelectImage,
     canvas.width = image.naturalWidth
     canvas.height = image.naturalHeight
     const ctx = canvas.getContext('2d')
+    ctx.imageSmoothingEnabled = false    
     ctx.drawImage(image, 0, 0)
 
     return canvas
@@ -75,6 +80,10 @@ export default function({ref, file, onSelectImage,
     image.onload = () => {
             
       let imageRect = calcContainScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
+
+      console.log(imageRect)
+
+
       
       if(imageRect.width < selectMinWidth || imageRect.height < selectMinHeight){
         imageRect = {x:0, y:0, width:containerWidth, height:containerHeight}
@@ -89,7 +98,7 @@ export default function({ref, file, onSelectImage,
 
       setSelectRect({ x: centerX, y: centerY, width: selectMinWidth, height: selectMinHeight})
 
-      const canvas = createCanvas(image)
+      const canvas = createCanvas(image)      
       setContainerCanvasUrl(canvas.toDataURL())
 
       setImage(image)
@@ -150,7 +159,9 @@ export default function({ref, file, onSelectImage,
     const selectWidth = selectRect.width * inversScale
     const selectHeight = selectRect.height * inversScale
 
-    return {x:Math.round(selectX), y: Math.round(selectY), width:Math.round(selectWidth), height:Math.round(selectHeight)}
+    //console.log(selectX, selectY, selectWidth, selectHeight)
+
+    return {x:Math.floor(selectX), y: Math.floor(selectY), width:Math.ceil(selectWidth), height:Math.ceil(selectHeight)}
   }
 
 
@@ -166,14 +177,11 @@ export default function({ref, file, onSelectImage,
     const selectImageX = selectX * inversScale
     const selectImageY = selectY * inversScale
     const selectImageWidth = selectRect.width * inversScale
-    const selectImageHeight = selectRect.height * inversScale        
-    
+    const selectImageHeight = selectRect.height * inversScale
 
-    return {x:Math.round(selectImageX), y: Math.round(selectImageY), width:Math.round(selectImageWidth), height:Math.round(selectImageHeight)}
+    return {x:Math.floor(selectImageX), y: Math.floor(selectImageY), width:Math.ceil(selectImageWidth), height:Math.ceil(selectImageHeight)}
 
   }
-
-
 
   const calcCoverScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) => {
     

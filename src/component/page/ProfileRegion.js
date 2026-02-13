@@ -38,7 +38,10 @@ export default function() {
 
 
 
-  const onSelectImage = useCallback((rect) => {    
+  const onSelectImage = useCallback((rect) => {
+
+
+    console.log(rect)
 
     const imageRegion = imageRegionRef.current
 
@@ -52,7 +55,9 @@ export default function() {
     canvasPreview.height = selectImageHeight
     
     const ctxPreview = canvasPreview.getContext('2d')
-            
+
+    ctxPreview.imageSmoothingEnabled = false;
+
     ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, selectImageWidth, selectImageHeight)
 
     previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`

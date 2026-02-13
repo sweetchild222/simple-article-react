@@ -16,7 +16,7 @@ export default function({ref, file, onSelectImage,
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
   const [selectEdge, setSelectEdge] = useState(-1)  
-  const [containerCanvasUrl, setContainerCanvasUrl] = useState(null)
+  const [containerCanvasUrl, setContainerCanvasUrl] = useState(transparent)
   const [coverSize, setCoverSize] = useState({width:0, height:0})
   const [isContain, setContain] = useState(true)
   const [selectRect, setSelectRect] = useState(null)
@@ -99,12 +99,11 @@ export default function({ref, file, onSelectImage,
       setSelectRect({ x: centerX, y: centerY, width: selectMinWidth, height: selectMinHeight})
 
       const canvas = createCanvas(image)      
-      setContainerCanvasUrl(canvas.toDataURL())
-
+      setContainerCanvasUrl(canvas.toDataURL())      
+      
       setImage(image)
+      setPropertyIsLoadImage(true)
       URL.revokeObjectURL(url)
-          
-      setPropertyIsLoadImage(true)      
     }
 
   }, [])
@@ -205,7 +204,7 @@ export default function({ref, file, onSelectImage,
       const newXY = calcXY(event.clientX, event.clientY)
       
       const lastRect = getPropertyLastRect()
-    
+          
       setSelectRect({x: newXY.x, y: newXY.y, width: lastRect.width, height: lastRect.height});
     }
     else if(selectEdge ==  -1 && event.target.id == 'select'){
@@ -248,15 +247,20 @@ export default function({ref, file, onSelectImage,
       const offsetY = event.clientY - selectRect.y
       
       const containerRect = containRef.current.getBoundingClientRect()
+      
+      const style = window.getComputedStyle(containRef.current);
 
-      const x = clientRect.x - containerRect.x
-      const y = clientRect.y - containerRect.y
+      const borderLeftWidth = parseInt(style.borderLeftWidth.replace(/\px$/, ""))
+      const borderTopWidth = parseInt(style.borderTopWidth.replace(/\px$/, ""))
+            
+      const x = clientRect.x - containerRect.x - borderLeftWidth
+      const y = clientRect.y - containerRect.y - borderTopWidth
 
       const width = clientRect.width
       const height = clientRect.height
 
       setPropertyOffset(offsetX, offsetY)
-      setPropertyLastRect(x, y, width, height)
+      setPropertyLastRect(x, y, width, height)      
     }
 
   }, [selectRect]);
@@ -299,7 +303,7 @@ export default function({ref, file, onSelectImage,
   }
 
 
-  
+
   const dragEdge = (clientX, clientY, selectEdge) => {
 
     const offset = getPropertyOffset()
@@ -420,7 +424,7 @@ export default function({ref, file, onSelectImage,
 
     const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
     const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-                                      
+
     return {x: newX, y: newY, width:newWidth, height:newHeight}
   }
 
@@ -475,7 +479,7 @@ export default function({ref, file, onSelectImage,
   const dragRigthBottom = (x, y, imageRect, lastRect) => {
 
     const newX = lastRect.x
-    const newY = lastRect.y
+    const newY = lastRect.y    
     
     let calcWidth = lastRect.width + (x - newX)
     let calcHeight = lastRect.height + (y - newY)
@@ -509,7 +513,7 @@ export default function({ref, file, onSelectImage,
     if(containRef.current == null)
       return
     
-    const style = containRef.current.style      
+    const style = containRef.current.style
     style.setProperty('--loaded', loaded)
   }
 
@@ -633,18 +637,18 @@ export default function({ref, file, onSelectImage,
 
   const getEdgeIDCore = (x, y, width, height) =>{
 
-      const region = 20 //equal --w at edge in css
+    const region = 20 //equal --w at edge in css
 
-      if(x < region && y < region)
-        return 1
-      else if(x > (width - region) && y < region)
-        return 2
-      else if(x < region && y > (height - region))
-        return 3
-      else if(x > (width - region) && y > (height - region))
-        return 4
-      else
-        return 0
+    if(x < region && y < region)
+      return 1
+    else if(x > (width - region) && y < region)
+      return 2
+    else if(x < region && y > (height - region))
+      return 3
+    else if(x > (width - region) && y > (height - region))
+      return 4
+    else
+      return 0
   }
 
 
@@ -669,8 +673,8 @@ export default function({ref, file, onSelectImage,
   }, [eventMouseMove, eventMouseUp])
   
 
-  return (      
-      <div className='container loading' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl != null ? containerCanvasUrl : transparent})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
+  return (
+      <div className='container loading' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
       <canvas className='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
         {selectRect != null && 
         <div id='select' className='select' ref={selectRef} onMouseDown={onMouseDown}

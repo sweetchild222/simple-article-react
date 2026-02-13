@@ -10,13 +10,17 @@ import AuthContext from "../tool/AuthContext.js";
 import ImageRegion from './ImageRegion.js';
 
 export default function() {
-
-  const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+  
   const {auth, validAuth} = useContext(AuthContext)
   const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
 
   const previewRef = useRef(null)
   const imageRegionRef = useRef(null)
+
+  const previewWidth = 256
+  const previewHeight = 256
+  const containerWidth = 512
+  const containerHeight = 512
 
   const navigate = useNavigate()
 
@@ -44,18 +48,15 @@ export default function() {
 
     const image = imageRegion.image()
 
-    const selectImageWidth = 256
-    const selectImageHeight = 256
-
     const canvasPreview = document.createElement('canvas')
-    canvasPreview.width = selectImageWidth
-    canvasPreview.height = selectImageHeight
+    canvasPreview.width = previewWidth
+    canvasPreview.height = previewHeight
     
     const ctxPreview = canvasPreview.getContext('2d')
 
     ctxPreview.imageSmoothingEnabled = false;
 
-    ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, selectImageWidth, selectImageHeight)
+    ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, previewWidth, previewHeight)
 
     previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
 
@@ -142,15 +143,17 @@ export default function() {
     window.showToast('프로필 변경 완료', 'success')
   }
 
+
   const onClickCancel = () => {
 
     navigate(-1)
   }
 
+
   return validAuth(auth) ? (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <ImageRegion ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={800} containerHeight={600}/>      
-      <div className='preview loading' ref={previewRef}  style={{backgroundImage: `url(${transparent})`}}/>
+      <ImageRegion ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
+      <div className='preview loading' ref={previewRef}  style={{width: `${previewWidth}px`, height: `${previewHeight}px`}}/>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <button id='postProfile' onClick={onClickOK}>ok</button>
       <button onClick={onClickCancel}>cancel</button>

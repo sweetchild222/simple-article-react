@@ -56,13 +56,25 @@ export default function() {
         getHighQualityProfile(auth).then((profile)=>{
             
             setProfileHigh(profile)
-
-            if(rootRef.current.classList.length >= 1) {
-                if(rootRef.current.classList[1] == 'loading')
-                rootRef.current.classList.remove('loading')
-            }
         })
     }, [auth])
+
+
+
+    useEffect(()=>{
+
+        if(profileHigh == null)
+            return
+
+        if(rootRef.current == null)
+            return
+
+        if(rootRef.current.classList.length >= 1) {
+            if(rootRef.current.classList[1] == 'loading')
+                rootRef.current.classList.remove('loading')
+        }        
+
+    }, [profileHigh])
 
     const modal_config = {text: '로그 아웃?', type: Type.yesno}
 

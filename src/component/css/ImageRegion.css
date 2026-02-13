@@ -7,7 +7,7 @@
   justify-content: center;
   display:flex;
   image-rendering: pixelated;
-  border: solid rgba(0, 0, 255, 0.5);
+  border: 2px solid rgba(0, 0, 255, 0.5);
 }
 
 
@@ -17,7 +17,6 @@
   z-index: 500;
   /*object-fit: cover; */
 }
-
 
 
 .select{  

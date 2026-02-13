@@ -10,14 +10,22 @@
 }
 
 
-.loading .container {
+.cover {
+  height:'256px';
+  width:'256px';
+  position: relative;
+}
+
+
+.loading .cover {
   visibility: hidden;
   opacity: 0;
 }
 
+
 .loading::after {
   content: "";
-  position: absolute;
+  position: absolute;  
   width: 16px;
   height: 16px;
   top: 0;

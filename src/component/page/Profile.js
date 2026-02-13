@@ -16,12 +16,14 @@ import '../css/Profile.css'
 
 export default function() {
 
+    const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const {profile, removeProfile} = useContext(ProfileContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [profileHigh, setProfileHigh] = useState('/image/user.png')
+    const [profileHigh, setProfileHigh] = useState(transparent)
 
-    const rootRef = useRef(null)
+    const coverRef = useRef(null)
 
     const navigate = useNavigate()
 
@@ -43,7 +45,6 @@ export default function() {
             return null
 
         return await blobToBase64.convert(resProfile)
-
     }
 
     useEffect(()=>{
@@ -55,26 +56,27 @@ export default function() {
 
         getHighQualityProfile(auth).then((profile)=>{
             
-            setProfileHigh(profile)
+            if(profile == null)
+                window.showToast('프로필 가져오기 실패', 'error')            
+            else
+                setProfileHigh(profile)
+
+            removeLoading()
         })
     }, [auth])
 
 
+    const removeLoading=()=>{
 
-    useEffect(()=>{
-
-        if(profileHigh == null)
+        if(coverRef.current == null)
             return
+        
+        if(coverRef.current.classList.length >= 1) {
+            if(coverRef.current.classList[1] == 'loading')
+                coverRef.current.classList.remove('loading')
+        }
+    }
 
-        if(rootRef.current == null)
-            return
-
-        if(rootRef.current.classList.length >= 1) {
-            if(rootRef.current.classList[1] == 'loading')
-                rootRef.current.classList.remove('loading')
-        }        
-
-    }, [profileHigh])
 
     const modal_config = {text: '로그 아웃?', type: Type.yesno}
 
@@ -181,9 +183,14 @@ export default function() {
         })
     }
 
+    
     return validAuth(auth) ? (
-      <div ref={rootRef} className='profile loading' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>        
-        <img alt='image' src={profileHigh} onClick={onClickProfile} height='256px' width='256px'/>
+      <div className='profile' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        
+        <div ref={coverRef} className='cover loading'>
+            <img alt='image' src={profileHigh} onClick={onClickProfile} style={{width:'256px', height:'256px'}}/>
+        </div>
+        
         <button  id="btn_logout" onClick={onClickLogout} >로그아웃</button>
         <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
         <button id="btn_passwordChange" onClick={onClickPasswordChange} >비밀번호 변경</button>

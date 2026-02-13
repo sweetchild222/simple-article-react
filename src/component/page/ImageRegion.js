@@ -15,7 +15,7 @@ export default function({ref, file, onSelectImage,
 
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
-  const [selectEdge, setSelectEdge] = useState(-1)  
+  const [selectEdge, setSelectEdge] = useState(-1)
   const [containerCanvasUrl, setContainerCanvasUrl] = useState(transparent)
   const [coverSize, setCoverSize] = useState({width:0, height:0})
   const [isContain, setContain] = useState(true)

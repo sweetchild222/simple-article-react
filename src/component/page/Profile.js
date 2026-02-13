@@ -120,17 +120,9 @@ export default function() {
             }
 
             const [fileHandle] = await window.showOpenFilePicker(options)
-            const file = await fileHandle.getFile()
-            
-            const format = await getImageFormat(file)
-
-            if(format == 'unknown' || format == 'error')
-                return null
-            else
-                return file
+            return await fileHandle.getFile()
         }
         catch(error) {
-            console.log(error)
             return null
         }
     }
@@ -139,12 +131,25 @@ export default function() {
 
         const file = await selectFile()
 
-        if(file == null){
+        if(file == null)
+            return
+
+        try{
+
+            const format = await getImageFormat(file)
+
+            if(format == 'unknown') {
+                window.showToast('파일을 사용할 수 없습니다', 'error')
+                return
+            }
+                                          
+            navigate('/profile_region', {state: file})
+        }
+        catch(error) {
+
             window.showToast('파일을 사용할 수 없습니다', 'error')
             return
         }
-
-        navigate('/profile_region', {state: file})
     }
 
 
@@ -165,7 +170,7 @@ export default function() {
                 else if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46)
                     resolve('image/gif')
                 else
-                    reject('unknown')
+                    resolve('unknown')
             }
 
             reader.onerror = (event) => {
@@ -178,7 +183,7 @@ export default function() {
 
     return validAuth(auth) ? (
       <div ref={rootRef} className='profile loading' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>        
-        <img alt='logo image' src={profileHigh} onClick={onClickProfile} height='256px' width='256px'/>
+        <img alt='image' src={profileHigh} onClick={onClickProfile} height='256px' width='256px'/>
         <button  id="btn_logout" onClick={onClickLogout} >로그아웃</button>
         <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
         <button id="btn_passwordChange" onClick={onClickPasswordChange} >비밀번호 변경</button>

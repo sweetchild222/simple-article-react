@@ -9,7 +9,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-rou
 import * as validator from '../tool/Validator.js'
 
 import AuthContext from "../tool/AuthContext.js";
-import Modal, {Type} from "../common/Modal.js"
+import Modal from "../common/Modal.js"
 
 
 export default function() {
@@ -19,7 +19,7 @@ export default function() {
 
     const navigate = useNavigate();
 
-    const modal_config = {text: '회원 탈퇴?', type: Type.yesno}
+    const modal_config = {text: '회원 탈퇴?', type: 'yesno'}
 
     useEffect(()=>{
 
@@ -92,4 +92,3 @@ export default function() {
       </div>
     ) : null
 }
-

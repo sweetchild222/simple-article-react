@@ -11,7 +11,7 @@ import * as validator from '../tool/Validator.js'
 
 import AuthContext from "../tool/AuthContext.js";
 import ProfileContext from "../tool/ProfileContext.js";
-import Modal, {Type} from "../common/Modal.js"
+import Modal from "../common/Modal.js"
 import '../css/Profile.css'
 
 export default function() {
@@ -78,7 +78,7 @@ export default function() {
     }
 
 
-    const modal_config = {text: '로그 아웃?', type: Type.yesno}
+    const modal_config = {text: '로그 아웃?', type: 'yesno'}
 
     const onYesNo = (yes) => {
 
@@ -183,7 +183,7 @@ export default function() {
         })
     }
 
-    
+
     return validAuth(auth) ? (
       <div className='profile' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         

@@ -15,8 +15,7 @@ export default function({ref, file, onSelectImage,
 
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
-  const [selectEdge, setSelectEdge] = useState(-1)
-  const [isImageLoad, setIsImageLoad] = useState(false)
+  const [selectEdge, setSelectEdge] = useState(-1)  
   const [containerCanvasUrl, setContainerCanvasUrl] = useState(null)
   const [coverSize, setCoverSize] = useState({width:0, height:0})
   const [isContain, setContain] = useState(true)
@@ -104,8 +103,8 @@ export default function({ref, file, onSelectImage,
 
       setImage(image)
       URL.revokeObjectURL(url)
-      
-      setIsImageLoad(true)
+          
+      setPropertyIsLoadImage(true)      
     }
 
   }, [])
@@ -193,11 +192,45 @@ export default function({ref, file, onSelectImage,
   }, [image]);
 
 
+
+  
+
+  const eventMouseMove = useCallback((event) => {
+
+    if(getPropertyIsLoadImage() == false)
+      return
+
+    if(selectEdge == 0){
+  
+      const newXY = calcXY(event.clientX, event.clientY)
+      
+      const lastRect = getPropertyLastRect()
+    
+      setSelectRect({x: newXY.x, y: newXY.y, width: lastRect.width, height: lastRect.height});
+    }
+    else if(selectEdge ==  -1 && event.target.id == 'select'){
+
+      const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
+
+      if(selectRef.current != null)
+        selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
+    }
+    else if(selectEdge >= 1 && selectEdge <= 4) {
+
+      const rect = dragEdge(event.clientX, event.clientY, selectEdge)
+
+      if(rect != null)
+        setSelectRect(rect)
+    }
+
+  }, [selectEdge]);
+
+
   const onMouseDown = useCallback((event) => {
 
     event.stopPropagation()
-    
-    if(isImageLoad == false)
+
+    if(getPropertyIsLoadImage() == false)
       return
 
     if(event.target.id == 'select'){
@@ -228,6 +261,24 @@ export default function({ref, file, onSelectImage,
 
   }, [selectRect]);
 
+
+  const eventMouseUp = useCallback((event) => {
+
+    event.stopPropagation()
+    
+    if(getPropertyIsLoadImage() == false)
+      return
+
+    setSelectEdge(-1)
+
+    const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
+
+    if(selectRef.current != null)
+      selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
+        
+  }, [selectEdge]);
+
+
   
   const calcXY = (clientX, clientY) => {
 
@@ -247,38 +298,6 @@ export default function({ref, file, onSelectImage,
     return {x:calcX, y:calcY}
   }
 
-
-  const eventMouseMove = useCallback((event) => {
-
-    event.stopPropagation()
-    
-    if(isImageLoad == false)
-      return
-
-    if(selectEdge == 0){
-  
-      const newXY = calcXY(event.clientX, event.clientY)
-      
-      const lastRect = getPropertyLastRect()
-    
-      setSelectRect({x: newXY.x, y: newXY.y, width: lastRect.width, height: lastRect.height});
-    }
-    else if(selectEdge ==  -1 && event.target.id == 'select'){
-
-      const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
-
-      if(selectRef.current != null)
-        selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
-    }
-    else if(selectEdge >= 1 && selectEdge <= 4) {
-
-      const rect = dragEdge(event.clientX, event.clientY, selectEdge)
-
-      if(rect != null)
-        setSelectRect(rect)
-    }
-
-  }, [selectEdge]);
 
   
   const dragEdge = (clientX, clientY, selectEdge) => {
@@ -484,6 +503,32 @@ export default function({ref, file, onSelectImage,
   }
 
 
+
+  const setPropertyIsLoadImage = (loaded) => {
+
+    if(containRef.current == null)
+      return
+    
+    const style = containRef.current.style      
+    style.setProperty('--loaded', loaded)
+  }
+
+
+  const getPropertyIsLoadImage = () => {
+
+    if(containRef.current == null)
+      return
+
+    const style = containRef.current.style
+    const loaded = style.getPropertyValue('--loaded')
+
+    if(loaded == null)
+      return false
+    
+    return loaded
+  }
+
+
   const setPropertyOffset = (offsetX, offsetY) => {
 
     if(selectRef.current == null)
@@ -491,8 +536,8 @@ export default function({ref, file, onSelectImage,
 
     const style = selectRef.current.style
     
-    style.setProperty('--offset_x', offsetX);
-    style.setProperty('--offset_y', offsetY);
+    style.setProperty('--offset_x', offsetX)
+    style.setProperty('--offset_y', offsetY)
   }
 
 
@@ -584,21 +629,6 @@ export default function({ref, file, onSelectImage,
   }
 
 
-  const eventMouseUp = useCallback((event) => {
-
-    event.stopPropagation()
-    
-    if(isImageLoad == false)
-      return
-
-    setSelectEdge(-1)
-
-    const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
-
-    if(selectRef.current != null)
-      selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
-        
-  }, [selectEdge]);
 
 
   const getEdgeIDCore = (x, y, width, height) =>{
@@ -637,7 +667,7 @@ export default function({ref, file, onSelectImage,
       window.removeEventListener('mouseup', eventMouseUp)
     };
   }, [eventMouseMove, eventMouseUp])
-
+  
 
   return (      
       <div className='container loading' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl != null ? containerCanvasUrl : transparent})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>

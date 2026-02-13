@@ -38,10 +38,7 @@ export default function() {
 
 
 
-  const onSelectImage = useCallback((rect) => {
-
-
-    console.log(rect)
+  const onSelectImage = useCallback((rect) => {    
 
     const imageRegion = imageRegionRef.current
 

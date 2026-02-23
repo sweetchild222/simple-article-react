@@ -12,7 +12,7 @@ export async function getUser(jwt, user_id) {
 
     const authorization = 'Bearer '.concat(jwt);
 
-    const response = await axios.get('user/' + user_id, { headers: {Authorization: authorization} })
+    const response = await axios.get('/api/user/' + user_id, { headers: {Authorization: authorization} })
     
     return response.data
   }
@@ -28,10 +28,10 @@ export async function getUser(jwt, user_id) {
 export async function postAuthenticate(username, password) {
                 
   try{
-  
-      const response = await axios.post('authenticate', {username: username, password: password})
+      
+    const response = await axios.post('/api/authenticate', {username: username, password: password})
 
-      return response.data
+    return response.data
   }
   catch(error){
 
@@ -47,7 +47,7 @@ export async function postUser(usename, password){
 
   try{
     
-    const response = await axios.post('user', {username: usename, password: password})
+    const response = await axios.post('/api/user', {username: usename, password: password})
 
     return response.data
 
@@ -65,10 +65,10 @@ export async function getExistUser(username){
       
   try{
   
-    const response = await axios.get('user/exist/' + username)
+    const response = await axios.get('/api/user/exist/' + username)
     
     return response.data
-          
+
   }
   catch(error){
 
@@ -83,7 +83,7 @@ export async function postVerifyEmail(email) {
   
   try{
 
-    const response = await axios.post('verifyEmail', {email: email})
+    const response = await axios.post('/api/verifyEmail', {email: email})
 
     return response.data
 
@@ -99,7 +99,7 @@ export async function getVerifyEmail(email, code){
           
   try{
     
-    const response = await axios.get('verifyEmail/' + email + '/' + code)
+    const response = await axios.get('/api/verifyEmail/' + email + '/' + code)
 
     return response.data
           
@@ -118,7 +118,7 @@ export async function getUserPasswordCheck(jwt, user_id, password) {
 
     const authorization = 'Bearer '.concat(jwt);
 
-    const response = await axios.get('user/' + user_id + '/password/' + password, { headers: {Authorization: authorization} })
+    const response = await axios.get('/api/user/' + user_id + '/password/' + password, { headers: {Authorization: authorization} })
     
     return response.data
   }
@@ -138,7 +138,7 @@ export async function patchUser(jwt, user_id, payload){
 
     const authorization = 'Bearer '.concat(jwt);
     
-    const response = await axios.patch('user/' + user_id, payload, { headers: {Authorization: authorization}})
+    const response = await axios.patch('/api/user/' + user_id, payload, { headers: {Authorization: authorization}})
 
     return response.data
   }
@@ -160,7 +160,7 @@ export async function postProfile(jwt, payload) {
   
     const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
     
-    const response = await axios.post(`/blob/profile`, payload, { headers: headers})
+    const response = await axios.post(`/api//blob/profile`, payload, { headers: headers})
 
     return response.data
   }
@@ -180,7 +180,7 @@ export async function getProfile(jwt, id) {
 
     const authorization = 'Bearer '.concat(jwt)
 
-    const response = await axios.get('/blob/profile/' + id, { headers: {Authorization: authorization}, responseType: 'blob'})
+    const response = await axios.get('/api//blob/profile/' + id, { headers: {Authorization: authorization}, responseType: 'blob'})
 
     return response.data
 

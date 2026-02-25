@@ -1,9 +1,9 @@
-.container {
+#container {
   box-sizing: content-box;
   position: relative;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.0);
   align-items: center;
   justify-content: center;
   display:flex;
@@ -11,17 +11,7 @@
   border: 2px solid rgba(0, 0, 255, 0.5);
 }
 
-
-.cover{
-  
-  padding:0px;
-  margin:0px;
-  z-index: 500;
-  /*object-fit: cover; */
-}
-
-
-.select{
+#select {
   
   z-index: 600;
   position: absolute;
@@ -32,7 +22,8 @@
   display:flex;
 }
 
-.edge{
+
+#selectEdge {
   box-sizing: content-box;
   width:100%;
   height:100%;
@@ -52,37 +43,4 @@
     conic-gradient(from 180deg at top    var(--b) right var(--b),var(--_g)) 100% var(--b) / var(--_p),
     conic-gradient(from 0deg   at bottom var(--b) left  var(--b),var(--_g)) 0 calc(100% - var(--b)) / var(--_p),
     conic-gradient(from -90deg at bottom var(--b) right var(--b),var(--_g)) 100% calc(100% - var(--b)) / var(--_p);
-}
-
-
-.loading .container {
-  visibility: hidden;
-  opacity: 0;
-}
-
-.loading::after {  
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  border: 4px solid transparent;
-  border-top-color: #0000FF;
-  border-radius: 50%;
-  animation: spin_animation 1s ease infinite;
-}
-
-
-@keyframes spin_animation {
-  from {
-    transform: rotate(0turn);
-  }
-
-  to {
-    transform: rotate(1turn);
-  }
 }

@@ -1,21 +1,25 @@
-import ProfileContext from "../tool/ProfileContext.js";
-import {useContext, useState, useRef, useEffect, useCallback} from 'react';
-import { useLocation } from 'react-router-dom';
+import ProfileContext from "../tool/ProfileContext.js"
+import {useContext, useState, useRef, useEffect, useCallback} from 'react'
+import { useLocation } from 'react-router-dom'
 import './ProfileRegion.css'
+import './RotateLoading.css'
 import * as blobToBase64 from '../tool/BlobToBase64.js'
 
-import { useNavigate} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom'
 import * as api from '../tool/Api.js'
-import AuthContext from "../tool/AuthContext.js";
-import ImageRegion from './ImageRegion.js';
+import AuthContext from "../tool/AuthContext.js"
+import ImageRegion from './ImageRegion.js'
+
 
 export default function() {
   
   const {auth, validAuth} = useContext(AuthContext)
   const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
 
+  const [isLoading, setIsLoading] = useState(true)
+
   const previewRef = useRef(null)
-  const imageRegionRef = useRef(null)
+  const imageRegionRef = useRef(null)  
 
   const previewWidth = 256
   const previewHeight = 256
@@ -36,7 +40,7 @@ export default function() {
     if(!validAuth(auth)){
         navigate('/login', {replace:true})
         return
-    }    
+    }
 
   }, [auth])
 
@@ -60,21 +64,9 @@ export default function() {
 
     previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
 
-    removePreviewLoading()
+    setIsLoading(false)
 
   }, [])
-
-
-  const removePreviewLoading=()=>{
-
-    if(previewRef.current == null)
-      return
-    
-    if(previewRef.current.classList.length >= 2){
-      if(previewRef.current.classList[1] == 'loading')
-        previewRef.current.classList.remove('loading')
-    }
-  }
 
 
   const uriDataToBlob = (uri_data) => {
@@ -153,7 +145,7 @@ export default function() {
   return validAuth(auth) ? (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <ImageRegion ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
-      <div className='preview loading' ref={previewRef}  style={{width: `${previewWidth}px`, height: `${previewHeight}px`}}/>
+      <div id='preview' className={`${isLoading ? 'rotateLoading': ''}`} ref={previewRef}  style={{width: `${previewWidth}px`, height: `${previewHeight}px`}}/>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <button id='postProfile' onClick={onClickOK}>ok</button>
       <button onClick={onClickCancel}>cancel</button>

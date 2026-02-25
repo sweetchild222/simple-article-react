@@ -1,18 +1,16 @@
-import axios from 'axios';
+import './Profile.css'
+import './RotateLoading.css'
 
-import React, {useContext, useEffect, useRef } from "react";
-
-
+import {useContext, useEffect, useRef } from "react";
 import * as api from '../tool/Api.js'
 import * as blobToBase64 from '../tool/BlobToBase64.js'
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
-import * as validator from '../tool/Validator.js'
+import { useNavigate} from 'react-router-dom';
 
 import AuthContext from "../tool/AuthContext.js";
 import ProfileContext from "../tool/ProfileContext.js";
 import Modal from "../common/Modal.js"
-import './Profile.css'
+
 
 export default function() {
 
@@ -22,6 +20,7 @@ export default function() {
     const {profile, removeProfile} = useContext(ProfileContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [profileHigh, setProfileHigh] = useState(transparent)
+    const [isLoading, setIsLoading] = useState(true)
 
     const coverRef = useRef(null)
 
@@ -61,23 +60,10 @@ export default function() {
             else
                 setProfileHigh(profile)
 
-            removeLoading()
+            setIsLoading(false)
         })
     }, [auth])
-
-
-    const removeLoading=()=>{
-
-        if(coverRef.current == null)
-            return
-        
-        if(coverRef.current.classList.length >= 1) {
-            if(coverRef.current.classList[1] == 'loading')
-                coverRef.current.classList.remove('loading')
-        }
-    }
-
-
+    
     const modal_config = {text: '로그 아웃?', type: 'yesno'}
 
     const onYesNo = (yes) => {
@@ -129,6 +115,7 @@ export default function() {
         }
     }
 
+    
     const onClickProfile = async() =>{
 
         const file = await selectFile()
@@ -185,9 +172,9 @@ export default function() {
 
 
     return validAuth(auth) ? (
-      <div className='profile' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <div id='profile' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         
-        <div ref={coverRef} className='cover loading'>
+        <div id='cover' ref={coverRef} className={`${isLoading ? 'rotateLoading': ''}`}>
             <img alt='image' src={profileHigh} onClick={onClickProfile} style={{width:'256px', height:'256px'}}/>
         </div>
         

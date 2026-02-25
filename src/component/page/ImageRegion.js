@@ -2,6 +2,7 @@ import ProfileContext from "../tool/ProfileContext.js";
 import {useContext, useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
 import { useLocation } from 'react-router-dom';
 import './ImageRegion.css'
+import './RotateLoading.css'
 import * as blobToBase64 from '../tool/BlobToBase64.js'
 
 import { useNavigate} from 'react-router-dom';
@@ -16,6 +17,7 @@ export default function({ref, file, onSelectImage,
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
   const [selectEdge, setSelectEdge] = useState(-1)
+  const [isLoading, setIsLoading] = useState(true)
   const [containerCanvasUrl, setContainerCanvasUrl] = useState(transparent)
   const [coverSize, setCoverSize] = useState({width:0, height:0})
   const [isContain, setContain] = useState(true)
@@ -139,13 +141,13 @@ export default function({ref, file, onSelectImage,
     ctx.fillRect(x + selectRect.width, y, imageRect.width - selectRect.width - x, selectRect.height)
 
 
-    console.log(containRef.current.classList)
+    setIsLoading(false)
     
-    if(containRef.current.classList.length >= 2){
+    // if(containRef.current.classList.length >= 1){
       
-      if(containRef.current.classList[1] == 'loading')
-        containRef.current.classList.remove('loading')      
-    }
+    //   if(containRef.current.classList[0] == 'rotateLoading')
+    //     containRef.current.classList.remove('rotateLoading')
+    // }
             
     const rect = isContain ? calcContainRect(selectRect, imageRect) : calcCoverRect(selectRect, imageRect)
     onSelectImage(rect)
@@ -671,17 +673,16 @@ export default function({ref, file, onSelectImage,
       window.removeEventListener('mousemove', eventMouseMove)
       window.removeEventListener('mouseup', eventMouseUp)
     };
-  }, [eventMouseMove, eventMouseUp])
-  
+  }, [eventMouseMove, eventMouseUp])   
 
   return (
-      <div className='container loading' ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
-      <canvas className='cover' ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
+      <div id='container' className={`${isLoading ? 'rotateLoading': ''}`} ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
+      <canvas ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
         {selectRect != null && 
-        <div id='select' className='select' ref={selectRef} onMouseDown={onMouseDown}
+        <div id='select' ref={selectRef} onMouseDown={onMouseDown}
           style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
         >
-        <div className='edge'></div>
+        <div id='selectEdge'></div>
         </div>
         }      
       </div>      

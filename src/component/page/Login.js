@@ -1,14 +1,14 @@
 
 import axios from 'axios';
 
-import AuthContext from "../tool/AuthContext.js";
-import ProfileContext from "../tool/ProfileContext.js";
+import AuthContext from "../util/AuthContext.js";
+import ProfileContext from "../util/ProfileContext.js";
 import React, { useContext, useState, useEffect} from 'react';
 
-import * as api from '../tool/Api.js'
-import * as blobToBase64 from '../tool/BlobToBase64.js'
+import * as api from '../util/Api.js'
+import * as blobToBase64 from '../util/BlobToBase64.js'
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
-import * as validator from '../tool/Validator.js'
+import * as validator from '../util/Validator.js'
 
 export default function() {
 

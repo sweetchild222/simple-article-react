@@ -3,10 +3,10 @@ import axios from 'axios';
 
 import {useContext, useEffect, useState} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import AuthContext from "../tool/AuthContext.js";
+import AuthContext from "../util/AuthContext.js";
 
-import * as api from '../tool/Api.js'
-import * as validator from '../tool/Validator.js'
+import * as api from '../util/Api.js'
+import * as validator from '../util/Validator.js'
 
 export default function() {
 

@@ -12,8 +12,8 @@ import Password from './Password.js'
 import Withdraw from './Withdraw.js'
 import ProfileRegion from './ProfileRegion.js'
 import ImageRegion from './ImageRegion.js'
-import AuthProvider from '../tool/AuthProvider'
-import ProfileContext from '../tool/ProfileProvider'
+import AuthProvider from '../util/AuthProvider'
+import ProfileContext from '../util/ProfileProvider'
 import ToastContainer from '../common/ToastContainer'
 
 

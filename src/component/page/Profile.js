@@ -2,14 +2,15 @@ import './Profile.css'
 import './RotateLoading.css'
 
 import {useContext, useEffect, useRef } from "react";
-import * as api from '../tool/Api.js'
-import * as blobToBase64 from '../tool/BlobToBase64.js'
+import * as api from '../util/Api.js'
+import * as blobToBase64 from '../util/BlobToBase64.js'
 import { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 
-import AuthContext from "../tool/AuthContext.js";
-import ProfileContext from "../tool/ProfileContext.js";
+import AuthContext from "../util/AuthContext.js";
+import ProfileContext from "../util/ProfileContext.js";
 import Modal from "../common/Modal.js"
+import BeautyButton from '../common/BeautyButton.js';
 
 
 export default function() {
@@ -115,7 +116,7 @@ export default function() {
         }
     }
 
-    
+
     const onClickProfile = async() =>{
 
         const file = await selectFile()
@@ -172,16 +173,14 @@ export default function() {
 
 
     return validAuth(auth) ? (
-      <div id='profile' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-        
+      <div id='profile'>
         <div id='cover' ref={coverRef} className={`${isLoading ? 'rotateLoading': ''}`}>
             <img alt='image' src={profileHigh} onClick={onClickProfile} style={{width:'256px', height:'256px'}}/>
         </div>
-        
-        <button  id="btn_logout" onClick={onClickLogout} >로그아웃</button>
+        <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
-        <button id="btn_passwordChange" onClick={onClickPasswordChange} >비밀번호 변경</button>
-        <button id="btn_withdraw" onClick={onClickUserWithdraw} >회원 탈퇴</button>
+        <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>
+        <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
       </div>
     ) : null
 }

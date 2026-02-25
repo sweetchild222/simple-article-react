@@ -217,6 +217,9 @@
 }
 
 
+
+/*-------------------------------------------------------*/
+
 #beauty-button.warning{
 
   background: #CB99C5;
@@ -256,7 +259,9 @@
 }
 
 
-#beauty-button.apply{
+/*-------------------------------------------------------*/
+
+#beauty-button.default{
 
   background: #7FB1BF;
   color: #F7FFFF;
@@ -264,7 +269,7 @@
 }
 
 
-#beauty-button.apply:hover {
+#beauty-button.default:hover {
 
   background: #74A3B0;
   color: #F7FFFF;
@@ -272,7 +277,7 @@
 }
 
 
-#beauty-button.apply:enabled:active {
+#beauty-button.default:enabled:active {
 
   background: #74A3B0;
   color: #F7FFFF;
@@ -281,7 +286,7 @@
 }
 
 
-#beauty-button.apply:disabled {
+#beauty-button.default:disabled {
 
   background: #7FB1BF;
   color: #666666;
@@ -291,6 +296,6 @@
 }
 
 
-#beauty-button.apply.circle::after {
+#beauty-button.default.circle::after {
   border-top-color: #804E40;
 }

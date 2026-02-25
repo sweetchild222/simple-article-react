@@ -98,7 +98,7 @@ export default function() {
             <input id='input_username' type='text'/>
             <label htmlFor='input_password'>Password</label>
             <input id='input_password' type='password' onKeyDown={onKeyDownEnter}/>
-            <button id='btn_login' onClick={onClickLogin} >로그인</button>
+            <button id='btn_login' className='theme-btn' onClick={onClickLogin} >로그인</button>
             <button id='btn_regist' onClick={() => {navigate('/regist', {replace:true})}}>회원가입</button>
         </div>
     ) : null

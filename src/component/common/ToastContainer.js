@@ -1,6 +1,6 @@
 import React, { useState, useCallback, createElement } from 'react';
 import Toast from './Toast';
-import '../css/ToastContainer.css'; // We will create this file next
+import '../css/ToastContainer.css';
 
 
 export default function(){
@@ -37,9 +37,9 @@ export default function(){
 
 
   window.showToast = addToast;
-
+  
   return (
-    <div className="toast-container">
+    <div id="toast-container">
       {toasts}
     </div>
   );

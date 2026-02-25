@@ -1,4 +1,5 @@
-.container {  
+.container {
+  box-sizing: content-box;
   position: relative;
   background-repeat: no-repeat;
   background-position: center;
@@ -12,6 +13,7 @@
 
 
 .cover{
+  
   padding:0px;
   margin:0px;
   z-index: 500;
@@ -19,7 +21,8 @@
 }
 
 
-.select{  
+.select{
+  
   z-index: 600;
   position: absolute;
   background-color: rgba(0, 0, 0, 0);
@@ -30,6 +33,7 @@
 }
 
 .edge{
+  box-sizing: content-box;
   width:100%;
   height:100%;
   z-index: 800;
@@ -56,7 +60,7 @@
   opacity: 0;
 }
 
-.loading::after {
+.loading::after {  
   content: "";
   position: absolute;
   width: 16px;

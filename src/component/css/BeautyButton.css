@@ -1,0 +1,296 @@
+#beauty-button {
+  position: relative;
+  cursor: pointer;
+  border: none; 
+  display: flex;
+  align-items: center;
+  padding:10px;
+  border-radius: 6px;
+  transition: all 0.1s ease;
+}
+
+
+#btn_text {
+  font-family: inherit;
+  font-size: 20px;
+  transition: all 0.2s;
+}
+
+
+#beauty-button.circle #btn_text {
+  visibility: hidden;
+  opacity: 0;
+}
+
+
+#beauty-button.circle::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 4px solid transparent;
+  border-radius: 50%;  
+  animation: spin_animation 1s ease infinite;
+}
+
+
+@keyframes spin_animation {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+
+/*-------------------------------------------------------*/
+
+#beauty-button.success {
+
+  background: #7FCCDE;
+  color: #F7FFFF;
+}
+
+
+#beauty-button.success:hover {
+
+  background: #73B9C9;
+  color: #F7FFFF;
+  box-shadow: 0px 2px 3px #7FCCDE;
+}
+
+
+#beauty-button.success:enabled:active {
+
+  background: #73B9C9;
+  color: #F7FFFF;
+  transform: translateY(2px);
+  box-shadow: 0 0 0;
+}
+
+
+#beauty-button.success:disabled {
+
+    background: #7FCCDE;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: 0 0 0;
+}
+
+
+#beauty-button.success.circle::after {
+  
+  border-top-color: #803321;
+}
+
+
+/*-------------------------------------------------------*/
+
+#beauty-button.confirm{
+  background: #9ABF7F;
+  color: #F7FFFF;
+}
+
+
+#beauty-button.confirm:hover {
+  background: #87A86F;
+  color: #F7FFFF;
+  box-shadow: 0px 2px 3px #9ABF7F;
+}
+
+
+#beauty-button.confirm:enabled:active {
+
+  background: #87A86F;
+  color: #F7FFFF;
+  transform: translateY(2px);
+  box-shadow: 0 0 0;
+}
+
+
+#beauty-button.confirm:disabled {
+
+  background: #9ABF7F;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: 0 0 0;
+}
+
+
+#beauty-button.confirm.circle::after {
+  
+  border-top-color: #654080;
+}
+
+
+/*-------------------------------------------------------*/
+
+
+#beauty-button.cancel {
+
+  
+  background: #F0D264;
+  color: #F7FFFF;
+}
+
+
+#beauty-button.cancel:hover {
+
+  background: #D1B757;
+  color: #F7FFFF;
+  box-shadow: 0px 2px 3px #F0D264;
+}
+
+
+#beauty-button.cancel:enabled:active {
+
+  background: #D1B757;
+  color: #F7FFFF;
+  transform: translateY(2px);
+  box-shadow: 0 0 0;
+}
+
+
+#beauty-button.cancel:disabled {
+
+    background: #F0D264;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: 0 0 0;
+}
+
+
+#beauty-button.cancel.circle::after {
+
+  border-top-color: #0F2D9B;
+}
+
+
+/*-------------------------------------------------------*/
+
+#beauty-button.danger{
+
+  background: #FA5A5A;
+  color: #F7FFFF;
+}
+
+
+#beauty-button.danger:hover {
+
+  background: #E04342;
+  color: #F7FFFF;
+  box-shadow: 0px 2px 3px #FA5A5A;
+}
+
+
+#beauty-button.danger:enabled:active {
+
+  background: #E04342;
+  color: #F7FFFF;
+  transform: translateY(2px);
+  box-shadow: 0 0 0;
+}
+
+
+#beauty-button.danger:disabled {
+
+    background: #FA5A5A;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: 0 0 0;
+}
+
+
+#beauty-button.danger.circle::after {
+  border-top-color: #05A5A5;
+}
+
+
+#beauty-button.warning{
+
+  background: #CB99C5;
+  color: #F7FFFF;
+}
+
+
+#beauty-button.warning:hover {
+
+  background: #AD83A8;
+  color: #F7FFFF;
+  box-shadow: 0px 2px 3px #CB99C5;
+}
+
+
+#beauty-button.warning:enabled:active {
+
+  background: #AD83A8;
+  color: #F7FFFF;
+  transform: translateY(2px);
+  box-shadow: 0 0 0;
+}
+
+
+#beauty-button.warning:disabled {
+
+    background: #CB99C5;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: 0 0 0;
+}
+
+
+#beauty-button.warning.circle::after {
+  border-top-color: #34663A;
+}
+
+
+#beauty-button.apply{
+
+  background: #7FB1BF;
+  color: #F7FFFF;
+  
+}
+
+
+#beauty-button.apply:hover {
+
+  background: #74A3B0;
+  color: #F7FFFF;
+  box-shadow: 0px 2px 3px #7FB1BF;
+}
+
+
+#beauty-button.apply:enabled:active {
+
+  background: #74A3B0;
+  color: #F7FFFF;
+  transform: translateY(2px);
+  box-shadow: 0 0 0;
+}
+
+
+#beauty-button.apply:disabled {
+
+  background: #7FB1BF;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: 0 0 0;  
+}
+
+
+#beauty-button.apply.circle::after {
+  border-top-color: #804E40;
+}

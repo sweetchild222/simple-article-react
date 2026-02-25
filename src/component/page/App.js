@@ -1,30 +1,25 @@
 
-import '../css/App.css';
+import './App.css'
+import {Routes, Route, useNavigate } from 'react-router-dom'
 
-import Header from '../common/Header.js'
-import React, {useContext, useEffect, useState} from 'react';
-
-import Home from './Home.js';
-import Login from './Login.js';
-import PageNotFound from './PageNotFound.js';
-import Profile from './Profile.js';
-import Regist from './Regist.js';
+import Header from './Header.js'
+import Home from './Home.js'
+import Login from './Login.js'
+import PageNotFound from './PageNotFound.js'
+import Profile from './Profile.js'
+import Regist from './Regist.js'
 import Password from './Password.js'
 import Withdraw from './Withdraw.js'
 import ProfileRegion from './ProfileRegion.js'
-
 import ImageRegion from './ImageRegion.js'
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import AuthProvider from '../tool/AuthProvider';
-import ProfileContext from '../tool/ProfileProvider';
-import AuthContext from "../tool/AuthContext";
+import AuthProvider from '../tool/AuthProvider'
+import ProfileContext from '../tool/ProfileProvider'
+import ToastContainer from '../common/ToastContainer'
 
-import ToastContainer from '../common/ToastContainer';
 
-function App() {
+export default function() {
 
   const navigate = useNavigate();
-
 
   return (
     <div>
@@ -48,12 +43,8 @@ function App() {
       </AuthProvider>
       
     </div>
-  );
+  )
 }
 
-
-//{isLoggedIn === true && <Example />}
-        //{isLoggedIn === true && <Example2 />}
-export default App;
 
 

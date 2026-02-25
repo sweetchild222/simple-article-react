@@ -10,14 +10,14 @@
 }
 
 
-#btn_text {
+#beauty-button > span {
   font-family: inherit;
   font-size: 20px;
   transition: all 0.2s;
 }
 
 
-#beauty-button.circle #btn_text {
+#beauty-button.circle > span {
   visibility: hidden;
   opacity: 0;
 }

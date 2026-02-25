@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react'
+import AuthContext from './AuthContext'
 
-import AuthContext from './AuthContext';
-
-
-const AuthProvider = ({children}) => {
+export default function({children}){
 
     const key = 'auth'
     const logout = ''
@@ -71,8 +69,3 @@ const AuthProvider = ({children}) => {
         </AuthContext.Provider>
     )
 }
-
-export default AuthProvider
-
-
-

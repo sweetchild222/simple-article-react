@@ -1,10 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react'
+import ProfileContext from './ProfileContext'
 
-import ProfileContext from './ProfileContext';
-
-
-
-const ProfileProvider = ({children}) => {
+export default function({children}) {
 
     const key = 'profile'
     const deafultImage = '/image/user.png'
@@ -59,7 +56,6 @@ const ProfileProvider = ({children}) => {
     )
 }
 
-export default ProfileProvider
 
 
 

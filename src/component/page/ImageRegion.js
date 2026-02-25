@@ -1,7 +1,7 @@
 import ProfileContext from "../tool/ProfileContext.js";
 import {useContext, useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
 import { useLocation } from 'react-router-dom';
-import '../css/ImageRegion.css'
+import './ImageRegion.css'
 import * as blobToBase64 from '../tool/BlobToBase64.js'
 
 import { useNavigate} from 'react-router-dom';
@@ -137,10 +137,14 @@ export default function({ref, file, onSelectImage,
     ctx.fillRect(0, y + selectRect.height, imageRect.width, imageRect.height - y - selectRect.height)
     ctx.fillRect(0, y, x, selectRect.height)
     ctx.fillRect(x + selectRect.width, y, imageRect.width - selectRect.width - x, selectRect.height)
+
+
+    console.log(containRef.current.classList)
     
     if(containRef.current.classList.length >= 2){
+      
       if(containRef.current.classList[1] == 'loading')
-        containRef.current.classList.remove('loading')
+        containRef.current.classList.remove('loading')      
     }
             
     const rect = isContain ? calcContainRect(selectRect, imageRect) : calcCoverRect(selectRect, imageRect)
@@ -177,7 +181,6 @@ export default function({ref, file, onSelectImage,
     const selectImageHeight = selectRect.height * inversScale
 
     return {x:Math.floor(selectImageX), y: Math.floor(selectImageY), width:Math.ceil(selectImageWidth), height:Math.ceil(selectImageHeight)}
-
   }
 
 
@@ -189,8 +192,6 @@ export default function({ref, file, onSelectImage,
       }
     }
   }, [image]);
-
-
 
   
 

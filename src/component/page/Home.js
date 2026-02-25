@@ -1,6 +1,6 @@
 import React from "react";
 import axios from 'axios';
-//import '../css/Home.css'
+//import './Home.css'
 import BeautyButton from '../common/BeautyButton'
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';

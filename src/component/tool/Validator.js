@@ -1,5 +1,4 @@
 
-
 export function password(password) {
 
     if(password == null)

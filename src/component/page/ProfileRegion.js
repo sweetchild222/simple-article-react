@@ -1,7 +1,7 @@
 import ProfileContext from "../tool/ProfileContext.js";
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import { useLocation } from 'react-router-dom';
-import '../css/ProfileRegion.css'
+import './ProfileRegion.css'
 import * as blobToBase64 from '../tool/BlobToBase64.js'
 
 import { useNavigate} from 'react-router-dom';

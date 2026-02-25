@@ -1,10 +1,4 @@
-import React, {useContext, useEffect } from "react";
-import axios from 'axios';
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-
-import AuthContext from "./AuthContext";
-
+import axios from 'axios'
 
 export async function getUser(jwt, user_id) {
 

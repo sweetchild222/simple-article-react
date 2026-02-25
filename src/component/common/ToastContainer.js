@@ -1,7 +1,6 @@
 import React, { useState, useCallback, createElement } from 'react';
 import Toast from './Toast';
-import '../css/ToastContainer.css';
-
+import './ToastContainer.css';
 
 export default function(){
 

@@ -12,7 +12,7 @@ import * as validator from '../tool/Validator.js'
 import AuthContext from "../tool/AuthContext.js";
 import ProfileContext from "../tool/ProfileContext.js";
 import Modal from "../common/Modal.js"
-import '../css/Profile.css'
+import './Profile.css'
 
 export default function() {
 

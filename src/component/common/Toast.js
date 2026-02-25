@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../css/Toast.css';
+import './Toast.css';
 
 
 export default function({message, type, onClose}){

@@ -8,7 +8,7 @@ import Login from './Login.js'
 import PageNotFound from './PageNotFound.js'
 import Profile from './Profile.js'
 import Regist from './Regist.js'
-import Password from './Password.js'
+import ChangePassword from './ChangePassword.js'
 import Withdraw from './Withdraw.js'
 import ProfileRegion from './ProfileRegion.js'
 import ImageRegion from './ImageRegion.js'
@@ -35,7 +35,7 @@ export default function() {
             <Route path="/profile" element={<Profile/>}></Route>            
             <Route path="/image_region" element={<ImageRegion/>}></Route>
             <Route path="/widthdraw" element={<Withdraw/>}></Route>
-            <Route path="/password" element={<Password/>}></Route>
+            <Route path="/changePassword" element={<ChangePassword/>}></Route>
             <Route path="/profile_region" element={<ProfileRegion/>}></Route>
             <Route path="/*" element={<PageNotFound/>}></Route>
         </Routes>

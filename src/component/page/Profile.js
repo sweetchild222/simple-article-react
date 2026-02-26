@@ -85,7 +85,7 @@ export default function() {
 
     const onClickPasswordChange = ()=>{
 
-        navigate('/password')
+        navigate('/changePassword')
     }
 
 

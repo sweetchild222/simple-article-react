@@ -2,6 +2,8 @@ import './BeautyButton.css';
 
 export default function(props) {
 
+    console.log('asdf')
+
     const isDisable = (props) => {
         
         if(props.isLoading == true || props.disabled == true)
@@ -11,7 +13,7 @@ export default function(props) {
     }
 
     return (
-        <button id='beauty-button' className={`${props.type ? props.type : 'default'} ${props.isLoading ? 'circle': ''}`} disabled={isDisable(props)} onClick={props.onClick}>
+        <button id={props.id} className={`beauty-button ${props.type ? props.type : 'default'} ${props.isLoading ? 'circle': ''}`} disabled={isDisable(props)} onClick={props.onClick}>
             <span>{props.children}</span>
         </button>
     );

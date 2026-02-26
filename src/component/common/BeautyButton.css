@@ -1,29 +1,29 @@
-#beauty-button {
+.beauty-button {
   position: relative;
   cursor: pointer;
   border: none; 
   display: flex;
   align-items: center;
-  padding:10px;
+  padding:8px;
   border-radius: 6px;
   transition: all 0.1s ease;
 }
 
 
-#beauty-button > span {
+.beauty-button > span {
   font-family: inherit;
-  font-size: 20px;
+  font-size: 16px;
   transition: all 0.2s;
 }
 
 
-#beauty-button.circle > span {
+.beauty-button.circle > span {
   visibility: hidden;
   opacity: 0;
 }
 
 
-#beauty-button.circle::after {
+.beauty-button.circle::after {
   content: "";
   position: absolute;
   width: 16px;
@@ -52,14 +52,14 @@
 
 /*-------------------------------------------------------*/
 
-#beauty-button.success {
+.beauty-button.success {
 
   background: #7FCCDE;
   color: #F7FFFF;
 }
 
 
-#beauty-button.success:hover {
+.beauty-button.success:hover {
 
   background: #73B9C9;
   color: #F7FFFF;
@@ -67,7 +67,7 @@
 }
 
 
-#beauty-button.success:enabled:active {
+.beauty-button.success:enabled:active {
 
   background: #73B9C9;
   color: #F7FFFF;
@@ -76,7 +76,7 @@
 }
 
 
-#beauty-button.success:disabled {
+.beauty-button.success:disabled {
 
     background: #7FCCDE;
     color: #666666;
@@ -86,7 +86,7 @@
 }
 
 
-#beauty-button.success.circle::after {
+.beauty-button.success.circle::after {
   
   border-top-color: #803321;
 }
@@ -94,20 +94,20 @@
 
 /*-------------------------------------------------------*/
 
-#beauty-button.confirm{
+.beauty-button.confirm{
   background: #9ABF7F;
   color: #F7FFFF;
 }
 
 
-#beauty-button.confirm:hover {
+.beauty-button.confirm:hover {
   background: #87A86F;
   color: #F7FFFF;
   box-shadow: 0px 2px 3px #9ABF7F;
 }
 
 
-#beauty-button.confirm:enabled:active {
+.beauty-button.confirm:enabled:active {
 
   background: #87A86F;
   color: #F7FFFF;
@@ -116,7 +116,7 @@
 }
 
 
-#beauty-button.confirm:disabled {
+.beauty-button.confirm:disabled {
 
   background: #9ABF7F;
   color: #666666;
@@ -126,7 +126,7 @@
 }
 
 
-#beauty-button.confirm.circle::after {
+.beauty-button.confirm.circle::after {
   
   border-top-color: #654080;
 }
@@ -135,7 +135,7 @@
 /*-------------------------------------------------------*/
 
 
-#beauty-button.cancel {
+.beauty-button.cancel {
 
   
   background: #F0D264;
@@ -143,7 +143,7 @@
 }
 
 
-#beauty-button.cancel:hover {
+.beauty-button.cancel:hover {
 
   background: #D1B757;
   color: #F7FFFF;
@@ -151,7 +151,7 @@
 }
 
 
-#beauty-button.cancel:enabled:active {
+.beauty-button.cancel:enabled:active {
 
   background: #D1B757;
   color: #F7FFFF;
@@ -160,7 +160,7 @@
 }
 
 
-#beauty-button.cancel:disabled {
+.beauty-button.cancel:disabled {
 
     background: #F0D264;
     color: #666666;
@@ -170,7 +170,7 @@
 }
 
 
-#beauty-button.cancel.circle::after {
+.beauty-button.cancel.circle::after {
 
   border-top-color: #0F2D9B;
 }
@@ -178,14 +178,14 @@
 
 /*-------------------------------------------------------*/
 
-#beauty-button.danger{
+.beauty-button.danger{
 
   background: #FA5A5A;
   color: #F7FFFF;
 }
 
 
-#beauty-button.danger:hover {
+.beauty-button.danger:hover {
 
   background: #E04342;
   color: #F7FFFF;
@@ -193,7 +193,7 @@
 }
 
 
-#beauty-button.danger:enabled:active {
+.beauty-button.danger:enabled:active {
 
   background: #E04342;
   color: #F7FFFF;
@@ -202,7 +202,7 @@
 }
 
 
-#beauty-button.danger:disabled {
+.beauty-button.danger:disabled {
 
     background: #FA5A5A;
     color: #666666;
@@ -212,7 +212,7 @@
 }
 
 
-#beauty-button.danger.circle::after {
+.beauty-button.danger.circle::after {
   border-top-color: #05A5A5;
 }
 
@@ -220,14 +220,14 @@
 
 /*-------------------------------------------------------*/
 
-#beauty-button.warning{
+.beauty-button.warning{
 
   background: #CB99C5;
   color: #F7FFFF;
 }
 
 
-#beauty-button.warning:hover {
+.beauty-button.warning:hover {
 
   background: #AD83A8;
   color: #F7FFFF;
@@ -235,7 +235,7 @@
 }
 
 
-#beauty-button.warning:enabled:active {
+.beauty-button.warning:enabled:active {
 
   background: #AD83A8;
   color: #F7FFFF;
@@ -244,7 +244,7 @@
 }
 
 
-#beauty-button.warning:disabled {
+.beauty-button.warning:disabled {
 
     background: #CB99C5;
     color: #666666;
@@ -254,14 +254,14 @@
 }
 
 
-#beauty-button.warning.circle::after {
+.beauty-button.warning.circle::after {
   border-top-color: #34663A;
 }
 
 
 /*-------------------------------------------------------*/
 
-#beauty-button.default{
+.beauty-button.default{
 
   background: #7FB1BF;
   color: #F7FFFF;
@@ -269,7 +269,7 @@
 }
 
 
-#beauty-button.default:hover {
+.beauty-button.default:hover {
 
   background: #74A3B0;
   color: #F7FFFF;
@@ -277,7 +277,7 @@
 }
 
 
-#beauty-button.default:enabled:active {
+.beauty-button.default:enabled:active {
 
   background: #74A3B0;
   color: #F7FFFF;
@@ -286,7 +286,7 @@
 }
 
 
-#beauty-button.default:disabled {
+.beauty-button.default:disabled {
 
   background: #7FB1BF;
   color: #666666;
@@ -296,6 +296,6 @@
 }
 
 
-#beauty-button.default.circle::after {
+.beauty-button.default.circle::after {
   border-top-color: #804E40;
 }

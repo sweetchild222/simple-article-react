@@ -7,9 +7,33 @@ body {
   font-family: "Noto Sans KR", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight:800;
+  font-weight:normal;  
 }
 
 
 /* font-family: "Noto Sans KR", sans-serif; */
 /* font-family: "Nanum Pen Script", cursive; */
+
+
+input{
+  border: 2px solid #808080;
+  border-radius: 5px;
+  font-size: 16px;
+  padding:5px;
+}
+
+input:focus{
+  outline:1px solid #808080;
+}
+
+
+input:disabled{
+
+  color:gray
+}
+
+
+
+label {
+  font-size: 16px;
+}

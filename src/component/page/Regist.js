@@ -7,6 +7,7 @@ import AuthContext from "../util/AuthContext.js";
 
 import * as api from '../util/Api.js'
 import * as validator from '../util/Validator.js'
+import BeautyButton from "../common/BeautyButton.js";
 
 
 
@@ -17,8 +18,16 @@ export default function() {
 
   const [passwordValid, setPasswordValid] = useState(false);
   const [isVerified, setIsVerified] = useState(false)
+  const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)
+  const [isDisabledSendCode, setIsDisabledSendCode] = useState(false)
 
-  
+  const [isLoadingVerify, setIsLoadingVerify] = useState(false)
+  const [isDisabledVerify, setIsDisabledVerify] = useState(false)
+
+  const [isLoadingRegist, setIsLoadingRegist] = useState(false)
+  const [isDisabledRegist, setIsDisabledRegist] = useState(false)
+
+
   useEffect(() => {
 
     if(validAuth(auth)){
@@ -29,11 +38,11 @@ export default function() {
     if(isVerified == true){
       input_email.disabled = true
       input_verifyCode.disabled = true
-      btn_requestVerify.disabled = true
-      btn_sendVerifyCode.disabled = true
+      setIsDisabledVerify(true)
+      setIsDisabledSendCode(true)
     }
     else
-      btn_regist.disabled = true
+      setIsDisabledRegist(true)
 
   }, [auth, isVerified])
 
@@ -44,22 +53,22 @@ export default function() {
     const email = input_email.value
     
     if(!validator.email(email)){
-      window.showToast('잘못된 형식의 이메일', 'error')
+      input_email.focus()
+      window.showToast('잘못된 형식의 이메일입니다', 'error')
       return
     }
     
-    btn_sendVerifyCode.disabled = true
+
+    setIsLoadingSendCode(true)
     input_email.disabled = true
-
     const success = await sendVerifyCodeCore(email);
-
-    btn_sendVerifyCode.disabled = false
+    setIsLoadingSendCode(false)
     input_email.disabled = false
 
     if(!success)
-      window.showToast('인증 코드 발송 실패', 'error')
+      window.showToast('인증 코드 발송이 실패하였습니다', 'error')
     else
-      window.showToast('인증 코드 발송 성공', 'success')
+      window.showToast('인증 코드 발송이 성공하였습니다', 'success')
   }
 
 
@@ -71,7 +80,7 @@ export default function() {
       return false
 
     if(resExist.exist == 1){
-      window.showToast('이미 존재하는 사용자', 'error')
+      window.showToast('이미 가입한 사용자입니다', 'error')
       return false
     }
 
@@ -86,29 +95,34 @@ export default function() {
     const email = input_email.value
     
     if(!validator.email(email)){
-      window.showToast('잘못된 형식의 이메일', 'error')
+      input_email.focus()
+      window.showToast('잘못된 형식의 이메일입니다', 'error')
       return
     }
 
     const verifyCode = input_verifyCode.value
 
     if(!validator.verifyCode(verifyCode)){
-      window.showToast('잘못된 형식의 인증 코드', 'error')      
+      input_verifyCode.focus()
+      window.showToast('인증 코드를 잘못 입력하였습니다', 'error')      
       return
     }
     
-    btn_requestVerify.disabled = true
+
+    setIsLoadingVerify(true)
+    setIsLoadingSendCode(true)
     input_verifyCode.disabled = true
 
     const success = await requestVerify(email, verifyCode)
-
-    btn_requestVerify.disabled = false
+    
     input_verifyCode.disabled = false
+    setIsLoadingSendCode(false)
+    setIsLoadingVerify(false)
 
     if(success)
-      window.showToast('인증 성공', 'success')
+      window.showToast('인증에 성공하였습니다', 'success')
     else
-      window.showToast('인증 실패', 'error')
+      window.showToast('인증에 실패하였습니다', 'error')
     
     setIsVerified(success)
   }
@@ -132,20 +146,21 @@ export default function() {
 
     if(!(validator.email(email) && validator.password(password)))
       return
-    
-    btn_regist.disabled = true
+
+    setIsLoadingRegist(true)
 
     const auth = await regist(email, password)
 
-    btn_regist.disabled = false
-
+    setIsLoadingRegist(false)
+    
     if(auth == null){
-      window.showToast('회원 가입 실패', 'error')
+      window.showToast('회원 가입이 실패하였습니다', 'error')
+      navigate(-1)
       return
     }
-                
+
     updateAuth(auth)
-    window.showToast('회원 가입 성공', 'success')
+    window.showToast('회원 가입이 성공하였습니다', 'success')    
   }
 
   
@@ -157,7 +172,7 @@ export default function() {
       return null
 
     if(resExist.exist == 1){
-      window.showToast('이미 존재하는 사용자', 'error')
+      window.showToast('이미 존재하는 사용자입니다', 'error')
       return null
     }
 
@@ -190,7 +205,7 @@ export default function() {
 
     const valid = validator.verifyCode(verifyCode)
 
-    btn_requestVerify.disabled = !valid
+    setIsDisabledVerify(!valid)
   }
 
 
@@ -205,7 +220,8 @@ export default function() {
     setPasswordValid(valid)
 
     if(isVerified == true)
-      btn_regist.disabled = !valid    
+      setIsDisabledRegist(!valid)
+      
   }
 
 
@@ -220,30 +236,28 @@ export default function() {
     setPasswordValid(valid)
   
     if(isVerified == true)
-      btn_regist.disabled = !valid
+      setIsDisabledRegist(!valid)
   }
 
   return !validAuth(auth) ? (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <input id='input_email' type="text" maxLength="254" onChange={onChangeEmail} placeholder="이메일"/>
-        <button id='btn_sendVerifyCode' onClick={onClickSendVerifyCode}>인증 번호 발송</button>          
+        <BeautyButton isLoading={isLoadingSendCode} disabled={isDisabledSendCode} onClick={onClickSendVerifyCode}>인증 번호 발송</BeautyButton>
       </div>
 
       <input id='input_verifyCode' type="number" maxLength="6" onChange={onChangeVerifyCode} placeholder="인증 코드"/>
-      <button id='btn_requestVerify'  onClick={onClickRequestVerify}>인증 번호 확인</button>
+      <BeautyButton isLoading={isLoadingVerify} disabled={isDisabledVerify} onClick={onClickRequestVerify}>인증 번호 확인</BeautyButton>
       <label>{isVerified ? '인증 완료' : '미 인증'}</label>
 
       <div style={{height:100}}></div>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-        <input id='input_password' type="text" onChange={onChangePassword} placeholder="비밀번호 (8~20자)"/>          
+        <input id='input_password' type="text" onChange={onChangePassword} placeholder="비밀번호 (8~20자)"/>
       </div>
-      <input id='input_confirm_password' type="text" onChange={onChangeConfirmPassword} placeholder="비밀번호 확인"/>        
+      <input id='input_confirm_password' type="text" onChange={onChangeConfirmPassword} placeholder="비밀번호 확인"/>
       <label>비밀번호 조건: 소문자, 대문자, 숫자, 특수문자 각 1개 이상 포함</label>
       <label>{passwordValid ? '유효한 패스워드' : '무효한 패스워드'}</label>
-      <button id='btn_regist' onClick={onClickRegist}>회원 가입</button>
-
-      <div style={{height:30}}></div>
+      <BeautyButton isLoading={isLoadingRegist} disabled={isDisabledRegist} onClick={onClickRegist} type='confirm'>회원 가입</BeautyButton>
     </div>
   ) : null
 }

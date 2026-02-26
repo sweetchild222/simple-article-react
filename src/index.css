@@ -17,23 +17,22 @@ body {
 
 input{
   border: 2px solid #808080;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 16px;
-  padding:5px;
+  padding:8px;
 }
+
 
 input:focus{
-  outline:1px solid #808080;
+  border: 2px solid #000000;  
 }
 
-
 input:disabled{
-
   color:gray
 }
 
 
-
 label {
   font-size: 16px;
+  color:black
 }

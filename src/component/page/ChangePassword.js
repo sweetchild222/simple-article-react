@@ -119,9 +119,7 @@ export default function() {
 
         <label htmlFor='input_current_password'>기존 비밀번호</label>
         <input id='input_current_password' type='text' onKeyDown={onKeyDownCurrent}/>
-
-
-        <label >비밀번호 조건: 8자 ~ 20자 사이 문자열로 영어소문자, 영어대문자, 숫자, 특수문자 포함</label>
+        <label>비밀번호 조건: 8자 ~ 20자 사이 문자열로 영어소문자, 영어대문자, 숫자, 특수문자 포함</label>
         <label htmlFor='input_new_password' >새 비밀번호</label>
         <input id='input_new_password' type='text' onKeyDown={onKeyDownNew}/>
 

@@ -1,12 +1,13 @@
 .beauty-button {
   position: relative;
   cursor: pointer;
-  border: none; 
-  display: flex;
-  align-items: center;
+  border: none;  
   padding:8px;
   border-radius: 6px;
   transition: all 0.1s ease;
+  display: flex;
+  justify-content: center;  
+  align-items: center;
 }
 
 

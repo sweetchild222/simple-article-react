@@ -1,16 +1,15 @@
-#profile {
-  padding: 10px;
-  position: relative;  
+#profile {  
+  position: relative;
   align-items: center;
   justify-content: center;
-  display:flex;  
+  display:flex;
   flex-direction:column;
 }
 
 
-#cover {
+#cover {  
   position: relative;
+  border: 2px solid gray;
+  border-radius: 3px;
 }
 
-
-  

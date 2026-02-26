@@ -27,6 +27,7 @@ export default function() {
         <ProfileContext>
         <ToastContainer />
         <Header/>
+        <div style={{height:'2px'}}/>
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/home" element={<Home />}></Route>

@@ -1,24 +1,22 @@
 import axios from 'axios';
 
-import React, {useContext, useEffect } from "react";
-
-
 import * as api from '../util/Api.js'
-import { useState } from 'react';
+import {useState, useContext, useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 
 import AuthContext from "../util/AuthContext.js";
 import Modal from "../common/Modal.js"
-
+import BeautyButton from '../common/BeautyButton.js';
 
 export default function() {
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth, removeAuth} = useContext(AuthContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate();
 
-    const modal_config = {text: '회원 탈퇴?', type: 'yesno'}
+    const modal_config = {text: '회원 탈퇴를 하시겠습니까?', type: 'yesno'}
 
     useEffect(()=>{
 
@@ -28,12 +26,14 @@ export default function() {
     },[auth])
 
     
-    const onClickUserWithdraw = async(event)=> {
+    const onClickUserWithdraw = async()=> {
 
         const password = input_widthdraw_password.value
 
-        if(password == '')
+        if(password == ''){
+            window.showToast('현재 비밀번호를 입력하세요', 'error')
             return
+        }
 
         setIsModalOpen(true)
     }
@@ -46,23 +46,25 @@ export default function() {
 
         const password = input_widthdraw_password.value
 
-        if(password == '')
+        if(password == ''){
+            window.showToast('현재 비밀번호를 입력하세요', 'error')
             return
+        }
 
-        btn_widthdraw.disabled = true
+        setIsLoading(true)
 
         const result = await userWithdraw(password)
 
-        btn_widthdraw.disabled = false
+        setIsLoading(false)
 
         if(result == null){
-            window.showToast('회원 탈퇴 실패', 'error')
+            window.showToast('회원 탈퇴가 실패하였습니다', 'error')
             return
         }
         
         removeAuth()
 
-        window.showToast('회원 탈퇴 완료', 'success')
+        window.showToast('회원 탈퇴가 성공하였습니다', 'success')
     }
 
     
@@ -84,9 +86,9 @@ export default function() {
 
     return validAuth(auth) ? (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <label htmlFor='input_widthdraw_password'>{'비밀번호'}</label>
+        <label htmlFor='input_widthdraw_password'>비밀번호</label>
         <input id='input_widthdraw_password' type='text'/>
-        <button id='btn_widthdraw' onClick={onClickUserWithdraw} >회원탈퇴</button>
+        <BeautyButton onClick={onClickUserWithdraw} isLoading={isLoading}>회원탈퇴</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
       </div>
     ) : null

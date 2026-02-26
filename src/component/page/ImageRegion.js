@@ -1,14 +1,6 @@
-import ProfileContext from "../util/ProfileContext.js";
-import {useContext, useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
-import { useLocation } from 'react-router-dom';
+import {useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
 import './ImageRegion.css'
 import './RotateLoading.css'
-import * as blobToBase64 from '../util/BlobToBase64.js'
-
-import { useNavigate} from 'react-router-dom';
-import * as api from '../util/Api.js'
-import AuthContext from "../util/AuthContext.js";
-
 
 export default function({ref, file, onSelectImage,
                         containerWidth=600, containerHeight=300,

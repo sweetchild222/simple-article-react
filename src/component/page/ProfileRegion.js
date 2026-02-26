@@ -10,6 +10,8 @@ import * as api from '../util/Api.js'
 import AuthContext from "../util/AuthContext.js"
 import ImageRegion from './ImageRegion.js'
 
+import BeautyButton from "../common/BeautyButton.js"
+
 
 export default function() {
   
@@ -17,6 +19,7 @@ export default function() {
   const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
 
   const [isLoading, setIsLoading] = useState(true)
+  const [isPostLoading, setIsPostLoading] = useState(false)
 
   const previewRef = useRef(null)
   const imageRegionRef = useRef(null)  
@@ -33,7 +36,7 @@ export default function() {
   const imageFile = location.state
 
   if(imageFile == null)
-    return (<div>wrong access page</div>)
+    return (<div>잘못된 방식으로 접근하였습니다</div>)
 
   useEffect(()=> {
 
@@ -84,7 +87,7 @@ export default function() {
   }
 
 
-  const onClickOK = async() => {
+  const onClickApply = async() => {
 
     const imageUrl = previewRef.current.style.backgroundImage
     
@@ -100,13 +103,13 @@ export default function() {
     const formData = new FormData()
     formData.append('image', blob)
 
-    postProfile.disabled = true
+    setIsPostLoading(true)    
 
     const resProfile = await api.postProfile(auth.jwt, formData)
 
     if(resProfile == null){
-      postProfile.disabled = false
-      window.showToast('프로필 변경 실패', 'error')      
+      setIsPostLoading(false)      
+      window.showToast('프로필 변경이 실패하였습니다', 'error')      
       return
     }
 
@@ -114,8 +117,8 @@ export default function() {
     const resUser = await api.patchUser(auth.jwt, auth.user_id, payload)
 
     if(resUser == null){
-      postProfile.disabled = false
-      window.showToast('프로필 변경 실패', 'error')      
+      setIsPostLoading(false)
+      window.showToast('프로필 변경이 실패하였습니다', 'error')      
       return
     }
 
@@ -123,16 +126,17 @@ export default function() {
     const profile = await api.getProfile(auth.jwt, profileId)
 
     if(profile == null) {
-      postProfile.disabled = false
-      window.showToast('프로필 가져오기 실패', 'error')      
+      setIsPostLoading(false)
+      window.showToast('프로필 가져오기가 실패하였습니다', 'error')      
       return
     }
-        
+    
     const base64Profile = await blobToBase64.convert(profile)
     updateProfile(base64Profile)
 
-    postProfile.disabled = false
-    window.showToast('프로필 변경 완료', 'success')
+    setIsPostLoading(false)
+    window.showToast('프로필 변경이 성공하였습니다', 'success')
+    navigate(-1)
   }
 
 
@@ -147,8 +151,8 @@ export default function() {
       <ImageRegion ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
       <div id='preview' className={`${isLoading ? 'rotateLoading': ''}`} ref={previewRef}  style={{width: `${previewWidth}px`, height: `${previewHeight}px`}}/>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-      <button id='postProfile' onClick={onClickOK}>ok</button>
-      <button onClick={onClickCancel}>cancel</button>
+      <BeautyButton onClick={onClickApply} type='confirm' isLoading={isPostLoading}>적용</BeautyButton>
+      <BeautyButton onClick={onClickCancel} type='cancel'>취소</BeautyButton>
       </div>
     </div>
     ) : null

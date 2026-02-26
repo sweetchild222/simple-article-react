@@ -57,7 +57,7 @@ export default function() {
         getHighQualityProfile(auth).then((profile)=>{
             
             if(profile == null)
-                window.showToast('프로필 가져오기 실패', 'error')            
+                window.showToast('프로필 가져오기가 실패하였습니다', 'error')
             else
                 setProfileHigh(profile)
 
@@ -65,14 +65,14 @@ export default function() {
         })
     }, [auth])
     
-    const modal_config = {text: '로그 아웃?', type: 'yesno'}
+    const modal_config = {text: '로그 아웃 하시겠습니까?', type: 'yesno'}
 
     const onYesNo = (yes) => {
 
         if(yes == true){
             removeAuth()
             removeProfile()
-            window.showToast('logout 완료', 'success')
+            window.showToast('로그 아웃이 성공하였습니다', 'success')
         }
     }
 
@@ -174,8 +174,8 @@ export default function() {
 
     return validAuth(auth) ? (
       <div id='profile'>
-        <div id='cover' ref={coverRef} className={`${isLoading ? 'rotateLoading': ''}`}>
-            <img alt='image' src={profileHigh} onClick={onClickProfile} style={{width:'256px', height:'256px'}}/>
+        <div id='cover' ref={coverRef} className={`${isLoading ? 'rotateLoading': ''}`}  style={{width:'256px', height:'256px'}}>            
+            <img alt='image' src={profileHigh} onClick={onClickProfile} style={{borderRadius:'1px'}}/>
         </div>
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>

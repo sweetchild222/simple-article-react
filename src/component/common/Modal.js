@@ -1,6 +1,8 @@
 import './Modal.css'
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
+import BeautyButton from './BeautyButton';
+
 
 
 export default ({config, isOpen, onYesNo, onClose, children}) => {
@@ -65,9 +67,9 @@ export default ({config, isOpen, onYesNo, onClose, children}) => {
         <dialog ref={dialogRef} onClick={onClickDialog}>
             {config.text != null && <p>{config.text}</p>}
             {children}
-            {config.type == 'confirm' && < button onClick={onClickConfirm}>확인</button>}
-            {config.type == 'yesno' && < button onClick={onClickYes}>예</button>}
-            {config.type == 'yesno' && < button onClick={onClickNo}>아니오</button>}
+            {config.type == 'confirm' && <BeautyButton onClick={onClickConfirm} type='confirm'>확인</BeautyButton>}
+            {config.type == 'yesno' && < BeautyButton onClick={onClickYes} type='success'>예</BeautyButton>}
+            {config.type == 'yesno' && < BeautyButton onClick={onClickNo} type='warning'>아니오</BeautyButton>}
         </dialog>,
         document.getElementById('modal-root')
     )

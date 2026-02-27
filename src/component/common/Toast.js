@@ -33,7 +33,7 @@ export default function({message, type, onClose}){
     
     return (
         <div className={`toast toast-${type} ` + (isSlideIn ? 'toast-in' : 'toast-out')} onAnimationEnd={onAnimationEnd}>
-            <div style={{backgroundColor: 'lightblue'}}>{message}</div>
+            <div>{message}</div>
             <button onClick={onClickRemove} className="close-btn">&times;</button>
         </div>
     )

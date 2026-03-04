@@ -69,7 +69,7 @@ export default function Home() {
     }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor:'red'}}>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={goEditor}>에디터</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='default' onClick={test5}>안녕하세요. 저는 최인국입니다</BeautyButton>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='warning' onClick={test5}>안녕하세요. 저는 최인국입니다</BeautyButton>

@@ -4,8 +4,9 @@ import {Routes, Route, useNavigate } from 'react-router-dom'
 
 import Header from './Header.js'
 import Home from './Home.js'
-import Editor from './Editor.js'
-import MDEditor from './MDEditor.js'
+// import Editor from './Editor.js'
+
+import MDXEditor from './MDXEditor.js'
 import Login from './Login.js'
 import PageNotFound from './PageNotFound.js'
 import Profile from './Profile.js'
@@ -24,16 +25,16 @@ export default function() {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div style={{height:'100%', display: 'flex', flexDirection: 'column'}}>
       <AuthProvider>
         <ProfileContext>
         <ToastContainer />
         <Header/>
-        <div style={{height:'2px'}}/>
+        <div style={{height:'auto', flex: 1}}>
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/home" element={<Home />}></Route>
-            <Route path="/editor" element={<MDEditor />}></Route>
+            <Route path="/editor" element={<MDXEditor />}></Route>
             <Route path="/login" element={<Login/>}></Route>
             <Route path="/regist" element={<Regist/>}></Route>
             <Route path="/profile" element={<Profile/>}></Route>            
@@ -42,10 +43,10 @@ export default function() {
             <Route path="/changePassword" element={<ChangePassword/>}></Route>
             <Route path="/profile_region" element={<ProfileRegion/>}></Route>
             <Route path="/*" element={<PageNotFound/>}></Route>
-        </Routes>
+          </Routes>
+        </div>
         </ProfileContext>
       </AuthProvider>
-      
     </div>
   )
 }

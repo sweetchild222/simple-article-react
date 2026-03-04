@@ -90,6 +90,22 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
             onClose()
     }
 
+    const onKeyDownInput=(event) =>{
+
+        if (event.key === 'Enter'){
+
+            if(onInput != null)
+                onInput(inputRef.current.value)
+
+            if(onClose != null)
+                onClose()
+        }
+
+    }
+
+
+
+
 
   
     return ReactDOM.createPortal(
@@ -97,7 +113,7 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
             {config.text != null && <p>{config.text}</p>}
             {children}
 
-            {config.type == 'input' && <input id='input_123' ref={inputRef}/>}
+            {config.type == 'input' && <input id='input_123' ref={inputRef} onKeyDown={onKeyDownInput}/>}
             {config.type == 'input' && <BeautyButton onClick={onClickInputYes} type='success'>확인</BeautyButton>}
             
             {config.type == 'confirm' && <BeautyButton onClick={onClickConfirm} type='confirm'>확인</BeautyButton>}

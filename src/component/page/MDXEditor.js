@@ -3,8 +3,9 @@ import { usePublisher } from '@mdxeditor/gurx'
 import Modal from '../common/Modal'
 import i18next from 'i18next'
 import ko from './ko.json'
+import BeautyButton from '../common/BeautyButton'
 import '@mdxeditor/editor/style.css'
-import './MDEditor.css'
+import './MDXEditor.css'
 
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
@@ -40,7 +41,7 @@ export default function() {
     Editor: ({ mdastNode, lexicalNode, parentEditor }) => {
       return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <button
+          <BeautyButton type='warning'
             onClick={() => {
               parentEditor.update(() => {
                 lexicalNode.selectNext()
@@ -49,9 +50,9 @@ export default function() {
             }}
           >
           삭제
-          </button>
+          </BeautyButton>
           <iframe width="560" height="315" src={`https://www.youtube.com/embed/${mdastNode.attributes.id}`} title="YouTube"
-            style={{ border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            style={{ border: '2px solid gray', borderRadius:'4px'  }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
           ></iframe>
         </div>
       )
@@ -105,9 +106,8 @@ export default function() {
 
     const node = editorInFocus?.rootNode
 
-    if (!node || node.getType() !== 'directive') {
-      return false
-    }
+    if (!node || node.getType() !== 'directive')
+      return false    
 
     return ['note', 'tip', 'danger', 'info', 'caution'].includes((node).getMdastNode().name)
   }
@@ -122,8 +122,9 @@ export default function() {
         </div>
       );
     }`
-    
+  
   const sandpackConfig = {
+
     defaultPreset: 'react',
     presets: [
       {
@@ -141,6 +142,7 @@ export default function() {
 
 
   const CustomToolbar=()=>{
+
     return(
       <DiffSourceToggleWrapper>
         <ConditionalContents
@@ -167,7 +169,7 @@ export default function() {
                 <InsertImage />
                 <YouTubeButton />
                 <Separator />
-                <InsertTable />    
+                <InsertTable />
                 <InsertThematicBreak />
                 <Separator />
                 <InsertCodeBlock />
@@ -210,7 +212,7 @@ export default function() {
     tablePlugin(),
     thematicBreakPlugin(),
     frontmatterPlugin(),
-    codeBlockPlugin({ defaultCodeBlockLanguage: 'js'}),    
+    codeBlockPlugin({ defaultCodeBlockLanguage: 'js'}),
     sandpackPlugin({ sandpackConfig: sandpackConfig }),
     codeMirrorPlugin({ codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'java-script', ts: 'type-script', css: 'CSS', txt: 'plain text'} }),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
@@ -220,13 +222,17 @@ export default function() {
 
   const modal_config = {text: '유튜브 URL을 입력하세요', type: 'input', isCloseOutsideClick: true}
 
-  return (
-      <div style={{ border: '1px solid #ccc', borderRadius: '4px', height: '400px', overflowY: 'auto'}}>
-      {/* <button onClick={() => ref.current?.setMarkdown('new markdown')}>Set new markdown</button>
-      <button onClick={() => console.log(ref.current?.getMarkdown())}>Get markdown</button> */}
-      <MDXEditor ref={ref} markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log('adfsadfasdf')}}
-        translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
-      <Modal config={modal_config} isOpen={isModalOpen} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
+    return (
+      <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
+        <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
+          <MDXEditor ref={ref} markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
+            translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
+          <Modal config={modal_config} isOpen={isModalOpen} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>        
+        </div>
+        <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+          <BeautyButton type='danger'>취소</BeautyButton>
+          <BeautyButton type='confirm'>저장</BeautyButton>          
+        </div>
       </div>
   )
 }

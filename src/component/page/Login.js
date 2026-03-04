@@ -105,7 +105,7 @@ export default function() {
     
 
     return !validAuth(auth) ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <label htmlFor='input_username'>사용자 이름</label>
             <input id='input_username' type='text' onKeyDown={onKeyDownUserName}/>
             <label htmlFor='input_password'>비밀번호</label>

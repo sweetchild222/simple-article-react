@@ -61,7 +61,7 @@ export default function() {
         <div style={{ display: 'flex', alignItems: 'center', height:'64px', backgroundColor: 'gray', paddingLeft:'30px'}}>
         <img src='/image/logo.svg' alt='logo image' height='100%' width='64px' onClick={onClickHome}/>
         <div style={{flexGrow:1, backgroundColor:'green'}} ></div>
-        <input id="myInput" placeholder="검색" style={{color:'green', height:'50px', width:'100px'}} onKeyDown={onKeyDown}></input>
+        <input id="myInput" placeholder="검색" style={{color:'green', width:'100px'}} onKeyDown={onKeyDown}></input>
         <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickSearch}>검색</button>
         {!isLoggedIn && <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickLogIn}>로그인</button>}
         {isLoggedIn && <img src={profile} height='100%' width='64px' onClick={onClickProfile}/>}

@@ -1,0 +1,9 @@
+.prose {
+  font-family: sans-serif;
+  font-weight: normal;
+}
+
+.prose strong {
+  font-family: sans-serif;
+  font-weight: bold;
+}

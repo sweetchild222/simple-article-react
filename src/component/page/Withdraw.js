@@ -39,9 +39,9 @@ export default function() {
     }
 
 
-    const onYesNo = async(yes) => {
+    const onResult = async(result) => {
 
-        if(yes == false)
+        if(result == false)
             return
 
         const password = input_widthdraw_password.value
@@ -53,11 +53,11 @@ export default function() {
 
         setIsLoading(true)
 
-        const result = await userWithdraw(password)
+        const resultWidthdraw = await userWithdraw(password)
 
         setIsLoading(false)
 
-        if(result == null){
+        if(resultWidthdraw == null){
             window.showToast('회원 탈퇴가 실패하였습니다', 'error')
             return
         }
@@ -89,7 +89,7 @@ export default function() {
         <label htmlFor='input_widthdraw_password'>비밀번호</label>
         <input id='input_widthdraw_password' type='text'/>
         <BeautyButton onClick={onClickUserWithdraw} isLoading={isLoading}>회원탈퇴</BeautyButton>
-        <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
+        <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
       </div>
     ) : null
 }

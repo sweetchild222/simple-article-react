@@ -1,8 +1,6 @@
 import './BeautyButton.css';
 
-export default function(props) {
-
-    console.log(props.style)
+export default function(props) {    
 
     const combinedStyle = {
     

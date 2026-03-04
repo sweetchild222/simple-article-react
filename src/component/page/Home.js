@@ -21,10 +21,9 @@ export default function Home() {
   const [isDisable, setIsDisable] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const test = async() => {
+  const goEditor = async() => {
 
-
-    navigate('/image_region')
+    navigate('/editor')
     
   };
 
@@ -69,11 +68,9 @@ export default function Home() {
       //setIsDisable(true)
     }
 
-
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={test2}>검색</BeautyButton>
+      <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={goEditor}>에디터</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='default' onClick={test5}>안녕하세요. 저는 최인국입니다</BeautyButton>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='warning' onClick={test5}>안녕하세요. 저는 최인국입니다</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='warning' onClick={test5}>warning</BeautyButton>

@@ -67,9 +67,9 @@ export default function() {
     
     const modal_config = {text: '로그 아웃 하시겠습니까?', type: 'yesno'}
 
-    const onYesNo = (yes) => {
+    const onResult = (result) => {
 
-        if(yes == true){
+        if(result == true){
             removeAuth()
             removeProfile()
             window.showToast('로그 아웃이 성공하였습니다', 'success')
@@ -178,7 +178,7 @@ export default function() {
             <img alt='image' src={profileHigh} onClick={onClickProfile} style={{borderRadius:'1px'}}/>
         </div>
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
-        <Modal config={modal_config} isOpen={isModalOpen} onYesNo={onYesNo} onClose={()=>setIsModalOpen(false)}></Modal>
+        <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
         <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>
         <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
       </div>

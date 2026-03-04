@@ -4,6 +4,8 @@ import {Routes, Route, useNavigate } from 'react-router-dom'
 
 import Header from './Header.js'
 import Home from './Home.js'
+import Editor from './Editor.js'
+import MDEditor from './MDEditor.js'
 import Login from './Login.js'
 import PageNotFound from './PageNotFound.js'
 import Profile from './Profile.js'
@@ -31,6 +33,7 @@ export default function() {
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/home" element={<Home />}></Route>
+            <Route path="/editor" element={<MDEditor />}></Route>
             <Route path="/login" element={<Login/>}></Route>
             <Route path="/regist" element={<Regist/>}></Route>
             <Route path="/profile" element={<Profile/>}></Route>            

@@ -1,21 +1,18 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap');
-
-
 body {
   margin: 0;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight:normal;  
+  font-weight:normal;
 }
 
-
+/* @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap'); */
 /* font-family: "Noto Sans KR", sans-serif; */
 /* font-family: "Nanum Pen Script", cursive; */
 
 
 input{
+  font-family: sans-serif;
   border: 2px solid #808080;
   border-radius: 6px;
   font-size: 16px;
@@ -23,7 +20,7 @@ input{
 }
 
 
-input:focus{
+input:focus{  
   border: 2px solid #000000;  
 }
 
@@ -33,6 +30,7 @@ input:disabled{
 
 
 label {
+  font-family: sans-serif;
   font-size: 16px;
   color:black
 }

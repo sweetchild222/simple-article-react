@@ -1,5 +1,7 @@
 
 import './App.css'
+import ErrorBoundary from './ErrorBoundary.js'
+import React, { useContext, useEffect, useState} from 'react';
 import {Routes, Route, useNavigate } from 'react-router-dom'
 
 import Header from './Header.js'
@@ -26,27 +28,29 @@ export default function() {
 
   return (
     <div style={{height:'100%', display: 'flex', flexDirection: 'column'}}>
-      <AuthProvider>
-        <ProfileContext>
-        <ToastContainer />
-        <Header/>
-        <div style={{height:'auto', flex: 1}}>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/home" element={<Home />}></Route>
-            <Route path="/editor" element={<MDXEditor />}></Route>
-            <Route path="/login" element={<Login/>}></Route>
-            <Route path="/regist" element={<Regist/>}></Route>
-            <Route path="/profile" element={<Profile/>}></Route>            
-            <Route path="/image_region" element={<ImageRegion/>}></Route>
-            <Route path="/widthdraw" element={<Withdraw/>}></Route>
-            <Route path="/changePassword" element={<ChangePassword/>}></Route>
-            <Route path="/profile_region" element={<ProfileRegion/>}></Route>
-            <Route path="/*" element={<PageNotFound/>}></Route>
-          </Routes>
-        </div>
-        </ProfileContext>
-      </AuthProvider>
+      <ErrorBoundary>
+        <AuthProvider>
+          <ProfileContext>
+          <ToastContainer />
+          <Header/>
+          <div style={{height:'auto', flex: 1}}>
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/home" element={<Home />}></Route>
+              <Route path="/editor" element={<MDXEditor />}></Route>
+              <Route path="/login" element={<Login/>}></Route>
+              <Route path="/regist" element={<Regist/>}></Route>
+              <Route path="/profile" element={<Profile/>}></Route>
+              <Route path="/image_region" element={<ImageRegion/>}></Route>
+              <Route path="/widthdraw" element={<Withdraw/>}></Route>
+              <Route path="/changePassword" element={<ChangePassword/>}></Route>
+              <Route path="/profile_region" element={<ProfileRegion/>}></Route>
+              <Route path="/*" element={<PageNotFound/>}></Route>
+            </Routes>
+          </div>
+          </ProfileContext>
+        </AuthProvider>
+      </ErrorBoundary>
     </div>
   )
 }

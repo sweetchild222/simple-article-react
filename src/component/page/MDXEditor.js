@@ -9,11 +9,11 @@ import './MDXEditor.css'
 
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
-  DiffSourceToggleWrapper, directivesPlugin, quotePlugin, InsertImage, thematicBreakPlugin, UndoRedo, CodeToggle, CreateLink, ListsToggle,
+  DiffSourceToggleWrapper, CodeMirrorEditor, directivesPlugin, quotePlugin, InsertImage, thematicBreakPlugin, UndoRedo, CodeToggle, CreateLink, ListsToggle,
   AdmonitionDirectiveDescriptor, BoldItalicUnderlineToggles, BlockTypeSelect, sandpackPlugin,  ChangeCodeMirrorLanguage, linkPlugin,
   toolbarPlugin, linkDialogPlugin, insertDirective$, ConditionalContents, Separator, HighlightToggle, StrikeThroughSupSubToggles,
   diffSourcePlugin, InsertTable, InsertThematicBreak, InsertCodeBlock, InsertFrontmatter, InsertAdmonition,
-  markdownShortcutPlugin, frontmatterPlugin, tablePlugin, codeBlockPlugin } from '@mdxeditor/editor'
+  markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin } from '@mdxeditor/editor'
 
 
 i18next.init({
@@ -114,14 +114,14 @@ export default function() {
 
 
   const defaultSnippetContent = `
-    export default function App() {
-      return (
-        <div className="App">
-          <h1>Hello</h1>
-          <h2>Input text</h2>
-        </div>
-      );
-    }`
+  export default function App() {
+    return (
+      <div className="App">
+        <h1>Hello</h1>
+        <h2>Input text</h2>
+      </div>
+    );
+  }`
   
   const sandpackConfig = {
 
@@ -173,19 +173,17 @@ export default function() {
                 <InsertThematicBreak />
                 <Separator />
                 <InsertCodeBlock />
-                <InsertSandpack />
+                {/* <InsertSandpack /> */}
                 <ConditionalContents
                   options={[{
                     when: (editorInFocus) => !whenInAdmonition(editorInFocus),
                     contents: () => (
                       <>
-                        <Separator />
                         <InsertAdmonition />
                       </>
                     )
                   }]}
                 />
-                <Separator />
                 <InsertFrontmatter />
               </>
               )
@@ -213,8 +211,8 @@ export default function() {
     thematicBreakPlugin(),
     frontmatterPlugin(),
     codeBlockPlugin({ defaultCodeBlockLanguage: 'js'}),
-    sandpackPlugin({ sandpackConfig: sandpackConfig }),
-    codeMirrorPlugin({ codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'java-script', ts: 'type-script', css: 'CSS', txt: 'plain text'} }),
+    // sandpackPlugin({ sandpackConfig: sandpackConfig }),
+    codeMirrorPlugin({ codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'} }),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: markdown }),
     markdownShortcutPlugin()
@@ -227,7 +225,7 @@ export default function() {
         <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
           <MDXEditor ref={ref} markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
             translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
-          <Modal config={modal_config} isOpen={isModalOpen} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>        
+          <Modal config={modal_config} isOpen={isModalOpen} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
         </div>
         <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
           <BeautyButton type='danger'>취소</BeautyButton>

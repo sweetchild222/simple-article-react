@@ -8,7 +8,6 @@ import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 
 
 
-
 export default function Home() {
 
   let inputEmail = null
@@ -69,7 +68,7 @@ export default function Home() {
     }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor:'red'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={goEditor}>에디터</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='default' onClick={test5}>안녕하세요. 저는 최인국입니다</BeautyButton>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='warning' onClick={test5}>안녕하세요. 저는 최인국입니다</BeautyButton>

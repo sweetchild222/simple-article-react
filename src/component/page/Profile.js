@@ -119,7 +119,7 @@ export default function() {
 
     const onClickProfile = async() =>{
 
-        const file = await selectFile()
+        const file = await selectFile()        
 
         if(file == null)
             return

@@ -65,7 +65,7 @@ export default function() {
         })
     }, [auth])
     
-    const modal_config = {text: '로그 아웃 하시겠습니까?', type: 'yesno'}
+    const modal_config = {text: '로그 아웃 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
     const onResult = (result) => {
 

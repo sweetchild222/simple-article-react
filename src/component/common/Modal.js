@@ -16,7 +16,7 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
 
         if(config.text == null)
             config.text = (config.type == 'confirm' ? '완료되었습니다' : '선택하세요')
-                
+
         if(config.isCloseOutsideClick == null)
             config.isCloseOutsideClick = false
     }
@@ -112,8 +112,7 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
     return ReactDOM.createPortal(
         <dialog ref={dialogRef} onClick={onClickDialog}>
             {config.text != null && <p>{config.text}</p>}
-            {children}
-
+            {config.type == 'custom' && children}
             {config.type == 'input' && <input id={randomId} ref={inputRef} onKeyDown={onKeyDownInput}/>}
             {config.type == 'input' && <BeautyButton onClick={onClickInputYes} type='success'>확인</BeautyButton>}
             

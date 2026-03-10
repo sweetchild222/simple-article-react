@@ -16,7 +16,7 @@ export default function() {
 
     const navigate = useNavigate();
 
-    const modal_config = {text: '회원 탈퇴를 하시겠습니까?', type: 'yesno'}
+    const modal_config = {text: '회원 탈퇴를 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
     useEffect(()=>{
 

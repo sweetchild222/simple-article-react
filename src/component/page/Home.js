@@ -5,7 +5,13 @@ import BeautyButton from '../common/BeautyButton'
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 
+import * as api from '../util/Api.js'
+import * as blobToBase64 from '../util/BlobToBase64.js'
 
+
+import AuthContext from "../util/AuthContext.js";
+import ProfileContext from "../util/ProfileContext.js";
+import Modal from "../common/Modal.js"
 
 
 export default function Home() {
@@ -20,6 +26,8 @@ export default function Home() {
   const [isDisable, setIsDisable] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+
   const goEditor = async() => {
 
     navigate('/editor')
@@ -28,8 +36,11 @@ export default function Home() {
 
   const test2 = async() => {
 
-    window.showToast('login 완료', 'error')
-    //selectRef.current.classList.remove('loading2')
+
+    // Online Javascript Editor for free
+// Write, Edit and Run your Javascript code using JS Online Compiler
+
+    
   };
 
   
@@ -80,9 +91,24 @@ export default function Home() {
     //const path = '/image/test1.jpg'
     //const path = '/image/h_long.png'
     //const path = '/image/4.1M.jpg'
-    const path = '/image/2.4M.jpg'
+    //const path = '/image/2.4M.jpg'
+    const path = '/robotos.txt'
 
-    const resizedBlob = await resizeImage(path, 512, 512, 64, 64);
+    const canvas = await scaledImage(path, 512, 512, 64, 64);
+
+    if(canvas == null)
+      return
+    
+    canvas.toBlob(async(blob) => {
+        
+      const formData = new FormData()
+      formData.append('image', blob)
+
+      const resArticleImage = await api.postArticleImage(auth.jwt, formData)
+
+      console.log(resArticleImage)
+
+    })
   }
 
 
@@ -122,34 +148,30 @@ export default function Home() {
   }
   
 
-  const resizeImage = (path, maxWidth, maxHeight, minWidth, minHeight) => {
+  const scaledImage = (path, maxWidth, maxHeight, minWidth, minHeight) => {
 
-    const img = new Image();
-    img.src = path;
+    return new Promise((resolve) => {
 
-    img.onload = () => {
+      const img = new Image();
+      img.src = path;
 
-      const scaled = calcScaled(img.width, img.height, maxWidth, maxHeight, minWidth, minHeight)
-          
-      const canvas = document.createElement('canvas');
-      canvas.width = scaled.dWidth;
-      canvas.height = scaled.dHeight;
-      const ctx = canvas.getContext('2d');
+      img.onload = () => {
 
-      ctx.drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight);
+        const scaled = calcScaled(img.width, img.height, maxWidth, maxHeight, minWidth, minHeight)
+            
+        const canvas = document.createElement('canvas');
+        canvas.width = scaled.dWidth;
+        canvas.height = scaled.dHeight;
+        const ctx = canvas.getContext('2d');
 
-      const dataURL = canvas.toDataURL("image/png");
-      const newTab = window.open('about:blank','image from canvas');
-      newTab.document.write("<img src='" + dataURL + "' alt='from canvas'/>");
+        ctx.drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight);
+        resolve(canvas)
+      }
 
-      // canvas.toBlob((blob) => {
-
-      //   resolve(blob);
-
-      // }, file.type, 0.8);
-
-
-    }  
+      img.onerror = () =>{        
+        resolve(null)
+      }
+    })
   }
 
 
@@ -161,7 +183,7 @@ export default function Home() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={goEditor}>에디터</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='default' onClick={test5}>이미지</BeautyButton>
-      <BeautyButton disabled={isDisable} isLoading={isLoading} type='warning' onClick={test5}>안녕하세요. 저는 최인국입니다</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={test2}>시간</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='warning' onClick={test5}>warning</BeautyButton>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='danger' onClick={test5}>danger</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='danger' onClick={test5}>danger</BeautyButton>

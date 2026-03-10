@@ -90,7 +90,7 @@ export async function postVerifyEmail(email) {
 
 
 export async function getVerifyEmail(email, code){
-          
+
   try{
     
     const response = await axios.get('/api/verifyEmail/' + email + '/' + code)
@@ -187,8 +187,6 @@ export async function postArticleImage(jwt, payload) {
     return null
   }
 }
-
-
 
 
 

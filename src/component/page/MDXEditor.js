@@ -1,11 +1,13 @@
-import { useState, useRef } from 'react'
+import { useContext, useState, useRef } from 'react'
 import { usePublisher } from '@mdxeditor/gurx'
 import Modal from '../common/Modal'
 import i18next from 'i18next'
 import ko from './ko.json'
 import BeautyButton from '../common/BeautyButton'
 import '@mdxeditor/editor/style.css'
+import * as api from '../util/Api.js'
 import './MDXEditor.css'
+import AuthContext from "../util/AuthContext.js";
 
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
@@ -70,6 +72,7 @@ export default function() {
     
     return (<button onClick={() => {setIsModalOpen(true)}} title="유튜브 삽입">YT</button>)
   }
+
 
 
   const onYoutubeInput = (input) => {
@@ -195,6 +198,111 @@ export default function() {
   }
 
   const markdown='test'
+
+  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+
+  const calcScaled = (imageWidth, imageHeight, maxWidth, maxHeight, minWidth, minHeight) => {
+
+    const ratioMaxWidth = maxWidth / imageWidth;
+    const ratioMaxHeight = maxHeight / imageHeight;
+
+    const ratioMax = ratioMaxWidth < ratioMaxHeight ? ratioMaxWidth : ratioMaxHeight
+
+    const newWidth = Math.round(imageWidth * ratioMax);
+    const newHeight = Math.round(imageHeight * ratioMax);
+    
+    if(newWidth < minWidth){
+
+      const ratioMin = minWidth / imageWidth;
+      const scaledWidth = Math.round(imageWidth * ratioMin);
+
+      const sHeight = Math.round(maxHeight * (1 / ratioMin))
+      const sy = Math.round((imageHeight - sHeight) / 2)
+
+      return {sx:0, sy:sy, sWidth:imageWidth, sHeight:sHeight, dx:0, dy:0, dWidth:scaledWidth, dHeight:maxHeight}
+    }
+    else if(newHeight < minHeight){
+
+      const ratioMin = minHeight / imageHeight;
+      const scaledHeight = Math.round(imageHeight * ratioMin);
+
+      const sWidth = Math.round(maxWidth * (1 / ratioMin))
+      const sx = Math.round((imageWidth - sWidth) / 2)
+
+      return {sx:sx, sy:0, sWidth:sWidth, sHeight:imageHeight, dx:0, dy:0, dWidth:maxWidth, dHeight:scaledHeight}    
+    }
+    else{
+      return {sx:0, sy:0, sWidth:imageWidth, sHeight:imageHeight, dx:0, dy:0, dWidth:newWidth, dHeight:newHeight}
+    }
+  }
+    
+
+  const scaledImage = (file, maxWidth, maxHeight, minWidth, minHeight) => {
+
+    return new Promise((resolve) => {
+
+      const img = new Image();
+      //img.src = path;
+
+      const url = URL.createObjectURL(file)
+      img.src = url
+
+      img.onload = () => {
+
+        const scaled = calcScaled(img.width, img.height, maxWidth, maxHeight, minWidth, minHeight)
+            
+        const canvas = document.createElement('canvas');
+        canvas.width = scaled.dWidth;
+        canvas.height = scaled.dHeight;
+        const ctx = canvas.getContext('2d');
+
+        ctx.drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight);
+        resolve(canvas)
+      }
+
+      img.onerror = () =>{
+
+        resolve(null)
+      }
+    })
+  }
+
+
+
+  const postImage = (canvas) => {
+
+    return new Promise((resolve) => {
+
+      canvas.toBlob(async(blob) => {
+          
+        const formData = new FormData()
+        formData.append('image', blob)
+
+        const resArticleImage = await api.postArticleImage(auth.jwt, formData)
+
+        if(resArticleImage == null){
+          resolve(null)
+          return
+        }
+
+        resolve('http://13.124.193.201:8080/api/blob/article/' + resArticleImage.id)
+      })
+    })
+  }
+
+
+  const uploader = async(file) => {
+
+    const canvas = await scaledImage(file, 512, 512, 64, 64)
+
+    if(canvas == null)
+      return
+
+    const url = await postImage(canvas)
+
+    return url    
+  }
+
 
   const plugins = [
     toolbarPlugin({toolbarContents: () => (<><CustomToolbar /></>)}),

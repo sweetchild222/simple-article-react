@@ -41,6 +41,13 @@ export default function() {
     hasChildren: false,
 
     Editor: ({ mdastNode, lexicalNode, parentEditor }) => {
+      
+      const url = 'https://www.youtube.com/embed/' + mdastNode.attributes.id
+
+      const shorts = mdastNode.attributes.shorts
+      const wdith = shorts ? 315 : 560;
+      const height = shorts ? 560 : 315;      
+
       return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <BeautyButton type='warning'
@@ -53,7 +60,7 @@ export default function() {
           >
           삭제
           </BeautyButton>
-          <iframe width="560" height="315" src={`https://www.youtube.com/embed/${mdastNode.attributes.id}`} title="YouTube"
+          <iframe width={wdith} height={height} src={url} title="YouTube"
             style={{ border: '2px solid gray', borderRadius:'4px'  }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
           ></iframe>
         </div>
@@ -61,47 +68,51 @@ export default function() {
     }
   }
 
-
-  let insertDirective
-
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
   const YouTubeButton = () => {
 
-    insertDirective = usePublisher(insertDirective$)
-    
-    return (<button onClick={() => {setIsModalOpen(true)}} title="유튜브 삽입">YT</button>)
-  }
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
+    const insertDirective = usePublisher(insertDirective$)
 
+    const onYoutubeInput = (input) => {
 
-  const onYoutubeInput = (input) => {
-
-    if(input == null || input == '')
-      return
-    
-    try{
-
-      const videoId = new URL(input).searchParams.get('v')
-
-      if(videoId){
-        insertDirective({
-          name: 'youtube',
-          type: 'leafDirective',
-          attributes: { id: videoId },
-          children: []
-        })
+      if(input == null || input == '')
+        return
+      
+      try{
+        
+        const regex = /(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))/gm
+        
+        const match = regex.exec(input)
+        const videoId = match[3];
+        const prefix = match[1]
+        
+        if(videoId){
+          insertDirective({
+            name: 'youtube',
+            type: 'leafDirective',
+            attributes: { id: videoId, shorts:(prefix == 'youtube.com/shorts')},
+            children: []
+          })
+        }
+        else{
+          window.showToast('URL이 잘못되었습니다', 'error')
+          return
+        }
       }
-      else{
+      catch(e){
+
         window.showToast('URL이 잘못되었습니다', 'error')
         return
       }
     }
-    catch(e){
-
-      window.showToast('URL이 잘못되었습니다', 'error')
-      return
-    }
+  
+    return (
+      <div>
+        <button style={{height:'100%'}} onClick={() => {setIsModalOpen(true)}} title="유튜브 삽입">YT</button>
+        <Modal config={modal_config} isOpen={isModalOpen} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
+      </div>
+    )
   }
 
 
@@ -125,6 +136,7 @@ export default function() {
       </div>
     );
   }`
+  
   
   const sandpackConfig = {
 
@@ -331,8 +343,7 @@ export default function() {
       <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
         <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
           <MDXEditor ref={ref} markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
-            translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
-          <Modal config={modal_config} isOpen={isModalOpen} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
+            translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>          
         </div>
         <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
           <BeautyButton type='danger'>취소</BeautyButton>

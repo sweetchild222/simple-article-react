@@ -26,7 +26,7 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
 
 
     useEffect(() => {
-
+        
         if(isOpen){
             dialogRef.current.showModal()
             
@@ -101,16 +101,27 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
     }
 
 
+    const onKeyDownDialog=(event)=>{
+
+        if(event.nativeEvent.key == 'Escape'){
+
+            if(config.isCloseOutsideClick){
+                if(onClose != null)
+                    onClose()
+            }
+            else{
+                event.preventDefault();
+            }
+        }
+    }
+
+
     const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-
     const randomId = random(0, 100000) // avoid warning Duplicate form field id in the same form 
-
-    const a =  Math.random().toString()
-    
-  
+          
     return ReactDOM.createPortal(
-        <dialog ref={dialogRef} onClick={onClickDialog}>
+        <dialog ref={dialogRef} onClick={onClickDialog} onKeyDown={onKeyDownDialog}>
             {config.text != null && <p>{config.text}</p>}
             {config.type == 'custom' && children}
             {config.type == 'input' && <input id={randomId} ref={inputRef} onKeyDown={onKeyDownInput}/>}

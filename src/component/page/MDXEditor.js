@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from 'react'
+import { useContext, useState, useRef, useEffect } from 'react'
 import { usePublisher } from '@mdxeditor/gurx'
 import Modal from '../common/Modal'
 import i18next from 'i18next'
@@ -8,6 +8,8 @@ import '@mdxeditor/editor/style.css'
 import * as api from '../util/Api.js'
 import './MDXEditor.css'
 import AuthContext from "../util/AuthContext.js";
+import {pickImage, getImageFormat} from "../util/ImagePicker.js";
+import ImageScale from "../util/ImageScale.js";
 
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
@@ -26,9 +28,7 @@ i18next.init({
 
 
 
-export default function() {
-
-  const ref = useRef(null)
+export default function() {  
 
   const YoutubeDirectiveDescriptor = {
 
@@ -46,7 +46,7 @@ export default function() {
 
       const shorts = mdastNode.attributes.shorts
       const wdith = shorts ? 315 : 560;
-      const height = shorts ? 560 : 315;      
+      const height = shorts ? 560 : 315;
 
       return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -121,26 +121,166 @@ export default function() {
   const ImageButton = () =>{
 
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+    const [imageUrl, setImageUrl] = useState('')
+    const [fileUrl, setFileUrl] = useState('')
+    const [isLoadingUpload, setIsLoadingUpload] = useState(false)
+    const [isUrlMode, setIsUrlMode] = useState(true)
+    const [isDisabledConfirm, setIsDisabledConfirm] = useState(true)
+
+    const inputFileRef = useRef(null)
+    const inputUrlRef = useRef(null)
+    const inputTitleRef = useRef(null)
+    const inputAltRef = useRef(null)
 
     const insertImage = usePublisher(insertImage$)
 
-    const onImageInput = (input) => {
+    const modal_config = {text: '이미지 정보를 입력하세요', type: 'custom', isCloseOutsideClick: false}
 
-      const url = 'https://wimg.munhwa.com/news/cms/2026/03/10/news-p.v1.20260310.51577f8740e7440d9f520958edfb26dc_P1.jpg'
+    const selectImage = async () =>{
 
-      insertImage({
-        src: url,
-        altText: 'image',
-        title: 'title'
-      });
+      setFileUrl('')
+
+      const file = await pickImage()
+      
+      if(file == null)
+          return
+
+      try{
+
+          const format = await getImageFormat(file)
+
+          if(format == 'unknown') {
+              window.showToast('파일을 사용할 수 없습니다', 'error')
+              return
+          }
+
+          const canvas = await ImageScale(file, 512, 512, 64, 64)
+
+          if(canvas == null)
+            return          
+
+          setIsLoadingUpload(true)
+
+          const url = await postImage(canvas)
+      
+          setIsLoadingUpload(false)
+          
+          if(url == null){
+            window.showToast('파일을 업로드할 수 없습니다', 'error')
+            return
+          }
+          
+          setFileUrl(url)
+          setIsUrlMode(false)
+      }
+      catch(error) {
+
+          window.showToast('파일을 사용할 수 없습니다', 'error')
+          return
+      }
     }
 
-    const modal_config = {text: '이미지 URL을 입력하세요', type: 'input', isCloseOutsideClick: true}
-  
+    useEffect(()=>{
+
+      if(isUrlMode)
+        setIsDisabledConfirm(imageUrl == '')
+      else
+        setIsDisabledConfirm(fileUrl == '')
+
+    }, [imageUrl, fileUrl, isUrlMode])
+    
+
+
+    const insertImageConfirm =() => {
+
+      const url = isUrlMode ? imageUrl : fileUrl
+
+      const urlRegex = /^(http|https):\/\/[^ "]+$/;
+
+      if(!urlRegex.test(url)){
+
+        setIsImageModalOpen(false)
+        window.showToast('URL 형식이 잘못되었습니다', 'error')
+        return
+      }
+
+      const alt = inputAltRef.current.value
+      const title = inputTitleRef.current.value
+      
+      insertImage({
+        src: url,
+        altText: alt,
+        title: title
+      });
+
+      setIsImageModalOpen(false)
+    }
+
+    
+
+    const onChangeUrl = (event) => {
+      
+      const url = event.nativeEvent.target.value
+
+      setImageUrl(url)
+    }
+
+    
+    const onKeyDownUrl = (event) =>{
+
+        if (event.key === 'Enter')
+          inputTitleRef.current.focus()
+    }
+
+    const onKeyDownTitle = (event) =>{
+
+        if (event.key === 'Enter')
+          inputAltRef.current.focus()
+    }
+
+
+    const selectUrl = () => {
+
+      setImageUrl('')
+      
+      setIsUrlMode(true)      
+    }
+
+
+    const openModal=()=>{
+
+      if(inputUrlRef.current)
+        inputUrlRef.current.value = ''
+
+      if(inputTitleRef.current)
+        inputTitleRef.current.value = ''
+
+      if(inputAltRef.current)
+        inputAltRef.current.value = ''
+
+      setImageUrl('')
+      setFileUrl('')
+      setIsUrlMode(true)
+      setIsDisabledConfirm(true)
+      setIsLoadingUpload(false)
+      setIsImageModalOpen(true)
+    }
+          
     return (
       <div>
-        <button style={{height:'100%'}} onClick={() => {setIsImageModalOpen(true)}} title="이미지 삽입">IMG</button>
-        <Modal config={modal_config} isOpen={isImageModalOpen} onInput={onImageInput} onClose={()=>setIsImageModalOpen(false)}></Modal>
+        <button style={{height:'100%'}} onClick={openModal} title="이미지 삽입">IMG</button>
+        <Modal config={modal_config} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <BeautyButton type='confirm' onClick={selectUrl}>URL</BeautyButton>
+          <BeautyButton type='warning' isLoading={isLoadingUpload} onClick={selectImage}>파일</BeautyButton>
+          {!isUrlMode && <input readOnly={true} ref={inputFileRef} maxLength="2048" defaultValue={fileUrl} onKeyDown={onKeyDownUrl}></input>}
+          {isUrlMode && <input ref={inputUrlRef} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl}/>}
+          <input ref={inputTitleRef} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
+          <input ref={inputAltRef} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>
+          <BeautyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm}>확인</BeautyButton>
+          <BeautyButton type='cancel' onClick={()=>setIsImageModalOpen(false)}>취소</BeautyButton>
+        </div>
+        </Modal>
       </div>
     )
   }
@@ -244,80 +384,12 @@ export default function() {
 
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
-  const calcScaled = (imageWidth, imageHeight, maxWidth, maxHeight, minWidth, minHeight) => {
-
-    const ratioMaxWidth = maxWidth / imageWidth;
-    const ratioMaxHeight = maxHeight / imageHeight;
-
-    const ratioMax = ratioMaxWidth < ratioMaxHeight ? ratioMaxWidth : ratioMaxHeight
-
-    const newWidth = Math.round(imageWidth * ratioMax);
-    const newHeight = Math.round(imageHeight * ratioMax);
-    
-    if(newWidth < minWidth){
-
-      const ratioMin = minWidth / imageWidth;
-      const scaledWidth = Math.round(imageWidth * ratioMin);
-
-      const sHeight = Math.round(maxHeight * (1 / ratioMin))
-      const sy = Math.round((imageHeight - sHeight) / 2)
-
-      return {sx:0, sy:sy, sWidth:imageWidth, sHeight:sHeight, dx:0, dy:0, dWidth:scaledWidth, dHeight:maxHeight}
-    }
-    else if(newHeight < minHeight){
-
-      const ratioMin = minHeight / imageHeight;
-      const scaledHeight = Math.round(imageHeight * ratioMin);
-
-      const sWidth = Math.round(maxWidth * (1 / ratioMin))
-      const sx = Math.round((imageWidth - sWidth) / 2)
-
-      return {sx:sx, sy:0, sWidth:sWidth, sHeight:imageHeight, dx:0, dy:0, dWidth:maxWidth, dHeight:scaledHeight}    
-    }
-    else{
-      return {sx:0, sy:0, sWidth:imageWidth, sHeight:imageHeight, dx:0, dy:0, dWidth:newWidth, dHeight:newHeight}
-    }
-  }
-    
-
-  const scaledImage = (file, maxWidth, maxHeight, minWidth, minHeight) => {
-
-    return new Promise((resolve) => {
-
-      const img = new Image();
-      //img.src = path;
-
-      const url = URL.createObjectURL(file)
-      img.src = url
-
-      img.onload = () => {
-
-        const scaled = calcScaled(img.width, img.height, maxWidth, maxHeight, minWidth, minHeight)
-            
-        const canvas = document.createElement('canvas');
-        canvas.width = scaled.dWidth;
-        canvas.height = scaled.dHeight;
-        const ctx = canvas.getContext('2d');
-
-        ctx.drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight);
-        resolve(canvas)
-      }
-
-      img.onerror = () =>{
-
-        resolve(null)
-      }
-    })
-  }
-
-
-
   const postImage = (canvas) => {
 
     return new Promise((resolve) => {
 
       canvas.toBlob(async(blob) => {
-          
+
         const formData = new FormData()
         formData.append('image', blob)
 
@@ -334,18 +406,6 @@ export default function() {
   }
 
 
-  const uploader = async(file) => {
-
-    const canvas = await scaledImage(file, 512, 512, 64, 64)
-
-    if(canvas == null)
-      return
-
-    const url = await postImage(canvas)
-
-    return url    
-  }
-
 
   const plugins = [
     toolbarPlugin({toolbarContents: () => (<><CustomToolbar /></>)}),
@@ -354,9 +414,7 @@ export default function() {
     headingsPlugin({ allowedHeadingLevels: [1, 2, 3, 4] }),
     linkPlugin(),
     linkDialogPlugin(),
-    imagePlugin({
-      imageUploadHandler: uploader
-    }),
+    imagePlugin({disableImageSettingsButton: true}),
     tablePlugin(),
     thematicBreakPlugin(),
     frontmatterPlugin(),
@@ -373,8 +431,8 @@ export default function() {
     return (
       <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
         <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
-          <MDXEditor ref={ref} markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
-            translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>          
+          <MDXEditor markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
+            translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
         </div>
         <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
           <BeautyButton type='danger'>취소</BeautyButton>

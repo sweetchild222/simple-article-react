@@ -135,7 +135,12 @@ export default function({ref, file, onSelectImage,
 
     setIsLoading(false)
     
-
+    // if(containRef.current.classList.length >= 1){
+      
+    //   if(containRef.current.classList[0] == 'rotateLoading')
+    //     containRef.current.classList.remove('rotateLoading')
+    // }
+            
     const rect = isContain ? calcContainRect(selectRect, imageRect) : calcCoverRect(selectRect, imageRect)
     onSelectImage(rect)
 

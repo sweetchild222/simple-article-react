@@ -14,7 +14,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   DiffSourceToggleWrapper, CodeMirrorEditor, directivesPlugin, quotePlugin, InsertImage, thematicBreakPlugin, UndoRedo, CodeToggle, CreateLink, ListsToggle,
   AdmonitionDirectiveDescriptor, BoldItalicUnderlineToggles, BlockTypeSelect, sandpackPlugin,  ChangeCodeMirrorLanguage, linkPlugin,
   toolbarPlugin, linkDialogPlugin, insertDirective$, ConditionalContents, Separator, HighlightToggle, StrikeThroughSupSubToggles,
-  diffSourcePlugin, InsertTable, InsertThematicBreak, InsertCodeBlock, InsertFrontmatter, InsertAdmonition,
+  diffSourcePlugin, InsertTable, InsertThematicBreak, InsertCodeBlock, InsertFrontmatter, InsertAdmonition, insertImage$,
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin } from '@mdxeditor/editor'
 
 
@@ -106,11 +106,41 @@ export default function() {
         return
       }
     }
+
+    const modal_config = {text: '유튜브 URL을 입력하세요', type: 'input', isCloseOutsideClick: true}
   
     return (
       <div>
         <button style={{height:'100%'}} onClick={() => {setIsModalOpen(true)}} title="유튜브 삽입">YT</button>
         <Modal config={modal_config} isOpen={isModalOpen} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
+      </div>
+    )
+  }
+
+
+  const ImageButton = () =>{
+
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+
+    const insertImage = usePublisher(insertImage$)
+
+    const onImageInput = (input) => {
+
+      const url = 'https://wimg.munhwa.com/news/cms/2026/03/10/news-p.v1.20260310.51577f8740e7440d9f520958edfb26dc_P1.jpg'
+
+      insertImage({
+        src: url,
+        altText: 'image',
+        title: 'title'
+      });
+    }
+
+    const modal_config = {text: '이미지 URL을 입력하세요', type: 'input', isCloseOutsideClick: true}
+  
+    return (
+      <div>
+        <button style={{height:'100%'}} onClick={() => {setIsImageModalOpen(true)}} title="이미지 삽입">IMG</button>
+        <Modal config={modal_config} isOpen={isImageModalOpen} onInput={onImageInput} onClose={()=>setIsImageModalOpen(false)}></Modal>
       </div>
     )
   }
@@ -137,7 +167,7 @@ export default function() {
     );
   }`
   
-  
+
   const sandpackConfig = {
 
     defaultPreset: 'react',
@@ -181,7 +211,8 @@ export default function() {
                 />
                 <Separator />
                 <CreateLink/>
-                <InsertImage />
+                <ImageButton/>
+                {/* <InsertImage /> */}
                 <YouTubeButton />
                 <Separator />
                 <InsertTable />
@@ -337,7 +368,7 @@ export default function() {
     markdownShortcutPlugin()
   ]
 
-  const modal_config = {text: '유튜브 URL을 입력하세요', type: 'input', isCloseOutsideClick: true}
+  
 
     return (
       <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>

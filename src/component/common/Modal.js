@@ -25,8 +25,6 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
     const inputRef = useRef(null)
 
 
-    
-
     useEffect(() => {
 
         if(isOpen){
@@ -100,20 +98,23 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
             if(onClose != null)
                 onClose()
         }
-
     }
 
 
+    const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 
+    const randomId = random(0, 100000) // avoid warning Duplicate form field id in the same form 
 
+    const a =  Math.random().toString()
+    
   
     return ReactDOM.createPortal(
         <dialog ref={dialogRef} onClick={onClickDialog}>
             {config.text != null && <p>{config.text}</p>}
             {children}
 
-            {config.type == 'input' && <input id='input_123' ref={inputRef} onKeyDown={onKeyDownInput}/>}
+            {config.type == 'input' && <input id={randomId} ref={inputRef} onKeyDown={onKeyDownInput}/>}
             {config.type == 'input' && <BeautyButton onClick={onClickInputYes} type='success'>확인</BeautyButton>}
             
             {config.type == 'confirm' && <BeautyButton onClick={onClickConfirm} type='confirm'>확인</BeautyButton>}

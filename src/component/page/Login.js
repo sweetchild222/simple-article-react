@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState} from 'react';
 
 import * as api from '../util/Api.js'
 import * as blobToBase64 from '../util/BlobToBase64.js'
-import { useNavigate} from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 import * as validator from '../util/Validator.js'
 
 import BeautyButton from '../common/BeautyButton.js';
@@ -100,7 +100,6 @@ export default function() {
 
         if (event.key === 'Enter')
             input_password.focus()
-
     }
     
 

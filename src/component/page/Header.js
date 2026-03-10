@@ -32,7 +32,7 @@ export default function() {
 
         console.log('asdfasf')
 
-        navigate("/login", {state: false})
+        navigate("/login")
     }
 
 

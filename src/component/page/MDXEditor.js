@@ -9,6 +9,7 @@ import * as api from '../util/Api.js'
 import './MDXEditor.css'
 import AuthContext from "../util/AuthContext.js";
 import {pickImage, getImageFormat} from "../util/ImagePicker.js";
+import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 import ImageScale from "../util/ImageScale.js";
 
 
@@ -20,15 +21,30 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin } from '@mdxeditor/editor'
 
 
-i18next.init({
-  lng: 'ko',
-  fallbackLng: 'ko',
-  resources: {ko: {translation: ko}}
-})
+export default function() {
 
+  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+  const navigate = useNavigate()
 
+  useEffect(()=> {
 
-export default function() {  
+      if(!validAuth(auth)){
+          navigate('/login', {replace:true})
+          return
+      }
+
+  }, [auth])
+
+  useEffect(()=>{
+
+    i18next.init({
+      lng: 'ko',
+      fallbackLng: 'ko',
+      resources: {ko: {translation: ko}}
+    })
+
+  }, [])
+
 
   const YoutubeDirectiveDescriptor = {
 
@@ -265,7 +281,7 @@ export default function() {
       setIsLoadingUpload(false)
       setIsImageModalOpen(true)
     }
-          
+
     return (
       <div>
         <button style={{height:'100%'}} onClick={openModal} title="이미지 삽입">IMG</button>
@@ -382,8 +398,6 @@ export default function() {
 
   const markdown='test'
 
-  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-
   const postImage = (canvas) => {
 
     return new Promise((resolve) => {
@@ -406,7 +420,6 @@ export default function() {
   }
 
 
-
   const plugins = [
     toolbarPlugin({toolbarContents: () => (<><CustomToolbar /></>)}),
     listsPlugin(),
@@ -427,18 +440,17 @@ export default function() {
   ]
 
   
-
-    return (
-      <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
-        <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
-          <MDXEditor markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
-            translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
-        </div>
-        <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-          <BeautyButton type='danger'>취소</BeautyButton>
-          <BeautyButton type='confirm'>저장</BeautyButton>          
-        </div>
+  return validAuth(auth) ? (
+    <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
+      <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
+        <MDXEditor markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
+          translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
       </div>
-  )
+      <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+        <BeautyButton type='danger'>취소</BeautyButton>
+        <BeautyButton type='confirm'>저장</BeautyButton>
+      </div>
+    </div>
+  ) : null
 }
 

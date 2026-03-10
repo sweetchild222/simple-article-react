@@ -48,7 +48,6 @@ export default function() {
   }, [auth])
 
 
-
   const onSelectImage = useCallback((rect) => {    
 
     const imageRegion = imageRegionRef.current
@@ -103,7 +102,7 @@ export default function() {
     const formData = new FormData()
     formData.append('image', blob)
 
-    setIsPostLoading(true)    
+    setIsPostLoading(true)
 
     const resProfile = await api.postProfile(auth.jwt, formData)
 

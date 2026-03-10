@@ -13,6 +13,7 @@ import ProfileContext from "../util/ProfileContext.js";
 import Modal from "../common/Modal.js"
 
 import BeautyButton from '../common/BeautyButton.js';
+import ImageScale from "../util/ImageScale.js";
 
 
 export default function() {
@@ -112,8 +113,21 @@ export default function() {
                 window.showToast('파일을 사용할 수 없습니다', 'error')
                 return
             }
-                                          
-            navigate('/profile_region', {state: file})
+
+            if(file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
+
+                const canvas = await ImageScale(file, 4096, 4096, 512, 512)
+
+                if(canvas == null)
+                    return
+                
+                const blob = await getBlob(canvas)
+                
+                navigate('/profile_region', {state: blob})
+            }
+            else{
+                navigate('/profile_region', {state: file})
+            }
         }
         catch(error) {
 
@@ -123,9 +137,22 @@ export default function() {
     }
 
 
+      const getBlob = (canvas) => {
+    
+        return new Promise((resolve) => {
+    
+          canvas.toBlob((blob) => {
+    
+              resolve(blob)
+
+          })
+        })
+      }
+
+
     return validAuth(auth) ? (
       <div id='profile'>
-        <div id='cover' ref={coverRef} className={`${isLoading ? 'rotateLoading': ''}`}  style={{width:'256px', height:'256px'}}>            
+        <div id='cover' ref={coverRef} className={`${isLoading ? 'rotateLoading': ''}`}  style={{width:'256px', height:'256px'}}>
             <img alt='image' src={profileHigh} onClick={onClickProfile} style={{borderRadius:'1px'}}/>
         </div>
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>

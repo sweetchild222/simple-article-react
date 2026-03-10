@@ -100,7 +100,12 @@ export default function() {
         const regex = /(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))/gm
         
         const match = regex.exec(input)
-        const videoId = match[3];
+
+        if(match.length < 4){
+          window.showToast('URL이 잘못되었습니다', 'error')
+          return
+        }
+        const videoId = match[3]
         const prefix = match[1]
         
         if(videoId){

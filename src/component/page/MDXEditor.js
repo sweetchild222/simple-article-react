@@ -11,7 +11,8 @@ import AuthContext from "../util/AuthContext.js";
 import {pickImage, getImageFormat} from "../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 import ImageScale from "../util/ImageScale.js";
-
+import { BsTrash } from "react-icons/bs";
+import { PiTrash } from "react-icons/pi";
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
   DiffSourceToggleWrapper, CodeMirrorEditor, directivesPlugin, quotePlugin, InsertImage, thematicBreakPlugin, UndoRedo, CodeToggle, CreateLink, ListsToggle,
@@ -65,20 +66,22 @@ export default function() {
       const height = shorts ? 560 : 315;
 
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <BeautyButton type='warning'
-            onClick={() => {
-              parentEditor.update(() => {
-                lexicalNode.selectNext()
-                lexicalNode.remove()
-              })
-            }}
-          >
-          삭제
-          </BeautyButton>
-          <iframe width={wdith} height={height} src={url} title="YouTube"
-            style={{ border: '2px solid gray', borderRadius:'4px'  }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
-          ></iframe>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position:'relative'}}>
+          <div style={{position:'relative', display: 'flex', flexDirection: 'column'}}>
+            <button style={{position:'absolute', border:'0px', backgroundColor:'white', borderRadius: '0 0 0 5px', zIndex:'10', alignSelf: 'flex-end'}}
+              onClick={() => {
+                parentEditor.update(() => {
+                  lexicalNode.selectNext()
+                  lexicalNode.remove()
+                })
+              }}
+            >
+            <PiTrash size={23}/>
+            </button>
+            <iframe width={wdith} height={height} src={url} title="YouTube" style={{ border: '2px solid gray'}}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
+            ></iframe>
+          </div>
         </div>
       )
     }
@@ -91,6 +94,8 @@ export default function() {
     const insertDirective = usePublisher(insertDirective$)
 
     const onYoutubeInput = (input) => {
+
+      //const input = 'https://www.youtube.com/watch?v=bQ3eRwlqny0'
 
       if(input == null || input == '')
         return
@@ -451,9 +456,10 @@ export default function() {
         <MDXEditor markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
           translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
       </div>
-      <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+      <div style={{display: 'flex', flexDirection: 'row-reverse'}}>        
         <BeautyButton type='danger'>취소</BeautyButton>
         <BeautyButton type='confirm'>저장</BeautyButton>
+        <BeautyButton type='success'>임시저장</BeautyButton>
       </div>
     </div>
   ) : null

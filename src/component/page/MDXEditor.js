@@ -25,6 +25,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
 export default function() {
 
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+  const editorRef = useRef(null);
   const navigate = useNavigate()
 
   useEffect(()=> {
@@ -406,7 +407,7 @@ export default function() {
     )
   }
 
-  const markdown='test'
+  const markdownContent ='글을 작성해보세요'
 
   const postImage = (canvas) => {
 
@@ -445,22 +446,53 @@ export default function() {
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
     codeMirrorPlugin({ codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'} }),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
-    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: markdown }),
+    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: markdownContent }),
     markdownShortcutPlugin()
   ]
+
+  useEffect(() => {
+    // 마운트 시 div에 포커스 설정
+    if (editorRef.current) {
+      editorRef.current.focus();
+    }
+  }, []);
+  
+
+  const postMarkDown = () =>{
+
+    if(editorRef.current == null)
+      return
+
+    const markdown = editorRef.current.getMarkdown();
+
+    if(markdown == '')
+      return
+    
+  }
 
   
   return validAuth(auth) ? (
     <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
+      <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
+        <BeautyButton type='danger'>취소</BeautyButton>
+        <BeautyButton type='confirm' onClick={postMarkDown}>완료</BeautyButton>
+        <BeautyButton type='success'>임시저장</BeautyButton>
+        <input style={{flexGrow:'1'}} placeholder="제목을 입력하세요"></input>
+
+        <select id="cars" name="category">
+          <option value="volvo">Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="fiat">Fiat</option>
+          <option value="audi">Audi</option>
+        </select>
+
+        <BeautyButton type='success'>미리보기</BeautyButton>
+      </div>
       <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
-        <MDXEditor markdown={markdown} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
+        <MDXEditor placeholder={'글을 작성해보세요'} ref={editorRef} markdown={markdownContent} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
           translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
       </div>
-      <div style={{display: 'flex', flexDirection: 'row-reverse'}}>        
-        <BeautyButton type='danger'>취소</BeautyButton>
-        <BeautyButton type='confirm'>저장</BeautyButton>
-        <BeautyButton type='success'>임시저장</BeautyButton>
-      </div>
+      
     </div>
   ) : null
 }

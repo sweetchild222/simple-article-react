@@ -45,13 +45,13 @@ export default function() {
             input_password.focus()
             return
         }
-
+        
         setIsLoading(true)
 
         const resAuth = await api.postAuthenticate(username, password)
         
         if(resAuth == null) {
-            setIsLoading(false)            
+            setIsLoading(false)
             window.showToast('로그인이 실패하였습니다', 'error')
             return
         }
@@ -63,34 +63,30 @@ export default function() {
             window.showToast('로그인이 실패하였습니다', 'error')
             return
         }
+        
+        setIsLoading(false)
+        updateAuth(resAuth)
+        window.showToast('로그인이 성공하였습니다', 'success')
 
-        if(resUser.profile == null){            
-            removeProfile()
-            updateAuth(resAuth)
-            setIsLoading(false)
-            window.showToast('로그인이 성공하였습니다', 'success')
+        if(resUser.profile == null)
             return
-        }
 
         const profileId = resUser.profile + '?size=64x64'
 
         const resProfile = await api.getProfile(resAuth.jwt, profileId)
-
-        setIsLoading(false)
         
         if(resProfile == null){
-            window.showToast('로그인이 실패하였습니다', 'error')
+            window.showToast('프로필을 가져 올 수 없습니다.', 'error')
             return
         }
 
         const base64 = await blobToBase64.convert(resProfile)
         updateProfile(base64)
-        updateAuth(resAuth)
-        window.showToast('로그인이 성공하였습니다', 'success')
     }
 
 
     const onKeyDownPassword = async(event)=>{
+
         if (event.key === 'Enter')
             await onClickLogin()
     }

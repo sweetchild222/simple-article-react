@@ -44,8 +44,9 @@ export default function() {
         
         const resProfile = await api.getProfile(auth.jwt, profileId)
 
-        if(resProfile == null)
-            return null
+        if(resProfile == null){
+            return '/image/user.png'
+        }
 
         return await blobToBase64.convert(resProfile)
     }
@@ -56,7 +57,7 @@ export default function() {
             navigate('/login', {replace:true})
             return
         }
-
+        
         getHighQualityProfile(auth).then((profile)=>{
             
             if(profile == null)
@@ -152,8 +153,8 @@ export default function() {
 
     return validAuth(auth) ? (
       <div id='profile'>
-        <div id='cover' ref={coverRef} className={`${isLoading ? 'rotateLoading': ''}`}  style={{width:'256px', height:'256px'}}>
-            <img alt='image' src={profileHigh} onClick={onClickProfile} style={{borderRadius:'1px'}}/>
+        <div id='cover' ref={coverRef} onClick={onClickProfile} className={`${isLoading ? 'rotateLoading': ''}`}  style={{width:'256px', height:'256px'}}>
+            <img alt='image' src={profileHigh}  style={{borderRadius:'1px'}}/>
         </div>
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>

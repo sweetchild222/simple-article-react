@@ -37,11 +37,65 @@ export default function Home() {
   const test2 = async() => {
 
 
-    // Online Javascript Editor for free
-// Write, Edit and Run your Javascript code using JS Online Compiler
+    const payload = {title:'title value', content:'content value', open:true, posted:false, thumbnail:'http://a.jpg', user_id:158, category_id:4}
 
-    
+
+    const res = await api.postArticle(auth.jwt, payload)
+
+    if(res == null)
+      return
+
+    console.log(res)
+        
   };
+
+
+    const getArticle = async() => {
+
+
+      const res = await api.getArticle(auth.jwt, 2)
+
+      if(res != null)
+        return
+
+      console.log(res)
+  }
+
+
+    const deleteArticle = async() => {
+
+      const res = await api.deleteArticle(auth.jwt, 6)
+
+      if(res != null)
+        return
+
+      console.log(res)
+  }
+
+  const putArticle = async() => {
+
+    const payload = {
+
+      title:'123',
+      content:'145',
+      open:true,
+      posted:false,
+      thumbnail:'http://',
+      user_id:149,
+      category_id:4      
+    }
+
+    const article_id=3
+
+    const res = await api.putArticle(auth.jwt, article_id, payload)
+
+    if(res != null)
+        return
+
+      console.log(res)
+
+
+  }
 
   
 
@@ -49,7 +103,7 @@ export default function Home() {
 
     //selectRef.current.classList.add()
 
-    selectRef.current.classList.add('loading2')
+    
     
 
     //console.log()
@@ -82,6 +136,7 @@ export default function Home() {
         return null
     }
   }
+
 
 
   const test5 = async() => {
@@ -183,10 +238,10 @@ export default function Home() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={goEditor}>에디터</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='default' onClick={test5}>이미지</BeautyButton>
-      <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={test2}>시간</BeautyButton>
-      <BeautyButton disabled={true} isLoading={isLoading} type='warning' onClick={test5}>warning</BeautyButton>
-      <BeautyButton disabled={isDisable} isLoading={isLoading} type='danger' onClick={test5}>danger</BeautyButton>
-      <BeautyButton disabled={true} isLoading={isLoading} type='danger' onClick={test5}>danger</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={test2}>글 올리기</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={getArticle}>글 가져오기</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='danger' onClick={deleteArticle}>글 삭제하기</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='danger' onClick={putArticle}>글수정</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='confirm' onClick={test5}>confirm</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={test5}>confirm</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='cancel' onClick={test5}>cancel</BeautyButton>

@@ -37,7 +37,7 @@ export default function Home() {
   const test2 = async() => {
 
 
-    const payload = {title:'title value', content:'content value', open:true, posted:false, thumbnail:'http://a.jpg', user_id:158, category_id:4}
+    const payload = {title:'title value', content:'content value', open:true, posted:false, thumbnail:'http://a.jpg', category_id:10, user_id:149}
 
 
     const res = await api.postArticle(auth.jwt, payload)
@@ -53,7 +53,7 @@ export default function Home() {
     const getArticle = async() => {
 
 
-      const res = await api.getArticle(auth.jwt, 2)
+      const res = await api.getArticle(auth.jwt, 7)
 
       if(res != null)
         return
@@ -76,16 +76,16 @@ export default function Home() {
 
     const payload = {
 
-      title:'123',
+      title:'44',
       content:'145',
       open:true,
       posted:false,
       thumbnail:'http://',
       user_id:149,
-      category_id:4      
+      category_id:10
     }
 
-    const article_id=3
+    const article_id=21
 
     const res = await api.putArticle(auth.jwt, article_id, payload)
 

@@ -32,7 +32,7 @@ export default function() {
 
     const getHighQualityProfile = async(auth) =>{
 
-        const resUser = await api.getUser(auth.jwt, auth.user_id)
+        const resUser = await api.getUser(auth.user_id)
                 
         if(resUser == null)
             return null

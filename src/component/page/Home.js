@@ -34,12 +34,11 @@ export default function Home() {
     
   };
 
-  const test2 = async() => {
 
+  const postArticle = async() => {
 
-    const payload = {title:'title value', content:'content value', open:true, posted:false, thumbnail:'http://a.jpg', category_id:10, user_id:149}
-
-
+    const payload = {title:'title ㅁㄴㅇㄻㄴㅇㄹvalue', content:'content value', open:1, posted:0, thumbnail:'http://a.jpg', category_id:10}
+  
     const res = await api.postArticle(auth.jwt, payload)
 
     if(res == null)
@@ -50,15 +49,21 @@ export default function Home() {
   };
 
 
-    const getArticle = async() => {
-
+  const getArticle = async() => {
 
       const res = await api.getArticle(auth.jwt, 7)
 
-      if(res != null)
+      if(res == null)
         return
 
       console.log(res)
+
+      const res2 = await api.getArticleOpen(7)
+
+      if(res2 == null)
+        return
+
+      console.log(res2)
   }
 
 
@@ -66,7 +71,7 @@ export default function Home() {
 
       const res = await api.deleteArticle(auth.jwt, 6)
 
-      if(res != null)
+      if(res == null)
         return
 
       console.log(res)
@@ -76,42 +81,52 @@ export default function Home() {
 
     const payload = {
 
-      title:'44',
-      content:'145',
-      open:true,
-      posted:false,
-      thumbnail:'http://',
-      user_id:149,
-      category_id:10
+      title:'43434',
+      content:'3434',
+      open:1,
+      posted:0,
+      thumbnail:'http://ssaabbb',      
+      category_id:19
     }
 
-    const article_id=21
+    const article_id = 23
 
     const res = await api.putArticle(auth.jwt, article_id, payload)
 
-    if(res != null)
+    if(res == null)
         return
 
       console.log(res)
+  }
 
+
+  const getArticles = async() =>{
+
+
+    const query = 'offset=1&limit=3&order=1'
+
+    
+    const res = await api.getArticles(query)
+
+    if(res == null)
+      return
+
+    console.log(res)
 
   }
 
   
+  const getUserArticles = async() => {
 
-  const test3 = async() => {
-
-    //selectRef.current.classList.add()
-
+    const query = 'category_id=100&user_id=' + auth.user_id + '&offset=0&limit=5&order=1'
     
-    
+    const res = await api.getUserArticles(auth.jwt, auth.user_id, query)
 
-    //console.log()
+    if(res == null)
+      return
 
+    console.log(res)
 
-    
-
-    //window.showToast('login 완료', 'error')
     
   };
 
@@ -238,11 +253,12 @@ export default function Home() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={goEditor}>에디터</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='default' onClick={test5}>이미지</BeautyButton>
-      <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={test2}>글 올리기</BeautyButton>
-      <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={getArticle}>글 가져오기</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={postArticle}>글 넣기</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={getArticle}>글 상세 가져오기</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='danger' onClick={deleteArticle}>글 삭제하기</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='danger' onClick={putArticle}>글수정</BeautyButton>
-      <BeautyButton disabled={true} isLoading={isLoading} type='confirm' onClick={test5}>confirm</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getArticles}>글목록</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserArticles}>유저 글 목록</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={test5}>confirm</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='cancel' onClick={test5}>cancel</BeautyButton>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='cancel' onClick={test5}>cancel</BeautyButton>

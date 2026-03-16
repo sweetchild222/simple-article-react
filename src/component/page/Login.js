@@ -14,7 +14,7 @@ import BeautyButton from '../common/BeautyButton.js';
 
 export default function() {
 
-    const {auth, updateAuth, validAuth} = useContext(AuthContext)
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     const [isLoading, setIsLoading] = useState(false)
     
@@ -55,19 +55,19 @@ export default function() {
             window.showToast('로그인이 실패하였습니다', 'error')
             return
         }
+
         
-        const resUser = await api.getUser(resAuth.jwt, resAuth.user_id)
+        updateAuth(resAuth)
+        window.showToast('로그인이 성공하였습니다', 'success')
         
-        if(resUser == null) {
+        const resUser = await api.getUser(resAuth.user_id)
+        
+        if(resUser == null) {            
             setIsLoading(false)
-            window.showToast('로그인이 실패하였습니다', 'error')
+            window.showToast('회원 정보를 가져 올 수 없습니다', 'error')
             return
         }
         
-        setIsLoading(false)
-        updateAuth(resAuth)
-        window.showToast('로그인이 성공하였습니다', 'success')
-
         if(resUser.profile == null)
             return
 
@@ -75,13 +75,15 @@ export default function() {
 
         const resProfile = await api.getProfile(resAuth.jwt, profileId)
         
-        if(resProfile == null){
+        if(resProfile == null){            
+            setIsLoading(false)
             window.showToast('프로필을 가져 올 수 없습니다.', 'error')
             return
         }
 
         const base64 = await blobToBase64.convert(resProfile)
         updateProfile(base64)
+        setIsLoading(false)
     }
 
 

@@ -5,7 +5,8 @@ import BeautyButton from '../common/BeautyButton'
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 
-import * as api from '../util/Api.js'
+import * as BlobAPI from '../util/BlobAPI.js'
+import * as ArticleAPI from '../util/ArticleAPI.js'
 import * as blobToBase64 from '../util/BlobToBase64.js'
 
 
@@ -39,7 +40,7 @@ export default function Home() {
 
     const payload = {title:'title ㅁㄴㅇㄻㄴㅇㄹvalue', content:'content value', open:1, posted:0, thumbnail:'http://a.jpg', category_id:10}
   
-    const res = await api.postArticle(auth.jwt, payload)
+    const res = await ArticleAPI.postArticle(auth.jwt, payload)
 
     if(res == null)
       return
@@ -51,14 +52,14 @@ export default function Home() {
 
   const getArticle = async() => {
 
-      const res = await api.getArticle(auth.jwt, 7)
+      const res = await ArticleAPI.getArticle(auth.jwt, 7)
 
       if(res == null)
         return
 
       console.log(res)
 
-      const res2 = await api.getArticleOpen(7)
+      const res2 = await ArticleAPI.getArticleOpen(7)
 
       if(res2 == null)
         return
@@ -69,7 +70,7 @@ export default function Home() {
 
     const deleteArticle = async() => {
 
-      const res = await api.deleteArticle(auth.jwt, 6)
+      const res = await ArticleAPI.deleteArticle(auth.jwt, 6)
 
       if(res == null)
         return
@@ -91,7 +92,7 @@ export default function Home() {
 
     const article_id = 23
 
-    const res = await api.putArticle(auth.jwt, article_id, payload)
+    const res = await ArticleAPI.putArticle(auth.jwt, article_id, payload)
 
     if(res == null)
         return
@@ -106,7 +107,7 @@ export default function Home() {
     const query = 'offset=1&limit=3&order=1'
 
     
-    const res = await api.getArticles(query)
+    const res = await ArticleAPI.getArticles(query)
 
     if(res == null)
       return
@@ -120,7 +121,7 @@ export default function Home() {
 
     const query = 'category_id=10&offset=0&limit=5&order=1&open=0&posted=1'
     
-    const res = await api.getUserArticles(auth.jwt, auth.user_id, query)
+    const res = await ArticleAPI.getUserArticles(auth.jwt, auth.user_id, query)
 
     if(res == null)
       return
@@ -174,7 +175,7 @@ export default function Home() {
       const formData = new FormData()
       formData.append('image', blob)
 
-      const resArticleImage = await api.postArticleImage(auth.jwt, formData)
+      // const resArticleImage = await api.postArticleImage(auth.jwt, formData)
 
       console.log(resArticleImage)
 

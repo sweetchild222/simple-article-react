@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-import * as api from '../util/Api.js'
+
 import {useState, useContext, useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 
+
+import * as UserAPI from '../util/UserAPI.js'
 import AuthContext from "../util/AuthContext.js";
 import Modal from "../common/Modal.js"
 import BeautyButton from '../common/BeautyButton.js';
@@ -70,7 +72,7 @@ export default function() {
     
     const userWithdraw = async(password) => {
     
-        const resPasswordCheck = await api.getUserPasswordCheck(auth.jwt, auth.user_id, password)
+        const resPasswordCheck = await UserAPI.getUserPasswordCheck(auth.jwt, auth.user_id, password)
 
         if(resPasswordCheck == null)
             return null
@@ -80,7 +82,7 @@ export default function() {
 
         const payload = {withdraw:true}
 
-        return await api.patchUser(auth.jwt, auth.user_id, payload)
+        return await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
     }
 
 

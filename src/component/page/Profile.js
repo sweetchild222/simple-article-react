@@ -2,7 +2,8 @@ import './Profile.css'
 import './RotateLoading.css'
 
 import {useContext, useEffect, useRef } from "react";
-import * as api from '../util/Api.js'
+
+import * as UserAPI from '../util/UserAPI.js'
 import * as BlobAPI from '../util/BlobAPI.js'
 import * as blobToBase64 from '../util/BlobToBase64.js'
 import { useState } from 'react';
@@ -33,7 +34,7 @@ export default function() {
 
     const getHighQualityProfile = async(auth) =>{
 
-        const resUser = await api.getUser(auth.user_id)
+        const resUser = await UserAPI.getUser(auth.user_id)
 
         console.log(resUser)
                 

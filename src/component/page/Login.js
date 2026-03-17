@@ -5,7 +5,8 @@ import AuthContext from "../util/AuthContext.js";
 import ProfileContext from "../util/ProfileContext.js";
 import React, { useContext, useEffect, useState} from 'react';
 
-import * as api from '../util/Api.js'
+
+import * as UserAPI from '../util/UserAPI.js'
 import * as BlobAPI from '../util/BlobAPI.js'
 import * as blobToBase64 from '../util/BlobToBase64.js'
 import { useNavigate, useLocation} from 'react-router-dom';
@@ -49,7 +50,7 @@ export default function() {
         
         setIsLoading(true)
 
-        const resAuth = await api.postAuthenticate(username, password)
+        const resAuth = await UserAPI.postAuthenticate(username, password)
         
         if(resAuth == null) {
             setIsLoading(false)
@@ -61,7 +62,7 @@ export default function() {
         updateAuth(resAuth)
         window.showToast('로그인이 성공하였습니다', 'success')
         
-        const resUser = await api.getUser(resAuth.user_id)
+        const resUser = await UserAPI.getUser(resAuth.user_id)
         
         if(resUser == null) {            
             setIsLoading(false)

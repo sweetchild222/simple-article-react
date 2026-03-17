@@ -5,7 +5,8 @@ import {useContext, useEffect, useState} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import AuthContext from "../util/AuthContext.js";
 
-import * as api from '../util/Api.js'
+
+import * as RegistAPI from '../util/RegistAPI.js'
 import * as validator from '../util/Validator.js'
 import BeautyButton from "../common/BeautyButton.js";
 
@@ -74,7 +75,7 @@ export default function() {
 
   const sendVerifyCodeCore = async(email) => {
     
-    const resExist = await api.getExistUser(email)
+    const resExist = await RegistAPI.getExistUser(email)
 
     if(resExist == null)
       return false
@@ -84,7 +85,7 @@ export default function() {
       return false
     }
 
-    const resVerifyEmail =  await api.postVerifyEmail(email)
+    const resVerifyEmail =  await RegistAPI.postVerifyEmail(email)
 
     return (resVerifyEmail != null)
   }
@@ -130,7 +131,7 @@ export default function() {
 
   const requestVerify = async(email, verifyCode) => {
 
-    const resVerifyEmail = await api.getVerifyEmail(email, verifyCode)
+    const resVerifyEmail = await RegistAPI.getVerifyEmail(email, verifyCode)
 
     if(resVerifyEmail == null)
       return false
@@ -166,7 +167,7 @@ export default function() {
   
   const regist = async(email, password) => {
       
-    const resExist = await api.getExistUser(email)
+    const resExist = await RegistAPI.getExistUser(email)
 
     if(resExist == null)
       return null
@@ -176,7 +177,7 @@ export default function() {
       return null
     }
 
-    const resUser = await api.postUser(email, password)
+    const resUser = await RegistAPI.postUser(email, password)
 
     if(resUser == null)
       return null

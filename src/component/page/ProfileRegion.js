@@ -6,8 +6,8 @@ import './RotateLoading.css'
 import * as blobToBase64 from '../util/BlobToBase64.js'
 
 import { useNavigate} from 'react-router-dom'
-import * as api from '../util/Api.js'
 import * as BlobAPI from '../util/BlobAPI.js'
+import * as UserAPI from '../util/UserAPI.js'
 import AuthContext from "../util/AuthContext.js"
 import ImageRegion from './ImageRegion.js'
 
@@ -105,6 +105,8 @@ export default function() {
 
     setIsPostLoading(true)
 
+    console.log('asdfs')
+
     const resProfile = await BlobAPI.postProfile(auth.jwt, formData)
 
     if(resProfile == null){
@@ -114,7 +116,10 @@ export default function() {
     }
 
     const payload = {profile: resProfile.id}
-    const resUser = await api.patchUser(auth.jwt, auth.user_id, payload)
+
+    console.log('asdfsd')
+    const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
+    console.log('xxx')
 
     if(resUser == null){
       setIsPostLoading(false)

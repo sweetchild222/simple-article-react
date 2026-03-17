@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect, useRef } from "react";
 import axios from 'axios';
 
-import * as api from '../util/Api.js'
+import * as BlobAPI from '../util/BlobAPI.js'
 import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 import AuthContext from "../util/AuthContext.js";
 import ProfileContext from "../util/ProfileContext.js";

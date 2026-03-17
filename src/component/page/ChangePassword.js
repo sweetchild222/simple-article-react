@@ -1,5 +1,5 @@
 import {useContext, useEffect } from "react";
-import * as api from '../util/Api.js'
+import * as UserAPI from '../util/UserAPI.js'
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import * as validator from '../util/Validator.js'
@@ -84,7 +84,7 @@ export default function() {
 
     const passwordChange = async(current_password, new_password)=>{
         
-        const resPasswordCheck = await api.getUserPasswordCheck(auth.jwt, auth.user_id, current_password)
+        const resPasswordCheck = await UserAPI.getUserPasswordCheck(auth.jwt, auth.user_id, current_password)
 
         if(resPasswordCheck == null)
             return null
@@ -94,7 +94,7 @@ export default function() {
 
         const payload = {password: new_password}
 
-        const resUser = await api.patchUser(auth.jwt, auth.user_id, payload)
+        const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
 
         if(resUser == null)
             return null

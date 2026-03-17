@@ -5,7 +5,7 @@ import i18next from 'i18next'
 import ko from './ko.json'
 import BeautyButton from '../common/BeautyButton'
 import '@mdxeditor/editor/style.css'
-import * as api from '../util/Api.js'
+
 import * as BlobAPI from '../util/BlobAPI.js'
 import './MDXEditor.css'
 import AuthContext from "../util/AuthContext.js";

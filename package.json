@@ -22,7 +22,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [
@@ -36,6 +37,8 @@
     ]
   },
   "devDependencies": {
-    "i18next-parser": "^9.0.2"
+    "i18next-parser": "^9.0.2",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.1"
   }
 }

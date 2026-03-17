@@ -7,12 +7,14 @@ import { useNavigate } from 'react-router-dom';
 
 import * as UserAPI from '../util/UserAPI.js'
 import AuthContext from "../util/AuthContext.js";
+import ProfileContext from "../util/ProfileContext.js";
 import Modal from "../common/Modal.js"
 import BeautyButton from '../common/BeautyButton.js';
 
 export default function() {
     
     const {auth, validAuth, removeAuth} = useContext(AuthContext)
+    const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -65,6 +67,7 @@ export default function() {
         }
         
         removeAuth()
+        removeProfile()
 
         window.showToast('회원 탈퇴가 성공하였습니다', 'success')
     }

@@ -3,6 +3,7 @@ import './RotateLoading.css'
 
 import {useContext, useEffect, useRef } from "react";
 import * as api from '../util/Api.js'
+import * as BlobAPI from '../util/BlobAPI.js'
 import * as blobToBase64 from '../util/BlobToBase64.js'
 import { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
@@ -33,6 +34,8 @@ export default function() {
     const getHighQualityProfile = async(auth) =>{
 
         const resUser = await api.getUser(auth.user_id)
+
+        console.log(resUser)
                 
         if(resUser == null)
             return null
@@ -41,8 +44,8 @@ export default function() {
             return '/image/user.png'
 
         const profileId = resUser.profile + '?size=256x256'
-        
-        const resProfile = await api.getProfile(auth.jwt, profileId)
+
+        const resProfile = await BlobAPI.getProfile(auth.jwt, profileId)
 
         if(resProfile == null){
             return '/image/user.png'

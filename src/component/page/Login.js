@@ -6,6 +6,7 @@ import ProfileContext from "../util/ProfileContext.js";
 import React, { useContext, useEffect, useState} from 'react';
 
 import * as api from '../util/Api.js'
+import * as BlobAPI from '../util/BlobAPI.js'
 import * as blobToBase64 from '../util/BlobToBase64.js'
 import { useNavigate, useLocation} from 'react-router-dom';
 import * as validator from '../util/Validator.js'
@@ -73,9 +74,11 @@ export default function() {
 
         const profileId = resUser.profile + '?size=64x64'
 
-        const resProfile = await api.getProfile(resAuth.jwt, profileId)
+        console.log(profileId)
+
+        const resProfile = await BlobAPI.getProfile(resAuth.jwt, profileId)
         
-        if(resProfile == null){            
+        if(resProfile == null){
             setIsLoading(false)
             window.showToast('프로필을 가져 올 수 없습니다.', 'error')
             return

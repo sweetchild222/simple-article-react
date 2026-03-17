@@ -7,6 +7,7 @@ import * as blobToBase64 from '../util/BlobToBase64.js'
 
 import { useNavigate} from 'react-router-dom'
 import * as api from '../util/Api.js'
+import * as BlobAPI from '../util/BlobAPI.js'
 import AuthContext from "../util/AuthContext.js"
 import ImageRegion from './ImageRegion.js'
 
@@ -104,7 +105,7 @@ export default function() {
 
     setIsPostLoading(true)
 
-    const resProfile = await api.postProfile(auth.jwt, formData)
+    const resProfile = await BlobAPI.postProfile(auth.jwt, formData)
 
     if(resProfile == null){
       setIsPostLoading(false)      
@@ -122,7 +123,7 @@ export default function() {
     }
 
     const profileId = resProfile.id + '?size=64x64'
-    const profile = await api.getProfile(auth.jwt, profileId)
+    const profile = await BlobAPI.getProfile(auth.jwt, profileId)
 
     if(profile == null) {
       setIsPostLoading(false)

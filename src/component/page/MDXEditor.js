@@ -6,6 +6,7 @@ import ko from './ko.json'
 import BeautyButton from '../common/BeautyButton'
 import '@mdxeditor/editor/style.css'
 import * as api from '../util/Api.js'
+import * as BlobAPI from '../util/BlobAPI.js'
 import './MDXEditor.css'
 import AuthContext from "../util/AuthContext.js";
 import {pickImage, getImageFormat} from "../util/ImagePicker.js";
@@ -418,7 +419,7 @@ export default function() {
         const formData = new FormData()
         formData.append('image', blob)
 
-        const resArticleImage = await api.postArticleImage(auth.jwt, formData)
+        const resArticleImage = await BlobAPI.postArticleImage(auth.jwt, formData)
 
         if(resArticleImage == null){
           resolve(null)

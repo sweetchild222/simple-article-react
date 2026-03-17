@@ -118,7 +118,7 @@ export default function Home() {
   
   const getUserArticles = async() => {
 
-    const query = 'category_id=100&user_id=' + auth.user_id + '&offset=0&limit=5&order=1'
+    const query = 'category_id=10&offset=0&limit=5&order=1&open=0&posted=1'
     
     const res = await api.getUserArticles(auth.jwt, auth.user_id, query)
 

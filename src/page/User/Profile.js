@@ -1,21 +1,21 @@
 import './Profile.css'
-import './RotateLoading.css'
+import '../../common/RotateLoading.css'
 
 import {useContext, useEffect, useRef } from "react";
 
-import * as UserAPI from '../api/UserAPI.js'
-import * as BlobAPI from '../api/BlobAPI.js'
-import * as blobToBase64 from '../util/BlobToBase64.js'
+import * as UserAPI from '../../api/UserAPI.js'
+import * as BlobAPI from '../../api/BlobAPI.js'
+import * as blobToBase64 from '../../util/BlobToBase64.js'
 import { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 
-import AuthContext from "../util/AuthContext.js";
-import {pickImage, getImageFormat} from "../util/ImagePicker.js";
-import ProfileContext from "../util/ProfileContext.js";
-import Modal from "../common/Modal.js"
+import AuthContext from "../../util/AuthContext.js";
+import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
+import ProfileContext from "../../util/ProfileContext.js";
+import Modal from "../../common/Modal.js"
 
-import BeautyButton from '../common/BeautyButton.js';
-import ImageScale from "../util/ImageScale.js";
+import BeautyButton from '../../common/BeautyButton.js';
+import ImageScale from "../../util/ImageScale.js";
 
 
 export default function() {

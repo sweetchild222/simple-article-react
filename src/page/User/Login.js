@@ -1,18 +1,18 @@
 
 import axios from 'axios';
 
-import AuthContext from "../util/AuthContext.js";
-import ProfileContext from "../util/ProfileContext.js";
+import AuthContext from "../../util/AuthContext.js";
+import ProfileContext from "../../util/ProfileContext.js";
 import React, { useContext, useEffect, useState} from 'react';
 
 
-import * as UserAPI from '../api/UserAPI.js'
-import * as BlobAPI from '../api/BlobAPI.js'
-import * as blobToBase64 from '../util/BlobToBase64.js'
+import * as UserAPI from '../../api/UserAPI.js'
+import * as BlobAPI from '../../api/BlobAPI.js'
+import * as blobToBase64 from '../../util/BlobToBase64.js'
 import { useNavigate, useLocation} from 'react-router-dom';
-import * as validator from '../util/Validator.js'
+import * as validator from '../../util/Validator.js'
 
-import BeautyButton from '../common/BeautyButton.js';
+import BeautyButton from '../../common/BeautyButton.js';
 
 export default function() {
 

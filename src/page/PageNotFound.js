@@ -6,12 +6,10 @@ import AuthContext from "../util/AuthContext.js";
 import React, { useContext} from 'react';
 
 
-
 export default function() {
-
 
     return (
         <label>page not found</label>
-    );    
+    );
 }
 

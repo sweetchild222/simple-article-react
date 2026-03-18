@@ -1,17 +1,17 @@
 import { useContext, useState, useRef, useEffect } from 'react'
 import { usePublisher } from '@mdxeditor/gurx'
-import Modal from '../common/Modal'
+import Modal from '../../common/Modal'
 import i18next from 'i18next'
 import ko from './ko.json'
-import BeautyButton from '../common/BeautyButton'
+import BeautyButton from '../../common/BeautyButton'
 import '@mdxeditor/editor/style.css'
 
 
 import './MDXEditor.css'
-import AuthContext from "../util/AuthContext.js";
-import {pickImage, getImageFormat} from "../util/ImagePicker.js";
+import AuthContext from "../../util/AuthContext.js";
+import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
-import ImageScale from "../util/ImageScale.js";
+import ImageScale from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 

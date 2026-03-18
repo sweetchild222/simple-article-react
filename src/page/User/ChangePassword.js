@@ -1,10 +1,10 @@
 import {useContext, useEffect } from "react";
-import * as UserAPI from '../api/UserAPI.js'
+import * as UserAPI from '../../api/UserAPI.js'
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import * as validator from '../util/Validator.js'
-import AuthContext from "../util/AuthContext.js";
-import BeautyButton from '../common/BeautyButton.js';
+import * as validator from '../../util/Validator.js'
+import AuthContext from "../../util/AuthContext.js";
+import BeautyButton from '../../common/BeautyButton.js';
 
 
 export default function() {

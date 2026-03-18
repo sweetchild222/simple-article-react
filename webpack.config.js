@@ -56,8 +56,15 @@ export default {
   devServer: {
     port:3001,
     open: true,
-    historyApiFallback: true,
     hot: true,
+    // historyApiFallback: {
+    //   index: '/index.html',
+    //   verbose: true,
+    //   rewrites: [
+    //     { from: /./, to: '/index.html'}, // Rewrites all paths to index.html
+    //     { from: /./, to: '/index.html'}, // Rewrites all paths to index.html
+    //   ]
+    // },    
     proxy: [
       {
         context: ['/api'],

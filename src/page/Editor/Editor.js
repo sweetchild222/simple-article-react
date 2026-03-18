@@ -1,21 +1,20 @@
 
 import { useContext, useState, useRef, useEffect } from 'react'
-import Modal from '../common/Modal'
+import Modal from '../../common/Modal'
 import MDXEditor from './MDXEditor.js'
-import BeautyButton from '../common/BeautyButton'
-import * as BlobAPI from '../api/BlobAPI.js'
-import AuthContext from "../util/AuthContext.js";
-import {pickImage, getImageFormat} from "../util/ImagePicker.js";
+import BeautyButton from '../../common/BeautyButton'
+import * as BlobAPI from '../../api/BlobAPI.js'
+import AuthContext from "../../util/AuthContext.js";
+import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
-import ImageScale from "../util/ImageScale.js";
+import ImageScale from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 
 
 export default function() {
 
-
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)  
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const navigate = useNavigate()
 
     useEffect(()=> {
@@ -26,7 +25,6 @@ export default function() {
       }
 
     }, [auth])
-
 
 
     const postMarkDown = () =>{
@@ -67,7 +65,8 @@ export default function() {
     
         window.showToast(error, 'error')
     }
-  
+
+
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
@@ -86,7 +85,7 @@ export default function() {
             </div>
             <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
                 <MDXEditor placeHolder={"글을 작성해보세요"} postImage={postImage} initValue={'sdf'} onChange={console.log}
-                        onUserError={onUserError}
+                        onUserError={onUserError} onParsingError={onParsingError}
                 />
             </div>
         </div>

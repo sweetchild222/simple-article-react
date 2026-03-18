@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
 import './ImageRegion.css'
-import './RotateLoading.css'
+import '../../common/RotateLoading.css'
 
 export default function({ref, file, onSelectImage,
                         containerWidth=600, containerHeight=300,

@@ -3,13 +3,13 @@ import axios from 'axios';
 
 import {useContext, useEffect, useState} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import AuthContext from "../util/AuthContext.js";
+import AuthContext from "../../util/AuthContext.js";
 
 
-import * as RegistAPI from '../api/RegistAPI.js'
-import * as UserAPI from '../api/UserAPI.js'
-import * as validator from '../util/Validator.js'
-import BeautyButton from "../common/BeautyButton.js";
+import * as RegistAPI from '../../api/RegistAPI.js'
+import * as UserAPI from '../../api/UserAPI.js'
+import * as validator from '../../util/Validator.js'
+import BeautyButton from "../../common/BeautyButton.js";
 
 
 

@@ -10,6 +10,7 @@ import Home from './Home.js'
 // import Editor from './Editor.js'
 
 import MDXEditor from './MDXEditor.js'
+import Editor from './Editor.js'
 import Login from './Login.js'
 import PageNotFound from './PageNotFound.js'
 import Profile from './Profile.js'
@@ -38,7 +39,7 @@ export default function() {
             <Routes>
               <Route path="/" element={<Home />}></Route>
               <Route path="/home" element={<Home />}></Route>
-              <Route path="/editor" element={<MDXEditor />}></Route>
+              <Route path="/editor" element={<Editor />}></Route>
               <Route path="/login" element={<Login/>}></Route>
               <Route path="/regist" element={<Regist/>}></Route>
               <Route path="/profile" element={<Profile/>}></Route>

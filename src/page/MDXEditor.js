@@ -6,7 +6,7 @@ import ko from './ko.json'
 import BeautyButton from '../common/BeautyButton'
 import '@mdxeditor/editor/style.css'
 
-import * as BlobAPI from '../api/BlobAPI.js'
+
 import './MDXEditor.css'
 import AuthContext from "../util/AuthContext.js";
 import {pickImage, getImageFormat} from "../util/ImagePicker.js";
@@ -23,21 +23,10 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin } from '@mdxeditor/editor'
 
 
-export default function() {
+export default function({placeHolder, postImage, initValue, readOnly=false, onChange, onParsingError, onUserError}) {
 
-  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const editorRef = useRef(null);
-  const navigate = useNavigate()
-
-  useEffect(()=> {
-
-      if(!validAuth(auth)){
-          navigate('/login', {replace:true})
-          return
-      }
-
-  }, [auth])
-
+  
   useEffect(()=>{
 
     i18next.init({
@@ -46,7 +35,22 @@ export default function() {
       resources: {ko: {translation: ko}}
     })
 
+
+    if (editorRef.current) {
+      editorRef.current.focus();
+    }
+
   }, [])
+
+
+  // useImperativeHandle(ref, () => {
+  
+  //     return {
+  //       image() {
+  //         return image
+  //       }
+  //     }
+  // }, [image]);
 
 
   const YoutubeDirectiveDescriptor = {
@@ -89,6 +93,13 @@ export default function() {
     }
   }
 
+
+  const userErrorHandle = (error)=>{
+
+    if(onUserError != null)
+      onUserError(error)
+  }
+
   const YouTubeButton = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -109,7 +120,8 @@ export default function() {
         const match = regex.exec(input)
 
         if(match.length < 4){
-          window.showToast('URL이 잘못되었습니다', 'error')
+
+          userErrorHandle('URL이 잘못되었습니다')
           return
         }
         const videoId = match[3]
@@ -124,13 +136,13 @@ export default function() {
           })
         }
         else{
-          window.showToast('URL이 잘못되었습니다', 'error')
+          userErrorHandle('URL이 잘못되었습니다')
           return
         }
       }
       catch(e){
 
-        window.showToast('URL이 잘못되었습니다', 'error')
+        userErrorHandle('URL이 잘못되었습니다')
         return
       }
     }
@@ -150,12 +162,9 @@ export default function() {
 
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
     const [imageUrl, setImageUrl] = useState('')
-    const [fileUrl, setFileUrl] = useState('')
-    const [isLoadingUpload, setIsLoadingUpload] = useState(false)
-    const [isUrlMode, setIsUrlMode] = useState(true)
+    const [isLoadingUpload, setIsLoadingUpload] = useState(false)    
     const [isDisabledConfirm, setIsDisabledConfirm] = useState(true)
-
-    const inputFileRef = useRef(null)
+    
     const inputUrlRef = useRef(null)
     const inputTitleRef = useRef(null)
     const inputAltRef = useRef(null)
@@ -165,9 +174,7 @@ export default function() {
     const modal_config = {text: '이미지 정보를 입력하세요', type: 'custom', isCloseOutsideClick: false}
 
     const selectImage = async () =>{
-
-      setFileUrl('')
-
+      
       const file = await pickImage()
       
       if(file == null)
@@ -178,7 +185,7 @@ export default function() {
           const format = await getImageFormat(file)
 
           if(format == 'unknown') {
-              window.showToast('파일을 사용할 수 없습니다', 'error')
+              userErrorHandle('파일을 사용할 수 없습니다')
               return
           }
 
@@ -194,41 +201,37 @@ export default function() {
           setIsLoadingUpload(false)
           
           if(url == null){
-            window.showToast('파일을 업로드할 수 없습니다', 'error')
+            userErrorHandle('파일을 업로드할 수 없습니다')
             return
-          }
+          }          
           
-          setFileUrl(url)
-          setIsUrlMode(false)
+          setImageUrl(url)
+          
       }
       catch(error) {
 
-          window.showToast('파일을 사용할 수 없습니다', 'error')
+          userErrorHandle('파일을 사용할 수 없습니다')
           return
       }
     }
 
     useEffect(()=>{
 
-      if(isUrlMode)
-        setIsDisabledConfirm(imageUrl == '')
-      else
-        setIsDisabledConfirm(fileUrl == '')
+      setIsDisabledConfirm(imageUrl == '')
 
-    }, [imageUrl, fileUrl, isUrlMode])
+    }, [imageUrl])
     
-
 
     const insertImageConfirm =() => {
 
-      const url = isUrlMode ? imageUrl : fileUrl
+      const url = imageUrl
 
       const urlRegex = /^(http|https):\/\/[^ "]+$/;
 
       if(!urlRegex.test(url)){
 
         setIsImageModalOpen(false)
-        window.showToast('URL 형식이 잘못되었습니다', 'error')
+        userErrorHandle('URL 형식이 잘못되었습니다')
         return
       }
 
@@ -267,14 +270,6 @@ export default function() {
     }
 
 
-    const selectUrl = () => {
-
-      setImageUrl('')
-      
-      setIsUrlMode(true)      
-    }
-
-
     const openModal=()=>{
 
       if(inputUrlRef.current)
@@ -287,8 +282,6 @@ export default function() {
         inputAltRef.current.value = ''
 
       setImageUrl('')
-      setFileUrl('')
-      setIsUrlMode(true)
       setIsDisabledConfirm(true)
       setIsLoadingUpload(false)
       setIsImageModalOpen(true)
@@ -298,11 +291,9 @@ export default function() {
       <div>
         <button style={{height:'100%'}} onClick={openModal} title="이미지 삽입">IMG</button>
         <Modal config={modal_config} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <BeautyButton type='confirm' onClick={selectUrl}>URL</BeautyButton>
-          <BeautyButton type='warning' isLoading={isLoadingUpload} onClick={selectImage}>파일</BeautyButton>
-          {!isUrlMode && <input readOnly={true} ref={inputFileRef} maxLength="2048" defaultValue={fileUrl} onKeyDown={onKeyDownUrl}></input>}
-          {isUrlMode && <input ref={inputUrlRef} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl}/>}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>          
+          <BeautyButton type='warning' isLoading={isLoadingUpload} onClick={selectImage}>파일</BeautyButton>          
+          <input ref={inputUrlRef} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
           <input ref={inputTitleRef} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
           <input ref={inputAltRef} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>
           <BeautyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm}>확인</BeautyButton>
@@ -407,30 +398,7 @@ export default function() {
       </DiffSourceToggleWrapper>
     )
   }
-
-  const markdownContent ='글을 작성해보세요'
-
-  const postImage = (canvas) => {
-
-    return new Promise((resolve) => {
-
-      canvas.toBlob(async(blob) => {
-
-        const formData = new FormData()
-        formData.append('image', blob)
-
-        const resArticleImage = await BlobAPI.postArticleImage(auth.jwt, formData)
-
-        if(resArticleImage == null){
-          resolve(null)
-          return
-        }
-
-        resolve('http://13.124.193.201:8080/api/blob/article/' + resArticleImage.id)
-      })
-    })
-  }
-
+  
 
   const plugins = [
     toolbarPlugin({toolbarContents: () => (<><CustomToolbar /></>)}),
@@ -440,61 +408,21 @@ export default function() {
     linkPlugin(),
     linkDialogPlugin(),
     imagePlugin({disableImageSettingsButton: true}),
-    tablePlugin(),
+    // tablePlugin(),
     thematicBreakPlugin(),
     frontmatterPlugin(),
     codeBlockPlugin({ defaultCodeBlockLanguage: 'js'}),
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
     codeMirrorPlugin({ codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'} }),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
-    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: markdownContent }),
+    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: initValue }),
     markdownShortcutPlugin()
   ]
 
-  useEffect(() => {
-    // 마운트 시 div에 포커스 설정
-    if (editorRef.current) {
-      editorRef.current.focus();
-    }
-  }, []);
-  
-
-  const postMarkDown = () =>{
-
-    if(editorRef.current == null)
-      return
-
-    const markdown = editorRef.current.getMarkdown();
-
-    if(markdown == '')
-      return
-    
-  }
-
-  
-  return validAuth(auth) ? (
-    <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
-      <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
-        <BeautyButton type='danger'>취소</BeautyButton>
-        <BeautyButton type='confirm' onClick={postMarkDown}>완료</BeautyButton>
-        <BeautyButton type='success'>임시저장</BeautyButton>
-        <input style={{flexGrow:'1'}} placeholder="제목을 입력하세요"></input>
-
-        <select id="cars" name="category">
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="fiat">Fiat</option>
-          <option value="audi">Audi</option>
-        </select>
-
-        <BeautyButton type='success'>미리보기</BeautyButton>
-      </div>
-      <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
-        <MDXEditor placeholder={'글을 작성해보세요'} ref={editorRef} markdown={markdownContent} onChange={console.log} readOnly={false} plugins={plugins} contentEditableClassName="prose" onError={(error) => {console.log(error)}}
-          translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
-      </div>
-      
-    </div>
-  ) : null
+  return (
+      <MDXEditor placeholder={placeHolder} ref={editorRef} markdown={initValue} onChange={onChange} 
+      readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
+        translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
+  )          
 }
 

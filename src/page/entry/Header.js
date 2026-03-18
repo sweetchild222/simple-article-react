@@ -34,12 +34,11 @@ export default function() {
     }
 
 
-    const onClickProfile = (e) =>{
+    const onClickUser = (e) =>{
 
-        navigate('/profile');
+        navigate('/user');
 
     }
-
 
 
     const onClickSearch = (e) => {
@@ -60,7 +59,7 @@ export default function() {
         <input id="myInput" placeholder="검색" style={{color:'green', width:'100px'}} onKeyDown={onKeyDown}></input>
         <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickSearch}>검색</button>
         {!isLoggedIn && <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickLogIn}>로그인</button>}
-        {isLoggedIn && <img src={profile} height='100%' width='64px' onClick={onClickProfile}/>}
+        {isLoggedIn && <img src={profile} height='100%' width='64px' onClick={onClickUser}/>}
         
         </div>
     );    

@@ -11,14 +11,14 @@ import Home from './Home.js'
 
 
 import Editor from '../editor/Editor.js'
-import Login from '../User/Login.js'
+import Login from '../user/Login.js'
 import PageNotFound from './PageNotFound.js'
-import Profile from '../User/Profile.js'
-import Regist from '../User/Regist.js'
-import ChangePassword from '../User/ChangePassword.js'
-import Withdraw from '../User/Withdraw.js'
-import ProfileRegion from '../User/ProfileRegion.js'
-import ImageRegion from '../User/ImageRegion.js'
+import User from '../user/User.js'
+import Regist from '../user/Regist.js'
+import ChangePassword from '../user/ChangePassword.js'
+import Withdraw from '../user/Withdraw.js'
+import ProfileRegion from '../user/ProfileRegion.js'
+import ImageRegion from '../user/ImageRegion.js'
 
 import AuthProvider from '../../util/AuthProvider.js'
 import ProfileContext from '../../util/ProfileProvider.js'
@@ -43,11 +43,9 @@ export default function() {
               <Route path="/editor" element={<Editor />}></Route>
               <Route path="/login" element={<Login/>}></Route>
               <Route path="/regist" element={<Regist/>}></Route>
-              <Route path="/profile" element={<Profile/>}></Route>
-              <Route path="/image_region" element={<ImageRegion/>}></Route>
+              <Route path="/user" element={<User/>}></Route>
               <Route path="/widthdraw" element={<Withdraw/>}></Route>
               <Route path="/changePassword" element={<ChangePassword/>}></Route>
-              <Route path="/profile_region" element={<ProfileRegion/>}></Route>
               <Route path="/*" element={<PageNotFound/>}></Route>
             </Routes>
           </div>

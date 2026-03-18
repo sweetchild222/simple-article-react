@@ -1,4 +1,4 @@
-import './Profile.css'
+import './User.css'
 import '../../common/RotateLoading.css'
 
 import {useContext, useEffect, useRef } from "react";
@@ -16,7 +16,7 @@ import Modal from "../../common/Modal.js"
 
 import BeautyButton from '../../common/BeautyButton.js';
 import ImageScale from "../../util/ImageScale.js";
-
+import { Outlet, Link } from 'react-router-dom';
 
 export default function() {
 

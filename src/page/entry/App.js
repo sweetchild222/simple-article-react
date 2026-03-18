@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState} from 'react';
 import './App.css'
 import ErrorBoundary from './ErrorBoundary.js'
 
-import {Routes, Route, useNavigate } from 'react-router-dom'
+import {Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom'
 
 import Header from './Header.js'
 import Home from './Home.js'
@@ -18,8 +18,6 @@ import Regist from '../user/Regist.js'
 import ChangePassword from '../user/ChangePassword.js'
 import Withdraw from '../user/Withdraw.js'
 import ProfileRegion from '../user/ProfileRegion.js'
-import ImageRegion from '../user/ImageRegion.js'
-
 import AuthProvider from '../../util/AuthProvider.js'
 import ProfileContext from '../../util/ProfileProvider.js'
 import ToastContainer from '../../common/ToastContainer.js'
@@ -36,18 +34,23 @@ export default function() {
           <ProfileContext>
           <ToastContainer />
           <Header/>
-          <div style={{height:'auto', flex: 1}}>
+          <div style={{height:'auto', flex: 1}}>            
             <Routes>
-              <Route path="/" element={<Home />}></Route>
-              <Route path="/home" element={<Home />}></Route>
-              <Route path="/editor" element={<Editor />}></Route>
-              <Route path="/login" element={<Login/>}></Route>
-              <Route path="/regist" element={<Regist/>}></Route>
-              <Route path="/user" element={<User/>}></Route>
-              <Route path="/widthdraw" element={<Withdraw/>}></Route>
-              <Route path="/changePassword" element={<ChangePassword/>}></Route>
+              <Route path="/" element={<Home />}/>
+              <Route path="/home" element={<Home />}/>                
+              <Route path="/editor" element={<Editor/>}/>
+              <Route path="/login">
+                <Route index element={<Login />} />
+                <Route path="regist" element={<Regist/>}/>
+              </Route>
+              <Route path="/user">
+                <Route index element={<User />} />
+                <Route path="widthdraw" element={<Withdraw/>}/>
+                <Route path="change_password" element={<ChangePassword/>}/>
+                <Route path="profile_image" element={<ProfileRegion/>}/>
+              </Route>
               <Route path="/*" element={<PageNotFound/>}></Route>
-            </Routes>
+            </Routes>            
           </div>
           </ProfileContext>
         </AuthProvider>
@@ -55,6 +58,7 @@ export default function() {
     </div>
   )
 }
+
 
 
 

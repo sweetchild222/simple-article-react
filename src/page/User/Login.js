@@ -112,7 +112,7 @@ export default function() {
             <label htmlFor='input_password'>비밀번호</label>
             <input id='input_password' type='password' onKeyDown={onKeyDownPassword}/>
             <BeautyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</BeautyButton>
-            <BeautyButton onClick={() => {navigate('/regist', {replace:true})}}>회원가입</BeautyButton>
+            <BeautyButton onClick={() => {navigate('regist', {replace:true})}}>회원가입</BeautyButton>
         </div>
     ) : null
 }

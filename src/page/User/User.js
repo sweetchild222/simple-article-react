@@ -22,6 +22,7 @@ export default function() {
 
     const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
+
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const {profile, removeProfile} = useContext(ProfileContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -93,13 +94,13 @@ export default function() {
 
     const onClickPasswordChange = ()=>{
 
-        navigate('/changePassword')
+        navigate('change_password')
     }
 
 
     const onClickUserWithdraw = async() =>{
 
-        navigate('/widthdraw')
+        navigate('widthdraw')
     }
 
 
@@ -128,10 +129,10 @@ export default function() {
                 
                 const blob = await getBlob(canvas)
                 
-                navigate('/profile_region', {state: blob})
+                navigate('profile_image', {state: blob})
             }
             else{
-                navigate('/profile_region', {state: file})
+                navigate('profile_image', {state: file})
             }
         }
         catch(error) {

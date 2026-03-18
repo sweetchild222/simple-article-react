@@ -37,7 +37,7 @@ export default function() {
   const imageFile = location.state
 
   if(imageFile == null)
-    return (<div>잘못된 방식으로 접근하였습니다</div>)
+    return (<div>이미지를 선택하지 않았습니다</div>)
 
   useEffect(()=> {
 
@@ -103,9 +103,7 @@ export default function() {
     const formData = new FormData()
     formData.append('image', blob)
 
-    setIsPostLoading(true)
-
-    console.log('asdfs')
+    setIsPostLoading(true)    
 
     const resProfile = await BlobAPI.postProfile(auth.jwt, formData)
 
@@ -116,10 +114,8 @@ export default function() {
     }
 
     const payload = {profile: resProfile.id}
-
-    console.log('asdfsd')
+    
     const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
-    console.log('xxx')
 
     if(resUser == null){
       setIsPostLoading(false)

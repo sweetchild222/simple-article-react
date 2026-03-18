@@ -62,9 +62,10 @@ export default {
       {
         context: ['/api'],
         target: 'http://13.124.193.201:8080',
+        // target: 'http://localhost:9981',
         changeOrigin: true,
         secure: false
-      },
-    ],
+      },      
+    ]
   }
 }

@@ -20,12 +20,13 @@ const InterpolateHtmlPluginConfig = new InterpolateHtmlPlugin({PUBLIC_URL: publi
 
 export default {
 
-  entry: path.join(__dirname, 'src/index.js'),
+  entry: path.join(__dirname, 'src/page/entry/index.js'),
 
   output: {
     filename: 'bundle.js',
     path: path.join(__dirname, '/build'),
     clean: true,
+    publicPath: '/'
   },
 
   resolve: {
@@ -53,10 +54,11 @@ export default {
 
   plugins: [HTMLWebpackPluginConfig, InterpolateHtmlPluginConfig],
   
-  devServer: {
+  devServer: {    
     port:3001,
     open: true,
-    hot: true,
+    hot: true,    
+    historyApiFallback:true,
     // historyApiFallback: {
     //   index: '/index.html',
     //   verbose: true,

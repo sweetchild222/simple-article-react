@@ -1,18 +1,17 @@
 import React from "react";
 import axios from 'axios';
-//import './Home.css'
-import BeautyButton from '../common/BeautyButton'
+import BeautyButton from '../../common/BeautyButton.js'
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 
-import * as BlobAPI from '../api/BlobAPI.js'
-import * as ArticleAPI from '../api/ArticleAPI.js'
-import * as blobToBase64 from '../util/BlobToBase64.js'
+import * as BlobAPI from '../../api/BlobAPI.js'
+import * as ArticleAPI from '../../api/ArticleAPI.js'
+import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 
-import AuthContext from "../util/AuthContext.js";
-import ProfileContext from "../util/ProfileContext.js";
-import Modal from "../common/Modal.js"
+import AuthContext from "../../util/AuthContext.js";
+import ProfileContext from "../../util/ProfileContext.js";
+import Modal from "../../common/Modal.js"
 
 
 export default function Home() {

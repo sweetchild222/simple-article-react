@@ -1,9 +1,9 @@
 import { useContext, useState, useRef, useEffect } from 'react'
 import { usePublisher } from '@mdxeditor/gurx'
-import Modal from '../../common/Modal'
+import Modal from '../../common/Modal.js'
 import i18next from 'i18next'
 import ko from './ko.json'
-import BeautyButton from '../../common/BeautyButton'
+import BeautyButton from '../../common/BeautyButton.js'
 import '@mdxeditor/editor/style.css'
 
 

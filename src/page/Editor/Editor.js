@@ -1,8 +1,8 @@
 
 import { useContext, useState, useRef, useEffect } from 'react'
-import Modal from '../../common/Modal'
+import Modal from '../../common/Modal.js'
 import MDXEditor from './MDXEditor.js'
-import BeautyButton from '../../common/BeautyButton'
+import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import {pickImage, getImageFormat} from "../../util/ImagePicker.js";

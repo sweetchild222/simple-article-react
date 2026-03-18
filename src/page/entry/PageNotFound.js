@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-import AuthContext from "../util/AuthContext.js";
+import AuthContext from "../../util/AuthContext.js";
 
 import React, { useContext} from 'react';
 

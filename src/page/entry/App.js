@@ -7,21 +7,22 @@ import {Routes, Route, useNavigate } from 'react-router-dom'
 
 import Header from './Header.js'
 import Home from './Home.js'
-// import Editor from './Editor.js'
 
 
-import Editor from './Editor/Editor.js'
-import Login from './User/Login.js'
+
+import Editor from '../editor/Editor.js'
+import Login from '../User/Login.js'
 import PageNotFound from './PageNotFound.js'
-import Profile from './User/Profile.js'
-import Regist from './User/Regist.js'
-import ChangePassword from './User/ChangePassword.js'
-import Withdraw from './User/Withdraw.js'
-import ProfileRegion from './User/ProfileRegion.js'
-import ImageRegion from './User/ImageRegion.js'
-import AuthProvider from '../util/AuthProvider'
-import ProfileContext from '../util/ProfileProvider'
-import ToastContainer from '../common/ToastContainer'
+import Profile from '../User/Profile.js'
+import Regist from '../User/Regist.js'
+import ChangePassword from '../User/ChangePassword.js'
+import Withdraw from '../User/Withdraw.js'
+import ProfileRegion from '../User/ProfileRegion.js'
+import ImageRegion from '../User/ImageRegion.js'
+
+import AuthProvider from '../../util/AuthProvider.js'
+import ProfileContext from '../../util/ProfileProvider.js'
+import ToastContainer from '../../common/ToastContainer.js'
 
 
 export default function() {

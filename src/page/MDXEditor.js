@@ -162,7 +162,7 @@ export default function({placeHolder, postImage, initValue, readOnly=false, onCh
 
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
     const [imageUrl, setImageUrl] = useState('')
-    const [isLoadingUpload, setIsLoadingUpload] = useState(false)    
+    const [isLoadingUpload, setIsLoadingUpload] = useState(false)
     const [isDisabledConfirm, setIsDisabledConfirm] = useState(true)
     
     const inputUrlRef = useRef(null)
@@ -247,7 +247,7 @@ export default function({placeHolder, postImage, initValue, readOnly=false, onCh
       setIsImageModalOpen(false)
     }
 
-    
+
 
     const onChangeUrl = (event) => {
       
@@ -310,7 +310,7 @@ export default function({placeHolder, postImage, initValue, readOnly=false, onCh
     const node = editorInFocus?.rootNode
 
     if (!node || node.getType() !== 'directive')
-      return false    
+      return false
 
     return ['note', 'tip', 'danger', 'info', 'caution'].includes((node).getMdastNode().name)
   }
@@ -423,6 +423,6 @@ export default function({placeHolder, postImage, initValue, readOnly=false, onCh
       <MDXEditor placeholder={placeHolder} ref={editorRef} markdown={initValue} onChange={onChange} 
       readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
         translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
-  )          
+  )
 }
 

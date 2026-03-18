@@ -21,10 +21,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "build-react": "webpack --mode production",
-    "start-react": "webpack serve --config ./webpack.config.js --mode development"
+    "build": "webpack --mode production",
+    "start": "webpack serve --config ./webpack.config.js --mode development"
   },
   "browserslist": {
     "production": [
@@ -50,6 +48,6 @@
     "style-loader": "^4.0.0",
     "webpack": "^5.105.4",
     "webpack-cli": "^7.0.1",
-    "webpack-dev-server": "^5.2.3"
+   "webpack-dev-server": "^5.2.3"
   }
 }

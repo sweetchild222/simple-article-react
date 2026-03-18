@@ -9,7 +9,7 @@ export async function postProfile(jwt, payload) {
   
     const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
     
-    const response = await axios.post(`/blob/profile`, payload, { headers: headers})
+    const response = await axios.post('api/blob/profile', payload, { headers: headers})
 
     return response.data
   }
@@ -29,7 +29,7 @@ export async function getProfile(jwt, id) {
 
     const authorization = 'Bearer '.concat(jwt)
 
-    const response = await axios.get('/blob/profile/' + id, { headers: {Authorization: authorization}, responseType: 'blob'})
+    const response = await axios.get('api/blob/profile/' + id, { headers: {Authorization: authorization}, responseType: 'blob'})
 
     return response.data
 
@@ -53,7 +53,7 @@ export async function postArticleImage(jwt, payload) {
   
     const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
     
-    const response = await axios.post('/blob/article', payload, { headers: headers})
+    const response = await axios.post('api/blob/article', payload, { headers: headers})
 
     return response.data
   }

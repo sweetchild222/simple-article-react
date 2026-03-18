@@ -1,10 +1,14 @@
-const path = require('path')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const webpack = require('webpack');
-const InterpolateHtmlPlugin = require('interpolate-html-plugin');
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url';
+import HTMLWebpackPlugin from 'html-webpack-plugin'
+import MiniCssExtractPlugin from  'mini-css-extract-plugin';
+import webpack from 'webpack';
+import InterpolateHtmlPlugin from 'interpolate-html-plugin';
 
 const publicUrl = '';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
   template: path.resolve(__dirname, './public/index.html'),
@@ -12,17 +16,24 @@ const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
   inject: 'body'  
 })
 
-module.exports = {
+const InterpolateHtmlPluginConfig = new InterpolateHtmlPlugin({PUBLIC_URL: publicUrl})
+
+export default {
+
   entry: path.join(__dirname, 'src/index.js'),
+
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, '/build')    
+    path: path.join(__dirname, '/build'),
+    clean: true,
   },
+
   resolve: {
     alias: {
       'react-native$': 'react-native-web',
     },
   },
+
   module: {
     rules: [
       {
@@ -39,13 +50,21 @@ module.exports = {
       }
     ],
   },
-  plugins: [HTMLWebpackPluginConfig, new InterpolateHtmlPlugin({PUBLIC_URL: publicUrl})],
 
+  plugins: [HTMLWebpackPluginConfig, InterpolateHtmlPluginConfig],
+  
   devServer: {
-    port:3000,
+    port:3001,
     open: true,
     historyApiFallback: true,
     hot: true,
-    overlay: true,
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://13.124.193.201:8080',
+        changeOrigin: true,
+        secure: false
+      },
+    ],
   }
 }

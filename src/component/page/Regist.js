@@ -7,6 +7,7 @@ import AuthContext from "../util/AuthContext.js";
 
 
 import * as RegistAPI from '../util/RegistAPI.js'
+import * as UserAPI from '../util/UserAPI.js'
 import * as validator from '../util/Validator.js'
 import BeautyButton from "../common/BeautyButton.js";
 
@@ -182,7 +183,7 @@ export default function() {
     if(resUser == null)
       return null
     
-    const resAuthenticate = await api.postAuthenticate(email, password)
+    const resAuthenticate = await UserAPI.postAuthenticate(email, password)
               
     if(resAuthenticate == null)
       return null

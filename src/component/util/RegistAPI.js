@@ -23,8 +23,6 @@ export async function postUser(usename, password){
 export async function getExistUser(username){
       
   try{
-
-    console.log('1111')
   
     const response = await axios.get('/api/user/exist/' + username)
     
@@ -43,8 +41,6 @@ export async function getExistUser(username){
 export async function postVerifyEmail(email) {
   
   try{
-
-    console.log('xxxx')
 
     const response = await axios.post('/api/verifyEmail', {email: email})
 

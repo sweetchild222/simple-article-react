@@ -42,29 +42,29 @@ export default function(file, maxWidth, maxHeight, minWidth, minHeight){
 
     return new Promise((resolve) => {
 
-        const img = new Image();
+      const img = new Image();
       //img.src = path;
 
-        const url = URL.createObjectURL(file)
-        img.src = url
+      const url = URL.createObjectURL(file)
+      img.src = url
 
-        img.onload = () => {
+      img.onload = () => {
 
-            const scaled = calcScaled(img.width, img.height, maxWidth, maxHeight, minWidth, minHeight)
-                
-            const canvas = document.createElement('canvas');
-            canvas.width = scaled.dWidth;
-            canvas.height = scaled.dHeight;
-            const ctx = canvas.getContext('2d');
+          const scaled = calcScaled(img.width, img.height, maxWidth, maxHeight, minWidth, minHeight)
+              
+          const canvas = document.createElement('canvas');
+          canvas.width = scaled.dWidth;
+          canvas.height = scaled.dHeight;
+          const ctx = canvas.getContext('2d');
 
-            ctx.drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight);
-            resolve(canvas)
-        }
+          ctx.drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight);
+          resolve(canvas)
+      }
 
-        img.onerror = () =>{
+      img.onerror = () =>{
 
-            resolve(null)
-        }
+          resolve(null)
+      }
     })
 }
 

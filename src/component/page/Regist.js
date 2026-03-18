@@ -6,8 +6,8 @@ import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import AuthContext from "../util/AuthContext.js";
 
 
-import * as RegistAPI from '../util/RegistAPI.js'
-import * as UserAPI from '../util/UserAPI.js'
+import * as RegistAPI from '../api/RegistAPI.js'
+import * as UserAPI from '../api/UserAPI.js'
 import * as validator from '../util/Validator.js'
 import BeautyButton from "../common/BeautyButton.js";
 

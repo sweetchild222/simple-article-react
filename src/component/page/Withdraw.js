@@ -5,7 +5,7 @@ import {useState, useContext, useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 
 
-import * as UserAPI from '../util/UserAPI.js'
+import * as UserAPI from '../api/UserAPI.js'
 import AuthContext from "../util/AuthContext.js";
 import ProfileContext from "../util/ProfileContext.js";
 import Modal from "../common/Modal.js"

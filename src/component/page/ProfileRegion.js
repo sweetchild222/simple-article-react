@@ -6,8 +6,8 @@ import './RotateLoading.css'
 import * as blobToBase64 from '../util/BlobToBase64.js'
 
 import { useNavigate} from 'react-router-dom'
-import * as BlobAPI from '../util/BlobAPI.js'
-import * as UserAPI from '../util/UserAPI.js'
+import * as BlobAPI from '../api/BlobAPI.js'
+import * as UserAPI from '../api/UserAPI.js'
 import AuthContext from "../util/AuthContext.js"
 import ImageRegion from './ImageRegion.js'
 

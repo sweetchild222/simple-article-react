@@ -5,8 +5,8 @@ import BeautyButton from '../common/BeautyButton'
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 
-import * as BlobAPI from '../util/BlobAPI.js'
-import * as ArticleAPI from '../util/ArticleAPI.js'
+import * as BlobAPI from '../api/BlobAPI.js'
+import * as ArticleAPI from '../api/ArticleAPI.js'
 import * as blobToBase64 from '../util/BlobToBase64.js'
 
 

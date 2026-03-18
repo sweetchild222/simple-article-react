@@ -1,5 +1,5 @@
 import {useContext, useEffect } from "react";
-import * as UserAPI from '../util/UserAPI.js'
+import * as UserAPI from '../api/UserAPI.js'
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import * as validator from '../util/Validator.js'

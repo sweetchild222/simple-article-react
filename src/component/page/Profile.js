@@ -3,8 +3,8 @@ import './RotateLoading.css'
 
 import {useContext, useEffect, useRef } from "react";
 
-import * as UserAPI from '../util/UserAPI.js'
-import * as BlobAPI from '../util/BlobAPI.js'
+import * as UserAPI from '../api/UserAPI.js'
+import * as BlobAPI from '../api/BlobAPI.js'
 import * as blobToBase64 from '../util/BlobToBase64.js'
 import { useState } from 'react';
 import { useNavigate} from 'react-router-dom';

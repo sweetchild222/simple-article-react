@@ -6,7 +6,7 @@ import ko from './ko.json'
 import BeautyButton from '../common/BeautyButton'
 import '@mdxeditor/editor/style.css'
 
-import * as BlobAPI from '../util/BlobAPI.js'
+import * as BlobAPI from '../api/BlobAPI.js'
 import './MDXEditor.css'
 import AuthContext from "../util/AuthContext.js";
 import {pickImage, getImageFormat} from "../util/ImagePicker.js";

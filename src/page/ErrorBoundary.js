@@ -19,8 +19,7 @@ class ErrorBoundary extends React.Component {
     
     const errorMsg = `${error.toString()}\n${stack}`
     
-    //console.log(errorMsg)
-
+    console.log(errorMsg)
   }
 
   render() {

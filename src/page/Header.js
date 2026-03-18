@@ -30,16 +30,12 @@ export default function() {
 
     const onClickLogIn = (e) =>{
 
-        console.log('asdfasf')
-
         navigate("/login")
     }
 
 
     const onClickProfile = (e) =>{
 
-        console.log("go profile")
-    
         navigate('/profile');
 
     }

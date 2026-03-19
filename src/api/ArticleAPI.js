@@ -42,28 +42,12 @@ export async function getArticles(query) {
 
 
 
-export async function getArticleOpen(article_id) {
-
-  try{
-      const response = await axios.get('/api/article/' + article_id)
-
-      return response.data    
-
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
-}
-
 
 export async function getArticle(jwt, article_id) {
 
   try{
         
-      const authorization = 'Bearer '.concat(jwt);
+      const authorization = jwt != null ? 'Bearer '.concat(jwt) : null
 
       const response = await axios.get('/api/article/' + article_id, { headers: {Authorization: authorization} })
 

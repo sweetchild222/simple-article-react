@@ -52,19 +52,13 @@ export default function Home() {
 
   const getArticle = async() => {
 
-      const res = await ArticleAPI.getArticle(auth.jwt, 7)
+      const res = await ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, 7)
 
       if(res == null)
         return
 
       console.log(res)
 
-      const res2 = await ArticleAPI.getArticleOpen(7)
-
-      if(res2 == null)
-        return
-
-      console.log(res2)
   }
 
 

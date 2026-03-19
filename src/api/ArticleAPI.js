@@ -179,5 +179,25 @@ export async function deleteCategory(jwt, category_id){
 
     return null;
   }
+}
 
+
+
+
+export async function patchCategory(jwt, category_id, payload){
+
+  try{
+
+    const authorization = 'Bearer '.concat(jwt);
+    
+    const response = await axios.patch('/api/category/' + category_id, payload, { headers: {Authorization: authorization}})
+
+    return response.data
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null
+  }
 }

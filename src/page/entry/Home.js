@@ -190,6 +190,25 @@ export default function Home() {
   }
 
 
+  const patchCategory = async() =>{
+
+    const id = 21;
+
+    const payload ={
+      name:'vvv'
+    }
+
+    const res = await ArticleAPI.patchCategory(auth.jwt, id, payload)
+
+    if(res == null)
+      return
+
+    console.log(res)
+
+
+  }
+
+
 
 
 
@@ -206,7 +225,7 @@ export default function Home() {
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserArticles}>유저 글 목록</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserCategories}>카테고리</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='cancel' onClick={deleteCategory}>카테고리 삭제</BeautyButton>
-      <BeautyButton disabled={isDisable} isLoading={isLoading} type='cancel' onClick={test5}>cancel</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='cancel' onClick={patchCategory}>카테고리 수정</BeautyButton>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='success' onClick={test5}>success</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='success' onClick={test5}>success</BeautyButton>
       {/* <button onClick={test}>imageRegion</button>

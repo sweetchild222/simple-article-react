@@ -398,7 +398,7 @@ export default function({placeHolder, postImage, initValue, readOnly=false, onCh
       </DiffSourceToggleWrapper>
     )
   }
-  
+    
 
   const plugins = [
     toolbarPlugin({toolbarContents: () => (<><CustomToolbar /></>)}),
@@ -408,7 +408,7 @@ export default function({placeHolder, postImage, initValue, readOnly=false, onCh
     linkPlugin(),
     linkDialogPlugin(),
     imagePlugin({disableImageSettingsButton: true}),
-    // tablePlugin(),
+    tablePlugin(),
     thematicBreakPlugin(),
     frontmatterPlugin(),
     codeBlockPlugin({ defaultCodeBlockLanguage: 'js'}),

@@ -131,26 +131,34 @@ export default function Home() {
   };
 
 
-  const selectFile = async() => {
-
-    try{
+  
+  
+  const getUserCategories = async() => {
         
-        const options = {
-            types: [{
-                description: 'Images',
-                accept: {'image/png': ['.png'], 'image/jpeg': ['.jpeg', '.jpg'], 'image/gif': ['.gif']}}
-            ],
-            excludeAcceptAllOption: false,
-            multiple: false
-        }
+    const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
 
-        const [fileHandle] = await window.showOpenFilePicker(options)
-        return await fileHandle.getFile()
-    }
-    catch(error) {
-        return null
-    }
+    if(res == null)
+      return
+
+    console.log(res)
+  
+  };
+
+
+  const deleteCategory = async() =>{
+
+    const id = 19;
+
+    const res = await ArticleAPI.deleteCategory(auth.jwt, id)
+
+    if(res == null)
+      return
+
+    console.log(res)
+
   }
+
+
 
 
 
@@ -182,69 +190,6 @@ export default function Home() {
   }
 
 
-  const calcScaled = (imageWidth, imageHeight, maxWidth, maxHeight, minWidth, minHeight) => {
-
-    const ratioMaxWidth = maxWidth / imageWidth;
-    const ratioMaxHeight = maxHeight / imageHeight;
-
-    const ratioMax = ratioMaxWidth < ratioMaxHeight ? ratioMaxWidth : ratioMaxHeight
-
-    const newWidth = Math.round(imageWidth * ratioMax);
-    const newHeight = Math.round(imageHeight * ratioMax);
-    
-    if(newWidth < minWidth){
-
-      const ratioMin = minWidth / imageWidth;
-      const scaledWidth = Math.round(imageWidth * ratioMin);
-
-      const sHeight = Math.round(maxHeight * (1 / ratioMin))
-      const sy = Math.round((imageHeight - sHeight) / 2)
-
-      return {sx:0, sy:sy, sWidth:imageWidth, sHeight:sHeight, dx:0, dy:0, dWidth:scaledWidth, dHeight:maxHeight}
-    }
-    else if(newHeight < minHeight){
-
-      const ratioMin = minHeight / imageHeight;
-      const scaledHeight = Math.round(imageHeight * ratioMin);
-
-      const sWidth = Math.round(maxWidth * (1 / ratioMin))
-      const sx = Math.round((imageWidth - sWidth) / 2)
-
-      return {sx:sx, sy:0, sWidth:sWidth, sHeight:imageHeight, dx:0, dy:0, dWidth:maxWidth, dHeight:scaledHeight}    
-    }
-    else{
-      return {sx:0, sy:0, sWidth:imageWidth, sHeight:imageHeight, dx:0, dy:0, dWidth:newWidth, dHeight:newHeight}
-    }
-  }
-  
-
-  const scaledImage = (path, maxWidth, maxHeight, minWidth, minHeight) => {
-
-    return new Promise((resolve) => {
-
-      const img = new Image();
-      img.src = path;
-
-      img.onload = () => {
-
-        const scaled = calcScaled(img.width, img.height, maxWidth, maxHeight, minWidth, minHeight)
-            
-        const canvas = document.createElement('canvas');
-        canvas.width = scaled.dWidth;
-        canvas.height = scaled.dHeight;
-        const ctx = canvas.getContext('2d');
-
-        ctx.drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight);
-        resolve(canvas)
-      }
-
-      img.onerror = () =>{        
-        resolve(null)
-      }
-    })
-  }
-
-
 
 
 
@@ -259,8 +204,8 @@ export default function Home() {
       <BeautyButton disabled={false} isLoading={isLoading} type='danger' onClick={putArticle}>글수정</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getArticles}>글목록</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserArticles}>유저 글 목록</BeautyButton>
-      <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={test5}>confirm</BeautyButton>
-      <BeautyButton disabled={true} isLoading={isLoading} type='cancel' onClick={test5}>cancel</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserCategories}>카테고리</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='cancel' onClick={deleteCategory}>카테고리 삭제</BeautyButton>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='cancel' onClick={test5}>cancel</BeautyButton>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='success' onClick={test5}>success</BeautyButton>
       <BeautyButton disabled={true} isLoading={isLoading} type='success' onClick={test5}>success</BeautyButton>

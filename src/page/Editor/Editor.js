@@ -67,6 +67,15 @@ export default function() {
     }
 
 
+    const onChange = (content, isInternalChange) =>{
+
+        console.log(isInternalChange)
+
+        if(isInternalChange)
+            console.log(content)
+    }
+
+
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
@@ -75,8 +84,10 @@ export default function() {
                 <BeautyButton type='success'>임시저장</BeautyButton>
                 <input style={{flexGrow:'1'}} placeholder="제목을 입력하세요"></input>
 
-                <select id="cars" name="category">
-                    <option value="volvo">Volvo</option>
+                <BeautyButton type='success'>카테고리 추가</BeautyButton>
+
+                <select>
+                    <option value="" style={{color:'gray'}} >카테고리 선택</option>
                     <option value="saab">Saab</option>
                     <option value="fiat">Fiat</option>
                     <option value="audi">Audi</option>
@@ -84,7 +95,7 @@ export default function() {
                 <BeautyButton type='success'>미리보기</BeautyButton>
             </div>
             <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
-                <MDXEditor placeHolder={"글을 작성해보세요"} postImage={postImage} initValue={'sdf'} onChange={console.log}
+                <MDXEditor placeHolder={"글을 작성해보세요"} postImage={postImage} initValue={'sdf'} onChange={onChange}
                         onUserError={onUserError} onParsingError={onParsingError}
                 />
             </div>

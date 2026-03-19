@@ -63,3 +63,17 @@ label {
   font-size: 16px;
   color:black
 }
+
+
+select {
+  font-family: sans-serif;
+  border: 2px solid #808080;
+  border-radius: 6px;
+  font-size: 16px;
+  color:black
+}
+
+
+select:focus{
+  border: 2px solid #000000;
+}

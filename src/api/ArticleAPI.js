@@ -141,3 +141,43 @@ export async function putArticle(jwt, article_id, payload){
   }
 }
 
+
+export async function getUserCategories(jwt, user_id) {
+
+  try{
+        
+      const authorization = 'Bearer '.concat(jwt);
+
+      const response = await axios.get('/api/user/' + user_id + '/category', { headers: {Authorization: authorization} })
+
+      return response.data    
+
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null;
+  }
+}
+
+
+export async function deleteCategory(jwt, category_id){
+
+
+    try{
+
+    const authorization = 'Bearer '.concat(jwt);
+
+    const response = await axios.delete('/api/category/' + category_id, { headers: {Authorization: authorization} })
+    
+    return response.data
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null;
+  }
+
+}

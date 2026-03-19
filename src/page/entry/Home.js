@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as ArticleAPI from '../../api/ArticleAPI.js'
+import * as UserAPI from '../../api/UserAPI.js'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 
@@ -176,7 +177,7 @@ export default function Home() {
   }
 
 
-    const postCategory = async() =>{
+  const postCategory = async() =>{
 
       const payload = {
 
@@ -195,7 +196,7 @@ export default function Home() {
 
   const getComment = async() => {
 
-    const article_id = 15;
+    const article_id = 45;
 
     const res = await ArticleAPI.getArticleComments(article_id)
 
@@ -239,6 +240,20 @@ export default function Home() {
   }
 
 
+  const getUser=async()=>{
+
+    const query = 'id=158,174,5'
+      
+    const res = await UserAPI.getUsers(query)
+
+    if(res == null)
+      return
+
+    console.log(res)
+
+  }
+
+
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
@@ -252,6 +267,7 @@ export default function Home() {
       <BeautyButton disabled={false} isLoading={isLoading} type='danger' onClick={putArticle}>글수정</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getArticles}>글목록</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserArticles}>유저 글 목록</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUser}>유저 목록</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserCategories}>카테고리</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='cancel' onClick={deleteCategory}>카테고리 삭제</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='cancel' onClick={patchCategory}>카테고리 수정</BeautyButton>

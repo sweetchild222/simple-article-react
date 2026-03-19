@@ -17,6 +17,24 @@ export async function getUser(user_id) {
 }
 
 
+export async function getUsers(query) {
+
+  try{
+
+    const response = await axios.get('/api/user?' + query)
+    
+    return response.data
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null;
+  }
+}
+
+
+
 
 export async function postAuthenticate(username, password) {
                 

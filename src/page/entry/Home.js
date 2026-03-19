@@ -147,7 +147,7 @@ export default function Home() {
 
   const deleteCategory = async() =>{
 
-    const id = 19;
+    const id = 7;    
 
     const res = await ArticleAPI.deleteCategory(auth.jwt, id)
 
@@ -156,37 +156,6 @@ export default function Home() {
 
     console.log(res)
 
-  }
-
-
-
-
-
-  const test5 = async() => {
-
-    //const file = await selectFile()
-
-    //const path = '/image/test1.jpg'
-    //const path = '/image/h_long.png'
-    //const path = '/image/4.1M.jpg'
-    //const path = '/image/2.4M.jpg'
-    const path = '/robotos.txt'
-
-    const canvas = await scaledImage(path, 512, 512, 64, 64);
-
-    if(canvas == null)
-      return
-    
-    canvas.toBlob(async(blob) => {
-        
-      const formData = new FormData()
-      formData.append('image', blob)
-
-      // const resArticleImage = await api.postArticleImage(auth.jwt, formData)
-
-      console.log(resArticleImage)
-
-    })
   }
 
 
@@ -204,19 +173,79 @@ export default function Home() {
       return
 
     console.log(res)
-
-
   }
 
 
+    const postCategory = async() =>{
 
+      const payload = {
+
+        name:'dfgd',
+        user_id:auth.user_id
+      }
+
+      const res = await ArticleAPI.postCategory(auth.jwt, payload)
+
+      if(res == null)
+        return
+
+      console.log(res)
+  }
+    
+
+  const getComment = async() => {
+
+    const article_id = 15;
+
+    const res = await ArticleAPI.getArticleComments(article_id)
+
+    if(res == null)
+      return
+
+    console.log(res)
+  }
+
+
+  const deleteComment = async() =>{
+
+    const comment_id = 9;
+    
+    const res = await ArticleAPI.deleteComment(auth.jwt, comment_id)
+
+    if(res == null)
+      return
+
+    console.log(res)
+  }
+
+
+  const postComment = async() =>{
+
+    const payload = {
+
+      comment:'댓글',
+      user_id:auth.user_id,
+      article_id:45
+      //comment_id:10
+    }
+
+    
+    const res = await ArticleAPI.postComment(auth.jwt, payload)
+
+    if(res == null)
+      return
+
+    console.log(res)
+  }
 
 
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={goEditor}>에디터</BeautyButton>
-      <BeautyButton disabled={false} isLoading={isLoading} type='default' onClick={test5}>이미지</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='default' onClick={getComment}>댓글</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='success' onClick={deleteComment}>댓글 삭제</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='success' onClick={postComment}>댓글 추가</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={postArticle}>글 넣기</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={getArticle}>글 상세 가져오기</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='danger' onClick={deleteArticle}>글 삭제하기</BeautyButton>
@@ -226,8 +255,8 @@ export default function Home() {
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserCategories}>카테고리</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='cancel' onClick={deleteCategory}>카테고리 삭제</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='cancel' onClick={patchCategory}>카테고리 수정</BeautyButton>
-      <BeautyButton disabled={isDisable} isLoading={isLoading} type='success' onClick={test5}>success</BeautyButton>
-      <BeautyButton disabled={true} isLoading={isLoading} type='success' onClick={test5}>success</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='cancel' onClick={postCategory}>카테고리 추가</BeautyButton>
+
       {/* <button onClick={test}>imageRegion</button>
       <button onClick={test2}/>      
       <button ref={selectRef} onClick={test3} className="loadingbutton">

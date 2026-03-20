@@ -7,7 +7,7 @@ import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
-
+import * as ArticleAPI from '../../api/ArticleAPI.js'
 
 import ImageScale from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
@@ -105,18 +105,43 @@ export default function() {
 
         const timeout = 2000
     
-        timerId = setTimeout(() => {
+        timerId = setTimeout(async() => {
 
             timerId = null
+            
+            const payloadSource = location.state
+
+            const payload = {
+
+                title:refTitle.current.value,
+                content:refMDX.current.getMarkdown(),
+                open:payloadSource.open,
+                posted:0,
+                thumbnail:payloadSource.thumbnail,
+                category_id:payloadSource.category_id
+            }
+
+            const article_id = payloadSource.id
+
+            const res = await ArticleAPI.putArticle(auth.jwt, article_id, payload)
+
+            if(res == null)
+                return
+
+
+            console.log(res)
+
+            
+
+
         }, timeout)
     }
 
 
     const onChangeContent = (content, isInternalChange) =>{
         
-        if(!isInternalChange){
-            setTimerAutoSaving()
-        }
+        if(!isInternalChange)
+            setTimerAutoSaving()        
     }
 
 

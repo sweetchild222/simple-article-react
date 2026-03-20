@@ -35,7 +35,6 @@ export default function({children}){
             return false
 
         if(Date.now() > auth.expire_time){
-            removeAuth()
             return false
         }
 

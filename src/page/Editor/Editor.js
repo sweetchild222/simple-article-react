@@ -6,7 +6,9 @@ import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
-import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
+
+
 import ImageScale from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
@@ -25,6 +27,11 @@ export default function() {
       }
 
     }, [auth])
+
+
+    const location = useLocation()
+  
+    console.log(location.state)
 
 
     const postMarkDown = () =>{

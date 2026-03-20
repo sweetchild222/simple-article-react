@@ -37,8 +37,6 @@ export default function() {
 
         const resUser = await UserAPI.getUser(auth.user_id)
 
-        console.log(resUser)
-                
         if(resUser == null)
             return null
 

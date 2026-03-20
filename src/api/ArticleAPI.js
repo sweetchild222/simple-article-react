@@ -126,13 +126,17 @@ export async function putArticle(jwt, article_id, payload){
 }
 
 
-export async function getUserCategories(jwt, user_id) {
+export async function getUserCategories(jwt, user_id, query = undefined) {
 
   try{
         
       const authorization = 'Bearer '.concat(jwt);
 
-      const response = await axios.get('/api/user/' + user_id + '/category', { headers: {Authorization: authorization} })
+      const url = '/api/user/' + user_id + '/category' + (query ? ('?' + query) : '')
+
+      console.log(url)
+
+      const response = await axios.get(url, { headers: {Authorization: authorization} })
 
       return response.data    
 

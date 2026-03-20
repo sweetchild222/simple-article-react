@@ -26,14 +26,106 @@ export default function Home() {
   const navigate = useNavigate();
   const [isDisable, setIsDisable] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [article, setArticle] = useState(false)
 
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
-  const goEditor = async() => {
+  const modal_config = {text: '이미 작성 중인 글이 있습니다. 이어서 작성하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+  
+  const onClickEditor = async() => {
 
-    navigate('/editor')
+    const query = 'offset=0&limit=1&order=1&posted=0'
     
-  };
+    const resUserArticles = await ArticleAPI.getUserArticles(auth.jwt, auth.user_id, query)
+
+    if(resUserArticles == null)
+      return
+
+    if(resUserArticles.length > 0){      
+      setArticle(resUserArticles[0])
+      setIsModalOpen(true)
+      return
+    }
+
+
+    const category_id = await getCommonCategory()
+
+    if(category_id == -1)
+      return
+
+    const payload = {
+      title:'',
+      content:'',
+      open:0,
+      posted:0,
+      thumbnail:'',
+      category_id:category_id
+    }
+
+    const resArticle = await ArticleAPI.postArticle(auth.jwt, payload)
+
+    if(resArticle == null)
+      return
+
+    goEditor({id:resArticle.id, ...payload})
+  }
+
+  const goEditor=(state)=>{
+
+    navigate('/editor', {state:state})
+  }
+
+  const getCommonCategory = async()=>{
+
+    const resCategories = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id, 'is_common=1')
+
+    if(resCategories == null)
+      return -1
+
+    if(resCategories.length == 0)
+      return -1
+
+    return resCategories[0].id
+  }
+
+
+  const onResult = async(result) =>{
+    
+    if(result){
+
+      const resArticle = await ArticleAPI.getArticle(auth.jwt, article.id)
+
+      if(resArticle == null)
+        return
+
+      goEditor(resArticle)
+      return
+    }
+
+    const category_id = await getCommonCategory()
+
+    if(category_id == -1)
+      return
+    
+    const payload = {
+      title:'',
+      content:'',
+      open:0,
+      posted:0,
+      thumbnail:'',
+      category_id:category_id
+    }
+
+    const article_id = article.id
+
+    const res = await ArticleAPI.putArticle(auth.jwt, article_id, payload)
+
+    if(res == null)
+      return
+
+    goEditor({id:article_id, ...payload})
+  }
 
 
   const postArticle = async() => {
@@ -156,10 +248,10 @@ export default function Home() {
 
   const patchCategory = async() =>{
 
-    const id = 21;
+    const id = 22;
 
     const payload ={
-      name:'vvv'
+      name:'gg'
     }
 
     const res = await ArticleAPI.patchCategory(auth.jwt, id, payload)
@@ -251,7 +343,8 @@ export default function Home() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
-      <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={goEditor}>에디터</BeautyButton>
+      <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={onClickEditor}>에디터</BeautyButton>
+      <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
       <BeautyButton disabled={false} isLoading={isLoading} type='default' onClick={getComment}>댓글</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='success' onClick={deleteComment}>댓글 삭제</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='success' onClick={postComment}>댓글 추가</BeautyButton>

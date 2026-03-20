@@ -23,9 +23,9 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin } from '@mdxeditor/editor'
 
 
-export default function({placeHolder, postImage, initValue, readOnly=false, onChange, onParsingError, onUserError}) {
+export default function({placeHolder, postImage, defaultValue, readOnly=false, onChange, onParsingError, onUserError}) {
 
-  const editorRef = useRef(null);
+  const editorRef = useRef(null);    
   
   useEffect(()=>{
 
@@ -415,12 +415,12 @@ export default function({placeHolder, postImage, initValue, readOnly=false, onCh
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
     codeMirrorPlugin({ codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'} }),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
-    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: initValue }),
+    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: defaultValue }),
     markdownShortcutPlugin()
   ]
 
   return (
-      <MDXEditor placeholder={placeHolder} ref={editorRef} markdown={initValue} onChange={onChange} 
+      <MDXEditor placeholder={placeHolder} ref={editorRef} markdown={defaultValue} onChange={onChange} 
       readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
         translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
   )

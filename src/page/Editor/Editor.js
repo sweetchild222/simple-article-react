@@ -16,11 +16,19 @@ import { PiTrash } from "react-icons/pi";
 
 export default function() {
 
+    const location = useLocation()
+
+    if(location.state == null)
+        return (<div>잘못된 접근입니다</div>)
+
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const navigate = useNavigate()
+    const [title, setTitle] = useState(location.state.title)
+    const [content, setContent] = useState(location.state.content)
+    const [timerId, setTimerId] = useState(null)
 
     useEffect(()=> {
-
+    
       if(!validAuth(auth)){
           navigate('/login', {replace:true})
           return
@@ -29,12 +37,22 @@ export default function() {
     }, [auth])
 
 
-    const location = useLocation()
-  
-    console.log(location.state)
+
+    // useEffect(()=>{
+
+    //     setTitle('sdfsdf')
+    //     setContent('dfgdgdfd')
+    //     console.log('init')
+
+    // }, [])
+
+    console.log('asdf')
+
 
 
     const postMarkDown = () =>{
+
+        
 
     }
 
@@ -74,36 +92,76 @@ export default function() {
     }
 
 
-    const onChange = (content, isInternalChange) =>{
+    const setTimerAutoSaving = ()=>{
 
-        console.log(isInternalChange)
+        if(timerId != null)
+            return
 
-        if(isInternalChange)
-            console.log(content)
+        const timeout = 2000
+    
+        const id = setTimeout(() => {
+            console.log('timeout')
+            setTimerId(null)
+        }, timeout);
+
+        setTimerId(id)    
     }
+
+
+    const onChangeContent = (content, isInternalChange) =>{
+        
+        if(!isInternalChange){
+
+            //setContent(content)
+            setTimerAutoSaving()
+        }
+    }
+
+
+    const onChangeTitle = (event) => {
+
+        //setTitle(event.target.value)
+        setTimerAutoSaving()
+    }
+
+
+    const onClickCancel=()=> {
+
+        setIsModalOpen(true)
+    }
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const modal_config = {text: '글 작성을 취소 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+
+    const onResultCancel = (result) => {
+
+      if(result == true)
+        navigate(-1)
+    }
+
 
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
-                <BeautyButton type='danger'>취소</BeautyButton>
+                <BeautyButton type='danger' onClick={onClickCancel}>취소</BeautyButton>
+                <Modal config={modal_config} isOpen={isModalOpen} onResult={onResultCancel} onClose={()=>setIsModalOpen(false)}></Modal>
                 <BeautyButton type='confirm' onClick={postMarkDown}>완료</BeautyButton>
                 <BeautyButton type='success'>임시저장</BeautyButton>
-                <input style={{flexGrow:'1'}} placeholder="제목을 입력하세요"></input>
+                <input style={{flexGrow:'1'}} placeholder="제목을 입력하세요" defaultValue={title} onChange={onChangeTitle}></input>
 
-                <BeautyButton type='success'>카테고리 추가</BeautyButton>
-
-                <select>
+                {/* <select>
                     <option value="" style={{color:'gray'}} >카테고리 선택</option>
                     <option value="saab">Saab</option>
                     <option value="fiat">Fiat</option>
                     <option value="audi">Audi</option>
-                </select>
+                </select> */}
                 <BeautyButton type='success'>미리보기</BeautyButton>
             </div>
             <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
-                <MDXEditor placeHolder={"글을 작성해보세요"} postImage={postImage} initValue={'sdf'} onChange={onChange}
-                        onUserError={onUserError} onParsingError={onParsingError}
+                <MDXEditor placeHolder={"글을 작성해보세요"} postImage={postImage} defaultValue={content}
+                    onChange={onChangeContent} onUserError={onUserError} onParsingError={onParsingError}
                 />
             </div>
         </div>

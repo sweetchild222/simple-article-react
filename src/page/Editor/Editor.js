@@ -1,5 +1,5 @@
 
-import { useContext, useState, useRef, useEffect } from 'react'
+import { useContext, useState, useRef, useEffect, useCallback } from 'react'
 import Modal from '../../common/Modal.js'
 import MDXEditor from './MDXEditor.js'
 import BeautyButton from '../../common/BeautyButton.js'
@@ -17,15 +17,14 @@ import { PiTrash } from "react-icons/pi";
 export default function() {
 
     const location = useLocation()
+    const refTitle = useRef(null);
+    const refMDX = useRef(null);
 
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const navigate = useNavigate()
-    const [title, setTitle] = useState(location.state.title)
-    const [content, setContent] = useState(location.state.content)
-    const [timerId, setTimerId] = useState(null)
 
     useEffect(()=> {
     
@@ -37,22 +36,27 @@ export default function() {
     }, [auth])
 
 
-
-    // useEffect(()=>{
-
-    //     setTitle('sdfsdf')
-    //     setContent('dfgdgdfd')
-    //     console.log('init')
-
-    // }, [])
-
-    console.log('asdf')
-
-
-
-    const postMarkDown = () =>{
-
+    const beforeUnload = useCallback(() => {
         
+        location.state.content = refMDX.current.getMarkdown()
+        location.state.title = refTitle.current.value
+
+        navigate(location.pathname, { replace: true, state: location.state})
+    })
+
+
+    useEffect(() => {
+
+        window.addEventListener('beforeunload', beforeUnload)
+    
+        return () => {
+            window.removeEventListener('beforeunload', beforeUnload)
+        }
+
+    }, [beforeUnload])
+
+
+    const postMarkDown = () => {
 
     }
 
@@ -92,6 +96,8 @@ export default function() {
     }
 
 
+    let timerId = null
+
     const setTimerAutoSaving = ()=>{
 
         if(timerId != null)
@@ -99,20 +105,16 @@ export default function() {
 
         const timeout = 2000
     
-        const id = setTimeout(() => {
-            console.log('timeout')
-            setTimerId(null)
-        }, timeout);
+        timerId = setTimeout(() => {
 
-        setTimerId(id)    
+            timerId = null
+        }, timeout)
     }
 
 
     const onChangeContent = (content, isInternalChange) =>{
         
         if(!isInternalChange){
-
-            //setContent(content)
             setTimerAutoSaving()
         }
     }
@@ -120,7 +122,6 @@ export default function() {
 
     const onChangeTitle = (event) => {
 
-        //setTitle(event.target.value)
         setTimerAutoSaving()
     }
 
@@ -141,7 +142,6 @@ export default function() {
     }
 
 
-
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
@@ -149,7 +149,7 @@ export default function() {
                 <Modal config={modal_config} isOpen={isModalOpen} onResult={onResultCancel} onClose={()=>setIsModalOpen(false)}></Modal>
                 <BeautyButton type='confirm' onClick={postMarkDown}>완료</BeautyButton>
                 <BeautyButton type='success'>임시저장</BeautyButton>
-                <input style={{flexGrow:'1'}} placeholder="제목을 입력하세요" defaultValue={title} onChange={onChangeTitle}></input>
+                <input ref={refTitle} style={{flexGrow:'1'}} placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
 
                 {/* <select>
                     <option value="" style={{color:'gray'}} >카테고리 선택</option>
@@ -160,7 +160,7 @@ export default function() {
                 <BeautyButton type='success'>미리보기</BeautyButton>
             </div>
             <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
-                <MDXEditor placeHolder={"글을 작성해보세요"} postImage={postImage} defaultValue={content}
+                <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} defaultValue={location.state.content}
                     onChange={onChangeContent} onUserError={onUserError} onParsingError={onParsingError}
                 />
             </div>

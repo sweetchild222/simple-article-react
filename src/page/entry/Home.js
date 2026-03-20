@@ -42,7 +42,7 @@ export default function Home() {
     if(resUserArticles == null)
       return
 
-    if(resUserArticles.length > 0){      
+    if(resUserArticles.length > 0){
       setArticle(resUserArticles[0])
       setIsModalOpen(true)
       return

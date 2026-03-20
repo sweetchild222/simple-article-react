@@ -665,7 +665,7 @@ export default function({ref, file, onSelectImage,
       window.removeEventListener('mousemove', eventMouseMove)
       window.removeEventListener('mouseup', eventMouseUp)
     };
-  }, [eventMouseMove, eventMouseUp])   
+  }, [eventMouseMove, eventMouseUp])
 
   return (
       <div id='container' className={`${isLoading ? 'rotateLoading': ''}`} ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>

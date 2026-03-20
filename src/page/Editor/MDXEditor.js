@@ -1,4 +1,4 @@
-import { useContext, useState, useRef, useEffect } from 'react'
+import { useContext, useState, useRef, useEffect, useImperativeHandle } from 'react'
 import { usePublisher } from '@mdxeditor/gurx'
 import Modal from '../../common/Modal.js'
 import i18next from 'i18next'
@@ -23,7 +23,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin } from '@mdxeditor/editor'
 
 
-export default function({placeHolder, postImage, defaultValue, readOnly=false, onChange, onParsingError, onUserError}) {
+export default function({ref, placeHolder, postImage, defaultValue, readOnly=false, onChange, onParsingError, onUserError}) {
 
   const editorRef = useRef(null);    
   
@@ -43,14 +43,14 @@ export default function({placeHolder, postImage, defaultValue, readOnly=false, o
   }, [])
 
 
-  // useImperativeHandle(ref, () => {
-  
-  //     return {
-  //       image() {
-  //         return image
-  //       }
-  //     }
-  // }, [image]);
+  useImperativeHandle(ref, () => {
+
+    return {
+      getMarkdown() {
+        return editorRef.current.getMarkdown()
+      }
+    }
+  }, []);
 
 
   const YoutubeDirectiveDescriptor = {

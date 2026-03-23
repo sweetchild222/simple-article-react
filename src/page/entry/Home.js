@@ -38,12 +38,14 @@ export default function Home() {
   
   const onClickEditor = async() => {
 
-    const query = 'offset=0&limit=1&order=1&posted=0'
+    const query = 'offset=0&limit=1&order=1&posted=0&source_id=none'
     
     const resUserArticles = await ArticleAPI.getUserArticles(auth.jwt, auth.user_id, query)
 
     if(resUserArticles == null)
       return
+
+    console.log(resUserArticles)
 
     if(resUserArticles.length > 0){
       setArticle(resUserArticles[0])

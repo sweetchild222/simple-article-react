@@ -1,14 +1,14 @@
 import ProfileContext from "../../util/ProfileContext.js"
 import {useContext, useState, useRef, useEffect, useCallback} from 'react'
 import { useLocation } from 'react-router-dom'
-import './ProfileRegion.css'
+import './ThumbnailRegion.css'
 import '../../common/RotateLoading.css'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 import { useNavigate} from 'react-router-dom'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as UserAPI from '../../api/UserAPI.js'
-import AuthContext from '../../util/AuthContext.js'
+import AuthContext from "../../util/AuthContext.js"
 import ImageRegion from '../../util/ImageRegion.js'
 
 import BeautyButton from "../../common/BeautyButton.js"

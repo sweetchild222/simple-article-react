@@ -38,7 +38,11 @@ export default function() {
             <Routes>
               <Route path="/" element={<Home />}/>
               <Route path="/home" element={<Home />}/>                
-              <Route path="/editor" element={<Editor/>}/>
+              <Route path="/editor">
+                <Route index element={<Editor />} />
+                <Route path="profile_image" element={<ProfileRegion/>}/>
+              </Route>
+
               <Route path="/login">
                 <Route index element={<Login />} />
                 <Route path="regist" element={<Regist/>}/>

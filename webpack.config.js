@@ -13,7 +13,7 @@ const __dirname = dirname(__filename);
 const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
   template: path.resolve(__dirname, './public/index.html'),
   filename: 'index.html',
-  inject: 'body'  
+  inject: 'body'
 })
 
 const InterpolateHtmlPluginConfig = new InterpolateHtmlPlugin({PUBLIC_URL: publicUrl})

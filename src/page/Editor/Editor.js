@@ -13,22 +13,31 @@ import ImageScale from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 
+import './Editor.css'
+import '../../common/RotateLoading.css'
+import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 export default function() {
+
+    const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
     const location = useLocation()
 
     const refTitle = useRef(null)
     const refMDX = useRef(null)
     const refLengthChar = useRef(null)
+    const refCover = useRef(null)
+
+    console.log('inini', location.state.content)
 
     const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
     const [isReadOnly, setIsReadOnly] = useState(false)
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
     const [isDisableSaveTemp, setIsDisableSaveTemp] = useState(true)
     const [markdown, setMarkdown] = useState(location.state.content)
-    const [lastMarkdown, setLastMarkdown] = useState(location.state.content)
-    const [lastTitle, setLastTitle] = useState(location.state.title)    
+    const [isLoading, setIsLoading] = useState(true)
+
+    const [thumbnail, setThumbnail] = useState(transparent)
 
     
     if(location.state == null)
@@ -47,10 +56,9 @@ export default function() {
     }, [auth])
 
 
-    const beforeUnload = useCallback(() => {
+    const beforeUnload = useCallback(() => {        
 
-        location.state.content = lastMarkdown
-        location.state.title = lastTitle
+        updateLocationState()
 
         navigate(location.pathname, { replace: true, state: location.state})
     })
@@ -59,6 +67,10 @@ export default function() {
     useEffect(()=>{
 
         refLengthChar.current.textContent = location.state.content.length + '/65535'
+
+
+
+        //console.log(location.state.thumbnail)
 
     },[])
 
@@ -195,9 +207,6 @@ export default function() {
         if(res == null)
             return null
 
-        setLastMarkdown(refMDX.current.getMarkdown())
-        setLastTitle(refTitle.current.value)
-
         return res
     }
 
@@ -206,7 +215,7 @@ export default function() {
         
         if(!isInternalChange){
             setIsDisableSaveTemp(false)
-            setTimerAutoSaving()
+            //setTimerAutoSaving()
             refLengthChar.current.textContent = content.length + '/65535'
         }
     }
@@ -215,7 +224,7 @@ export default function() {
     const onChangeTitle = (event) => {
 
         setIsDisableSaveTemp(false)
-        setTimerAutoSaving()
+        //setTimerAutoSaving()
     }
 
 
@@ -252,14 +261,76 @@ export default function() {
         setIsReadOnly(isReadOnly => !isReadOnly)
     }
 
+    const onClickThumbnail = async() => {
+
+        const file = await pickImage()
+
+        if(file == null)
+            return
+
+        try{
+
+            const format = await getImageFormat(file)
+
+            if(format == 'unknown') {
+                window.showToast('파일을 사용할 수 없습니다', 'error')
+                return
+            }
+
+            if(file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
+
+                const canvas = await ImageScale(file, 4096, 4096, 512, 512)
+
+                if(canvas == null)
+                    return
+                
+                const blob = await getBlob(canvas)
+
+                updateLocationState()
+                
+                navigate('profile_image', {state: blob})
+            }
+            else{
+
+                updateLocationState()
+
+                navigate('profile_image', {state: file})
+            }
+        }
+        catch(error) {
+
+            window.showToast('파일을 사용할 수 없습니다', 'error')
+            return
+        }
+    }
+
+
+    const updateLocationState = () =>{
+
+        if(refMDX.current){
+            location.state.content = refMDX.current.getMarkdown()
+            console.log(location.state.content)
+        }
+
+        if(refTitle.current){
+        
+            location.state.title = refTitle.current.value
+            console.log(location.state.title)
+        }
+    }
+
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
                 <BeautyButton type='success' onClick={toggle}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
                 <Modal config={modal_config} isOpen={isModalOpen} onResult={onResultCancel} onClose={()=>setIsModalOpen(false)}></Modal>
-                <input ref={refTitle} readOnly={isReadOnly}  maxlength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
-                <BeautyButton type='success'>대표 이미지</BeautyButton>
+                <input ref={refTitle} readOnly={isReadOnly}  maxLength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
+
+                <div id='cover' ref={refCover} className={`${isLoading ? 'rotateLoading': ''}`}  onClick={onClickThumbnail} style={{width:'64px', height:'64px'}}>
+                    <img alt='image' src={thumbnail}  style={{borderRadius:'1px'}}/>
+                </div>
+
                 {/* <select>
                     <option value="" style={{color:'gray'}} >카테고리 선택</option>
                     <option value="saab">Saab</option>

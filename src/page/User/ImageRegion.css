@@ -8,7 +8,7 @@
   justify-content: center;
   display:flex;
   image-rendering: pixelated;
-  border: 2px solid gray
+  border: 1px solid gray
 }
 
 #select {

@@ -17,8 +17,8 @@ import { PiTrash } from "react-icons/pi";
 export default function() {
 
     const location = useLocation()
-    const refTitle = useRef(null);
-    const refMDX = useRef(null);
+    const refTitle = useRef(null)
+    const refMDX = useRef(null)
 
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
@@ -141,7 +141,7 @@ export default function() {
     const onChangeContent = (content, isInternalChange) =>{
         
         if(!isInternalChange)
-            setTimerAutoSaving()        
+            setTimerAutoSaving()
     }
 
 

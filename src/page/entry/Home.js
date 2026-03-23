@@ -26,12 +26,15 @@ export default function Home() {
   const navigate = useNavigate();
   const [isDisable, setIsDisable] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isCreateExistModalOpen, setIsCreateExitModalOpen] = useState(false)
+  const [isModifyExistModalOpen, setIsModifyExitModalOpen] = useState(false)
   const [article, setArticle] = useState(false)
 
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
-  const modal_config = {text: '이미 작성 중인 글이 있습니다. 이어서 작성하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+  const create_exist_modal_config = {text: '이미 작성 중인 글이 있습니다. 이어서 작성하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+  const modify_exist_modal_config = {text: '이미 수정 중인 글이 있습니다. 이어서 수정하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+  
   
   const onClickEditor = async() => {
 
@@ -44,10 +47,9 @@ export default function Home() {
 
     if(resUserArticles.length > 0){
       setArticle(resUserArticles[0])
-      setIsModalOpen(true)
+      setIsCreateExitModalOpen(true)
       return
     }
-
 
     const category_id = await getCommonCategory()
 
@@ -90,7 +92,7 @@ export default function Home() {
   }
 
 
-  const onResult = async(result) =>{
+  const onResultCreate = async(result) =>{
     
     if(result){
 
@@ -130,7 +132,7 @@ export default function Home() {
 
   const postArticle = async() => {
 
-    const payload = {title:'title ㅁㄴㅇㄻㄴㅇㄹvalue', content:'content value', open:1, posted:0, thumbnail:'http://a.jpg', category_id:10}
+    const payload = {title:'title ㅁㄴㅇㄻㄴㅇㄹvalue', content:'content value', open:1, posted:0, thumbnail:'http://a.jpg', category_id:10, source_id:70}
   
     const res = await ArticleAPI.postArticle(auth.jwt, payload)
 
@@ -138,7 +140,6 @@ export default function Home() {
       return
 
     console.log(res)
-        
   };
 
 
@@ -168,12 +169,12 @@ export default function Home() {
 
     const payload = {
 
-      title:'43434',
-      content:'3434',
+      title:'gwegwe',
+      content:'wegw',
       open:1,
       posted:0,
-      thumbnail:'http://ssaabbb',      
-      category_id:19
+      thumbnail:'http://ssaabbb',
+      category_id:10,      
     }
 
     const article_id = 23
@@ -189,23 +190,20 @@ export default function Home() {
 
   const getArticles = async() =>{
 
-
     const query = 'offset=1&limit=3&order=1'
 
-    
     const res = await ArticleAPI.getArticles(query)
 
     if(res == null)
       return
 
     console.log(res)
-
   }
 
   
   const getUserArticles = async() => {
 
-    const query = 'category_id=10&offset=0&limit=5&order=1&open=0&posted=1'
+    const query = 'offset=0&limit=3&order=1&open=0&source_id=70'
     
     const res = await ArticleAPI.getUserArticles(auth.jwt, auth.user_id, query)
 
@@ -265,31 +263,100 @@ export default function Home() {
 
   const postCategory = async() =>{
 
-      const payload = {
+    const payload = {
 
-        name:'dfgd',
-        user_id:auth.user_id
-      }
+      name:'dfgd',
+      user_id:auth.user_id
+    }
 
-      const res = await ArticleAPI.postCategory(auth.jwt, payload)
-
-      if(res == null)
-        return
-
-      console.log(res)
-  }
-    
-
-  const getComment = async() => {
-
-    const article_id = 45;
-
-    const res = await ArticleAPI.getArticleComments(article_id)
+    const res = await ArticleAPI.postCategory(auth.jwt, payload)
 
     if(res == null)
       return
 
     console.log(res)
+  }
+    
+
+  const modifyArticle = async() => {
+
+    const articleId = 69
+
+    const query = 'source_id='+ articleId
+    
+    const res = await ArticleAPI.getUserArticles(auth.jwt, auth.user_id, query)
+  
+    if(res == null)
+      return
+
+    if(res.length == 0){
+
+      const resArticle = await ArticleAPI.getArticle(auth.jwt, articleId)
+      
+      if(resArticle == null)
+        return
+
+      const payload = {
+        title:resArticle.title,
+        content:resArticle.content,
+        open:resArticle.open,
+        posted:0,
+        thumbnail:resArticle.thumbnail,
+        category_id:resArticle.category_id,
+        source_id:articleId
+      }
+
+      const resPostArticle = await ArticleAPI.postArticle(auth.jwt, payload)      
+
+      if(resPostArticle == null)
+        return
+
+      goEditor({id:articleId, ...payload})
+      return
+    }
+    
+    if(res[0].source_id == articleId){
+
+      setArticle(res[0])
+      setIsModifyExitModalOpen(true)
+    }
+  }
+
+
+  const onResultModify = async(result) =>{
+
+    if(result){
+
+      const resArticle = await ArticleAPI.getArticle(auth.jwt, article.id)
+
+      if(resArticle == null)
+        return
+
+      goEditor(resArticle)
+      return
+    }
+
+    const resOriArticle = await ArticleAPI.getArticle(auth.jwt, article.source_id)
+      
+    if(resOriArticle == null)
+      return
+
+    const payloadOri = {
+      title:resOriArticle.title,
+      content:resOriArticle.content,
+      open:resOriArticle.open,
+      posted:0,
+      thumbnail:resOriArticle.thumbnail,
+      category_id:resOriArticle.category_id,
+      source_id:resOriArticle.source_id
+    }
+
+    const resPutArticle = await ArticleAPI.putArticle(auth.jwt, article.id, payloadOri)
+
+    if(resPutArticle == null)
+      return    
+
+    goEditor({id:resPutArticle.id, ...payloadOri})
   }
 
 
@@ -336,16 +403,15 @@ export default function Home() {
       return
 
     console.log(res)
-
   }
-
-
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
-      <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={onClickEditor}>에디터</BeautyButton>
-      <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
-      <BeautyButton disabled={false} isLoading={isLoading} type='default' onClick={getComment}>댓글</BeautyButton>
+      <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={onClickEditor}>새글 작성</BeautyButton>
+      <Modal config={create_exist_modal_config} isOpen={isCreateExistModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateExitModalOpen(false)}></Modal>
+      <Modal config={modify_exist_modal_config} isOpen={isModifyExistModalOpen} onResult={onResultModify} onClose={()=>setIsModifyExitModalOpen(false)}></Modal>
+      {/* <Modal config={modify_exist_modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal> */}
+      <BeautyButton disabled={false} isLoading={isLoading} type='default' onClick={modifyArticle}>수정하기</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='success' onClick={deleteComment}>댓글 삭제</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='success' onClick={postComment}>댓글 추가</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='warning' onClick={postArticle}>글 넣기</BeautyButton>
@@ -367,5 +433,3 @@ export default function Home() {
     </div>
   );  
 }
-
-

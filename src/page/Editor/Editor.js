@@ -17,9 +17,20 @@ import { PiTrash } from "react-icons/pi";
 export default function() {
 
     const location = useLocation()
+
     const refTitle = useRef(null)
     const refMDX = useRef(null)
+    const refLengthChar = useRef(null)
 
+    const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
+    const [isReadOnly, setIsReadOnly] = useState(false)
+    const [saveTempTimerId, setSaveTempTimerId] = useState(null)
+    const [isDisableSaveTemp, setIsDisableSaveTemp] = useState(true)
+    const [markdown, setMarkdown] = useState(location.state.content)
+    const [lastMarkdown, setLastMarkdown] = useState(location.state.content)
+    const [lastTitle, setLastTitle] = useState(location.state.title)    
+
+    
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
 
@@ -37,12 +48,19 @@ export default function() {
 
 
     const beforeUnload = useCallback(() => {
-        
-        location.state.content = refMDX.current.getMarkdown()
-        location.state.title = refTitle.current.value
+
+        location.state.content = lastMarkdown
+        location.state.title = lastTitle
 
         navigate(location.pathname, { replace: true, state: location.state})
     })
+
+
+    useEffect(()=>{
+
+        refLengthChar.current.textContent = location.state.content.length + '/65535'
+
+    },[])
 
 
     useEffect(() => {
@@ -94,59 +112,109 @@ export default function() {
     
         window.showToast(error, 'error')
     }
-
-
-    let timerId = null
+    
 
     const setTimerAutoSaving = ()=>{
 
-        if(timerId != null)
+        if(saveTempTimerId != null)
             return
 
-        const timeout = 2000
+        const timeout = 1000 * 60
     
-        timerId = setTimeout(async() => {
+        const timerId = setTimeout(async() => {
 
-            timerId = null
+            setIsSaveTempLoading(true)
+
+            stopTimer()
             
-            const payloadSource = location.state
-
-            const payload = {
-
-                title:refTitle.current.value,
-                content:refMDX.current.getMarkdown(),
-                open:payloadSource.open,
-                posted:0,
-                thumbnail:payloadSource.thumbnail,
-                category_id:payloadSource.category_id
-            }
-
-            const article_id = payloadSource.id
-
-            const res = await ArticleAPI.putArticle(auth.jwt, article_id, payload)
-
-            if(res == null)
-                return
-
-
-            console.log(res)
-
+            const res = await saveTempSaveCore()
             
+            if(res != null)
+                window.showToast('임시 저장됨', 'info')
+            else
+                window.showToast('임시 저장 실패', 'error')
 
+            setIsSaveTempLoading(false)
+            setIsDisableSaveTemp(true)
 
         }, timeout)
+
+        setSaveTempTimerId(timerId)
+    }
+
+
+    const stopTimer = () =>{
+
+        if(saveTempTimerId != null)
+            clearTimeout(saveTempTimerId)
+
+        setSaveTempTimerId(null)
+    }
+
+
+    const putArticle = async(article_id, title, content, payloadSource) =>{
+
+        const payload = {
+            title:title,
+            content:content,
+            open:payloadSource.open,
+            posted:0,
+            thumbnail:payloadSource.thumbnail,
+            category_id:payloadSource.category_id
+        }
+        
+        return await ArticleAPI.putArticle(auth.jwt, article_id, payload)
+    }
+
+    const saveTempSave = async() => {
+
+        setIsSaveTempLoading(true)
+        
+        stopTimer()
+
+        const res = await saveTempSaveCore()
+
+        if(res != null)
+            window.showToast('임시 저장됨', 'info')
+        else
+            window.showToast('임시 저장 실패', 'error')
+
+        setIsSaveTempLoading(false)
+        setIsDisableSaveTemp(true)
+    }
+
+    const saveTempSaveCore = async() => {
+
+        const payloadSource = location.state
+
+        if(refTitle.current == null || refMDX.current == null)
+            return null
+
+        const res = await putArticle(payloadSource.id, refTitle.current.value, refMDX.current.getMarkdown(), payloadSource)
+
+        if(res == null)
+            return null
+
+        setLastMarkdown(refMDX.current.getMarkdown())
+        setLastTitle(refTitle.current.value)
+
+        return res
     }
 
 
     const onChangeContent = (content, isInternalChange) =>{
         
-        if(!isInternalChange)
+        if(!isInternalChange){
+            setIsDisableSaveTemp(false)
             setTimerAutoSaving()
+            refLengthChar.current.textContent = content.length + '/65535'
+        }
     }
 
 
     const onChangeTitle = (event) => {
 
+        setIsDisableSaveTemp(false)
         setTimerAutoSaving()
     }
 
@@ -158,36 +226,59 @@ export default function() {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const modal_config = {text: '글 작성을 취소 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+    const modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
-    const onResultCancel = (result) => {
+    const onResultCancel = async(result) => {
 
-      if(result == true)
+      if(result == true){
+
+        const res = await saveTempSaveCore()
+
+        if(res != null)
+            window.showToast('임시 저장 됨', 'info')
+        else
+            window.showToast('임시 저장 실패', 'error')
+
         navigate(-1)
+      }
+    }
+
+
+    const toggle = () => {
+
+        if(!isReadOnly)
+            setMarkdown(refMDX.current.getMarkdown())
+        
+        setIsReadOnly(isReadOnly => !isReadOnly)
     }
 
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
-                <BeautyButton type='danger' onClick={onClickCancel}>취소</BeautyButton>
+                <BeautyButton type='success' onClick={toggle}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
                 <Modal config={modal_config} isOpen={isModalOpen} onResult={onResultCancel} onClose={()=>setIsModalOpen(false)}></Modal>
-                <BeautyButton type='confirm' onClick={postMarkDown}>완료</BeautyButton>
-                <BeautyButton type='success'>임시저장</BeautyButton>
-                <input ref={refTitle} style={{flexGrow:'1'}} placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
-
+                <input ref={refTitle} readOnly={isReadOnly}  maxlength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
+                <BeautyButton type='success'>대표 이미지</BeautyButton>
                 {/* <select>
                     <option value="" style={{color:'gray'}} >카테고리 선택</option>
                     <option value="saab">Saab</option>
                     <option value="fiat">Fiat</option>
                     <option value="audi">Audi</option>
                 </select> */}
-                <BeautyButton type='success'>미리보기</BeautyButton>
+                
             </div>
-            <div style={{border:'2px solid lightgray', borderRadius:'4px', overflowY:'auto', margin:'5px', flex: 1}}>
-                <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} defaultValue={location.state.content}
-                    onChange={onChangeContent} onUserError={onUserError} onParsingError={onParsingError}
+            <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'75vh', margin:'5px', flex: 1, backgroundColor:'#F8F8F8'}}>
+                <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content} markdown={markdown}
+                    onChange={onChangeContent} onUserError={onUserError} readOnly={isReadOnly} onParsingError={onParsingError}
                 />
+            </div>
+            <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
+                <BeautyButton type='danger' onClick={onClickCancel}>나가기</BeautyButton>
+                <BeautyButton type='confirm' onClick={postMarkDown}>올리기</BeautyButton>
+                <BeautyButton type='success' disabled={isDisableSaveTemp} isLoading={isSaveTempLoading} onClick={saveTempSave}>임시저장</BeautyButton>
+                <label ref={refLengthChar} htmlFor='input_username'></label>
+
             </div>
         </div>
     ) : null

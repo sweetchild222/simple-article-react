@@ -42,7 +42,7 @@
 
 input{
   font-family: sans-serif;
-  border: 2px solid #808080;
+  border: 1px solid #808080;
   border-radius: 6px;
   font-size: 16px;
   padding:8px;
@@ -50,7 +50,7 @@ input{
 
 
 input:focus{
-  border: 2px solid #000000;
+  border: 1px solid #000000;
 }
 
 input:disabled{
@@ -67,7 +67,7 @@ label {
 
 select {
   font-family: sans-serif;
-  border: 2px solid #808080;
+  border: 1px solid #808080;
   border-radius: 6px;
   font-size: 16px;
   color:black
@@ -75,5 +75,5 @@ select {
 
 
 select:focus{
-  border: 2px solid #000000;
+  border: 1px solid #000000;
 }

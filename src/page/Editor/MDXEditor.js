@@ -20,12 +20,13 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   AdmonitionDirectiveDescriptor, BoldItalicUnderlineToggles, BlockTypeSelect, sandpackPlugin,  ChangeCodeMirrorLanguage, linkPlugin,
   toolbarPlugin, linkDialogPlugin, insertDirective$, ConditionalContents, Separator, HighlightToggle, StrikeThroughSupSubToggles,
   diffSourcePlugin, InsertTable, InsertThematicBreak, InsertCodeBlock, InsertFrontmatter, InsertAdmonition, insertImage$,
-  markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin } from '@mdxeditor/editor'
+  markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin } from '@mdxeditor/editor'
 
 
-export default function({ref, placeHolder, postImage, defaultValue, readOnly=false, onChange, onParsingError, onUserError}) {
+export default function({ref, placeHolder, postImage, initMarkdown, markdown, readOnly=false, onChange, onParsingError, onUserError}) {
 
-  const editorRef = useRef(null);    
+  const editorRef = useRef(null);
+  ////const [editable, setEditable] = useState(true);
   
   useEffect(()=>{
 
@@ -398,31 +399,42 @@ export default function({ref, placeHolder, postImage, defaultValue, readOnly=fal
       </DiffSourceToggleWrapper>
     )
   }
-    
+
 
   const plugins = [
-    toolbarPlugin({toolbarContents: () => (<><CustomToolbar /></>)}),
+    
     listsPlugin(),
     quotePlugin(),
     headingsPlugin({ allowedHeadingLevels: [1, 2, 3, 4] }),
     linkPlugin(),
     linkDialogPlugin(),
     imagePlugin({disableImageSettingsButton: true}),
-    tablePlugin(),
+    tablePlugin(),    
     thematicBreakPlugin(),
     frontmatterPlugin(),
+    maxLengthPlugin(65535),
     codeBlockPlugin({ defaultCodeBlockLanguage: 'js'}),
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
     codeMirrorPlugin({ codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'} }),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
-    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: defaultValue }),
-    markdownShortcutPlugin()
+    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: initMarkdown}),
+    markdownShortcutPlugin(),
+    maxLengthPlugin(65535)
   ]
 
+  if(!readOnly)
+    plugins.push(toolbarPlugin({toolbarContents: () => (<><CustomToolbar /></>)}))
+
   return (
-      <MDXEditor placeholder={placeHolder} ref={editorRef} markdown={defaultValue} onChange={onChange} 
-      readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
-        translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
+    <div>
+        {!readOnly && <MDXEditor placeholder={placeHolder} ref={editorRef} markdown={markdown} onChange={onChange}
+          readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
+          translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>}
+
+        {readOnly && <MDXEditor placeholder={placeHolder} ref={editorRef} markdown={markdown} onChange={onChange}
+          readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
+          translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>}
+    </div>
   )
 }
 

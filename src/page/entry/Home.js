@@ -120,15 +120,13 @@ export default function Home() {
       thumbnail:'',
       category_id:category_id
     }
-
-    const article_id = article.id
-
-    const res = await ArticleAPI.putArticle(auth.jwt, article_id, payload)
+    
+    const res = await ArticleAPI.postArticle(auth.jwt, payload)
 
     if(res == null)
       return
 
-    goEditor({id:article_id, ...payload})
+    goEditor({id:res.id, ...payload})
   }
 
 

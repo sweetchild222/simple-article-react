@@ -70,9 +70,8 @@ export default function({ref, file, onSelectImage,
 
   useEffect(()=> {
     
-    if(file == null)
-      return
-
+    // if(file == null)
+    //   return
     const image = new Image()
 
     const url = URL.createObjectURL(file)

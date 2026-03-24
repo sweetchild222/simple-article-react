@@ -9,6 +9,8 @@ import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
 
+import ImageCropModal from './ImageCropModal.js'
+
 import ImageScale from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
@@ -237,8 +239,7 @@ export default function() {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
-    const thumbnail_modal_config = {type: 'custom', isCloseOutsideClick: false}
+    const modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}    
 
     const onResultCancel = async(result) => {
 
@@ -275,33 +276,58 @@ export default function() {
 
             const format = await getImageFormat(file)
 
+            
+
             if(format == 'unknown') {
+
+                console.log('sdfsfd')
                 window.showToast('파일을 사용할 수 없습니다', 'error')
                 return
             }
-
+        
+            
             if(file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
+
+                console.log('sdf')
 
                 const canvas = await ImageScale(file, 4096, 4096, 512, 512)
 
                 if(canvas == null)
-                    return
+                    return                
                 
                 const blob = await getBlob(canvas)
+
+                setImageFile(blob)
                 
-                setIsImageModalOpen(true)                            
+                setIsImageModalOpen(true)
             }
             else{
                 setIsImageModalOpen(true)
+                
 
                 setImageFile(file)
             }
         }
         catch(error) {
 
+            console.log(error)
+
             window.showToast('파일을 사용할 수 없습니다', 'error')
             return
         }
+    }
+
+
+    const getBlob = (canvas) => {
+
+        return new Promise((resolve) => {
+
+            canvas.toBlob((blob) => {
+
+                resolve(blob)
+
+            })
+        })
     }
 
 
@@ -314,7 +340,7 @@ export default function() {
             location.state.title = refTitle.current.value        
     }
 
-    const imageRegionRef = useRef(null)
+    const refImageCrop = useRef(null)
 
     let lastRect = undefined;
 
@@ -385,25 +411,20 @@ export default function() {
         if(lastRect == null)
             return
 
-        console.log(lastRect)
-
-        // const imageRegion = imageRegionRef.current
-
-        // const image = imageRegion.image()
-
-        // const canvasPreview = document.createElement('canvas')
-        // canvasPreview.width = 128
-        // canvasPreview.height = 128
+        const image = refImageCrop.current.image()
         
-        //const ctxPreview = canvasPreview.getContext('2d')
+        const canvas = document.createElement('canvas')
+        
+        const ctx = canvas.getContext('2d')
 
-        // ctxPreview.imageSmoothingEnabled = false;
+        ctx.imageSmoothingEnabled = false;
 
-        // ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, previewWidth, previewHeight)
+        ctx.drawImage(image, lastRect.x, lastRect.y, lastRect.width, lastRect.height)
 
-        //setIsImageModalOpen(false)
-
+        setImageFile(null)
     }
+
+
 
 
 
@@ -411,16 +432,8 @@ export default function() {
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
-            <Modal config={thumbnail_modal_config} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width:'600px', height:'600px'}}>
-                    <ImageRegion ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={512} containerHeight={512}/>
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <BeautyButton type='confirm' onClick={onClickApply}>확인</BeautyButton>
-                        <BeautyButton type='cancel' onClick={()=>setIsImageModalOpen(false)}>취소</BeautyButton>
-                    </div>
-                </div>
-            </Modal>
-            
+
+            {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)} file={imageFile} onSelectImage={onSelectImage} onClickApply={onClickApply}></ImageCropModal>}
 
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
                 <BeautyButton type='success' onClick={toggle}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>

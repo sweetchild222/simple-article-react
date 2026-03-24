@@ -113,6 +113,8 @@ export default function() {
 
             const format = await getImageFormat(file)
 
+            console.log(format)
+
             if(format == 'unknown') {
                 window.showToast('파일을 사용할 수 없습니다', 'error')
                 return
@@ -141,17 +143,17 @@ export default function() {
     }
 
 
-      const getBlob = (canvas) => {
-    
-        return new Promise((resolve) => {
-    
-          canvas.toBlob((blob) => {
-    
-              resolve(blob)
+    const getBlob = (canvas) => {
 
-          })
+        return new Promise((resolve) => {
+
+            canvas.toBlob((blob) => {
+
+                resolve(blob)
+
+            })
         })
-      }
+    }
 
 
     return validAuth(auth) ? (

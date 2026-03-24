@@ -17,22 +17,22 @@ export default function({ref, isOpen, onClose, file, onSelectImage, onClickApply
   
   const modal_config = {type: 'custom', isCloseOutsideClick: false}
 
-  const refImageRegion = useRef(null)
+  const refCropper = useRef(null)
 
   useImperativeHandle(ref, () => {
       
     return {
       image() {
-        return refImageRegion.current.image()
+        return refCropper.current.image()
       }
     }
-  }, [refImageRegion]);
+  }, [refCropper]);
   
 
   return (
           <Modal config={modal_config} isOpen={isOpen} onClose={onClose}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width:'600px', height:'600px'}}>
-              <ImageCropper ref={refImageRegion} file={file} onSelectImage={onSelectImage} containerWidth={512} containerHeight={512}/>
+              <ImageCropper ref={refCropper} file={file} onSelectImage={onSelectImage} containerWidth={512} containerHeight={512}/>
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                 <BeautyButton type='confirm' onClick={onClickApply}>확인</BeautyButton>
                 <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>

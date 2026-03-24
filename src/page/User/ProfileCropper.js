@@ -113,7 +113,10 @@ export default function() {
       return
     }
 
-    const payload = {profile: resProfile.id}
+
+    const url = process.env.API_TARGET + '/api/blob/profile/' + resProfile.id
+
+    const payload = {profile: url}
     
     const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
 
@@ -123,18 +126,17 @@ export default function() {
       return
     }
 
-    const profileId = resProfile.id + '?size=64x64'
-    const profile = await BlobAPI.getProfile(auth.jwt, profileId)
+    //const profileId = resProfile.id + '?size=64x64'
+    //const profile = await BlobAPI.getProfile(auth.jwt, profileId)
 
-    if(profile == null) {
-      setIsPostLoading(false)
-      window.showToast('프로필 가져오기가 실패하였습니다', 'error')      
-      return
-    }
+    //if(profile == null) {
+      //setIsPostLoading(false)
+      //window.showToast('프로필 가져오기가 실패하였습니다', 'error')      
+      //return
+    //}
     
-    const base64Profile = await blobToBase64.convert(profile)
-    updateProfile(base64Profile)
-
+    //const base64Profile = await blobToBase64.convert(profile)
+    updateProfile(url + '?size=64x64')
     setIsPostLoading(false)
     window.showToast('프로필 변경이 성공하였습니다', 'success')
     navigate(-1)

@@ -40,11 +40,9 @@ export default function() {
             return null
 
         if(resUser.profile == null)
-            return '/image/user.png'
+            return '/image/user.png'        
 
-        const url = process.env.API_TARGET + '/api/blob/profile/' + resUser.profile + '?size=256x256'
-
-        return url
+        return resUser.profile
     }
 
     useEffect(()=>{

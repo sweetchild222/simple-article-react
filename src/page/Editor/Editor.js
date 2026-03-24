@@ -16,7 +16,7 @@ import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 
 import './Editor.css'
-import ImageRegion from '../../util/ImageRegion.js'
+import ImageRegion from '../../util/ImageCropper.js'
 import '../../common/RotateLoading.css'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 

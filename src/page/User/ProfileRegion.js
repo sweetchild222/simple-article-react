@@ -9,7 +9,7 @@ import { useNavigate} from 'react-router-dom'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as UserAPI from '../../api/UserAPI.js'
 import AuthContext from '../../util/AuthContext.js'
-import ImageRegion from '../../util/ImageRegion.js'
+import ImageCropper from '../../util/ImageCropper.js'
 
 import BeautyButton from "../../common/BeautyButton.js"
 
@@ -149,7 +149,7 @@ export default function() {
 
   return validAuth(auth) ? (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <ImageRegion ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
+      <ImageCropper ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
       <div id='preview' className={`${isLoading ? 'rotateLoading': ''}`} ref={previewRef}  style={{width: `${previewWidth}px`, height: `${previewHeight}px`}}/>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <BeautyButton onClick={onClickApply} type='confirm' isLoading={isPostLoading}>적용</BeautyButton>

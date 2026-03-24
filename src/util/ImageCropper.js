@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
-import './ImageRegion.css'
+import './ImageCropper.css'
 import '../common/RotateLoading.css'
 
 export default function({ref, file, onSelectImage,

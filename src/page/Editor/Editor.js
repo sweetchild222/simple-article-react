@@ -38,10 +38,12 @@ export default function() {
     const [isDisableSaveTemp, setIsDisableSaveTemp] = useState(true)
     const [markdown, setMarkdown] = useState(location.state.content)
     const [isLoading, setIsLoading] = useState(true)
-    const [isImageLoading, setIsImageLoading] = useState(true)
     const [imageFile, setImageFile] = useState(null)
     const [thumbnail, setThumbnail] = useState(transparent)
-    const [isImageModalOpen, setIsImageModalOpen] = useState(false)    
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
     
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
@@ -93,27 +95,18 @@ export default function() {
     }
 
 
-    const postImage = (canvas) => {
+    const postImage = async(canvas) => {
 
-        return new Promise((resolve) => {
+        const formData = await canvasToFormData(canvas)
 
-            canvas.toBlob(async(blob) => {
+        const resArticleImage = await BlobAPI.postArticleImage(auth.jwt, formData)
 
-                const formData = new FormData()
-                formData.append('image', blob)
+        if(resArticleImage == null)
+            return
+        
+        const url = process.env.API_TARGET + '/api/blob/article/' + resArticleImage.id
 
-                const resArticleImage = await BlobAPI.postArticleImage(auth.jwt, formData)
-
-                if(resArticleImage == null){
-                    resolve(null)
-                    return
-                }
-
-                const url = process.env.API_TARGET + '/api/blob/article/' + resArticleImage.id
-
-                resolve(url)
-            })
-        })
+        return url
     }
 
 
@@ -237,9 +230,7 @@ export default function() {
         setIsModalOpen(true)
     }
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}    
 
     const onResultCancel = async(result) => {
 
@@ -325,6 +316,17 @@ export default function() {
     }
 
 
+    const canvasToFormData = async(canvas) =>{
+
+        const blob = await getBlob(canvas)
+
+        const formData = new FormData()
+        formData.append('image', blob)
+
+        return formData
+    }
+
+
     const updateLocationState = () =>{
 
         if(refMDX.current)
@@ -364,38 +366,18 @@ export default function() {
 
         ctx.drawImage(image, lastRect.x, lastRect.y, lastRect.width, lastRect.height, 0, 0, canvasWidth, canvasHeight)
 
-        const url = await postArticleThumbnail(canvas)
+        const formData = await canvasToFormData(canvas)
 
-        console.log(url)
+        const resArticleThumbnail = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
 
-        //setImageFile(null)
+        if(resArticleThumbnail == null)            
+            return
+
+        const url = process.env.API_TARGET + '/api/blob/article/thumbnail' + resArticleThumbnail.id
 
         setIsImageModalOpen(false)
     }
 
-
-    const postArticleThumbnail = (canvas) => {
-
-        return new Promise((resolve) => {
-
-            canvas.toBlob(async(blob) => {
-
-                const formData = new FormData()
-                formData.append('image', blob)
-
-                const resArticleThumbnail = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
-
-                if(resArticleThumbnail == null){
-                    resolve(null)
-                    return
-                }
-
-                const url = process.env.API_TARGET + '/api/blob/article/thumbnail' + resArticleThumbnail.id
-
-                resolve(url)
-            })
-        })
-    }
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>

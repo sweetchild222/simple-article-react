@@ -387,7 +387,7 @@ export default function() {
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
                 <BeautyButton type='success' onClick={toggle}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
                 <Modal config={modal_config} isOpen={isModalOpen} onResult={onResultCancel} onClose={()=>setIsModalOpen(false)}></Modal>
-                <input ref={refTitle} readOnly={isReadOnly}  maxLength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
+                <input ref={refTitle} readOnly={isReadOnly} maxLength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
                 <div id='cover' ref={refCover} className={`${isLoading ? 'rotateLoading': ''}`}  onClick={onClickThumbnail} style={{width:'64px', height:'64px'}}>
                     <img alt='image' src={thumbnail}  style={{borderRadius:'1px'}}/>
                 </div>            

@@ -17,7 +17,7 @@ import User from '../user/User.js'
 import Regist from '../user/Regist.js'
 import ChangePassword from '../user/ChangePassword.js'
 import Withdraw from '../user/Withdraw.js'
-import ProfileRegion from '../user/ProfileRegion.js'
+import ProfileCropper from '../user/ProfileCropper.js'
 import AuthProvider from '../../util/AuthProvider.js'
 import ProfileContext from '../../util/ProfileProvider.js'
 import ToastContainer from '../../common/ToastContainer.js'
@@ -34,15 +34,11 @@ export default function() {
           <ProfileContext>
           <ToastContainer />
           <Header/>
-          <div style={{height:'auto', flex: 1}}>            
+          <div style={{height:'auto', flex: 1}}>
             <Routes>
               <Route path="/" element={<Home />}/>
               <Route path="/home" element={<Home />}/>                
-              <Route path="/editor">
-                <Route index element={<Editor />} />
-                <Route path="profile_image" element={<ProfileRegion/>}/>
-              </Route>
-
+              <Route path="/editor" element={<Editor />}/>
               <Route path="/login">
                 <Route index element={<Login />} />
                 <Route path="regist" element={<Regist/>}/>
@@ -51,7 +47,7 @@ export default function() {
                 <Route index element={<User />} />
                 <Route path="widthdraw" element={<Withdraw/>}/>
                 <Route path="change_password" element={<ChangePassword/>}/>
-                <Route path="profile_image" element={<ProfileRegion/>}/>
+                <Route path="profile_cropper" element={<ProfileCropper/>}/>
               </Route>
               <Route path="/*" element={<PageNotFound/>}></Route>
             </Routes>            

@@ -44,10 +44,10 @@ export default function() {
             return '/image/user.png'
 
         const profileId = resUser.profile + '?size=256x256'
-
-        console.log(profileId)
-
+        
         const resProfile = await BlobAPI.getProfile(auth.jwt, profileId)
+
+
 
         if(resProfile == null){
             return '/image/user.png'
@@ -113,9 +113,7 @@ export default function() {
 
         try{
 
-            const format = await getImageFormat(file)
-
-            console.log(format)
+            const format = await getImageFormat(file)            
 
             if(format == 'unknown') {
                 window.showToast('파일을 사용할 수 없습니다', 'error')
@@ -131,10 +129,10 @@ export default function() {
                 
                 const blob = await getBlob(canvas)
                 
-                navigate('profile_image', {state: blob})
+                navigate('profile_cropper', {state: blob})
             }
             else{
-                navigate('profile_image', {state: file})
+                navigate('profile_cropper', {state: file})
             }
         }
         catch(error) {

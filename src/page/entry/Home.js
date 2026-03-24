@@ -21,7 +21,7 @@ export default function Home() {
   let inputPassword = null
   let verifyCode = null
 
-  const selectRef = useRef(null)
+  const refSelect = useRef(null)
 
   const navigate = useNavigate();
   const [isDisable, setIsDisable] = useState(false)
@@ -428,7 +428,7 @@ export default function Home() {
 
       {/* <button onClick={test}>imageRegion</button>
       <button onClick={test2}/>      
-      <button ref={selectRef} onClick={test3} className="loadingbutton">
+      <button ref={refSelect} onClick={test3} className="loadingbutton">
         <span className="btn_text">Save</span></button> */}
     </div>
   );  

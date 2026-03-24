@@ -22,8 +22,8 @@ export default function() {
   const [isLoading, setIsLoading] = useState(true)
   const [isPostLoading, setIsPostLoading] = useState(false)
 
-  const previewRef = useRef(null)
-  const imageRegionRef = useRef(null)  
+  const refPreview = useRef(null)
+  const refImageCropper = useRef(null)  
 
   const previewWidth = 256
   const previewHeight = 256
@@ -51,9 +51,9 @@ export default function() {
 
   const onSelectImage = useCallback((rect) => {
 
-    const imageRegion = imageRegionRef.current
+    const imageCropper = refImageCropper.current
 
-    const image = imageRegion.image()
+    const image = imageCropper.image()
 
     const canvasPreview = document.createElement('canvas')
     canvasPreview.width = previewWidth
@@ -65,7 +65,7 @@ export default function() {
 
     ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, previewWidth, previewHeight)
 
-    previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
+    refPreview.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
 
     setIsLoading(false)
 
@@ -89,7 +89,7 @@ export default function() {
 
   const onClickApply = async() => {
 
-    const imageUrl = previewRef.current.style.backgroundImage
+    const imageUrl = refPreview.current.style.backgroundImage
     
     const match = imageUrl.match(/url\(['"]?(.*?)['"]?\)/)
   
@@ -151,8 +151,8 @@ export default function() {
 
   return validAuth(auth) ? (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <ImageCropper ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
-      <div id='preview' className={`${isLoading ? 'rotateLoading': ''}`} ref={previewRef}  style={{width: `${previewWidth}px`, height: `${previewHeight}px`}}/>
+      <ImageCropper ref={refImageCropper} file={imageFile} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
+      <div id='preview' className={`${isLoading ? 'rotateLoading': ''}`} ref={refPreview}  style={{width: `${previewWidth}px`, height: `${previewHeight}px`}}/>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <BeautyButton onClick={onClickApply} type='confirm' isLoading={isPostLoading}>적용</BeautyButton>
       <BeautyButton onClick={onClickCancel} type='cancel'>취소</BeautyButton>

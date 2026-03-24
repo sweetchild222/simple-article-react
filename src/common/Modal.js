@@ -21,27 +21,27 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
             config.isCloseOutsideClick = false
     }
     
-    const dialogRef = useRef(null)
-    const inputRef = useRef(null)
+    const refDialog = useRef(null)
+    const refInput = useRef(null)
 
 
     useEffect(() => {
         
         if(isOpen){
-            dialogRef.current.showModal()
+            refDialog.current.showModal()
             
-            if(inputRef.current)
-                inputRef.current.value=''
+            if(refInput.current)
+                refInput.current.value=''
         }
         else
-            dialogRef.current.close()
+            refDialog.current.close()
 
     }, [isOpen]);
 
 
     const onClickDialog = (event) => {
 
-        if(event.target === dialogRef.current){
+        if(event.target === refDialog.current){
 
             if(config.isCloseOutsideClick){
 
@@ -82,7 +82,7 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
     const onClickInputYes=() =>{
 
         if(onInput != null)
-            onInput(inputRef.current.value)
+            onInput(refInput.current.value)
 
         if(onClose != null)
             onClose()
@@ -93,7 +93,7 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
         if (event.key === 'Enter'){
 
             if(onInput != null)
-                onInput(inputRef.current.value)
+                onInput(refInput.current.value)
 
             if(onClose != null)
                 onClose()
@@ -121,10 +121,10 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
     const randomId = random(0, 100000) // avoid warning Duplicate form field id in the same form 
           
     return ReactDOM.createPortal(
-        <dialog ref={dialogRef} onClick={onClickDialog} onKeyDown={onKeyDownDialog}>
+        <dialog ref={refDialog} onClick={onClickDialog} onKeyDown={onKeyDownDialog}>
             {config.text != null && <p>{config.text}</p>}
             {config.type == 'custom' && children}
-            {config.type == 'input' && <input id={randomId} ref={inputRef} onKeyDown={onKeyDownInput}/>}
+            {config.type == 'input' && <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput}/>}
             {config.type == 'input' && <BeautyButton onClick={onClickInputYes} type='success'>확인</BeautyButton>}
             
             {config.type == 'confirm' && <BeautyButton onClick={onClickConfirm} type='confirm'>확인</BeautyButton>}

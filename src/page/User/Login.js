@@ -73,20 +73,9 @@ export default function() {
         if(resUser.profile == null)
             return
 
-        const profileId = resUser.profile + '?size=64x64'
-
-        console.log(profileId)
-
-        const resProfile = await BlobAPI.getProfile(resAuth.jwt, profileId)
+        const url = resUser.profile + '?size=64x64'
         
-        if(resProfile == null){
-            setIsLoading(false)
-            window.showToast('프로필을 가져 올 수 없습니다.', 'error')
-            return
-        }
-
-        const base64 = await blobToBase64.convert(resProfile)
-        updateProfile(base64)
+        updateProfile(url)
         setIsLoading(false)
     }
 

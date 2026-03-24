@@ -25,7 +25,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
 
 export default function({ref, placeHolder, postImage, initMarkdown, markdown, readOnly=false, onChange, onParsingError, onUserError}) {
 
-  const editorRef = useRef(null);
+  const refEditor = useRef(null);
   ////const [editable, setEditable] = useState(true);
   
   useEffect(()=>{
@@ -37,8 +37,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
     })
 
 
-    if (editorRef.current) {
-      editorRef.current.focus();
+    if (refEditor.current) {
+      refEditor.current.focus();
     }
 
   }, [])
@@ -48,7 +48,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
 
     return {
       getMarkdown() {
-        return editorRef.current.getMarkdown()
+        return refEditor.current.getMarkdown()
       }
     }
   }, []);
@@ -166,9 +166,9 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
     const [isLoadingUpload, setIsLoadingUpload] = useState(false)
     const [isDisabledConfirm, setIsDisabledConfirm] = useState(true)
     
-    const inputUrlRef = useRef(null)
-    const inputTitleRef = useRef(null)
-    const inputAltRef = useRef(null)
+    const refInputUrl = useRef(null)
+    const refInputTitle = useRef(null)
+    const refInputAlt = useRef(null)
 
     const insertImage = usePublisher(insertImage$)
 
@@ -236,8 +236,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
         return
       }
 
-      const alt = inputAltRef.current.value
-      const title = inputTitleRef.current.value
+      const alt = refInputAlt.current.value
+      const title = refInputTitle.current.value
       
       insertImage({
         src: url,
@@ -261,26 +261,26 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
     const onKeyDownUrl = (event) =>{
 
         if (event.key === 'Enter')
-          inputTitleRef.current.focus()
+          refInputTitle.current.focus()
     }
 
     const onKeyDownTitle = (event) =>{
 
         if (event.key === 'Enter')
-          inputAltRef.current.focus()
+          refInputAlt.current.focus()
     }
 
 
     const openModal=()=>{
 
-      if(inputUrlRef.current)
-        inputUrlRef.current.value = ''
+      if(refInputUrl.current)
+        refInputUrl.current.value = ''
 
-      if(inputTitleRef.current)
-        inputTitleRef.current.value = ''
+      if(refInputTitle.current)
+        refInputTitle.current.value = ''
 
-      if(inputAltRef.current)
-        inputAltRef.current.value = ''
+      if(refInputAlt.current)
+        refInputAlt.current.value = ''
 
       setImageUrl('')
       setIsDisabledConfirm(true)
@@ -294,9 +294,9 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
         <Modal config={modal_config} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>          
           <BeautyButton type='warning' isLoading={isLoadingUpload} onClick={selectImage}>파일</BeautyButton>          
-          <input ref={inputUrlRef} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
-          <input ref={inputTitleRef} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
-          <input ref={inputAltRef} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>
+          <input ref={refInputUrl} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
+          <input ref={refInputTitle} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
+          <input ref={refInputAlt} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>
           <BeautyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm}>확인</BeautyButton>
           <BeautyButton type='cancel' onClick={()=>setIsImageModalOpen(false)}>취소</BeautyButton>
         </div>
@@ -427,11 +427,11 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
 
   return (
     <div>
-        {!readOnly && <MDXEditor placeholder={placeHolder} ref={editorRef} markdown={markdown} onChange={onChange}
+        {!readOnly && <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={markdown} onChange={onChange}
           readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
           translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>}
 
-        {readOnly && <MDXEditor placeholder={placeHolder} ref={editorRef} markdown={markdown} onChange={onChange}
+        {readOnly && <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={markdown} onChange={onChange}
           readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
           translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>}
     </div>

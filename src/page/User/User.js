@@ -28,7 +28,7 @@ export default function() {
     const [profileImage, setProfileImage] = useState(transparent)
     const [isLoading, setIsLoading] = useState(true)
 
-    const coverRef = useRef(null)
+    const refCover = useRef(null)
 
     const navigate = useNavigate()
 
@@ -151,7 +151,7 @@ export default function() {
 
     return validAuth(auth) ? (
       <div id='profile'>
-        <div id='cover' ref={coverRef} onClick={onClickProfile} className={`${isLoading ? 'rotateLoading': ''}`}  style={{width:'256px', height:'256px'}}>
+        <div id='cover' ref={refCover} onClick={onClickProfile} className={`${isLoading ? 'rotateLoading': ''}`}  style={{width:'256px', height:'256px'}}>
             <img alt='image' src={profileImage} onLoad={()=> setIsLoading(false)} onError={onError} style={{borderRadius:'1px'}}/>
         </div>
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>

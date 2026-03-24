@@ -16,9 +16,9 @@ export default function({ref, file, onSelectImage,
   const [selectRect, setSelectRect] = useState(null)
   const [image, setImage] = useState(null)
 
-  const selectRef = useRef(null)
-  const coverRef = useRef(null)
-  const containRef = useRef(null)
+  const refSelect = useRef(null)
+  const refCover = useRef(null)
+  const refContain = useRef(null)
 
   const calcContainScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
@@ -116,7 +116,7 @@ export default function({ref, file, onSelectImage,
     if(selectRect == null)
       return
 
-    const cover = coverRef.current
+    const cover = refCover.current
 
     if(cover == null)
       return
@@ -207,8 +207,8 @@ export default function({ref, file, onSelectImage,
 
       const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
 
-      if(selectRef.current != null)
-        selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
+      if(refSelect.current != null)
+        refSelect.current.style.cursor = id != 0 ? cursor(id) : 'grab'
     }
     else if(selectEdge >= 1 && selectEdge <= 4) {
 
@@ -237,14 +237,14 @@ export default function({ref, file, onSelectImage,
       setSelectEdge(id)
 
       if(id == 0)
-        selectRef.current.style.cursor = 'grabbing'
+        refSelect.current.style.cursor = 'grabbing'
 
       const offsetX = event.clientX - selectRect.x
       const offsetY = event.clientY - selectRect.y
       
-      const containerRect = containRef.current.getBoundingClientRect()
+      const containerRect = refContain.current.getBoundingClientRect()
       
-      const style = window.getComputedStyle(containRef.current);
+      const style = window.getComputedStyle(refContain.current);
 
       const borderLeftWidth = parseInt(style.borderLeftWidth.replace(/\px$/, ""))
       const borderTopWidth = parseInt(style.borderTopWidth.replace(/\px$/, ""))
@@ -273,8 +273,8 @@ export default function({ref, file, onSelectImage,
 
     const id = getEdgeID(event.clientX, event.clientY, event.target.getBoundingClientRect())
 
-    if(selectRef.current != null)
-      selectRef.current.style.cursor = id != 0 ? cursor(id) : 'grab'
+    if(refSelect.current != null)
+      refSelect.current.style.cursor = id != 0 ? cursor(id) : 'grab'
         
   }, [selectEdge]);
 
@@ -289,8 +289,8 @@ export default function({ref, file, onSelectImage,
 
     const imageRect = getPropertyImageRect()
     
-    const endX = imageRect.x + imageRect.width - selectRef.current.offsetWidth
-    const endY = imageRect.y + imageRect.height - selectRef.current.offsetHeight
+    const endX = imageRect.x + imageRect.width - refSelect.current.offsetWidth
+    const endY = imageRect.y + imageRect.height - refSelect.current.offsetHeight
 
     const calcX = x < imageRect.x ? imageRect.x : (x > endX ? endX : x)
     const calcY = y < imageRect.y ? imageRect.y : (y > endY ? endY : y)
@@ -506,20 +506,20 @@ export default function({ref, file, onSelectImage,
 
   const setPropertyIsLoadImage = (loaded) => {
 
-    if(containRef.current == null)
+    if(refContain.current == null)
       return
     
-    const style = containRef.current.style
+    const style = refContain.current.style
     style.setProperty('--loaded', loaded)
   }
 
 
   const getPropertyIsLoadImage = () => {
 
-    if(containRef.current == null)
+    if(refContain.current == null)
       return
 
-    const style = containRef.current.style
+    const style = refContain.current.style
     const loaded = style.getPropertyValue('--loaded')
 
     if(loaded == null)
@@ -531,10 +531,10 @@ export default function({ref, file, onSelectImage,
 
   const setPropertyOffset = (offsetX, offsetY) => {
 
-    if(selectRef.current == null)
+    if(refSelect.current == null)
       return
 
-    const style = selectRef.current.style
+    const style = refSelect.current.style
     
     style.setProperty('--offset_x', offsetX)
     style.setProperty('--offset_y', offsetY)
@@ -543,10 +543,10 @@ export default function({ref, file, onSelectImage,
 
   const getPropertyOffset = () => {
 
-    if(selectRef.current == null)
+    if(refSelect.current == null)
       return
 
-    const style = selectRef.current.style
+    const style = refSelect.current.style
 
     const offsetX = style.getPropertyValue('--offset_x')
     const offsetY = style.getPropertyValue('--offset_y')
@@ -557,10 +557,10 @@ export default function({ref, file, onSelectImage,
 
   const setPropertyImageRect = (x, y, width, height) => {
 
-    if(containRef.current == null)
+    if(refContain.current == null)
       return
     
-    const style = containRef.current.style
+    const style = refContain.current.style
     
     style.setProperty('--x', x)
     style.setProperty('--y', y)
@@ -571,10 +571,10 @@ export default function({ref, file, onSelectImage,
 
   const getPropertyImageRect =() => {
 
-    if(containRef.current == null)
+    if(refContain.current == null)
       return
 
-    const style = containRef.current.style
+    const style = refContain.current.style
 
     const x = style.getPropertyValue('--x')
     const y = style.getPropertyValue('--y')
@@ -587,10 +587,10 @@ export default function({ref, file, onSelectImage,
 
   const setPropertyLastRect = (x, y, width, height) => {
 
-    if(selectRef.current == null)
+    if(refSelect.current == null)
       return
 
-    const style = selectRef.current.style
+    const style = refSelect.current.style
 
     style.setProperty('--x', x);
     style.setProperty('--y', y);
@@ -600,10 +600,10 @@ export default function({ref, file, onSelectImage,
 
   const getPropertyLastRect = () => {
 
-    if(selectRef.current == null)
+    if(refSelect.current == null)
       return
 
-    const style = selectRef.current.style
+    const style = refSelect.current.style
 
     const x = style.getPropertyValue('--x')
     const y = style.getPropertyValue('--y')
@@ -669,10 +669,10 @@ export default function({ref, file, onSelectImage,
   }, [eventMouseMove, eventMouseUp])
 
   return (
-      <div id='container' className={`${isLoading ? 'rotateLoading': ''}`} ref={containRef} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
-      <canvas ref={coverRef} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
+      <div id='container' className={`${isLoading ? 'rotateLoading': ''}`} ref={refContain} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
+      <canvas ref={refCover} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
         {selectRect != null && 
-        <div id='select' ref={selectRef} onMouseDown={onMouseDown}
+        <div id='select' ref={refSelect} onMouseDown={onMouseDown}
           style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
         >
         <div id='selectEdge'></div>

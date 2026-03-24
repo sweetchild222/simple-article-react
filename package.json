@@ -12,6 +12,7 @@
     "@uiw/react-md-editor": "^4.0.11",
     "axios": "^1.13.2",
     "bcrypt": "^6.0.0",
+    "dotenv": "^17.3.1",
     "http-proxy-middleware": "^3.0.5",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -48,6 +49,6 @@
     "style-loader": "^4.0.0",
     "webpack": "^5.105.4",
     "webpack-cli": "^7.0.1",
-   "webpack-dev-server": "^5.2.3"
+    "webpack-dev-server": "^5.2.3"
   }
 }

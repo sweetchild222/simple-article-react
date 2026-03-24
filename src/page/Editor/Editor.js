@@ -30,9 +30,8 @@ export default function() {
     const refMDX = useRef(null)
     const refLengthChar = useRef(null)
     const refCover = useRef(null)
-
-    console.log('inini', location.state.content)
-
+    const refImageCrop = useRef(null)
+    
     const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
     const [isReadOnly, setIsReadOnly] = useState(false)
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
@@ -42,15 +41,14 @@ export default function() {
     const [isImageLoading, setIsImageLoading] = useState(true)
     const [imageFile, setImageFile] = useState(null)
     const [thumbnail, setThumbnail] = useState(transparent)
-    const [isImageModalOpen, setIsImageModalOpen] = useState(false)
-
-    //const [rect, setRect] = useState(null)
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false)    
     
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const navigate = useNavigate()
+
 
     useEffect(()=> {
     
@@ -111,7 +109,9 @@ export default function() {
                     return
                 }
 
-                resolve('http://13.124.193.201:8080/api/blob/article/' + resArticleImage.id)
+                const url = process.env.API_TARGET + '/api/blob/article/' + resArticleImage.id
+
+                resolve(url)
             })
         })
     }
@@ -275,20 +275,14 @@ export default function() {
         try{
 
             const format = await getImageFormat(file)
-
             
-
-            if(format == 'unknown') {
-
-                console.log('sdfsfd')
+            if(format == 'unknown') {                
                 window.showToast('파일을 사용할 수 없습니다', 'error')
                 return
             }
         
             
             if(file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
-
-                console.log('sdf')
 
                 const canvas = await ImageScale(file, 4096, 4096, 512, 512)
 
@@ -302,10 +296,10 @@ export default function() {
                 setIsImageModalOpen(true)
             }
             else{
-                setIsImageModalOpen(true)
-                
 
                 setImageFile(file)
+
+                setIsImageModalOpen(true)
             }
         }
         catch(error) {
@@ -340,70 +334,14 @@ export default function() {
             location.state.title = refTitle.current.value        
     }
 
-    const refImageCrop = useRef(null)
+    
 
-    let lastRect = undefined;
-
+    let lastRect = null;
         
     const onSelectImage = (rect) => {
 
         lastRect = rect
-
-        //console.log(lastRect)
-
-        //setRect(rect)
-
-        //console.log(rect)
-
-        //const imageRegion = imageRegionRef.current
-
-        //const image = imageRegion.image()
-
-        //const canvasPreview = document.createElement('canvas')
-        //canvasPreview.width = previewWidth
-        //canvasPreview.height = previewHeight
-        
-        //const ctxPreview = canvasPreview.getContext('2d')
-
-        // ctxPreview.imageSmoothingEnabled = false;
-
-        // ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, previewWidth, previewHeight)
-
-        // //previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
-
-        // setIsImageLoading(false)
     }
-
-
-    // const onSelectImage = (rect) => {
-
-    //     lastRect = rect
-
-    //     console.log(lastRect)
-
-    //     //setRect(rect)
-
-    //     //console.log(rect)
-
-    //     //const imageRegion = imageRegionRef.current
-
-    //     //const image = imageRegion.image()
-
-    //     //const canvasPreview = document.createElement('canvas')
-    //     //canvasPreview.width = previewWidth
-    //     //canvasPreview.height = previewHeight
-        
-    //     //const ctxPreview = canvasPreview.getContext('2d')
-
-    //     // ctxPreview.imageSmoothingEnabled = false;
-
-    //     // ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, previewWidth, previewHeight)
-
-    //     // //previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
-
-    //     // setIsImageLoading(false)
-
-    // }
 
 
     const onClickApply = async() => {
@@ -412,23 +350,52 @@ export default function() {
             return
 
         const image = refImageCrop.current.image()
-        
+
+        const canvasWidth = 256
+        const canvasHeight = 256
+
         const canvas = document.createElement('canvas')
+        canvas.width = canvasWidth
+        canvas.height = canvasHeight
         
         const ctx = canvas.getContext('2d')
 
         ctx.imageSmoothingEnabled = false;
 
-        ctx.drawImage(image, lastRect.x, lastRect.y, lastRect.width, lastRect.height)
+        ctx.drawImage(image, lastRect.x, lastRect.y, lastRect.width, lastRect.height, 0, 0, canvasWidth, canvasHeight)
 
-        setImageFile(null)
+        const url = await postArticleThumbnail(canvas)
+
+        console.log(url)
+
+        //setImageFile(null)
+
+        setIsImageModalOpen(false)
     }
 
 
+    const postArticleThumbnail = (canvas) => {
 
+        return new Promise((resolve) => {
 
+            canvas.toBlob(async(blob) => {
 
+                const formData = new FormData()
+                formData.append('image', blob)
 
+                const resArticleThumbnail = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
+
+                if(resArticleThumbnail == null){
+                    resolve(null)
+                    return
+                }
+
+                const url = process.env.API_TARGET + '/api/blob/article/thumbnail' + resArticleThumbnail.id
+
+                resolve(url)
+            })
+        })
+    }
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
@@ -439,7 +406,6 @@ export default function() {
                 <BeautyButton type='success' onClick={toggle}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
                 <Modal config={modal_config} isOpen={isModalOpen} onResult={onResultCancel} onClose={()=>setIsModalOpen(false)}></Modal>
                 <input ref={refTitle} readOnly={isReadOnly}  maxLength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
-
                 <div id='cover' ref={refCover} className={`${isLoading ? 'rotateLoading': ''}`}  onClick={onClickThumbnail} style={{width:'64px', height:'64px'}}>
                     <img alt='image' src={thumbnail}  style={{borderRadius:'1px'}}/>
                 </div>            

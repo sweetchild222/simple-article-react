@@ -67,3 +67,25 @@ export async function postArticleImage(jwt, payload) {
 
 
 
+export async function postArticleThumbnail(jwt, payload) {
+
+  try {
+
+    const authStr = 'Bearer '.concat(jwt);
+  
+    const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
+    
+    const response = await axios.post('/api/blob/article/thumbnail', payload, { headers: headers})
+
+    return response.data
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null
+  }
+}
+
+
+

@@ -1,22 +1,28 @@
 import path, { dirname } from 'path'
+
 import { fileURLToPath } from 'url';
 import HTMLWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from  'mini-css-extract-plugin';
 import webpack from 'webpack';
+import dotenv from 'dotenv'
 import InterpolateHtmlPlugin from 'interpolate-html-plugin';
 
 const publicUrl = '';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+dotenv.config()
 
-const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
+const HTMLWebpackPlug = new HTMLWebpackPlugin({
   template: path.resolve(__dirname, './public/index.html'),
   filename: 'index.html',
   inject: 'body'
 })
 
-const InterpolateHtmlPluginConfig = new InterpolateHtmlPlugin({PUBLIC_URL: publicUrl})
+const InterpolateHtmlPlug = new InterpolateHtmlPlugin({PUBLIC_URL: publicUrl})
+
+const ProcessEnvPlug = new webpack.DefinePlugin({'process.env':JSON.stringify(process.env)})
+
 
 export default {
 
@@ -52,7 +58,7 @@ export default {
     ],
   },
 
-  plugins: [HTMLWebpackPluginConfig, InterpolateHtmlPluginConfig],
+  plugins: [HTMLWebpackPlug, InterpolateHtmlPlug, ProcessEnvPlug],
   
   devServer: {    
     port:3001,
@@ -69,9 +75,8 @@ export default {
     // },    
     proxy: [
       {
-        context: ['/api'],
-        // target: 'http://13.124.193.201:8080',
-        target: 'http://localhost:9981',
+        context: ['/api'],        
+        target: process.env.API_TARGET,
         changeOrigin: true,
         secure: false
       },      

@@ -193,11 +193,11 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
           const canvas = await ImageScale(file, 512, 512, 64, 64)
 
           if(canvas == null)
-            return          
+            return
 
           setIsLoadingUpload(true)
 
-          const url = await postImage(canvas)
+          const url = await postImage(canvas)          
       
           setIsLoadingUpload(false)
           

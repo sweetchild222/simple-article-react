@@ -45,6 +45,8 @@ export default function() {
 
         const profileId = resUser.profile + '?size=256x256'
 
+        console.log(profileId)
+
         const resProfile = await BlobAPI.getProfile(auth.jwt, profileId)
 
         if(resProfile == null){

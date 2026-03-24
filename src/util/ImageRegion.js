@@ -69,9 +69,15 @@ export default function({ref, file, onSelectImage,
   }
 
   useEffect(()=> {
-    
-    // if(file == null)
-    //   return
+        
+    setSelectEdge(-1)
+    setIsLoading(true)
+    setContainerCanvasUrl(transparent)
+    setCoverSize({width:0, height:0})
+    setContain(true)
+    setSelectRect(null)
+    setImage(null)
+
     const image = new Image()
 
     const url = URL.createObjectURL(file)
@@ -134,15 +140,8 @@ export default function({ref, file, onSelectImage,
     ctx.fillRect(0, y, x, selectRect.height)
     ctx.fillRect(x + selectRect.width, y, imageRect.width - selectRect.width - x, selectRect.height)
 
-
     setIsLoading(false)
     
-    // if(containRef.current.classList.length >= 1){
-      
-    //   if(containRef.current.classList[0] == 'rotateLoading')
-    //     containRef.current.classList.remove('rotateLoading')
-    // }
-            
     const rect = isContain ? calcContainRect(selectRect, imageRect) : calcCoverRect(selectRect, imageRect)
     onSelectImage(rect)
 

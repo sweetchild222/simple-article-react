@@ -9,7 +9,7 @@ import { useNavigate} from 'react-router-dom'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as UserAPI from '../../api/UserAPI.js'
 import AuthContext from '../../util/AuthContext.js'
-import ImageCropper from '../../util/ImageCropper.js'
+import ImageCropper from '../../common/ImageCropper.js'
 
 import BeautyButton from "../../common/BeautyButton.js"
 

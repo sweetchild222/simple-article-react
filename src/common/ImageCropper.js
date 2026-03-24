@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
 import './ImageCropper.css'
-import '../common/RotateLoading.css'
+import './RotateLoading.css'
 
 export default function({ref, file, onSelectImage,
                         containerWidth=512, containerHeight=512,

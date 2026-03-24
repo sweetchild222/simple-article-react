@@ -9,14 +9,13 @@ import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
 
-import ImageCropModal from './ImageCropModal.js'
+import ImageCropModal from '../../common/ImageCropModal.js'
 
 import ImageScale from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 
 import './Editor.css'
-import ImageRegion from '../../util/ImageCropper.js'
 import '../../common/RotateLoading.css'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 

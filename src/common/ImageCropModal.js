@@ -33,5 +33,5 @@ export default function({ref, isOpen, onClose, file, onSelectImage, onClickApply
               </div>
             </div>
           </Modal>
-          )
+        )
 }

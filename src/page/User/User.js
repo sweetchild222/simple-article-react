@@ -1,5 +1,6 @@
 import './User.css'
 import '../../common/RotateLoading.css'
+import LoadingImage from "../../common/LoadingImage.js";
 
 import {useContext, useEffect, useRef } from "react";
 
@@ -26,9 +27,7 @@ export default function() {
     const {profile, removeProfile} = useContext(ProfileContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [profileImage, setProfileImage] = useState(transparent)
-    const [isLoading, setIsLoading] = useState(true)
-
-    const refCover = useRef(null)
+    const [isLoading, setIsLoading] = useState(true)    
 
     const navigate = useNavigate()
 
@@ -40,7 +39,8 @@ export default function() {
             return null
 
         if(resUser.profile == null)
-            return '/image/user.png'        
+            return '/image/user.png'
+        
 
         return resUser.profile
     }
@@ -151,9 +151,7 @@ export default function() {
 
     return validAuth(auth) ? (
       <div id='profile'>
-        <div id='cover' ref={refCover} onClick={onClickProfile} className={`${isLoading ? 'rotateLoading': ''}`}  style={{width:'256px', height:'256px'}}>
-            <img alt='image' src={profileImage} onLoad={()=> setIsLoading(false)} onError={onError} style={{borderRadius:'1px'}}/>
-        </div>
+        <LoadingImage src={profileImage} onClick={onClickProfile} width={256} height={256}/>
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
         <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>

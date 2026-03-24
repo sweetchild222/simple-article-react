@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import BeautyButton from './BeautyButton';
 
 
-
 export default ({config, isOpen, onResult, onClose, onInput, children}) => {
 
     if(config == null)

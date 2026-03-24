@@ -12,34 +12,31 @@ import * as ArticleAPI from '../../api/ArticleAPI.js'
 import ImageCropModal from '../../common/ImageCropModal.js'
 
 import ImageScale from "../../util/ImageScale.js";
+import LoadingImage from "../../common/LoadingImage.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 
-import './Editor.css'
 import '../../common/RotateLoading.css'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 export default function() {
 
-    const no_image = '/image/no_image.png'
 
     const location = useLocation()
 
     const refTitle = useRef(null)
     const refMDX = useRef(null)
     const refLengthChar = useRef(null)
-    const refCover = useRef(null)
     const refImageCrop = useRef(null)
     
     const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
     const [isReadOnly, setIsReadOnly] = useState(false)
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
     const [isDisableSaveTemp, setIsDisableSaveTemp] = useState(true)
-    const [markdown, setMarkdown] = useState(location.state.content)
-    const [isThumbnailLoading, setIsThumbnailLoading] = useState(true)
+    const [markdown, setMarkdown] = useState(location.state.content)    
     const [imageFile, setImageFile] = useState(null)
     
-    const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail == '' ? no_image : location.state.thumbnail)
+    const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
     const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
     const [isCheckSaveModalOpen, setIsCheckSaveModalOpen] = useState(false)
     
@@ -195,11 +192,9 @@ export default function() {
         const payloadSource = location.state
 
         if(refTitle.current == null || refMDX.current == null)
-            return null
-
-        const thumbUrl = (thumbnailUrl == no_image) ? '' : thumbnailUrl
+            return null        
             
-        const res = await putArticle(payloadSource.id, refTitle.current.value, refMDX.current.getMarkdown(), thumbUrl, payloadSource)
+        const res = await putArticle(payloadSource.id, refTitle.current.value, refMDX.current.getMarkdown(), thumbnailUrl, payloadSource)
 
         if(res == null)
             return null
@@ -378,12 +373,6 @@ export default function() {
     }
 
 
-    const onError = () =>{
-
-        setThumbnailUrl(no_image)
-        setIsThumbnailLoading(false)
-    }
-
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
@@ -394,9 +383,7 @@ export default function() {
                 <BeautyButton type='success' onClick={toggle}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
                 <Modal config={modal_config} isOpen={isCheckSaveModalOpen} onResult={onResultCancel} onClose={()=>setIsCheckSaveModalOpen(false)}></Modal>
                 <input ref={refTitle} readOnly={isReadOnly} maxLength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
-                <div id='cover' ref={refCover} className={`${isThumbnailLoading ? 'rotateLoading': ''}`}  onClick={onClickThumbnail} style={{width:'64px', height:'64px'}}>
-                    <img alt='image' src={thumbnailUrl + '?size=64x64'} onLoad={()=>setIsThumbnailLoading(false)} onError={onError} style={{borderRadius:'1px'}}/>
-                </div>            
+                <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=64x64') : null} onClick={onClickThumbnail} width={64} height={64}/>
             </div>
             <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'75vh', margin:'5px', flex: 1, backgroundColor:'#F8F8F8'}}>
                 <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content} markdown={markdown}

@@ -1,5 +1,5 @@
 
-import { useContext, useState, useRef, useEffect, useCallback } from 'react'
+import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
 import Modal from '../../common/Modal.js'
 import MDXEditor from './MDXEditor.js'
 import BeautyButton from '../../common/BeautyButton.js'
@@ -14,6 +14,7 @@ import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 
 import './Editor.css'
+import ImageRegion from '../../util/ImageRegion.js'
 import '../../common/RotateLoading.css'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 
@@ -36,9 +37,12 @@ export default function() {
     const [isDisableSaveTemp, setIsDisableSaveTemp] = useState(true)
     const [markdown, setMarkdown] = useState(location.state.content)
     const [isLoading, setIsLoading] = useState(true)
-
+    const [isImageLoading, setIsImageLoading] = useState(true)
+    const [imageFile, setImageFile] = useState(null)
     const [thumbnail, setThumbnail] = useState(transparent)
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false)
 
+    //const [rect, setRect] = useState(null)
     
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
@@ -56,7 +60,7 @@ export default function() {
     }, [auth])
 
 
-    const beforeUnload = useCallback(() => {        
+    const beforeUnload = useCallback(() => {
 
         updateLocationState()
 
@@ -67,8 +71,6 @@ export default function() {
     useEffect(()=>{
 
         refLengthChar.current.textContent = location.state.content.length + '/65535'
-
-
 
         //console.log(location.state.thumbnail)
 
@@ -236,6 +238,7 @@ export default function() {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+    const thumbnail_modal_config = {type: 'custom', isCloseOutsideClick: false}
 
     const onResultCancel = async(result) => {
 
@@ -285,16 +288,13 @@ export default function() {
                     return
                 
                 const blob = await getBlob(canvas)
-
-                updateLocationState()
                 
-                navigate('profile_image', {state: blob})
+                setIsImageModalOpen(true)                            
             }
             else{
+                setIsImageModalOpen(true)
 
-                updateLocationState()
-
-                navigate('profile_image', {state: file})
+                setImageFile(file)
             }
         }
         catch(error) {
@@ -307,21 +307,121 @@ export default function() {
 
     const updateLocationState = () =>{
 
-        if(refMDX.current){
+        if(refMDX.current)
             location.state.content = refMDX.current.getMarkdown()
-            console.log(location.state.content)
-        }
 
-        if(refTitle.current){
-        
-            location.state.title = refTitle.current.value
-            console.log(location.state.title)
-        }
+        if(refTitle.current)
+            location.state.title = refTitle.current.value        
     }
+
+    const imageRegionRef = useRef(null)
+
+    let lastRect = undefined;
+
+        
+    const onSelectImage = (rect) => {
+
+        lastRect = rect
+
+        //console.log(lastRect)
+
+        //setRect(rect)
+
+        //console.log(rect)
+
+        //const imageRegion = imageRegionRef.current
+
+        //const image = imageRegion.image()
+
+        //const canvasPreview = document.createElement('canvas')
+        //canvasPreview.width = previewWidth
+        //canvasPreview.height = previewHeight
+        
+        //const ctxPreview = canvasPreview.getContext('2d')
+
+        // ctxPreview.imageSmoothingEnabled = false;
+
+        // ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, previewWidth, previewHeight)
+
+        // //previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
+
+        // setIsImageLoading(false)
+    }
+
+
+    // const onSelectImage = (rect) => {
+
+    //     lastRect = rect
+
+    //     console.log(lastRect)
+
+    //     //setRect(rect)
+
+    //     //console.log(rect)
+
+    //     //const imageRegion = imageRegionRef.current
+
+    //     //const image = imageRegion.image()
+
+    //     //const canvasPreview = document.createElement('canvas')
+    //     //canvasPreview.width = previewWidth
+    //     //canvasPreview.height = previewHeight
+        
+    //     //const ctxPreview = canvasPreview.getContext('2d')
+
+    //     // ctxPreview.imageSmoothingEnabled = false;
+
+    //     // ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, previewWidth, previewHeight)
+
+    //     // //previewRef.current.style.backgroundImage = `url(${canvasPreview.toDataURL()})`
+
+    //     // setIsImageLoading(false)
+
+    // }
+
+
+    const onClickApply = async() => {
+
+        if(lastRect == null)
+            return
+
+        console.log(lastRect)
+
+        // const imageRegion = imageRegionRef.current
+
+        // const image = imageRegion.image()
+
+        // const canvasPreview = document.createElement('canvas')
+        // canvasPreview.width = 128
+        // canvasPreview.height = 128
+        
+        //const ctxPreview = canvasPreview.getContext('2d')
+
+        // ctxPreview.imageSmoothingEnabled = false;
+
+        // ctxPreview.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, previewWidth, previewHeight)
+
+        //setIsImageModalOpen(false)
+
+    }
+
+
+
 
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
+            <Modal config={thumbnail_modal_config} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width:'600px', height:'600px'}}>
+                    <ImageRegion ref={imageRegionRef} file={imageFile} onSelectImage={onSelectImage} containerWidth={512} containerHeight={512}/>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                        <BeautyButton type='confirm' onClick={onClickApply}>확인</BeautyButton>
+                        <BeautyButton type='cancel' onClick={()=>setIsImageModalOpen(false)}>취소</BeautyButton>
+                    </div>
+                </div>
+            </Modal>
+            
+
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
                 <BeautyButton type='success' onClick={toggle}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
                 <Modal config={modal_config} isOpen={isModalOpen} onResult={onResultCancel} onClose={()=>setIsModalOpen(false)}></Modal>
@@ -329,15 +429,7 @@ export default function() {
 
                 <div id='cover' ref={refCover} className={`${isLoading ? 'rotateLoading': ''}`}  onClick={onClickThumbnail} style={{width:'64px', height:'64px'}}>
                     <img alt='image' src={thumbnail}  style={{borderRadius:'1px'}}/>
-                </div>
-
-                {/* <select>
-                    <option value="" style={{color:'gray'}} >카테고리 선택</option>
-                    <option value="saab">Saab</option>
-                    <option value="fiat">Fiat</option>
-                    <option value="audi">Audi</option>
-                </select> */}
-                
+                </div>            
             </div>
             <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'75vh', margin:'5px', flex: 1, backgroundColor:'#F8F8F8'}}>
                 <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content} markdown={markdown}

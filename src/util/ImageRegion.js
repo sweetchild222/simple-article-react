@@ -3,7 +3,7 @@ import './ImageRegion.css'
 import '../common/RotateLoading.css'
 
 export default function({ref, file, onSelectImage,
-                        containerWidth=600, containerHeight=300,
+                        containerWidth=512, containerHeight=512,
                         selectMinWidth=64, selectMinHeight=64}) {
 
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
@@ -68,10 +68,13 @@ export default function({ref, file, onSelectImage,
     return canvas
   }
 
-  
   useEffect(()=> {
+    
+    if(file == null)
+      return
 
     const image = new Image()
+
     const url = URL.createObjectURL(file)
     image.src = url
 
@@ -100,7 +103,7 @@ export default function({ref, file, onSelectImage,
       URL.revokeObjectURL(url)
     }
 
-  }, [])
+  }, [file])
 
 
   useEffect(() => {

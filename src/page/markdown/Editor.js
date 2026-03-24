@@ -22,7 +22,7 @@ import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 export default function() {
 
-    const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+    const no_image = '/image/no_image.png'
 
     const location = useLocation()
 
@@ -37,12 +37,13 @@ export default function() {
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
     const [isDisableSaveTemp, setIsDisableSaveTemp] = useState(true)
     const [markdown, setMarkdown] = useState(location.state.content)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isThumbnailLoading, setIsThumbnailLoading] = useState(true)
     const [imageFile, setImageFile] = useState(null)
-    const [thumbnail, setThumbnail] = useState(transparent)
-    const [isImageModalOpen, setIsImageModalOpen] = useState(false)
-    const [isModalOpen, setIsModalOpen] = useState(false)
-
+    
+    const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail == '' ? no_image : location.state.thumbnail)
+    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
+    const [isCheckSaveModalOpen, setIsCheckSaveModalOpen] = useState(false)
+    
     const modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
     
     if(location.state == null)
@@ -50,7 +51,6 @@ export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const navigate = useNavigate()
-
 
     useEffect(()=> {
     
@@ -72,11 +72,9 @@ export default function() {
 
     useEffect(()=>{
 
-        refLengthChar.current.textContent = location.state.content.length + '/65535'
+        refLengthChar.current.textContent = location.state.content.length + '/65535'        
 
-        //console.log(location.state.thumbnail)
-
-    },[])
+    },[refLengthChar])
 
 
     useEffect(() => {
@@ -161,14 +159,14 @@ export default function() {
     }
 
 
-    const putArticle = async(article_id, title, content, payloadSource) =>{
+    const putArticle = async(article_id, title, content, thumbUrl, payloadSource) => {
 
         const payload = {
             title:title,
             content:content,
             open:payloadSource.open,
             posted:0,
-            thumbnail:payloadSource.thumbnail,
+            thumbnail:thumbUrl,
             category_id:payloadSource.category_id
         }
         
@@ -192,6 +190,7 @@ export default function() {
         setIsDisableSaveTemp(true)
     }
 
+
     const saveTempSaveCore = async() => {
 
         const payloadSource = location.state
@@ -199,7 +198,9 @@ export default function() {
         if(refTitle.current == null || refMDX.current == null)
             return null
 
-        const res = await putArticle(payloadSource.id, refTitle.current.value, refMDX.current.getMarkdown(), payloadSource)
+        const thumbUrl = (thumbnailUrl == no_image) ? '' : thumbnailUrl
+            
+        const res = await putArticle(payloadSource.id, refTitle.current.value, refMDX.current.getMarkdown(), thumbUrl, payloadSource)
 
         if(res == null)
             return null
@@ -218,6 +219,7 @@ export default function() {
     }
 
 
+
     const onChangeTitle = (event) => {
 
         setIsDisableSaveTemp(false)
@@ -227,9 +229,8 @@ export default function() {
 
     const onClickCancel=()=> {
 
-        setIsModalOpen(true)
+        setIsCheckSaveModalOpen(true)
     }
-
 
 
     const onResultCancel = async(result) => {
@@ -284,18 +285,16 @@ export default function() {
 
                 setImageFile(blob)
                 
-                setIsImageModalOpen(true)
+                setIsImageCropModalOpen(true)
             }
             else{
 
                 setImageFile(file)
 
-                setIsImageModalOpen(true)
+                setIsImageCropModalOpen(true)
             }
         }
         catch(error) {
-
-            console.log(error)
 
             window.showToast('파일을 사용할 수 없습니다', 'error')
             return
@@ -333,15 +332,14 @@ export default function() {
             location.state.content = refMDX.current.getMarkdown()
 
         if(refTitle.current)
-            location.state.title = refTitle.current.value        
+            location.state.title = refTitle.current.value
+
+        location.state.thumbnail = thumbnailUrl        
     }
-
     
-
     let lastRect = null;
-        
+    
     const onSelectImage = (rect) => {
-
         lastRect = rect
     }
 
@@ -370,26 +368,35 @@ export default function() {
 
         const resArticleThumbnail = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
 
-        if(resArticleThumbnail == null)            
+        if(resArticleThumbnail == null)
             return
 
-        const url = process.env.API_TARGET + '/api/blob/article/thumbnail' + resArticleThumbnail.id
+        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + resArticleThumbnail.id
 
-        setIsImageModalOpen(false)
+        setThumbnailUrl(url)
+        setIsImageCropModalOpen(false)
+        setIsDisableSaveTemp(false)
+    }
+
+
+    const onError = () =>{
+
+        setThumbnailUrl(no_image)
+        setIsThumbnailLoading(false)
     }
 
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
 
-            {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)} file={imageFile} onSelectImage={onSelectImage} onClickApply={onClickApply}></ImageCropModal>}
+            {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onSelectImage={onSelectImage} onClickApply={onClickApply}></ImageCropModal>}
 
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
                 <BeautyButton type='success' onClick={toggle}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
-                <Modal config={modal_config} isOpen={isModalOpen} onResult={onResultCancel} onClose={()=>setIsModalOpen(false)}></Modal>
+                <Modal config={modal_config} isOpen={isCheckSaveModalOpen} onResult={onResultCancel} onClose={()=>setIsCheckSaveModalOpen(false)}></Modal>
                 <input ref={refTitle} readOnly={isReadOnly} maxLength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
-                <div id='cover' ref={refCover} className={`${isLoading ? 'rotateLoading': ''}`}  onClick={onClickThumbnail} style={{width:'64px', height:'64px'}}>
-                    <img alt='image' src={thumbnail}  style={{borderRadius:'1px'}}/>
+                <div id='cover' ref={refCover} className={`${isThumbnailLoading ? 'rotateLoading': ''}`}  onClick={onClickThumbnail} style={{width:'64px', height:'64px'}}>
+                    <img alt='image' src={thumbnailUrl + '?size=64x64'} onLoad={()=>setIsThumbnailLoading(false)} onError={onError} style={{borderRadius:'1px'}}/>
                 </div>            
             </div>
             <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'75vh', margin:'5px', flex: 1, backgroundColor:'#F8F8F8'}}>

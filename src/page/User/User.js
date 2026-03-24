@@ -22,11 +22,10 @@ export default function() {
 
     const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
-
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const {profile, removeProfile} = useContext(ProfileContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [profileHigh, setProfileHigh] = useState(transparent)
+    const [profileImage, setProfileImage] = useState(transparent)
     const [isLoading, setIsLoading] = useState(true)
 
     const coverRef = useRef(null)
@@ -43,17 +42,9 @@ export default function() {
         if(resUser.profile == null)
             return '/image/user.png'
 
-        const profileId = resUser.profile + '?size=256x256'
-        
-        const resProfile = await BlobAPI.getProfile(auth.jwt, profileId)
+        const url = process.env.API_TARGET + '/api/blob/profile/' + resUser.profile + '?size=256x256'
 
-
-
-        if(resProfile == null){
-            return '/image/user.png'
-        }
-
-        return await blobToBase64.convert(resProfile)
+        return url
     }
 
     useEffect(()=>{
@@ -68,9 +59,7 @@ export default function() {
             if(profile == null)
                 window.showToast('프로필 가져오기가 실패하였습니다', 'error')
             else
-                setProfileHigh(profile)
-
-            setIsLoading(false)
+                setProfileImage(profile)
         })
     }, [auth])
     
@@ -155,11 +144,17 @@ export default function() {
         })
     }
 
+    const onError = () =>{
+                
+        setProfileImage('/image/no_image.png')
+        setIsLoading(false)
+    }
+
 
     return validAuth(auth) ? (
       <div id='profile'>
         <div id='cover' ref={coverRef} onClick={onClickProfile} className={`${isLoading ? 'rotateLoading': ''}`}  style={{width:'256px', height:'256px'}}>
-            <img alt='image' src={profileHigh}  style={{borderRadius:'1px'}}/>
+            <img alt='image' src={profileImage} onLoad={()=> setIsLoading(false)} onError={onError} style={{borderRadius:'1px'}}/>
         </div>
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>

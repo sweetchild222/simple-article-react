@@ -7,3 +7,17 @@
   font-family: sans-serif;
   font-weight: bold;
 }
+
+
+.toolbarRoot {
+  z-index: 2;    
+  border-radius: '2px';  
+  background-color: #B2ABBB;
+}
+
+
+.toolbarRootHide {
+  z-index: 2;    
+  border-radius: '2px';  
+  background-color: white;
+}

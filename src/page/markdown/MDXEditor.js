@@ -5,6 +5,8 @@ import i18next from 'i18next'
 import ko from './ko.json'
 import BeautyButton from '../../common/BeautyButton.js'
 import '@mdxeditor/editor/style.css'
+import { CiYoutube } from "react-icons/ci";
+import { LuImagePlus } from "react-icons/lu";
 
 
 import './MDXEditor.css'
@@ -14,13 +16,14 @@ import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 import ImageScale from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
+import { FiYoutube } from "react-icons/fi";
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
   DiffSourceToggleWrapper, CodeMirrorEditor, directivesPlugin, quotePlugin, InsertImage, thematicBreakPlugin, UndoRedo, CodeToggle, CreateLink, ListsToggle,
   AdmonitionDirectiveDescriptor, BoldItalicUnderlineToggles, BlockTypeSelect, sandpackPlugin,  ChangeCodeMirrorLanguage, linkPlugin,
   toolbarPlugin, linkDialogPlugin, insertDirective$, ConditionalContents, Separator, HighlightToggle, StrikeThroughSupSubToggles,
   diffSourcePlugin, InsertTable, InsertThematicBreak, InsertCodeBlock, InsertFrontmatter, InsertAdmonition, insertImage$,
-  markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin } from '@mdxeditor/editor'
+  markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin, ButtonWithTooltip} from '@mdxeditor/editor'
 
 
 export default function({ref, placeHolder, postImage, initMarkdown, markdown, readOnly=false, onChange, onParsingError, onUserError}) {
@@ -150,8 +153,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
     const modal_config = {text: '유튜브 URL을 입력하세요', type: 'input', isCloseOutsideClick: true}
   
     return (
-      <div>
-        <button style={{height:'100%'}} onClick={() => {setIsModalOpen(true)}} title="유튜브 삽입">YT</button>
+      <div>  
+        <ButtonWithTooltip style={{height:'100%'}} onClick={() => {setIsModalOpen(true)}} title="유튜브 삽입"><FiYoutube size={23}/></ButtonWithTooltip>
         <Modal config={modal_config} isOpen={isModalOpen} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
       </div>
     )
@@ -289,7 +292,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
 
     return (
       <div>
-        <button style={{height:'100%'}} onClick={openModal} title="이미지 삽입">IMG</button>
+        <ButtonWithTooltip style={{height:'100%'}} onClick={openModal} title="이미지 삽입"><LuImagePlus size={23}/></ButtonWithTooltip>
         <Modal config={modal_config} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>          
           <BeautyButton type='warning' isLoading={isLoadingUpload} onClick={selectImage}>파일</BeautyButton>          
@@ -419,7 +422,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: initMarkdown}),
     markdownShortcutPlugin(),
     maxLengthPlugin(65535),
-    toolbarPlugin({toolbarContents: () => (readOnly ? null : <CustomToolbar />)})
+    toolbarPlugin({ toolbarClassName: readOnly ? 'toolbarRootHide' : 'toolbarRoot', toolbarContents: () => (readOnly ? null : <CustomToolbar />)})
   ]
 
 

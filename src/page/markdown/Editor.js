@@ -230,7 +230,6 @@ export default function() {
             setIsTouched(true)
             refLength.current.textContent = content.length + '/65535'
             //setTimerAutoSave()
-            
         }
     }
 

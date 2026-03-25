@@ -63,42 +63,16 @@ export default function() {
     }
   ])
 
-
-
-
   return (
     <div style={{height:'100%', display: 'flex', flexDirection: 'column'}}>
       <ErrorBoundary>
         <AuthProvider>
           <ProfileContext>
-          <ToastContainer />                              
-            <RouterProvider router={router}></RouterProvider>
-            
-
-
-            {/* <Routes>
-              <Route path="/" element={<Home />}/>
-              <Route path="/home" element={<Home />}/>
-              <Route path="/editor" element={<Editor />}/>
-              <Route path="/login">
-                <Route index element={<Login />} />
-                <Route path="regist" element={<Regist/>}/>
-              </Route>
-              <Route path="/user">
-                <Route index element={<User />} />
-                <Route path="widthdraw" element={<Withdraw/>}/>
-                <Route path="change_password" element={<ChangePassword/>}/>
-                <Route path="profile_cropper" element={<ProfileCropper/>}/>
-              </Route>
-              <Route path="/*" element={<PageNotFound/>}></Route>
-            </Routes>             */}                    
+          <ToastContainer />
+            <RouterProvider router={router}/>
           </ProfileContext>
         </AuthProvider>
       </ErrorBoundary>
     </div>
   )
 }
-
-
-
-

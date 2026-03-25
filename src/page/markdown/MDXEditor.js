@@ -66,16 +66,16 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
 
     Editor: ({ mdastNode, lexicalNode, parentEditor }) => {
       
-      const url = 'https://www.youtube.com/embed/' + mdastNode.attributes.id
-
+      const url = mdastNode.attributes.url
       const shorts = mdastNode.attributes.shorts
-      const wdith = shorts ? 315 : 560;
-      const height = shorts ? 560 : 315;
+
+      const wdith = shorts == 'true' ? 315 : 560;
+      const height = shorts == 'true' ? 560 : 315;
 
       return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position:'relative'}}>
           <div style={{position:'relative', display: 'flex', flexDirection: 'column'}}>
-            <button style={{position:'absolute', border:'0px', backgroundColor:'white', borderRadius: '0 0 0 5px', zIndex:'10', alignSelf: 'flex-end'}}
+            {!readOnly && <button style={{position:'absolute', border:'0px', backgroundColor:'white', borderRadius: '0 0 0 3px', zIndex:'10', alignSelf: 'flex-end'}}
               onClick={() => {
                 parentEditor.update(() => {
                   lexicalNode.selectNext()
@@ -84,8 +84,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
               }}
             >
             <PiTrash size={23}/>
-            </button>
-            <iframe width={wdith} height={height} src={url} title="YouTube" style={{ border: '2px solid gray'}}
+            </button>}
+            <iframe width={wdith} height={height} src={url} title="YouTube" style={{ border: '1px solid gray'}}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
             ></iframe>
           </div>
@@ -121,18 +121,19 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
         const match = regex.exec(input)
 
         if(match.length < 4){
-
           userErrorHandle('URL이 잘못되었습니다')
           return
         }
         const videoId = match[3]
         const prefix = match[1]
-        
+        const shorts = (prefix == 'youtube.com/shorts') ? 'true' : 'false'
+        const url = 'https://www.youtube.com/embed/' + videoId
+
         if(videoId){
           insertDirective({
             name: 'youtube',
             type: 'leafDirective',
-            attributes: { id: videoId, shorts:(prefix == 'youtube.com/shorts')},
+            attributes: { url: url, shorts:shorts},
             children: []
           })
         }

@@ -1,13 +1,17 @@
 
 import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
+
 import Modal from '../../common/Modal.js'
 import MDXEditor from './MDXEditor.js'
 import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
-import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
+import { Prompt } from 'react-router'
+
+
 
 import ImageCropModal from '../../common/ImageCropModal.js'
 
@@ -26,19 +30,19 @@ export default function() {
 
     const refTitle = useRef(null)
     const refMDX = useRef(null)
-    const refLengthChar = useRef(null)
+    const refLength = useRef(null)
     const refImageCrop = useRef(null)
     
     const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
     const [isReadOnly, setIsReadOnly] = useState(false)
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
-    const [isDisableSaveTemp, setIsDisableSaveTemp] = useState(true)
+    const [isTouched, setIsTouched] = useState(false)
     const [markdown, setMarkdown] = useState(location.state.content)    
     const [imageFile, setImageFile] = useState(null)
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
     const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
-    const [isCheckSaveModalOpen, setIsCheckSaveModalOpen] = useState(false)
+    const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     
     const modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
     
@@ -46,7 +50,7 @@ export default function() {
         return (<div>잘못된 접근입니다</div>)
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const navigate = useNavigate()
+    const navigate = useNavigate()    
 
     useEffect(()=> {
     
@@ -56,32 +60,49 @@ export default function() {
       }
 
     }, [auth])
+    
+
+    useBlocker(({ currentLocation, nextLocation }) => {
+        
+        if (!isTouched)
+            return false
+
+        setIsConfirmSaveModalOpen(true)
+        return true
+
+    }, isTouched);
 
 
-    const beforeUnload = useCallback(() => {
+    const beforeUnload = useCallback((e) => {
+    
+        if(refMDX.current)
+            location.state.content = refMDX.current.getMarkdown()
 
-        updateLocationState()
+        if(refTitle.current)
+            location.state.title = refTitle.current.value
+
+        location.state.thumbnail = thumbnailUrl
 
         navigate(location.pathname, { replace: true, state: location.state})
     })
 
-
-    useEffect(()=>{
-
-        refLengthChar.current.textContent = location.state.content.length + '/65535'        
-
-    },[refLengthChar])
-
-
     useEffect(() => {
-
+        
         window.addEventListener('beforeunload', beforeUnload)
     
         return () => {
+
             window.removeEventListener('beforeunload', beforeUnload)
         }
 
     }, [beforeUnload])
+
+
+    useEffect(()=>{
+
+        refLength.current.textContent = location.state.content.length + '/65535'
+
+    },[refLength])
 
 
     const postMarkDown = () => {
@@ -117,7 +138,7 @@ export default function() {
     }
     
 
-    const setTimerAutoSaving = ()=>{
+    const setTimerAutoSave = ()=>{
 
         if(saveTempTimerId != null)
             return
@@ -169,13 +190,13 @@ export default function() {
         return await ArticleAPI.putArticle(auth.jwt, article_id, payload)
     }
 
-    const saveTempSave = async() => {
+    const onClickSave = async() => {
 
         setIsSaveTempLoading(true)
         
         stopTimer()
 
-        const res = await saveTempSaveCore()
+        const res = await saveCore()
 
         if(res != null)
             window.showToast('임시 저장됨', 'info')
@@ -183,11 +204,11 @@ export default function() {
             window.showToast('임시 저장 실패', 'error')
 
         setIsSaveTempLoading(false)
-        setIsDisableSaveTemp(true)
+        setIsTouched(false)
     }
 
 
-    const saveTempSaveCore = async() => {
+    const saveCore = async() => {
 
         const payloadSource = location.state
 
@@ -206,44 +227,49 @@ export default function() {
     const onChangeContent = (content, isInternalChange) =>{
         
         if(!isInternalChange){
-            setIsDisableSaveTemp(false)
-            //setTimerAutoSaving()
-            refLengthChar.current.textContent = content.length + '/65535'
+            setIsTouched(true)
+            refLength.current.textContent = content.length + '/65535'
+            //setTimerAutoSave()
+            
         }
     }
 
 
-
     const onChangeTitle = (event) => {
 
-        setIsDisableSaveTemp(false)
-        //setTimerAutoSaving()
+        setIsTouched(true)
+        //setTimerAutoSave()
     }
 
 
-    const onClickCancel=()=> {
+    const onClickLeave=()=> {        
 
-        setIsCheckSaveModalOpen(true)
-    }
-
-
-    const onResultCancel = async(result) => {
-
-      if(result == true){
-
-        const res = await saveTempSaveCore()
-
-        if(res != null)
-            window.showToast('임시 저장 됨', 'info')
+        if(isTouched)
+            setIsConfirmSaveModalOpen(true)
         else
-            window.showToast('임시 저장 실패', 'error')
+            navigate(-1)
+    }
+
+
+    const onResultConfirmSave = async(result) => {
+
+        if(result == true){
+
+            const res = await saveCore()
+
+            if(res != null)
+                window.showToast('임시 저장 됨', 'info')
+            else
+                window.showToast('임시 저장 실패', 'error')
+        }
+
+        setIsTouched(false)
 
         navigate(-1)
-      }
     }
 
 
-    const toggle = () => {
+    const toggleViewer = () => {
 
         if(!isReadOnly)
             setMarkdown(refMDX.current.getMarkdown())
@@ -320,17 +346,6 @@ export default function() {
     }
 
 
-    const updateLocationState = () =>{
-
-        if(refMDX.current)
-            location.state.content = refMDX.current.getMarkdown()
-
-        if(refTitle.current)
-            location.state.title = refTitle.current.value
-
-        location.state.thumbnail = thumbnailUrl        
-    }
-    
     let lastRect = null;
     
     const onSelectImage = (rect) => {
@@ -369,19 +384,16 @@ export default function() {
 
         setThumbnailUrl(url)
         setIsImageCropModalOpen(false)
-        setIsDisableSaveTemp(false)
+        setIsTouched(true)
     }
-
 
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
-
             {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onSelectImage={onSelectImage} onClickApply={onClickApply}></ImageCropModal>}
-
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
-                <BeautyButton type='success' onClick={toggle}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
-                <Modal config={modal_config} isOpen={isCheckSaveModalOpen} onResult={onResultCancel} onClose={()=>setIsCheckSaveModalOpen(false)}></Modal>
+                <BeautyButton type='success' onClick={toggleViewer}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
+                <Modal config={modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                 <input ref={refTitle} readOnly={isReadOnly} maxLength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
                 <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=64x64') : null} onClick={onClickThumbnail} width={64} height={64}/>
             </div>
@@ -391,10 +403,10 @@ export default function() {
                 />
             </div>
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
-                <BeautyButton type='danger' onClick={onClickCancel}>나가기</BeautyButton>
+                <BeautyButton type='danger' onClick={onClickLeave}>나가기</BeautyButton>
                 <BeautyButton type='confirm' onClick={postMarkDown}>올리기</BeautyButton>
-                <BeautyButton type='success' disabled={isDisableSaveTemp} isLoading={isSaveTempLoading} onClick={saveTempSave}>임시저장</BeautyButton>
-                <label ref={refLengthChar} htmlFor='input_username'></label>
+                <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>
+                <label ref={refLength} ></label>
 
             </div>
         </div>

@@ -33,7 +33,7 @@ export default function() {
   useEffect(() => {
 
     if(validAuth(auth)){
-        navigate('/home', {replace:true})
+        navigate('/', {replace:true})
         return
     }
 

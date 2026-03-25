@@ -48,7 +48,7 @@ export default function() {
 
     const onClickHome = (e) =>{
 
-        navigate('/home');
+        navigate('/');
     }
 
 

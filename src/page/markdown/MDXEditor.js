@@ -420,21 +420,17 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: initMarkdown}),
     markdownShortcutPlugin(),
-    maxLengthPlugin(65535)
+    maxLengthPlugin(65535),
+    toolbarPlugin({toolbarContents: () => (readOnly ? null : <CustomToolbar />)})
   ]
 
-  if(!readOnly)
-    plugins.push(toolbarPlugin({toolbarContents: () => (<><CustomToolbar /></>)}))
+
 
   return (
     <div>
-        {!readOnly && <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={markdown} onChange={onChange}
+        <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={markdown} onChange={onChange}
           readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
-          translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>}
-
-        {readOnly && <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={markdown} onChange={onChange}
-          readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
-          translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>}
+          translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
     </div>
   )
 }

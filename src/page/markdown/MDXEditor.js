@@ -26,8 +26,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
 export default function({ref, placeHolder, postImage, initMarkdown, markdown, readOnly=false, onChange, onParsingError, onUserError}) {
 
   const refEditor = useRef(null);
-  ////const [editable, setEditable] = useState(true);
-  
+    
   useEffect(()=>{
 
     i18next.init({
@@ -35,7 +34,6 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
       fallbackLng: 'ko',
       resources: {ko: {translation: ko}}
     })
-
 
     if (refEditor.current) {
       refEditor.current.focus();
@@ -428,9 +426,9 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
 
   return (
     <div>
-        <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={markdown} onChange={onChange}
-          readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
-          translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
+      <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={markdown} onChange={onChange}
+        readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
+        translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
     </div>
   )
 }

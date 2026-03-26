@@ -6,13 +6,32 @@ import Modal from '../common/Modal.js'
 
 import ImageCropper from './ImageCropper.js'
 import BeautyButton from "../common/BeautyButton.js"
+import ReactDOM from 'react-dom';
 
-export default function({ref, isOpen, onClose, file, onSelectImage, onClickApply}) {  
-  
-  const modal_config = {type: 'custom', isCloseOutsideClick: false}
-
+export default function({ref, isOpen, onClose, file, onSelectImage, onClickApply, containerWidth=512, containerHeight=512}) {
+    
   const refCropper = useRef(null)
+  const refDialog = useRef(null)
+  const refDiv = useRef(null)
+  
+  useEffect(() => {
+      
+      if(isOpen)
+          refDialog.current.showModal()
+      else
+          refDialog.current.close()
 
+  }, [isOpen]);
+
+  
+  const onKeyDownDialog=(event)=>{
+
+      if(event.nativeEvent.key == 'Escape'){
+          event.preventDefault()
+      }
+  }
+  
+  
   useImperativeHandle(ref, () => {
       
     return {
@@ -21,17 +40,18 @@ export default function({ref, isOpen, onClose, file, onSelectImage, onClickApply
       }
     }
   }, [refCropper]);
-  
 
-  return (
-          <Modal config={modal_config} isOpen={isOpen} onClose={onClose}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width:'600px', height:'600px'}}>
-              <ImageCropper ref={refCropper} file={file} onSelectImage={onSelectImage} containerWidth={512} containerHeight={512}/>
-              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                <BeautyButton type='confirm' onClick={onClickApply}>확인</BeautyButton>
-                <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>
-              </div>
-            </div>
-          </Modal>
+
+  return ReactDOM.createPortal(
+          <dialog id='dialo' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
+              <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
+                <ImageCropper ref={refCropper} file={file} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                  <BeautyButton type='success' onClick={onClickApply}>적용</BeautyButton>
+                  <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>
+                </div>
+              </div>            
+          </dialog>,
+          document.getElementById('modal-root')
         )
 }

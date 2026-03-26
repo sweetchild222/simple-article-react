@@ -8,11 +8,14 @@ import ImageCropper from './ImageCropper.js'
 import BeautyButton from "../common/BeautyButton.js"
 import ReactDOM from 'react-dom';
 
-export default function({ref, isOpen, onClose, file, onSelectImage, onClickApply, containerWidth=512, containerHeight=512}) {
+export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply, containerWidth=512, containerHeight=512}) {
     
   const refCropper = useRef(null)
   const refDialog = useRef(null)
   const refDiv = useRef(null)
+
+  const [isApplyLoading, setIsApplyLoading] = useState(false)
+  
   
   useEffect(() => {
       
@@ -30,6 +33,28 @@ export default function({ref, isOpen, onClose, file, onSelectImage, onClickApply
           event.preventDefault()
       }
   }
+
+
+  let lastRect = null
+
+
+  const onSelectRectCore = (rect) =>{
+
+    lastRect = rect
+
+    if(onSelectRect != null)
+      onSelectRect(rect)
+  }
+
+
+  const onClickApplyCore = async() =>{
+
+    if(onClickApply != null){
+      setIsApplyLoading(true)
+      await onClickApply(lastRect)      
+      setIsApplyLoading(false)
+    }
+  }
   
   
   useImperativeHandle(ref, () => {
@@ -45,9 +70,9 @@ export default function({ref, isOpen, onClose, file, onSelectImage, onClickApply
   return ReactDOM.createPortal(
           <dialog id='imgCropDialog' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
-                <ImageCropper ref={refCropper} file={file} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
+                <ImageCropper ref={refCropper} file={file} onSelectRect={onSelectRectCore} containerWidth={containerWidth} containerHeight={containerHeight}/>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                  <BeautyButton type='success' onClick={onClickApply}>적용</BeautyButton>
+                  <BeautyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</BeautyButton>
                   <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>
                 </div>
               </div>

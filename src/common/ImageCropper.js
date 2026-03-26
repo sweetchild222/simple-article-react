@@ -2,7 +2,7 @@ import {useState, useRef, useEffect, useCallback, useImperativeHandle} from 'rea
 import './ImageCropper.css'
 import './RotateLoading.css'
 
-export default function({ref, file, onSelectImage,
+export default function({ref, file, onSelectRect,
                         containerWidth=512, containerHeight=512,
                         selectMinWidth=64, selectMinHeight=64}) {
 
@@ -143,7 +143,7 @@ export default function({ref, file, onSelectImage,
     setIsLoading(false)
     
     const rect = isContain ? calcContainRect(selectRect, imageRect) : calcCoverRect(selectRect, imageRect)
-    onSelectImage(rect)
+    onSelectRect(rect)
 
   }, [selectRect])
 

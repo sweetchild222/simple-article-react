@@ -18,16 +18,20 @@ import Modal from "../../common/Modal.js"
 import BeautyButton from '../../common/BeautyButton.js';
 import ImageScale from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
+import ImageCropModal from '../../common/ImageCropModal.js'
 
 export default function() {
 
     const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const {profile, removeProfile} = useContext(ProfileContext)
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [profileImage, setProfileImage] = useState(transparent)
-    const [isLoading, setIsLoading] = useState(true)    
+    const [profileImage, setProfileImage] = useState(transparent)    
+    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
+    const [imageFile, setImageFile] = useState(null)
+
+    const refImageCrop = useRef(null)
 
     const navigate = useNavigate()
 
@@ -115,11 +119,16 @@ export default function() {
                     return
                 
                 const blob = await getBlob(canvas)
+
+                setImageFile(blob)
                 
-                navigate('profile_cropper', {state: blob})
+                setIsImageCropModalOpen(true)
             }
             else{
-                navigate('profile_cropper', {state: file})
+
+                setImageFile(file)
+
+                setIsImageCropModalOpen(true)
             }
         }
         catch(error) {
@@ -142,16 +151,69 @@ export default function() {
         })
     }
 
-    const onError = () =>{
-                
-        setProfileImage('/image/no_image.png')
-        setIsLoading(false)
+
+
+    const canvasToFormData = async(canvas) =>{
+
+        const blob = await getBlob(canvas)
+
+        const formData = new FormData()
+        formData.append('image', blob)
+
+        return formData
+    }
+
+
+    const onClickApply = async(rect) => {
+
+        if(rect == null)
+            return
+
+        const image = refImageCrop.current.image()
+
+        const canvasWidth = 256
+        const canvasHeight = 256
+
+        const canvas = document.createElement('canvas')
+        canvas.width = canvasWidth
+        canvas.height = canvasHeight
+        
+        const ctx = canvas.getContext('2d')
+
+        ctx.imageSmoothingEnabled = false;
+
+        ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, canvasWidth, canvasHeight)
+
+        const formData = await canvasToFormData(canvas)
+
+        const resProfile = await BlobAPI.postProfile(auth.jwt, formData)
+
+        if(resProfile == null)
+            return
+
+        const url = process.env.API_TARGET + '/api/blob/profile/' + resProfile.id
+            
+        const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {profile: url})
+
+        if(resUser == null)
+            return
+
+        const profileId = resProfile.id + '?size=64x64'
+        const profile = await BlobAPI.getProfile(auth.jwt, profileId)
+    
+        if(profile == null)
+            return
+
+        setProfileImage(url)
+        updateProfile(url + '?size=64x64')
+        setIsImageCropModalOpen(false)
     }
 
 
     return validAuth(auth) ? (
       <div id='profile'>
         <LoadingImage src={profileImage} onClick={onClickProfile} width={256} height={256}/>
+        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply}></ImageCropModal>}
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
         <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>

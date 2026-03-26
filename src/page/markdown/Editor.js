@@ -347,16 +347,9 @@ export default function() {
     }
 
 
-    let lastRect = null;
-    
-    const onSelectImage = (rect) => {
-        lastRect = rect
-    }
+    const onClickApply = async(rect) => {
 
-
-    const onClickApply = async() => {
-
-        if(lastRect == null)
+        if(rect == null)
             return
 
         const image = refImageCrop.current.image()
@@ -372,7 +365,7 @@ export default function() {
 
         ctx.imageSmoothingEnabled = false;
 
-        ctx.drawImage(image, lastRect.x, lastRect.y, lastRect.width, lastRect.height, 0, 0, canvasWidth, canvasHeight)
+        ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, canvasWidth, canvasHeight)
 
         const formData = await canvasToFormData(canvas)
 
@@ -386,12 +379,14 @@ export default function() {
         setThumbnailUrl(url)
         setIsImageCropModalOpen(false)
         setIsTouched(true)
+
+        return
     }
 
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
-            {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onSelectImage={onSelectImage} onClickApply={onClickApply}></ImageCropModal>}
+            {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply}></ImageCropModal>}
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
                 <BeautyButton type='success' onClick={toggleViewer}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
                 <Modal config={modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>

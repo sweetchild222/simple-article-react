@@ -49,7 +49,7 @@ export default function() {
   }, [auth])
 
 
-  const onSelectImage = useCallback((rect) => {
+  const onSelectRect = useCallback((rect) => {
 
     const imageCropper = refImageCropper.current
 
@@ -151,7 +151,7 @@ export default function() {
 
   return validAuth(auth) ? (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <ImageCropper ref={refImageCropper} file={imageFile} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
+      <ImageCropper ref={refImageCropper} file={imageFile} onSelectRect={onSelectRect} containerWidth={containerWidth} containerHeight={containerHeight}/>
       <div id='preview' className={`${isLoading ? 'rotateLoading': ''}`} ref={refPreview}  style={{width: `${previewWidth}px`, height: `${previewHeight}px`}}/>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <BeautyButton onClick={onClickApply} type='confirm' isLoading={isPostLoading}>적용</BeautyButton>

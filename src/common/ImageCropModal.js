@@ -43,14 +43,14 @@ export default function({ref, isOpen, onClose, file, onSelectImage, onClickApply
 
 
   return ReactDOM.createPortal(
-          <dialog id='dialo' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
+          <dialog id='imgCropDialog' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
                 <ImageCropper ref={refCropper} file={file} onSelectImage={onSelectImage} containerWidth={containerWidth} containerHeight={containerHeight}/>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                   <BeautyButton type='success' onClick={onClickApply}>적용</BeautyButton>
                   <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>
                 </div>
-              </div>            
+              </div>
           </dialog>,
           document.getElementById('modal-root')
         )

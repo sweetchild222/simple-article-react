@@ -11,6 +11,10 @@
   align-items: center;
 }
 
+.beauty-button:focus {
+  outline: none;
+}
+
 
 .beauty-button > span {
   font-size: 16px;

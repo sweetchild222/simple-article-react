@@ -10,25 +10,24 @@ import Home from './Home.js'
 
 
 
-import Editor from '../markdown/Editor.js'
 
-import PageNotFound from './PageNotFound.js'
 import User from '../user/User.js'
 import Regist from '../user/Regist.js'
-
-import ChangePassword from '../user/ChangePassword.js'
+import Login from '../user/Login.js'
 import Withdraw from '../user/Withdraw.js'
-import ProfileCropper from '../user/ProfileCropper.js'
+import ChangePassword from '../user/ChangePassword.js'
+
+import Editor from '../markdown/Editor.js'
+import PageNotFound from './PageNotFound.js'
+
+
 import AuthProvider from '../../util/AuthProvider.js'
 import ProfileContext from '../../util/ProfileProvider.js'
 import ToastContainer from '../../common/ToastContainer.js'
 
-import Login from '../user/Login.js'
-
 
 
 export default function() {  
-
 
   const RootLayout = () => (    
     <div style={{height:'auto', flex: 1}}>
@@ -55,8 +54,7 @@ export default function() {
         { path: 'user', children: [
           { index: true, element: <User/>},
           { path: 'widthdraw', element: <Withdraw/>},
-          { path: 'change_password', element: <ChangePassword/>},
-          { path: 'profile_cropper', element: <ProfileCropper/>}
+          { path: 'change_password', element: <ChangePassword/>}          
         ]},              
       ],
       errorElement: <PageNotFound />

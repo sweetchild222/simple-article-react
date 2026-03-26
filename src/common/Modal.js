@@ -22,6 +22,7 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
     
     const refDialog = useRef(null)
     const refInput = useRef(null)
+    const refDiv = useRef(null)
 
 
     useEffect(() => {
@@ -114,13 +115,13 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
         }
     }
 
-
     const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
     const randomId = random(0, 100000) // avoid warning Duplicate form field id in the same form 
           
     return ReactDOM.createPortal(
         <dialog ref={refDialog} onClick={onClickDialog} onKeyDown={onKeyDownDialog}>
+            <div ref={refDiv}>
             {config.text != null && <p>{config.text}</p>}
             {config.type == 'custom' && children}
             {config.type == 'input' && <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput}/>}
@@ -129,6 +130,7 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
             {config.type == 'confirm' && <BeautyButton onClick={onClickConfirm} type='confirm'>확인</BeautyButton>}
             {config.type == 'yesno' && < BeautyButton onClick={onClickYes} type='success'>예</BeautyButton>}
             {config.type == 'yesno' && < BeautyButton onClick={onClickNo} type='warning'>아니오</BeautyButton>}
+            </div>
         </dialog>,
         document.getElementById('modal-root')
     )

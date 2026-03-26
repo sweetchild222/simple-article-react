@@ -18,6 +18,9 @@ import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 import { FiYoutube } from "react-icons/fi";
 
+import {dracula} from 'thememirror';
+import { EditorView } from '@codemirror/view'
+
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
   DiffSourceToggleWrapper, CodeMirrorEditor, directivesPlugin, quotePlugin, InsertImage, thematicBreakPlugin, UndoRedo, CodeToggle, CreateLink, ListsToggle,
   AdmonitionDirectiveDescriptor, BoldItalicUnderlineToggles, BlockTypeSelect, sandpackPlugin,  ChangeCodeMirrorLanguage, linkPlugin,
@@ -28,6 +31,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
 
 export default function({ref, placeHolder, postImage, initMarkdown, markdown, readOnly=false, onChange, onParsingError, onUserError}) {
 
+  
   const refEditor = useRef(null);
     
   useEffect(()=>{
@@ -403,6 +407,36 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
   }
 
 
+  dracula.push(EditorView.theme({
+
+    "&": {
+      borderRadius:'3px',
+      fontSize: '18px',
+      fontColor:'red',
+      minHeight: "84px"
+    },
+    ".cm-lineNumbers .cm-gutterElement ":{
+      fontSize: '18px'
+    },
+    ".cm-content": {
+      fontSize: '18px'
+    },
+    ".cm-tooltip": {
+      backgroundColor: "white",
+      color: "#555",
+      border: "1px solid gray",
+      borderRadius: "3px",    
+    },
+    ".cm-tooltip.cm-tooltip-autocomplete ul li[aria-selected]": {
+      backgroundColor: "#555",
+      color: "white"
+    }
+  }))
+  
+
+  const draculaReadOnly = Object.assign([], dracula)
+  draculaReadOnly.push(EditorView.editable.of(false))
+  
   const plugins = [
     
     listsPlugin(),
@@ -415,9 +449,9 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
     thematicBreakPlugin(),
     frontmatterPlugin(),
     maxLengthPlugin(65535),
-    codeBlockPlugin({ defaultCodeBlockLanguage: 'js'}),
+    codeBlockPlugin({ defaultCodeBlockLanguage: 'ts'}),
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
-    codeMirrorPlugin({ codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'} }),
+    codeMirrorPlugin({ codeMirrorExtensions: readOnly  ? [draculaReadOnly] : [dracula], codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'},  }),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: initMarkdown}),
     markdownShortcutPlugin(),
@@ -435,4 +469,3 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
     </div>
   )
 }
-

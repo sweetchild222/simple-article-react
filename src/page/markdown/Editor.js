@@ -63,14 +63,14 @@ export default function() {
     
 
     useBlocker(({ currentLocation, nextLocation }) => {
-        
+                
         if (!isTouched)
             return false
-
-        setIsConfirmSaveModalOpen(true)
-        return true
-
-    }, isTouched);
+        else{
+            setIsConfirmSaveModalOpen(true)
+            return true
+        }
+    })
 
 
     const beforeUnload = useCallback((e) => {
@@ -241,7 +241,7 @@ export default function() {
     }
 
 
-    const onClickLeave=()=> {        
+    const onClickLeave=()=> {
 
         if(isTouched)
             setIsConfirmSaveModalOpen(true)
@@ -251,7 +251,7 @@ export default function() {
 
 
     const onResultConfirmSave = async(result) => {
-
+        
         if(result == true){
 
             const res = await saveCore()
@@ -264,7 +264,9 @@ export default function() {
 
         setIsTouched(false)
 
-        navigate(-1)
+        setTimeout(()=> {
+            navigate(-1)
+        })
     }
 
 

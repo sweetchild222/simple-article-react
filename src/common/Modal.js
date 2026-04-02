@@ -13,8 +13,8 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
         if(config.type == null)
             config.type = 'confirm'
 
-        //if(config.text == null)
-            //config.text = (config.type == 'confirm' ? '완료되었습니다' : '선택하세요')
+        if(config.text == null)
+            config.text = (config.type == 'confirm' ? '완료되었습니다' : '선택하세요')
 
         if(config.isCloseOutsideClick == null)
             config.isCloseOutsideClick = false

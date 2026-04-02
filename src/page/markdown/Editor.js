@@ -25,7 +25,6 @@ import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 export default function() {
 
-
     const location = useLocation()
 
     const refTitle = useRef(null)
@@ -37,7 +36,7 @@ export default function() {
     const [isReadOnly, setIsReadOnly] = useState(false)
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
     const [isTouched, setIsTouched] = useState(false)
-    const [markdown, setMarkdown] = useState(location.state.content)    
+    const [markdown, setMarkdown] = useState(location.state.content)
     const [imageFile, setImageFile] = useState(null)
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
@@ -74,16 +73,11 @@ export default function() {
 
 
     const beforeUnload = useCallback((e) => {
-    
-        if(refMDX.current)
-            location.state.content = refMDX.current.getMarkdown()
 
-        if(refTitle.current)
-            location.state.title = refTitle.current.value
-
-        location.state.thumbnail = thumbnailUrl
-
-        navigate(location.pathname, { replace: true, state: location.state})
+        if(isTouched){
+            e.preventDefault()
+            e.returnValue = ''
+        }
     })
 
     useEffect(() => {

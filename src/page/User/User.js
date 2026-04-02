@@ -21,13 +21,11 @@ import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
 export default function() {
-
-    const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
-
+    
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
     const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [profileImage, setProfileImage] = useState(transparent)    
+    const [profileImage, setProfileImage] = useState(null)
     const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
     const [imageFile, setImageFile] = useState(null)
 

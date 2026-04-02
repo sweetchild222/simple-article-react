@@ -20,6 +20,7 @@ import ImageScale from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
+
 export default function() {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
@@ -94,45 +95,32 @@ export default function() {
 
 
     const onClickProfile = async() =>{
-
+        
         const file = await pickImage()
-
-        if(file == null)
-            return
-
-        try{
-
-            const format = await getImageFormat(file)            
-
-            if(format == 'unknown') {
-                window.showToast('파일을 사용할 수 없습니다', 'error')
-                return
-            }
-
-            if(file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
-
-                const canvas = await ImageScale(file, 4096, 4096, 512, 512)
-
-                if(canvas == null)
-                    return
-                
-                const blob = await getBlob(canvas)
-
-                setImageFile(blob)
-                
-                setIsImageCropModalOpen(true)
-            }
-            else{
-
-                setImageFile(file)
-
-                setIsImageCropModalOpen(true)
-            }
-        }
-        catch(error) {
-
+        
+        if(file == null){
             window.showToast('파일을 사용할 수 없습니다', 'error')
             return
+        }
+
+        if(file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
+
+            const canvas = await ImageScale(file, 4096, 4096, 512, 512)
+
+            if(canvas == null)
+                return
+            
+            const blob = await getBlob(canvas)
+
+            setImageFile(blob)
+            
+            setIsImageCropModalOpen(true)
+        }
+        else{
+
+            setImageFile(file)
+
+            setIsImageCropModalOpen(true)
         }
     }
 

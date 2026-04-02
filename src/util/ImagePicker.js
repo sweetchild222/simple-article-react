@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import AuthContext from './AuthContext'
 
 
-export const pickImage = async() => {
+export const pickImageCore = async() => {
 
     try{
         
@@ -19,8 +19,33 @@ export const pickImage = async() => {
         return await fileHandle.getFile()
     }
     catch(error) {
+        
         return null
     }
+}
+
+
+export const pickImage = async() => {
+
+    const file = await pickImageCore()
+
+    if(file == null)
+        return null
+
+    try{
+        
+        const format = await getImageFormat(file)
+            
+        if(format == 'unknown')
+            return null
+
+        return file
+    }
+    catch(error) {
+
+        return null
+    }
+
 }
 
 
@@ -40,11 +65,13 @@ export const getImageFormat = (file) => {
                 resolve('image/png')
             else if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46)
                 resolve('image/gif')
-            else
+            else{
                 resolve('unknown')
+            }
         }
 
         reader.onerror = (event) => {
+            
             reject('error')
         }
 

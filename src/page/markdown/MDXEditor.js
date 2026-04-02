@@ -182,44 +182,30 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
 
     const selectImage = async () =>{
       
-      const file = await pickImage()
-      
-      if(file == null)
+        const file = await pickImage()
+
+        if(file == null){
+            window.showToast('파일을 사용할 수 없습니다', 'error')
+            return
+        }
+
+        const canvas = await ImageScale(file, 512, 512, 64, 64)
+
+        if(canvas == null)
           return
 
-      try{
+        setIsLoadingUpload(true)
 
-          const format = await getImageFormat(file)
-
-          if(format == 'unknown') {
-              userErrorHandle('파일을 사용할 수 없습니다')
-              return
-          }
-
-          const canvas = await ImageScale(file, 512, 512, 64, 64)
-
-          if(canvas == null)
-            return
-
-          setIsLoadingUpload(true)
-
-          const url = await postImage(canvas)          
-      
-          setIsLoadingUpload(false)
-          
-          if(url == null){
-            userErrorHandle('파일을 업로드할 수 없습니다')
-            return
-          }          
-          
-          setImageUrl(url)
-          
-      }
-      catch(error) {
-
-          userErrorHandle('파일을 사용할 수 없습니다')
+        const url = await postImage(canvas)
+    
+        setIsLoadingUpload(false)
+        
+        if(url == null){
+          userErrorHandle('파일을 업로드할 수 없습니다')
           return
-      }
+        }
+        
+        setImageUrl(url)
     }
 
     useEffect(()=>{

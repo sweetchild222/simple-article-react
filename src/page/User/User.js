@@ -11,12 +11,12 @@ import { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 
 import AuthContext from "../../util/AuthContext.js";
-import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
+import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import ProfileContext from "../../util/ProfileContext.js";
 import Modal from "../../common/Modal.js"
 
 import BeautyButton from '../../common/BeautyButton.js';
-import ImageScale from "../../util/ImageScale.js";
+import ImageScale, {getBlob} from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
@@ -96,21 +96,19 @@ export default function() {
 
     const onClickProfile = async() =>{
         
-        const file = await pickImage()
+        const imageFile = await pickImageFile()
+
+        if(imageFile == null)
+            return
         
-        if(file == null){
+        if(imageFile.format == 'unknown'){
             window.showToast('파일을 사용할 수 없습니다', 'error')
             return
         }
 
-        if(file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
+        if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
 
-            const canvas = await ImageScale(file, 4096, 4096, 512, 512)
-
-            if(canvas == null)
-                return
-            
-            const blob = await getBlob(canvas)
+            const blob = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
 
             setImageFile(blob)
             
@@ -118,23 +116,10 @@ export default function() {
         }
         else{
 
-            setImageFile(file)
+            setImageFile(imageFile.file)
 
             setIsImageCropModalOpen(true)
         }
-    }
-
-
-    const getBlob = (canvas) => {
-
-        return new Promise((resolve) => {
-
-            canvas.toBlob((blob) => {
-
-                resolve(blob)
-
-            })
-        })
     }
 
 

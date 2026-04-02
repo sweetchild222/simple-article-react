@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import AuthContext from './AuthContext'
 
 
-export const pickImageCore = async() => {
+const pickFile = async() => {
 
     try{
         
@@ -25,9 +25,9 @@ export const pickImageCore = async() => {
 }
 
 
-export const pickImage = async() => {
+export const pickImageFile = async() => {
 
-    const file = await pickImageCore()
+    const file = await pickFile()
 
     if(file == null)
         return null
@@ -35,11 +35,8 @@ export const pickImage = async() => {
     try{
         
         const format = await getImageFormat(file)
-            
-        if(format == 'unknown')
-            return null
-
-        return file
+        
+        return {file:file, format:format}
     }
     catch(error) {
 

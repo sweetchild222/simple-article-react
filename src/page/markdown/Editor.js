@@ -6,7 +6,7 @@ import MDXEditor from './MDXEditor.js'
 import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
-import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
+import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
 import { Prompt } from 'react-router'
@@ -15,7 +15,7 @@ import { Prompt } from 'react-router'
 
 import ImageCropModal from '../../common/ImageCropModal.js'
 
-import ImageScale from "../../util/ImageScale.js";
+import ImageScale, {getBlob} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
@@ -104,9 +104,10 @@ export default function() {
     }
 
 
-    const postImage = async(canvas) => {
-
-        const formData = await canvasToFormData(canvas)
+    const postImage = async(blob) => {
+            
+        const formData = new FormData()
+        formData.append('image', blob)
 
         const resArticleImage = await BlobAPI.postArticleImage(auth.jwt, formData)
 
@@ -274,21 +275,19 @@ export default function() {
 
     const onClickThumbnail = async() => {
 
-        const file = await pickImage()
+        const imageFile = await pickImageFile()
 
-        if(file == null){
+        if(imageFile == null)
+            return
+        
+        if(imageFile.format == 'unknown'){
             window.showToast('파일을 사용할 수 없습니다', 'error')
             return
         }
 
-        if(file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
+        if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
 
-            const canvas = await ImageScale(file, 4096, 4096, 512, 512)
-
-            if(canvas == null)
-                return
-            
-            const blob = await getBlob(canvas)
+            const blob = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
 
             setImageFile(blob)
             
@@ -296,23 +295,10 @@ export default function() {
         }
         else{
 
-            setImageFile(file)
+            setImageFile(imageFile.file)
 
             setIsImageCropModalOpen(true)
         }
-    }
-
-
-    const getBlob = (canvas) => {
-
-        return new Promise((resolve) => {
-
-            canvas.toBlob((blob) => {
-
-                resolve(blob)
-
-            })
-        })
     }
 
 

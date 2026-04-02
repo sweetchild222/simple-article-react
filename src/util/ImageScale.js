@@ -37,6 +37,18 @@ const calcScaled = (imageWidth, imageHeight, maxWidth, maxHeight, minWidth, minH
 }
 
 
+export const getBlob = (canvas) => {
+
+  return new Promise((resolve) => {
+
+    canvas.toBlob((blob) => {
+
+      resolve(blob)
+
+      })
+  })
+}
+
 
 export default function(file, maxWidth, maxHeight, minWidth, minHeight){
 
@@ -48,7 +60,7 @@ export default function(file, maxWidth, maxHeight, minWidth, minHeight){
       const url = URL.createObjectURL(file)
       img.src = url
 
-      img.onload = () => {
+      img.onload = async() => {
 
           const scaled = calcScaled(img.width, img.height, maxWidth, maxHeight, minWidth, minHeight)
               
@@ -58,14 +70,13 @@ export default function(file, maxWidth, maxHeight, minWidth, minHeight){
           const ctx = canvas.getContext('2d');
 
           ctx.drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight);
-          resolve(canvas)
+          
+          resolve(await getBlob(canvas))
       }
 
-      img.onerror = () =>{
+      img.onerror = () => {
 
           resolve(null)
       }
     })
 }
-
-

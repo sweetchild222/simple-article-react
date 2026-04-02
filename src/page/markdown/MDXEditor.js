@@ -11,7 +11,7 @@ import { LuImagePlus } from "react-icons/lu";
 
 import './MDXEditor.css'
 import AuthContext from "../../util/AuthContext.js";
-import {pickImage, getImageFormat} from "../../util/ImagePicker.js";
+import {pickImageFile} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 import ImageScale from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
@@ -182,21 +182,24 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
 
     const selectImage = async () =>{
       
-        const file = await pickImage()
+        const imageFile = await pickImageFile()
 
-        if(file == null){
+        if(imageFile == null)
+            return
+        
+        if(imageFile.format == 'unknown'){
             window.showToast('파일을 사용할 수 없습니다', 'error')
             return
         }
 
-        const canvas = await ImageScale(file, 512, 512, 64, 64)
+        const blob = await ImageScale(imageFile.file, 512, 512, 64, 64)
 
-        if(canvas == null)
+        if(blob == null)
           return
 
         setIsLoadingUpload(true)
 
-        const url = await postImage(canvas)
+        const url = await postImage(blob)
     
         setIsLoadingUpload(false)
         

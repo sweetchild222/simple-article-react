@@ -14,6 +14,7 @@ import { Prompt } from 'react-router'
 
 
 import ImageCropModal from '../../common/ImageCropModal.js'
+import PostModal from './PostModal.js'
 
 import ImageScale, {getBlob} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";
@@ -31,19 +32,22 @@ export default function() {
     const refMDX = useRef(null)
     const refLength = useRef(null)
     const refImageCrop = useRef(null)
-    
+
     const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
     const [isReadOnly, setIsReadOnly] = useState(false)
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
     const [isTouched, setIsTouched] = useState(false)
     const [markdown, setMarkdown] = useState(location.state.content)
     const [imageFile, setImageFile] = useState(null)
+    const [isOpen, setOpen] = useState(false)
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
     const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
+    const [isPostModalOpen, setIsPostModalOpen] = useState(false)
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
+    const [categories, setCategories] = useState(null)
     
-    const modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+    const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
     
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
@@ -94,13 +98,26 @@ export default function() {
 
     useEffect(()=>{
 
-        refLength.current.textContent = location.state.content.length + '/65535'
+        if(refLength.current)
+            refLength.current.textContent = location.state.content.length + '/65535'
 
     },[refLength])
 
+    
+    
+    const onClickPostModal = async() => {
+        
+        const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
+        
+        if(res == null)
+            return -1
 
-    const postMarkDown = () => {
+        if(res.length == 0)
+            return -1
 
+        setCategories(res)
+
+        setIsPostModalOpen(true)
     }
 
 
@@ -171,15 +188,15 @@ export default function() {
     }
 
 
-    const putArticle = async(article_id, title, content, thumbUrl, payloadSource) => {
+    const putArticle = async(article_id, title, content, thumbUrl, open, posted, category_id) => {
 
         const payload = {
             title:title,
             content:content,
-            open:payloadSource.open,
-            posted:0,
+            open:open,
+            posted:posted,
             thumbnail:thumbUrl,
-            category_id:payloadSource.category_id
+            category_id:category_id
         }
         
         return await ArticleAPI.putArticle(auth.jwt, article_id, payload)
@@ -204,13 +221,20 @@ export default function() {
 
 
     const saveCore = async() => {
+        
+        if(refTitle.current == null || refMDX.current == null)
+            return null
 
         const payloadSource = location.state
+        
+        const article_id = payloadSource.id
+        const title = refTitle.current.value
+        const content = refMDX.current.getMarkdown()
+        const open = payloadSource.open
+        const posted = 0
+        const category_id = payloadSource.category_id
 
-        if(refTitle.current == null || refMDX.current == null)
-            return null        
-            
-        const res = await putArticle(payloadSource.id, refTitle.current.value, refMDX.current.getMarkdown(), thumbnailUrl, payloadSource)
+        const res = await putArticle(article_id, title, content, thumbnailUrl, open, posted, category_id)
 
         if(res == null)
             return null
@@ -349,13 +373,40 @@ export default function() {
         return
     }
 
+    const onPost = async(category_id, open_type) => {
+
+        const payloadSource = location.state
+
+        if(refTitle.current == null || refMDX.current == null)
+            return null
+        
+        const article_id = payloadSource.id
+        const title = refTitle.current.value
+        const content = refMDX.current.getMarkdown()
+        const posted = 1
+
+        const res = await putArticle(article_id, title, content, thumbnailUrl, open_type, posted, category_id)
+
+        if(res == null){
+            window.showToast('글 게시에 실패하였습니다', 'error')
+            return null
+        }
+
+        window.showToast('글을 게시하였습니다', 'info')
+
+        setIsTouched(false)
+        setIsPostModalOpen(false)
+        navigate(-1)
+    }
+    
+
 
     return validAuth(auth) ? (
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
             {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply}></ImageCropModal>}
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
                 <BeautyButton type='success' onClick={toggleViewer}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
-                <Modal config={modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
+                <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                 <input ref={refTitle} readOnly={isReadOnly} maxLength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
                 <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=64x64') : null} onClick={onClickThumbnail} width={64} height={64}/>
             </div>
@@ -366,10 +417,10 @@ export default function() {
             </div>
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
                 <BeautyButton type='danger' onClick={onClickLeave}>나가기</BeautyButton>
-                <BeautyButton type='confirm' onClick={postMarkDown}>올리기</BeautyButton>
+                <BeautyButton type='confirm' onClick={onClickPostModal}>올리기</BeautyButton>
+                {categories != null && <PostModal categories={categories} isOpen={isPostModalOpen} onClose={()=>setIsPostModalOpen(false)} onPost={onPost}/>}
                 <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>
-                <label ref={refLength} ></label>
-
+                <label ref={refLength}></label>
             </div>
         </div>
     ) : null

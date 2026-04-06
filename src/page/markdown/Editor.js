@@ -6,6 +6,7 @@ import MDXEditor from './MDXEditor.js'
 import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
+import GoLogin from "../../common/GoLogin.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
@@ -35,8 +36,7 @@ export default function() {
     const [isReadOnly, setIsReadOnly] = useState(false)
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
     const [isTouched, setIsTouched] = useState(false)
-    const [isOverlayLoading, setIsOverlayLoading] = useState(true)
-    const [markdown, setMarkdown] = useState(location.state.content)
+    const [isOverlayLoading, setIsOverlayLoading] = useState(true)    
     const [imageFile, setImageFile] = useState(null)    
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
@@ -46,21 +46,20 @@ export default function() {
     const [categories, setCategories] = useState(null)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
-    
-    
     const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
     
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
 
     
-    const navigate = useNavigate()    
+    const navigate = useNavigate()
 
     useEffect(()=> {
     
       if(!validAuth(auth)){
-          navigate('/login', {replace:true})
-          return
+        window.showToast('로그인 해주세요', 'error')
+        navigate(-1)
+        return
       }
 
     }, [auth])
@@ -409,6 +408,17 @@ export default function() {
         setIsPostModalOpen(false)
         navigate(-1)
     }
+
+
+    const onClickGoLogin = () => {
+
+        setIsTouched(false)
+
+        setTimeout(()=> {            
+            navigate('/login')
+        })
+    }
+            
     
 
     return validAuth(auth) ? (
@@ -434,6 +444,6 @@ export default function() {
                 <label ref={refLength}></label>
             </div>
         </div>
-    ) : null
+    ) : (<GoLogin onClickGoLoginCustom={onClickGoLogin} />)
 }
 

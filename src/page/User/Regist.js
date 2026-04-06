@@ -10,6 +10,7 @@ import * as RegistAPI from '../../api/RegistAPI.js'
 import * as UserAPI from '../../api/UserAPI.js'
 import * as validator from '../../util/Validator.js'
 import BeautyButton from "../../common/BeautyButton.js";
+import GoBack from "../../common/GoBack.js";
 
 
 
@@ -32,8 +33,8 @@ export default function() {
 
   useEffect(() => {
 
-    if(validAuth(auth)){
-        navigate('/', {replace:true})
+    if(validAuth(auth)){        
+        navigate(-1)
         return
     }
 
@@ -241,7 +242,7 @@ export default function() {
       setIsDisabledRegist(!valid)
   }
 
-  return !validAuth(auth) ? (
+  return validAuth(auth) ? (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <input id='input_email' type="text" maxLength="254" onChange={onChangeEmail} placeholder="이메일"/>
@@ -261,7 +262,7 @@ export default function() {
       <label>{passwordValid ? '유효한 패스워드' : '무효한 패스워드'}</label>
       <BeautyButton isLoading={isLoadingRegist} disabled={isDisabledRegist} onClick={onClickRegist} type='confirm'>회원 가입</BeautyButton>
     </div>
-  ) : null
+  ) : (<GoBack value={'이미 로그인된 사용자입니다'}/>)
 }
 
 

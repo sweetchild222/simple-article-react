@@ -14,6 +14,7 @@ import AuthContext from "../../util/AuthContext.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import ProfileContext from "../../util/ProfileContext.js";
 import Modal from "../../common/Modal.js"
+import GoLogin from "../../common/GoLogin.js";
 
 import BeautyButton from '../../common/BeautyButton.js';
 import ImageScale, {getBlob} from "../../util/ImageScale.js";
@@ -50,8 +51,8 @@ export default function() {
 
     useEffect(()=>{
 
-        if(!validAuth(auth)){
-            navigate('/login', {replace:true})
+        if(!validAuth(auth)){            
+            navigate(-1)
             return
         }
         
@@ -190,6 +191,6 @@ export default function() {
         <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>
         <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
       </div>
-    ) : null
+    ) : (<GoLogin/>)
 }
 

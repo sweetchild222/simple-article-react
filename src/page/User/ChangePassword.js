@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import * as validator from '../../util/Validator.js'
 import AuthContext from "../../util/AuthContext.js";
 import BeautyButton from '../../common/BeautyButton.js';
+import GoLogin from "../../common/GoLogin.js";
 
 
 export default function() {
@@ -17,8 +18,10 @@ export default function() {
 
     useEffect(()=>{
 
-        if(!validAuth(auth))
-             navigate('/login', {replace:true})
+        if(!validAuth(auth)){
+            window.showToast('로그인 해주세요.', 'error')
+            navigate(-1)
+        }
 
     },[auth])
 
@@ -43,12 +46,12 @@ export default function() {
 
         if(repeat_password == ''){
             input_repeat_password.focus()
-            window.showToast('새 비밀번호 확인을 입력하세요', 'error')
+            window.showToast('비밀번호 확인을 입력하세요', 'error')
             return
         }
 
         if(new_password != repeat_password){
-            window.showToast('새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다', 'error')
+            window.showToast('새 비밀번호와 비밀번호 확인이 일치하지 않습니다', 'error')
             return
         }
 
@@ -132,10 +135,10 @@ export default function() {
         <label>비밀번호 조건: 8자 ~ 20자 사이 문자열로 영어소문자, 영어대문자, 숫자, 특수문자 포함</label>
         <label htmlFor='input_new_password' >새 비밀번호</label>
         <input id='input_new_password' type='text' onKeyDown={onKeyDownNew}/>
-        <label htmlFor='input_repeat_password'>새 비밀번호 확인</label>
+        <label htmlFor='input_repeat_password'>비밀번호 확인</label>
         <input id='input_repeat_password' type='text' onKeyDown={onKeyDownRepeat}/>
         <BeautyButton type="confirm" isLoading={isLoading} onClick={onClickPasswordChange}>비밀번호 변경</BeautyButton>
       </div>
-    ) : null
+    ) : (<GoLogin />)
 }
 

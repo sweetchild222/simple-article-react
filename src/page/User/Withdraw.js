@@ -10,6 +10,7 @@ import AuthContext from "../../util/AuthContext.js";
 import ProfileContext from "../../util/ProfileContext.js";
 import Modal from "../../common/Modal.js"
 import BeautyButton from '../../common/BeautyButton.js';
+import GoLogin from "../../common/GoLogin.js";
 
 export default function() {
     
@@ -24,8 +25,11 @@ export default function() {
 
     useEffect(()=>{
 
-        if(!validAuth(auth))
-             navigate('/login', {replace:true})
+        if(!validAuth(auth)){
+            window.showToast('로그인 해주세요', 'error')
+            navigate(-1)
+            return
+        }
         
     },[auth])
 
@@ -96,5 +100,5 @@ export default function() {
         <BeautyButton onClick={onClickUserWithdraw} isLoading={isLoading}>회원탈퇴</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
       </div>
-    ) : null
+    ) : (<GoLogin />)
 }

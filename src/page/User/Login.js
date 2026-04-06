@@ -13,6 +13,7 @@ import { useNavigate, useLocation} from 'react-router-dom';
 import * as validator from '../../util/Validator.js'
 
 import BeautyButton from '../../common/BeautyButton.js';
+import GoBack from '../../common/GoBack.js';
 
 export default function() {
 
@@ -24,8 +25,11 @@ export default function() {
 
     useEffect(() => {
         
-        if(validAuth(auth))
-            navigate('/', {replace:true})
+        if(validAuth(auth)){            
+            navigate(-1)
+            return
+        }
+
 
     }, [auth])
 
@@ -103,5 +107,5 @@ export default function() {
             <BeautyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</BeautyButton>
             <BeautyButton onClick={() => {navigate('regist', {replace:true})}}>회원가입</BeautyButton>
         </div>
-    ) : null
+    ) : (<GoBack value={'이미 로그인된 사용자 입니다'} />)
 }

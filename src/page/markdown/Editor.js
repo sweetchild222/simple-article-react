@@ -11,21 +11,19 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} fro
 import * as ArticleAPI from '../../api/ArticleAPI.js'
 import { Prompt } from 'react-router'
 
-
-
 import ImageCropModal from '../../common/ImageCropModal.js'
 import PostModal from './PostModal.js'
 
 import ImageScale, {getBlob} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";
+import '../../common/RotateLoading.css'
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 
-import '../../common/RotateLoading.css'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 export default function() {
-
+    
     const location = useLocation()
 
     const refTitle = useRef(null)
@@ -37,22 +35,25 @@ export default function() {
     const [isReadOnly, setIsReadOnly] = useState(false)
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
     const [isTouched, setIsTouched] = useState(false)
+    const [isOverlayLoading, setIsOverlayLoading] = useState(true)
     const [markdown, setMarkdown] = useState(location.state.content)
-    const [imageFile, setImageFile] = useState(null)
-    const [isOpen, setOpen] = useState(false)
+    const [imageFile, setImageFile] = useState(null)    
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
     const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
     const [isPostModalOpen, setIsPostModalOpen] = useState(false)
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     const [categories, setCategories] = useState(null)
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+
+    
     
     const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
     
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    
     const navigate = useNavigate()    
 
     useEffect(()=> {
@@ -65,15 +66,27 @@ export default function() {
     }, [auth])
     
 
-    useBlocker(({ currentLocation, nextLocation }) => {
-                
-        if (!isTouched)
-            return false
-        else{
-            setIsConfirmSaveModalOpen(true)
+    const blocker = useBlocker(({ currentLocation, nextLocation }) => {
+        
+        if (isTouched && currentLocation.pathname !== nextLocation.pathname)
             return true
-        }
+        else
+            return false
     })
+
+    useEffect(() => {
+    
+        if (blocker.state === "blocked") {
+
+            const proceed = window.confirm("저장하지 않고 나가시겠습니까?")
+
+            if (proceed)
+                blocker.proceed()
+            else
+                blocker.reset()
+        }
+
+    }, [blocker]);
 
 
     const beforeUnload = useCallback((e) => {
@@ -203,7 +216,7 @@ export default function() {
     }
 
     const onClickSave = async() => {
-
+        
         setIsSaveTempLoading(true)
         
         stopTimer()
@@ -247,7 +260,9 @@ export default function() {
         
         if(!isInternalChange){
             setIsTouched(true)
-            refLength.current.textContent = content.length + '/65535'
+
+            if(refLength.current)
+                refLength.current.textContent = content.length + '/65535'
             //setTimerAutoSave()
         }
     }
@@ -270,9 +285,11 @@ export default function() {
 
 
     const onResultConfirmSave = async(result) => {
+
+        setIsTouched(false)
         
         if(result == true){
-
+            
             const res = await saveCore()
 
             if(res != null)
@@ -281,18 +298,11 @@ export default function() {
                 window.showToast('임시 저장 실패', 'error')
         }
 
-        setIsTouched(false)
-
-        setTimeout(()=> {
-            navigate(-1)
-        })
+        navigate(-1)
     }
 
 
     const toggleViewer = () => {
-
-        if(!isReadOnly)
-            setMarkdown(refMDX.current.getMarkdown())
         
         setIsReadOnly(isReadOnly => !isReadOnly)
     }
@@ -340,6 +350,9 @@ export default function() {
     const onClickApply = async(rect) => {
 
         if(rect == null)
+            return
+
+        if(refImageCrop.current == null)
             return
 
         const image = refImageCrop.current.image()
@@ -391,17 +404,15 @@ export default function() {
             window.showToast('글 게시에 실패하였습니다', 'error')
             return null
         }
-
-        window.showToast('글을 게시하였습니다', 'info')
-
+        
         setIsTouched(false)
         setIsPostModalOpen(false)
         navigate(-1)
     }
     
 
-
     return validAuth(auth) ? (
+        // <div className={`${isOverlayLoading ? 'rotateLoading': ''}`} style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
         <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
             {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply}></ImageCropModal>}
             <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
@@ -411,7 +422,7 @@ export default function() {
                 <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=64x64') : null} onClick={onClickThumbnail} width={64} height={64}/>
             </div>
             <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'75vh', flex: 1}}>
-                <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content} markdown={markdown}
+                <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
                     onChange={onChangeContent} onUserError={onUserError} readOnly={isReadOnly} onParsingError={onParsingError}
                 />
             </div>

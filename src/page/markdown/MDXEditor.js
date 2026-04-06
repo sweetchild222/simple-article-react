@@ -29,7 +29,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin, ButtonWithTooltip} from '@mdxeditor/editor'
 
 
-export default function({ref, placeHolder, postImage, initMarkdown, markdown, readOnly=false, onChange, onParsingError, onUserError}) {
+export default function({ref, placeHolder, postImage, initMarkdown, readOnly=false, onChange, onParsingError, onUserError}) {
 
   
   const refEditor = useRef(null);
@@ -425,7 +425,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
 
   const draculaReadOnly = Object.assign([], dracula)
   draculaReadOnly.push(EditorView.editable.of(false))
-  
+    
   const plugins = [
     
     listsPlugin(),
@@ -452,7 +452,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, re
 
   return (
     <div>
-      <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={markdown} onChange={onChange}
+      <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={initMarkdown} onChange={onChange}
         readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
         translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
     </div>

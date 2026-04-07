@@ -29,7 +29,10 @@ export default function() {
             navigate(-1)
             return
         }
-
+        else{
+            removeAuth()
+            removeProfile()
+        }
 
     }, [auth])
 

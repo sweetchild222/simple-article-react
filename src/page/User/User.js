@@ -51,7 +51,7 @@ export default function() {
 
     useEffect(()=>{
 
-        if(!validAuth(auth)){            
+        if(!validAuth(auth)){
             navigate(-1)
             return
         }

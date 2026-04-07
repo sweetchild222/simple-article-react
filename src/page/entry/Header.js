@@ -36,7 +36,12 @@ export default function() {
 
     const onClickUser = (e) =>{
 
-        navigate('/user');
+
+        if(validAuth(auth))
+            navigate('/user')
+        else
+            navigate('/login')
+
 
     }
 

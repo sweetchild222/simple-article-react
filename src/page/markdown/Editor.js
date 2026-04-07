@@ -179,7 +179,7 @@ export default function() {
 
             setIsSaveTempLoading(true)
 
-            stopTimer()
+            //stopTimer()
             
             const res = await saveTempSaveCore()
             

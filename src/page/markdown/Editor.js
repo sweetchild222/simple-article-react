@@ -15,8 +15,6 @@ import { Prompt } from 'react-router'
 import ImageCropModal from '../../common/ImageCropModal.js'
 import PostModal from './PostModal.js'
 
-import OverlayLoading from '../../common/OverlayLoading.js'
-
 import ImageScale, {getBlob} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import '../../common/RotateLoading.css'

@@ -21,10 +21,12 @@ import ImageScale, {getBlob} from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
+import { PiTrash } from "react-icons/pi";
+
 
 export default function() {
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [profileImage, setProfileImage] = useState(null)
@@ -57,11 +59,13 @@ export default function() {
         }
         
         getHighQualityProfile(auth).then((profile)=>{
+
+            console.log(profile)
             
             if(profile == null)
                 window.showToast('프로필 가져오기가 실패하였습니다', 'error')
             else
-                setProfileImage(profile)
+                setProfileImage('aa')
         })
     }, [auth])
     
@@ -79,7 +83,9 @@ export default function() {
 
     const onClickLogout = ()=>{
 
-        setIsModalOpen(true)
+        //setIsModalOpen(true)
+
+        setProfileImage('http://13.124.193.201:8080/api/blob/profile/20260407051945-752ae5d6-354b-4beb-b1d3-1b78c0229047.png')
     }
 
 

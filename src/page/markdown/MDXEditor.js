@@ -448,8 +448,6 @@ export default function({ref, placeHolder, postImage, initMarkdown, readOnly=fal
     toolbarPlugin({ toolbarClassName: readOnly ? 'toolbarRootHide' : 'toolbarRoot', toolbarContents: () => (readOnly ? null : <CustomToolbar />)})
   ]
 
-
-
   return (    
       <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={initMarkdown} onChange={onChange}
         readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}

@@ -16,7 +16,7 @@ export default function({children}){
     
     const updateAuth = (auth) => {
 
-        auth.expire_time = Date.now() + 1000 * 10;
+        auth.expire_time = Date.now() + 1000 * 60 * 60;
         localStorage.setItem(key, JSON.stringify(auth))
         setAuth(auth)
     }

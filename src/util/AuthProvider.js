@@ -16,7 +16,7 @@ export default function({children}){
     
     const updateAuth = (auth) => {
 
-        auth.expire_time = Date.now() + 1000 * 60 * 60;
+        auth.expire_time = Date.now() + 1000 * 10;
         localStorage.setItem(key, JSON.stringify(auth))
         setAuth(auth)
     }
@@ -31,12 +31,14 @@ export default function({children}){
     
     const validAuth = (auth) => {
 
-        if(auth === '')
+        if(auth == null)
             return false
 
-        if(Date.now() > auth.expire_time){
+        if(auth === logout)
             return false
-        }
+
+        if(Date.now() > auth.expire_time)
+            return false
 
         return true
     }

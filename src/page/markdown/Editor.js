@@ -39,7 +39,7 @@ export default function() {
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
     const [isTouched, setIsTouched] = useState(false)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
-    const [imageFile, setImageFile] = useState(null)    
+    const [imageFile, setImageFile] = useState(null)
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
     const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
@@ -48,21 +48,20 @@ export default function() {
     const [categories, setCategories] = useState(null)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
-    const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}    
+    const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
     if(location.state == null)
         return (<div>잘못된 접근입니다</div>)
-
     
     const navigate = useNavigate()
-
-    useEffect(()=> {
     
-      if(!validAuth(auth)){
-        window.showToast('로그인 해주세요', 'error')
-        navigate(-1)
-        return
-      }
+    useEffect(()=> {
+
+        if(!validAuth(auth)){
+            window.showToast('로그인 해주세요', 'error')
+            navigate(-1)
+            return
+        }
 
     }, [auth])
     
@@ -77,7 +76,7 @@ export default function() {
 
     useEffect(() => {
     
-        if (blocker.state === "blocked") {
+        if (blocker.state === "blocked" && validAuth(auth)) {
 
             const proceed = window.confirm("저장하지 않고 나가시겠습니까?")
 
@@ -121,21 +120,17 @@ export default function() {
     
     const onClickPostModal = async() => {
 
-        setIsOverlayLoading(true)
-
-        console.log('asdf')
+        const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
         
-        // const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
-        
-        // if(res == null)
-        //     return -1
+        if(res == null)
+            return -1
 
-        // if(res.length == 0)
-        //     return -1
+        if(res.length == 0)
+            return -1
 
-        // setCategories(res)
+        setCategories(res)
 
-        // setIsPostModalOpen(true)
+        setIsPostModalOpen(true)
     }
 
 
@@ -168,43 +163,6 @@ export default function() {
     }
     
 
-    const setTimerAutoSave = ()=>{
-
-        if(saveTempTimerId != null)
-            return
-
-        const timeout = 1000 * 60
-    
-        const timerId = setTimeout(async() => {
-
-            setIsSaveTempLoading(true)
-
-            //stopTimer()
-            
-            const res = await saveTempSaveCore()
-            
-            if(res != null)
-                window.showToast('임시 저장됨', 'info')
-            else
-                window.showToast('임시 저장 실패', 'error')
-
-            setIsSaveTempLoading(false)
-            setIsDisableSaveTemp(true)
-
-        }, timeout)
-
-        setSaveTempTimerId(timerId)
-    }
-
-
-    const stopTimer = () =>{
-
-        if(saveTempTimerId != null)
-            clearTimeout(saveTempTimerId)
-
-        setSaveTempTimerId(null)
-    }
-
 
     const putArticle = async(article_id, title, content, thumbUrl, open, posted, category_id) => {
 
@@ -226,9 +184,7 @@ export default function() {
     const onClickSave = async() => {
         
         setIsSaveTempLoading(true)
-        
-        //stopTimer()
-
+    
         const res = await saveCore()
 
         if(res != null)
@@ -271,7 +227,6 @@ export default function() {
 
             if(refLength.current)
                 refLength.current.textContent = content.length + '/65535'
-            //setTimerAutoSave()
         }
     }
 
@@ -279,7 +234,6 @@ export default function() {
     const onChangeTitle = (event) => {
 
         setIsTouched(true)
-        //setTimerAutoSave()
     }
 
 
@@ -406,8 +360,11 @@ export default function() {
         const content = refMDX.current.getMarkdown()
         const posted = 1
         
+        setIsOverlayLoading(true)
 
         const res = await putArticle(article_id, title, content, thumbnailUrl, open_type, posted, category_id)
+
+        setIsOverlayLoading(false)
 
         if(res == null){
             window.showToast('글 게시에 실패하였습니다', 'error')
@@ -432,28 +389,26 @@ export default function() {
 
     return validAuth(auth) ? (
         
-        <div style={{flex:1}}>
-            <div style={{height:'100%', display: 'flex', flexDirection: 'column'}}>
+        <div style={{flex:1, position: 'relative'}}>
+            {isOverlayLoading && <div style={{width:'100%', height:'100%', position: 'absolute', zIndex: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}} className={`rotateLoading`}/>}
+            <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
                 <div style={{display: 'flex', flexDirection: 'row', margin:'5px'}}>
                     <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=64x64') : null} onClick={onClickThumbnail} width={64} height={64}/>
                     {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply}></ImageCropModal>}
                     <input ref={refTitle} readOnly={isReadOnly} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
                     <BeautyButton type='success' onClick={toggleViewer}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
                 </div>
-                <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, backgroundColor:'white', margin:'0px 5px 5px 5px'}}>
+                <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, margin:'0px 5px 5px 5px'}}>
                     <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
                     onChange={onChangeContent} onUserError={onUserError} readOnly={isReadOnly} onParsingError={onParsingError}/>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', flex: 0, margin:'0px 5px 5px 5px'}}>
                     <label ref={refLength}></label>
-                    <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>                                        
-                    <BeautyButton type='confirm' onClick={onClickPostModal}>올리기</BeautyButton>                    
+                    <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>
+                    <BeautyButton type='confirm' onClick={onClickPostModal}>올리기</BeautyButton>
                     <BeautyButton type='danger' onClick={onClickLeave}>나가기</BeautyButton>
                     <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     {categories != null && <PostModal categories={categories} isOpen={isPostModalOpen} onClose={()=>setIsPostModalOpen(false)} onPost={onPost}/>}
-                    
-                    
-                    
                 </div>
             </div>
         </div>

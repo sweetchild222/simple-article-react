@@ -14,8 +14,7 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
   const refDialog = useRef(null)
   const refDiv = useRef(null)
 
-  const [isApplyLoading, setIsApplyLoading] = useState(false)
-  
+  const [isApplyLoading, setIsApplyLoading] = useState(false)  
   
   useEffect(() => {
       
@@ -37,7 +36,6 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
 
   let lastRect = null
 
-
   const onSelectRectCore = (rect) =>{
 
     lastRect = rect
@@ -51,7 +49,7 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
 
     if(onClickApply != null){
       setIsApplyLoading(true)
-      await onClickApply(lastRect)      
+      await onClickApply(lastRect)
       setIsApplyLoading(false)
     }
   }
@@ -64,7 +62,7 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
         return refCropper.current.image()
       }
     }
-  }, [refCropper]);
+  }, [refCropper])
 
 
   return ReactDOM.createPortal(

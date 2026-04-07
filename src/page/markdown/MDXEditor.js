@@ -194,8 +194,10 @@ export default function({ref, placeHolder, postImage, initMarkdown, readOnly=fal
 
         const blob = await ImageScale(imageFile.file, 512, 512, 64, 64)
 
-        if(blob == null)
+        if(blob == null){
+          window.showToast('파일을 사용할 수 없습니다', 'error')
           return
+        }
 
         setIsLoadingUpload(true)
 

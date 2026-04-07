@@ -21,7 +21,6 @@ import ImageScale, {getBlob} from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
-import { PiTrash } from "react-icons/pi";
 
 
 export default function() {
@@ -58,14 +57,12 @@ export default function() {
             return
         }
         
-        getHighQualityProfile(auth).then((profile)=>{
-
-            console.log(profile)
+        getHighQualityProfile(auth).then((profile)=>{            
             
             if(profile == null)
                 window.showToast('프로필 가져오기가 실패하였습니다', 'error')
             else
-                setProfileImage('aa')
+                setProfileImage(profile)
         })
     }, [auth])
     
@@ -83,9 +80,7 @@ export default function() {
 
     const onClickLogout = ()=>{
 
-        //setIsModalOpen(true)
-
-        setProfileImage('http://13.124.193.201:8080/api/blob/profile/20260407051945-752ae5d6-354b-4beb-b1d3-1b78c0229047.png')
+        setIsModalOpen(true)        
     }
 
 
@@ -114,12 +109,17 @@ export default function() {
         }
 
         if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
-
+            
             const blob = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
 
+            if(blob == null){
+                window.showToast('파일을 사용할 수 없습니다', 'error')
+                return
+            }
+        
             setImageFile(blob)
             
-            setIsImageCropModalOpen(true)
+            setIsImageCropModalOpen(true)        
         }
         else{
 

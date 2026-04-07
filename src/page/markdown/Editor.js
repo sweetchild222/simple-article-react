@@ -18,10 +18,6 @@ import PostModal from './PostModal.js'
 import ImageScale, {getBlob} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import '../../common/RotateLoading.css'
-import { BsTrash } from "react-icons/bs";
-import { PiTrash } from "react-icons/pi";
-
-import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 export default function() {
     
@@ -33,8 +29,7 @@ export default function() {
     const refImageCrop = useRef(null)
 
     const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
-    const [isReadOnly, setIsReadOnly] = useState(false)
-    const [saveTempTimerId, setSaveTempTimerId] = useState(null)
+    const [isReadOnly, setIsReadOnly] = useState(false)    
     const [isTouched, setIsTouched] = useState(false)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
     const [imageFile, setImageFile] = useState(null)
@@ -283,6 +278,12 @@ export default function() {
 
             const blob = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
 
+            if(blob == null){
+
+                window.showToast('파일을 사용할 수 없습니다', 'error')
+                return
+            }
+
             setImageFile(blob)
             
             setIsImageCropModalOpen(true)
@@ -383,7 +384,7 @@ export default function() {
             navigate('/login')
         })
     }
-            
+
 
     return validAuth(auth) ? (
         

@@ -16,9 +16,7 @@ export default function({src, onClick, onLoad, onError, width=64, height=64}) {
 
     }, [src])
         
-    const onLoadInner = (e) =>{
-
-        console.log('load')
+    const onLoadInner = (e) =>{        
 
         if(src != null)
             setIsLoading(false)
@@ -30,12 +28,7 @@ export default function({src, onClick, onLoad, onError, width=64, height=64}) {
     const onErrorInner = (e) =>{
         
         setIsLoading(false)
-
         setIsError(true)
-
-        console.log('error')
-
-        src = null
 
         if(onError != null)
             onError(e)

@@ -312,8 +312,8 @@ export default function() {
 
         const image = refImageCrop.current.image()
 
-        const canvasWidth = 512
-        const canvasHeight = 512
+        const canvasWidth = 256
+        const canvasHeight = 256
 
         const canvas = document.createElement('canvas')
         canvas.width = canvasWidth
@@ -333,8 +333,6 @@ export default function() {
             return
 
         const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + resArticleThumbnail.id
-
-        console.log(url)
 
         setThumbnailUrl(url)
         setIsImageCropModalOpen(false)

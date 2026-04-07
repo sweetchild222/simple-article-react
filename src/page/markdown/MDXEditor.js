@@ -29,9 +29,8 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin, ButtonWithTooltip} from '@mdxeditor/editor'
 
 
-export default function({ref, placeHolder, postImage, initMarkdown, readOnly=false, onChange, onParsingError, onUserError}) {
+export default function({ref, placeHolder, postImage, initMarkdown, onChange, onParsingError, onUserError}){
 
-  
   const refEditor = useRef(null);
     
   useEffect(()=>{
@@ -425,8 +424,6 @@ export default function({ref, placeHolder, postImage, initMarkdown, readOnly=fal
   }))
   
 
-  const draculaReadOnly = Object.assign([], dracula)
-  draculaReadOnly.push(EditorView.editable.of(false))
     
   const plugins = [
     
@@ -442,17 +439,17 @@ export default function({ref, placeHolder, postImage, initMarkdown, readOnly=fal
     maxLengthPlugin(65535),
     codeBlockPlugin({ defaultCodeBlockLanguage: 'ts'}),
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
-    codeMirrorPlugin({ codeMirrorExtensions: readOnly  ? [draculaReadOnly] : [dracula], codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'},  }),
+    codeMirrorPlugin({ codeMirrorExtensions: [dracula], codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'},  }),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: initMarkdown}),
     markdownShortcutPlugin(),
     maxLengthPlugin(65535),
-    toolbarPlugin({ toolbarClassName: readOnly ? 'toolbarRootHide' : 'toolbarRoot', toolbarContents: () => (readOnly ? null : <CustomToolbar />)})
+    toolbarPlugin({ toolbarClassName: 'toolbarRoot', toolbarContents: () => (<CustomToolbar />)})
   ]
 
   return (    
       <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={initMarkdown} onChange={onChange}
-        readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
+        plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
         translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>    
   )
 }

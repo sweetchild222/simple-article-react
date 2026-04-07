@@ -68,7 +68,7 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
   return ReactDOM.createPortal(
           <dialog id='imgCropDialog' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
-                <ImageCropper ref={refCropper} file={file} onSelectRect={onSelectRectCore} containerWidth={containerWidth} containerHeight={containerHeight}/>
+                <ImageCropper ref={refCropper} file={file} onSelectRect={onSelectRectCore} containerWidth={containerWidth} containerHeight={containerHeight} ratio={2}/>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                   <BeautyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</BeautyButton>
                   <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>

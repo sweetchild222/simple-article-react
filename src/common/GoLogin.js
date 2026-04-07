@@ -18,14 +18,10 @@ export default function({onClickGoLoginCustom}) {
 
     useEffect(()=>{
 
-        if(validAuth(auth)){
-            console.log('valid auth')
-            navigate(-1)
-        }
-        else{
-            console.log('intvalue auth')
-            removeProfile()
-        }
+        if(validAuth(auth))            
+            navigate(-1)        
+        else            
+            removeProfile()        
         
     }, [auth])
 

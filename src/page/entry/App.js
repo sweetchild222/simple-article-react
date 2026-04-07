@@ -27,13 +27,13 @@ import ToastContainer from '../../common/ToastContainer.js'
 
 
 
-export default function() {  
+export default function() {
 
-  const RootLayout = () => (    
-    <div style={{height:'auto', flex: 1}}>
+  const RootLayout = () => (
+    <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
       <Header/>
-      <Outlet />
-    </div>    
+      <Outlet/>      
+    </div>
   )
 
 
@@ -62,7 +62,6 @@ export default function() {
   ])
 
   return (
-    <div style={{height:'100%', display: 'flex', flexDirection: 'column'}}>
       <ErrorBoundary>
         <AuthProvider>
           <ProfileContext>
@@ -70,7 +69,6 @@ export default function() {
             <RouterProvider router={router}/>
           </ProfileContext>
         </AuthProvider>
-      </ErrorBoundary>
-    </div>
+      </ErrorBoundary>    
   )
 }

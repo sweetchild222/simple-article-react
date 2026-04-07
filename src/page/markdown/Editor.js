@@ -15,6 +15,8 @@ import { Prompt } from 'react-router'
 import ImageCropModal from '../../common/ImageCropModal.js'
 import PostModal from './PostModal.js'
 
+import OverlayLoading from '../../common/OverlayLoading.js'
+
 import ImageScale, {getBlob} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import '../../common/RotateLoading.css'
@@ -36,7 +38,7 @@ export default function() {
     const [isReadOnly, setIsReadOnly] = useState(false)
     const [saveTempTimerId, setSaveTempTimerId] = useState(null)
     const [isTouched, setIsTouched] = useState(false)
-    const [isOverlayLoading, setIsOverlayLoading] = useState(true)    
+    const [isOverlayLoading, setIsOverlayLoading] = useState(false)
     const [imageFile, setImageFile] = useState(null)    
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
@@ -118,18 +120,22 @@ export default function() {
     
     
     const onClickPostModal = async() => {
+
+        setIsOverlayLoading(true)
+
+        console.log('asdf')
         
-        const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
+        // const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
         
-        if(res == null)
-            return -1
+        // if(res == null)
+        //     return -1
 
-        if(res.length == 0)
-            return -1
+        // if(res.length == 0)
+        //     return -1
 
-        setCategories(res)
+        // setCategories(res)
 
-        setIsPostModalOpen(true)
+        // setIsPostModalOpen(true)
     }
 
 
@@ -210,6 +216,9 @@ export default function() {
             thumbnail:thumbUrl,
             category_id:category_id
         }
+
+
+        console.log(content)
         
         return await ArticleAPI.putArticle(auth.jwt, article_id, payload)
     }
@@ -218,7 +227,7 @@ export default function() {
         
         setIsSaveTempLoading(true)
         
-        stopTimer()
+        //stopTimer()
 
         const res = await saveCore()
 
@@ -396,6 +405,7 @@ export default function() {
         const title = refTitle.current.value
         const content = refMDX.current.getMarkdown()
         const posted = 1
+        
 
         const res = await putArticle(article_id, title, content, thumbnailUrl, open_type, posted, category_id)
 
@@ -414,34 +424,37 @@ export default function() {
 
         setIsTouched(false)
 
-        setTimeout(()=> {            
+        setTimeout(()=> {
             navigate('/login')
         })
     }
             
-    
 
     return validAuth(auth) ? (
-        // <div className={`${isOverlayLoading ? 'rotateLoading': ''}`} style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
-        <div style={{height:'100%', width:'100%', display: 'flex', flexDirection: 'column'}}>
-            {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply}></ImageCropModal>}
-            <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
-                <BeautyButton type='success' onClick={toggleViewer}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
-                <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
-                <input ref={refTitle} readOnly={isReadOnly} maxLength="256" style={{flexGrow:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
-                <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=64x64') : null} onClick={onClickThumbnail} width={64} height={64}/>
-            </div>
-            <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'75vh', flex: 1}}>
-                <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
-                    onChange={onChangeContent} onUserError={onUserError} readOnly={isReadOnly} onParsingError={onParsingError}
-                />
-            </div>
-            <div style={{display: 'flex', flexDirection: 'row-reverse', margin:'5px'}}>
-                <BeautyButton type='danger' onClick={onClickLeave}>나가기</BeautyButton>
-                <BeautyButton type='confirm' onClick={onClickPostModal}>올리기</BeautyButton>
-                {categories != null && <PostModal categories={categories} isOpen={isPostModalOpen} onClose={()=>setIsPostModalOpen(false)} onPost={onPost}/>}
-                <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>
-                <label ref={refLength}></label>
+        
+        <div style={{flex:1}}>
+            <div style={{height:'100%', display: 'flex', flexDirection: 'column'}}>
+                <div style={{display: 'flex', flexDirection: 'row', margin:'5px'}}>
+                    <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=64x64') : null} onClick={onClickThumbnail} width={64} height={64}/>
+                    {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply}></ImageCropModal>}
+                    <input ref={refTitle} readOnly={isReadOnly} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
+                    <BeautyButton type='success' onClick={toggleViewer}>{isReadOnly ? '수정하기' : '미리보기'}</BeautyButton>
+                </div>
+                <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, backgroundColor:'white', margin:'0px 5px 5px 5px'}}>
+                    <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
+                    onChange={onChangeContent} onUserError={onUserError} readOnly={isReadOnly} onParsingError={onParsingError}/>
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', flex: 0, margin:'0px 5px 5px 5px'}}>
+                    <label ref={refLength}></label>
+                    <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>                                        
+                    <BeautyButton type='confirm' onClick={onClickPostModal}>올리기</BeautyButton>                    
+                    <BeautyButton type='danger' onClick={onClickLeave}>나가기</BeautyButton>
+                    <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
+                    {categories != null && <PostModal categories={categories} isOpen={isPostModalOpen} onClose={()=>setIsPostModalOpen(false)} onPost={onPost}/>}
+                    
+                    
+                    
+                </div>
             </div>
         </div>
     ) : (<GoLogin onClickGoLoginCustom={onClickGoLogin} />)

@@ -126,10 +126,11 @@ export default function() {
             input_repeat_password.focus()
     }
 
+    
 
     return validAuth(auth) ? (
-
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        
+      <div style={{flex:1, backgroundColor:'rgba(255,255,0,0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <label htmlFor='input_current_password'>기존 비밀번호</label>
         <input id='input_current_password' type='text' onKeyDown={onKeyDownCurrent}/>
         <label>비밀번호 조건: 8자 ~ 20자 사이 문자열로 영어소문자, 영어대문자, 숫자, 특수문자 포함</label>

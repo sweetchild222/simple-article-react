@@ -450,11 +450,9 @@ export default function({ref, placeHolder, postImage, initMarkdown, readOnly=fal
 
 
 
-  return (
-    <div>
+  return (    
       <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={initMarkdown} onChange={onChange}
         readOnly={readOnly} plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
-        translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
-    </div>
+        translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>    
   )
 }

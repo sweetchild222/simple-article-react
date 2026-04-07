@@ -9,7 +9,9 @@ import React, { useContext} from 'react';
 export default function() {
 
     return (
-        <label>page not found</label>
+        <div>
+            <label>page not found</label>
+        </div>
     );
 }
 

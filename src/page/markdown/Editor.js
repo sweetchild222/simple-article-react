@@ -312,8 +312,8 @@ export default function() {
 
         const image = refImageCrop.current.image()
 
-        const canvasWidth = 512
-        const canvasHeight = 512
+        const canvasWidth = 1024
+        const canvasHeight = 768
 
         const canvas = document.createElement('canvas')
         canvas.width = canvasWidth
@@ -388,8 +388,8 @@ export default function() {
             {isOverlayLoading && <div style={{width:'100%', height:'100%', position: 'absolute', zIndex: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}} className={`rotateLoading`}/>}
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
                 <div style={{display: 'flex', flexDirection: 'row', margin:'5px'}}>
-                    <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=64x64') : null} onClick={onClickThumbnail} width={64} height={64}/>
-                    {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
+                    <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=160x120') : null} onClick={onClickThumbnail} width={160} height={120}/>
+                    {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1.333}></ImageCropModal>}
                     <input ref={refTitle} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>                    
                 </div>
                 <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, margin:'0px 5px 5px 5px'}}>

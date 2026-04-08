@@ -18,9 +18,9 @@ export default function({ref, file, onSelectRect,
 
   const refSelect = useRef(null)
   const refCover = useRef(null)
-  const refContain = useRef(null)
+  const refContain = useRef(null)  
     
-  const selectMinHeight = keepRatio != null ? (selectMinWidth / keepRatio) : selectMinWidth
+  const selectMinHeight = keepRatio != null ? Math.round(selectMinWidth / keepRatio) : selectMinWidth
 
   const calcContainScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 

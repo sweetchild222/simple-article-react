@@ -191,7 +191,7 @@ export default function() {
     return validAuth(auth) ? (
       <div id='profile'>
         <LoadingImage src={profileImage} onClick={onClickProfile} width={256} height={256}/>
-        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={2}></ImageCropModal>}
+        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply}></ImageCropModal>}
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
         <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>

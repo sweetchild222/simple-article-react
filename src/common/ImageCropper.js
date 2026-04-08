@@ -4,7 +4,7 @@ import './RotateLoading.css'
 
 export default function({ref, file, onSelectRect,
                         containerWidth=512, containerHeight=512,
-                        selectMinWidth=128, keepRatio=2}) {
+                        selectMinWidth=128, keepRatio}) {
 
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
@@ -19,8 +19,8 @@ export default function({ref, file, onSelectRect,
   const refSelect = useRef(null)
   const refCover = useRef(null)
   const refContain = useRef(null)
-
-  const selectMinHeight = selectMinWidth / keepRatio
+    
+  const selectMinHeight = keepRatio != null ? (selectMinWidth / keepRatio) : selectMinWidth
 
   const calcContainScale = (containerWidth, containerHeight, imageNaturalWidth, imageNaturalHeight) =>{
 
@@ -349,7 +349,8 @@ export default function({ref, file, onSelectRect,
     let calcWidth = lastRect.width + (lastRect.x - newX)
     let calcHeight = lastRect.height + (lastRect.y - newY)
 
-    const position = keepRatioLeftTop(newX, newY, calcWidth, calcHeight, imageRect, keepRatio)
+    const position = keepRatio ? keepRatioLeftTop(newX, newY, calcWidth, calcHeight, imageRect, keepRatio)
+                              : {x:newX, y:newY, width:calcWidth, height:calcHeight}
 
     const newWidth = position.width < selectMinWidth ? selectMinWidth : position.width
     const newHeight = position.height < selectMinHeight ? selectMinHeight : position.height
@@ -408,8 +409,9 @@ export default function({ref, file, onSelectRect,
     if(calcWidth > maxWidth)
       calcWidth = maxWidth
 
-    const position = keepRatioRightTop(newX, newY, calcWidth, calcHeight, imageRect, keepRatio, maxWidth)
-
+    const position = keepRatio ? keepRatioRightTop(newX, newY, calcWidth, calcHeight, imageRect, keepRatio, maxWidth)
+                              : {x:newX, y:newY, width:calcWidth, height:calcHeight}
+    
     const newWidth = position.width < selectMinWidth ? selectMinWidth : position.width
     const newHeight = position.height < selectMinHeight ? selectMinHeight : position.height
 
@@ -464,8 +466,9 @@ export default function({ref, file, onSelectRect,
     if(calcHeight > maxHeight)
       calcHeight = maxHeight
 
-    const position = keepRatioLeftBottom(newX, newY, calcWidth, calcHeight, imageRect, keepRatio, maxHeight)
-
+    const position = keepRatio ? keepRatioLeftBottom(newX, newY, calcWidth, calcHeight, imageRect, keepRatio, maxHeight)
+                              : {x:newX, y:newY, width:calcWidth, height:calcHeight}
+    
     const newWidth = position.width < selectMinWidth ? selectMinWidth : position.width
     const newHeight = position.height < selectMinHeight ? selectMinHeight : position.height
 
@@ -514,9 +517,11 @@ export default function({ref, file, onSelectRect,
     
     const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
     const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
-        
-    const position = keepRatioRightBottom(newX, newY, calcWidth, calcHeight, imageRect, keepRatio, maxWidth, maxHeight)
-    
+
+
+    const position = keepRatio ? keepRatioRightBottom(newX, newY, calcWidth, calcHeight, imageRect, keepRatio, maxWidth, maxHeight)
+                              : {x:newX, y:newY, width:(calcWidth > maxWidth ? maxWidth : calcWidth), height:(calcHeight > maxHeight ? maxHeight : calcHeight)}
+            
     const newWidth = position.width < selectMinWidth ? selectMinWidth : position.width
     const newHeight = position.height < selectMinHeight ? selectMinHeight : position.height
 

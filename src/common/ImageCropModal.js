@@ -8,7 +8,7 @@ import ImageCropper from './ImageCropper.js'
 import BeautyButton from "../common/BeautyButton.js"
 import ReactDOM from 'react-dom';
 
-export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply, containerWidth=512, containerHeight=512}) {
+export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply, containerWidth=512, containerHeight=512, keepRatio=1}) {
     
   const refCropper = useRef(null)
   const refDialog = useRef(null)
@@ -64,11 +64,10 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
     }
   }, [refCropper])
 
-
   return ReactDOM.createPortal(
           <dialog id='imgCropDialog' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
-                <ImageCropper ref={refCropper} file={file} onSelectRect={onSelectRectCore} containerWidth={containerWidth} containerHeight={containerHeight} ratio={2}/>
+                <ImageCropper ref={refCropper} file={file} onSelectRect={onSelectRectCore} containerWidth={containerWidth} containerHeight={containerHeight} keepRatio={keepRatio}/>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                   <BeautyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</BeautyButton>
                   <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>

@@ -389,7 +389,7 @@ export default function() {
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
                 <div style={{display: 'flex', flexDirection: 'row', margin:'5px'}}>
                     <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=64x64') : null} onClick={onClickThumbnail} width={64} height={64}/>
-                    {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply}></ImageCropModal>}
+                    {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
                     <input ref={refTitle} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>                    
                 </div>
                 <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, margin:'0px 5px 5px 5px'}}>

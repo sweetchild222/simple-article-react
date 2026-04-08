@@ -136,7 +136,7 @@ export default function({ref, file, onSelectRect,
     ctx.reset()
 
     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
-
+    
     ctx.fillRect(0, 0, imageRect.width, y)
     ctx.fillRect(0, y + selectRect.height, imageRect.width, imageRect.height - y - selectRect.height)
     ctx.fillRect(0, y, x, selectRect.height)
@@ -337,6 +337,7 @@ export default function({ref, file, onSelectRect,
 
   const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 
+
   const dragLeftTop = (x, y, imageRect, lastRect) => {
 
     const maxX = lastRect.x + (lastRect.width - selectMinWidth)
@@ -348,39 +349,48 @@ export default function({ref, file, onSelectRect,
     let calcWidth = lastRect.width + (lastRect.x - newX)
     let calcHeight = lastRect.height + (lastRect.y - newY)
 
-    if(calcWidth > (calcHeight * ratio)){
+    const position = keepRatioLeftTop(newX, newY, calcWidth, calcHeight, imageRect, ratio)
+
+    const newWidth = position.width < selectMinWidth ? selectMinWidth : position.width
+    const newHeight = position.height < selectMinHeight ? selectMinHeight : position.height
+
+    return {x: position.x, y: position.y, width:newWidth, height:newHeight}
+  }
+
+
+  const keepRatioLeftTop = (x, y, width, height, imageRect, ratio) => {
+
+    if(width > (height * ratio)){
       
-      newY -= (calcWidth / ratio) - calcHeight
+      y -= (width / ratio) - height
       
-      if(newY < imageRect.y) {
+      if(y < imageRect.y) {
         
-        const overHeight = (imageRect.y - newY)
-        calcWidth -= (overHeight * ratio)
-        newX += (overHeight * ratio)
-        newY = imageRect.y
+        const overHeight = (imageRect.y - y)
+        width -= (overHeight * ratio)
+        x += (overHeight * ratio)
+        y = imageRect.y
       }
 
-      calcHeight = calcWidth / ratio
+      height = width / ratio
     }
     else{      
 
-      newX -= (calcHeight * ratio) - calcWidth
+      x -= (height * ratio) - width
 
-      if(newX < imageRect.x){        
-        const overWidth = (imageRect.x - newX)
-        calcHeight -= (overWidth / ratio)
-        newY += (overWidth / ratio)
-        newX = imageRect.x
+      if(x < imageRect.x){
+        const overWidth = (imageRect.x - x)
+        height -= (overWidth / ratio)
+        y += (overWidth / ratio)
+        x = imageRect.x
       }
 
-      calcWidth = calcHeight * ratio
+      width = height * ratio
     }
 
-    const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-    const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-
-    return {x: newX, y: newY, width:newWidth, height:newHeight}
+    return {x:Math.round(x), y:Math.round(y), width:Math.round(width), height:Math.round(height)}
   }
+
 
 
   const dragRigthTop = (x, y, imageRect, lastRect) => {
@@ -398,37 +408,45 @@ export default function({ref, file, onSelectRect,
     if(calcWidth > maxWidth)
       calcWidth = maxWidth
 
-    if((calcHeight * ratio) > calcWidth){
+    const position = keepRatioRightTop(newX, newY, calcWidth, calcHeight, imageRect, ratio, maxWidth)
 
-      calcWidth = calcHeight * ratio
+    const newWidth = position.width < selectMinWidth ? selectMinWidth : position.width
+    const newHeight = position.height < selectMinHeight ? selectMinHeight : position.height
 
-      if(calcWidth > maxWidth){
+    return {x: position.x, y: position.y, width:newWidth, height:newHeight}
+  }
 
-        const overWidth = (calcWidth - maxWidth)
-        calcWidth = maxWidth
-        calcHeight -= overWidth / ratio
-        newY += overWidth / ratio
+
+  const keepRatioRightTop = (x, y, width, height, imageRect, ratio, maxWidth) => {
+
+    if((height * ratio) > width){
+
+      width = height * ratio
+
+      if(width > maxWidth){
+
+        const overWidth = (width - maxWidth)
+        width = maxWidth
+        height -= overWidth / ratio
+        y += overWidth / ratio
       }
     }
     else{
 
-      newY -= (calcWidth / ratio) - calcHeight
+      y -= (width / ratio) - height
                 
-      if(newY < imageRect.y){
-        const overHeight = (imageRect.y - newY)
-        calcWidth -= (overHeight * ratio)
-        newY = imageRect.y
+      if(y < imageRect.y){
+        const overHeight = (imageRect.y - y)
+        width -= (overHeight * ratio)
+        y = imageRect.y
       }
 
-      calcHeight = calcWidth / ratio
+      height = width / ratio
     }
 
-
-    const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-    const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-
-    return {x: newX, y: newY, width:newWidth, height:newHeight}
+    return {x:Math.round(x), y:Math.round(y), width:Math.round(width), height:Math.round(height)}
   }
+
 
 
   const dragLeftBottom = (x, y, imageRect, lastRect) => {
@@ -442,39 +460,47 @@ export default function({ref, file, onSelectRect,
     let calcHeight = lastRect.height + (y - newY)
 
     const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
-    
+        
     if(calcHeight > maxHeight)
       calcHeight = maxHeight
 
-    if(calcWidth > (calcHeight * ratio)){
+    const position = keepRatioLeftBottom(newX, newY, calcWidth, calcHeight, imageRect, ratio, maxHeight)
 
-      calcHeight = calcWidth / ratio
+    const newWidth = position.width < selectMinWidth ? selectMinWidth : position.width
+    const newHeight = position.height < selectMinHeight ? selectMinHeight : position.height
 
-      if(calcHeight > maxHeight){
+    return {x: position.x, y: position.y, width: newWidth, height:newHeight}
+  }
 
-        const overHeight = (calcHeight - maxHeight)
-        calcHeight = maxHeight
-        calcWidth -= (overHeight * ratio)
-        newX += (overHeight * ratio)
+
+  const keepRatioLeftBottom = (x, y, width, height, imageRect, ratio, maxHeight) => {
+
+    if(width > (height * ratio)){
+
+      height = width / ratio
+
+      if(height > maxHeight){
+
+        const overHeight = (height - maxHeight)
+        height = maxHeight
+        width -= (overHeight * ratio)
+        x += (overHeight * ratio)
       }
     }
     else{
 
-      newX -= ((calcHeight * ratio) - calcWidth)
+      x -= ((height * ratio) - width)
                 
-      if(newX < imageRect.x){
-        const overWidth = (imageRect.x - newX)
-        calcHeight -= overWidth / ratio
-        newX = imageRect.x
+      if(x < imageRect.x){
+        const overWidth = (imageRect.x - x)
+        height -= overWidth / ratio
+        x = imageRect.x
       }
 
-      calcWidth = calcHeight * ratio
+      width = height * ratio
     }
 
-    const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-    const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
-
-    return {x: newX, y: newY, width:newWidth, height:newHeight}
+    return {x:Math.round(x), y:Math.round(y), width:Math.round(width), height:Math.round(height)}
   }
   
 
@@ -489,31 +515,39 @@ export default function({ref, file, onSelectRect,
     const maxWidth = ((imageRect.x + imageRect.width) - lastRect.x)
     const maxHeight = ((imageRect.y + imageRect.height) - lastRect.y)
         
-    if(calcWidth > calcHeight * ratio)
-      calcHeight = calcWidth / ratio
-    else
-      calcWidth = calcHeight * ratio
+    const position = keepRatioRightBottom(newX, newY, calcWidth, calcHeight, imageRect, ratio, maxWidth, maxHeight)
+    
+    const newWidth = position.width < selectMinWidth ? selectMinWidth : position.width
+    const newHeight = position.height < selectMinHeight ? selectMinHeight : position.height
 
-    const overWidth = (calcWidth - maxWidth)
-    const overHeight = (calcHeight - maxHeight)
+    return {x: position.x, y: position.y, width:newWidth, height:newHeight}
+  }
+
+
+  const keepRatioRightBottom = (x, y, width, height, imageRect, ratio, maxWidth, maxHeight) => {
+
+    if(width > height * ratio)
+      height = width / ratio
+    else
+      width = height * ratio
+
+    const overWidth = (width - maxWidth)
+    const overHeight = (height - maxHeight)
 
     if(overWidth >= (overHeight * ratio)){  
       if(overWidth > 0){    
-        calcWidth -= overWidth
-        calcHeight -= overWidth / ratio
+        width -= overWidth
+        height -= overWidth / ratio
       }
     }
     else{    
       if(overHeight > 0){      
-        calcWidth -= overHeight * ratio
-        calcHeight -= overHeight
+        width -= overHeight * ratio
+        height -= overHeight
       }
     }
-    
-    const newWidth = calcWidth < selectMinWidth ? selectMinWidth : calcWidth
-    const newHeight = calcHeight < selectMinHeight ? selectMinHeight : calcHeight
 
-    return {x: newX, y: newY, width:newWidth, height:newHeight}
+    return {x:Math.round(x), y:Math.round(y), width:Math.round(width), height:Math.round(height)}
   }
 
 

@@ -290,14 +290,6 @@ export default function() {
     }
 
 
-    const canvasToFormData = async(canvas) =>{
-
-
-
-        return formData
-    }
-
-
     const onClickApply = async() => {
     
         const rect = refImageCrop.current.rect()
@@ -309,7 +301,7 @@ export default function() {
         const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
         
         const blob = await blobFromCanvas(canvas)
-
+            
         const formData = new FormData()
         formData.append('image', blob)
 
@@ -318,11 +310,11 @@ export default function() {
         if(resArticleThumbnail == null)
             return
 
-        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + resArticleThumbnail.id        
+        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + resArticleThumbnail.id
 
         setThumbnailUrl(url)
         setIsImageCropModalOpen(false)
-        setIsTouched(true)        
+        setIsTouched(true)
     }
 
     const onPost = async(category_id, open_type) => {

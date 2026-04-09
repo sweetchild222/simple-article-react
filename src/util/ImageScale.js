@@ -52,7 +52,7 @@ export const blobFromCanvas = (canvas) => {
 
 
 export const drawImage = async(image, x, y, width, height, dx, dy, dWidth, dHeight) => {
-      
+    
     const canvas = document.createElement('canvas')
     canvas.width = dWidth
     canvas.height = dHeight
@@ -60,7 +60,7 @@ export const drawImage = async(image, x, y, width, height, dx, dy, dWidth, dHeig
 
     ctx.imageSmoothingEnabled = false;
 
-    ctx.drawImage(image, x, y, width, height, dx, dy, dWidth, dWidth)
+    ctx.drawImage(image, x, y, width, height, dx, dy, dWidth, dHeight)
 
     return canvas
 }

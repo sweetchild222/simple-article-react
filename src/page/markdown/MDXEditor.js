@@ -212,11 +212,28 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
     const onClickApply = async() => {
 
       const rect = refImageCrop.current.rect()
-
       const image = refImageCrop.current.image()
 
-      const dWidth = rect.width
-      const dHeight = rect.height
+      //const dWidth = rect.width
+      //const dHeight = rect.height
+
+      const maxResolution = 512
+
+      const widthRatio = rect.width / maxResolution
+      const heightRatio = rect.height / maxResolution
+
+      const ratio = widthRatio > heightRatio ? widthRatio : heightRatio
+
+      console.log(widthRatio, heightRatio)
+
+      if(ratio > 1){
+        console.log('over')
+      }
+      else
+        console.log('xxx')
+
+      const dWidth = ratio > 1 ? Math.round(rect.width / ratio) : rect.width
+      const dHeight = ratio > 1 ? Math.round(rect.height / ratio) : rect.height
 
       const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
 
@@ -241,7 +258,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
     return (
       <div>
         <ButtonWithTooltip style={{height:'100%'}} onClick={onClickPickFile} title="이미지 파일 삽입"><LuImageUp size={23}/></ButtonWithTooltip>
-        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} ></ImageCropModal>}        
+        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} selectMinWidth={64} onClickApply={onClickApply}/>}
       </div>
     )
   }

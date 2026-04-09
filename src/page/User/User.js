@@ -17,7 +17,7 @@ import Modal from "../../common/Modal.js"
 import GoLogin from "../../common/GoLogin.js";
 
 import BeautyButton from '../../common/BeautyButton.js';
-import ImageScale, {blobFromCanvas} from "../../util/ImageScale.js";
+import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
@@ -133,12 +133,7 @@ export default function() {
 
     const canvasToFormData = async(canvas) =>{
 
-        const blob = await getBlob(canvas)
 
-        const formData = new FormData()
-        formData.append('image', blob)
-
-        return formData
     }
 
 
@@ -147,21 +142,16 @@ export default function() {
         const rect = refImageCrop.current.rect()
         const image = refImageCrop.current.image()
 
-        const canvasWidth = 256
-        const canvasHeight = 256
+        const dWidth = 256
+        const dHeight = 256
 
-        const canvas = document.createElement('canvas')
-        canvas.width = canvasWidth
-        canvas.height = canvasHeight
+        const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
+
+        const blob = await blobFromCanvas(canvas)
+
+        const formData = new FormData()
+        formData.append('image', blob)
         
-        const ctx = canvas.getContext('2d')
-
-        ctx.imageSmoothingEnabled = false;
-
-        ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, canvasWidth, canvasHeight)
-
-        const formData = await canvasToFormData(canvas)
-
         const resProfile = await BlobAPI.postProfile(auth.jwt, formData)
 
         if(resProfile == null)

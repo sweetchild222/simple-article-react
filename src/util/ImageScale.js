@@ -83,7 +83,7 @@ export default function(file, maxWidth, maxHeight, minWidth, minHeight){
 
           const canvas = drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight)
               
-          resolve(await blobFromCanvas(canvas))
+          resolve(canvas)
       }
 
       img.onerror = () => {

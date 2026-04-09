@@ -166,7 +166,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
 
 
 
-  const ImageCropButton = () =>{
+  const ImageFileButton = () =>{
 
     const insertImage = usePublisher(insertImage$)
 
@@ -175,7 +175,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
 
     const refImageCrop = useRef(null)
 
-    const selectImage = async() => {
+    const onClickPickFile = async() => {
 
       const imageFile = await pickImageFile()
 
@@ -189,14 +189,14 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
 
       if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
           
-          const blob = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
+          const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
 
-          if(blob == null){
+          if(canvas == null){
               window.showToast('파일을 사용할 수 없습니다', 'error')
               return
           }
       
-          setImageFile(blob)
+          setImageFile(await blobFromCanvas(canvas))
           
           setIsImageCropModalOpen(true)
       }
@@ -240,14 +240,14 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
 
     return (
       <div>
-        <ButtonWithTooltip style={{height:'100%'}} onClick={selectImage} title="이미지 파일 삽입"><LuImageUp size={23}/></ButtonWithTooltip>
+        <ButtonWithTooltip style={{height:'100%'}} onClick={onClickPickFile} title="이미지 파일 삽입"><LuImageUp size={23}/></ButtonWithTooltip>
         {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} ></ImageCropModal>}        
       </div>
     )
   }
 
 
-  const ImageButton = () =>{
+  const ImageLinkButton = () =>{
 
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
     const [imageUrl, setImageUrl] = useState('')    
@@ -415,8 +415,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
                 />
                 <Separator />
                 <CreateLink/>
-                <ImageButton/>
-                <ImageCropButton/>
+                <ImageLinkButton/>
+                <ImageFileButton/>
                 {/* <InsertImage /> */}
                 <YouTubeButton />
                 <Separator />

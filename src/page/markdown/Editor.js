@@ -273,12 +273,11 @@ export default function() {
             const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
 
             if(canvas == null){
-
                 window.showToast('파일을 사용할 수 없습니다', 'error')
                 return
             }
 
-            setImageFile(blobFromCanvas(canvas))
+            setImageFile(await blobFromCanvas(canvas))
             
             setIsImageCropModalOpen(true)
         }

@@ -2,9 +2,7 @@ import {useState, useRef, useEffect, useCallback, useImperativeHandle} from 'rea
 import './ImageCropper.css'
 import './RotateLoading.css'
 
-export default function({ref, file, onSelectRect,
-                        containerWidth=512, containerHeight=512,
-                        selectMinWidth=128, keepRatio}) {
+export default function({ref, file, containerWidth=512, containerHeight=512, selectMinWidth=128, keepRatio}) {
 
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
@@ -14,6 +12,7 @@ export default function({ref, file, onSelectRect,
   const [coverSize, setCoverSize] = useState({width:0, height:0})
   const [isContain, setContain] = useState(true)
   const [selectRect, setSelectRect] = useState(null)
+  const [imageSelectRect, setImageSelectRect] = useState(null)
   const [image, setImage] = useState(null)
 
   const refSelect = useRef(null)
@@ -145,7 +144,9 @@ export default function({ref, file, onSelectRect,
     setIsLoading(false)
     
     const rect = isContain ? calcContainRect(selectRect, imageRect) : calcCoverRect(selectRect, imageRect)
-    onSelectRect(rect)
+
+    setImageSelectRect(rect)
+    //onSelectRect(rect)
 
   }, [selectRect])
 
@@ -186,9 +187,13 @@ export default function({ref, file, onSelectRect,
     return {
       image() {
         return image
+      },
+      rect(){
+
+        return imageSelectRect
       }
     }
-  }, [image]);
+  }, [image, imageSelectRect])
 
   
 

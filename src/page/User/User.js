@@ -17,7 +17,7 @@ import Modal from "../../common/Modal.js"
 import GoLogin from "../../common/GoLogin.js";
 
 import BeautyButton from '../../common/BeautyButton.js';
-import ImageScale, {getBlob} from "../../util/ImageScale.js";
+import ImageScale, {blobFromCanvas} from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
@@ -110,14 +110,14 @@ export default function() {
 
         if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
             
-            const blob = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
+            const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
 
-            if(blob == null){
+            if(canvas == null){
                 window.showToast('파일을 사용할 수 없습니다', 'error')
                 return
             }
         
-            setImageFile(blob)
+            setImageFile(await blobFromCanvas(canvas))
             
             setIsImageCropModalOpen(true)        
         }
@@ -142,11 +142,9 @@ export default function() {
     }
 
 
-    const onClickApply = async(rect) => {
+    const onClickApply = async() => {
 
-        if(rect == null)
-            return
-
+        const rect = refImageCrop.current.rect()
         const image = refImageCrop.current.image()
 
         const canvasWidth = 256

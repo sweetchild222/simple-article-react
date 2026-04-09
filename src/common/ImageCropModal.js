@@ -8,7 +8,7 @@ import ImageCropper from './ImageCropper.js'
 import BeautyButton from "../common/BeautyButton.js"
 import ReactDOM from 'react-dom';
 
-export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply, containerWidth=512, containerHeight=512, keepRatio}) {
+export default function({ref, isOpen, onClose, file, onClickApply, containerWidth=512, containerHeight=512, keepRatio}) {
     
   const refCropper = useRef(null)
   const refDialog = useRef(null)
@@ -18,10 +18,10 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
   
   useEffect(() => {
       
-      if(isOpen)
-          refDialog.current.showModal()
-      else
-          refDialog.current.close()
+    if(isOpen)
+        refDialog.current.showModal()
+    else
+        refDialog.current.close()
 
   }, [isOpen]);
 
@@ -33,23 +33,12 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
       }
   }
 
-
-  let lastRect = null
-
-  const onSelectRectCore = (rect) =>{
-
-    lastRect = rect
-
-    if(onSelectRect != null)
-      onSelectRect(rect)
-  }
-
-
+  
   const onClickApplyCore = async() =>{
-
+    
     if(onClickApply != null){
       setIsApplyLoading(true)
-      await onClickApply(lastRect)
+      await onClickApply()    
       setIsApplyLoading(false)
     }
   }
@@ -60,6 +49,9 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
     return {
       image() {
         return refCropper.current.image()
+      },
+      rect(){
+        return refCropper.current.rect()
       }
     }
   }, [refCropper])
@@ -67,7 +59,7 @@ export default function({ref, isOpen, onClose, file, onSelectRect, onClickApply,
   return ReactDOM.createPortal(
           <dialog id='imgCropDialog' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
-                <ImageCropper ref={refCropper} file={file} onSelectRect={onSelectRectCore} containerWidth={containerWidth} containerHeight={containerHeight} keepRatio={keepRatio}/>
+                <ImageCropper ref={refCropper} file={file} containerWidth={containerWidth} containerHeight={containerHeight} keepRatio={keepRatio}/>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                   <BeautyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</BeautyButton>
                   <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>

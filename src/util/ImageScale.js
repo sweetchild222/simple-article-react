@@ -37,7 +37,7 @@ const calcScaled = (imageWidth, imageHeight, maxWidth, maxHeight, minWidth, minH
 }
 
 
-export const getBlob = (canvas) => {
+export const blobFromCanvas = (canvas) => {
 
   return new Promise((resolve) => {
 
@@ -48,6 +48,23 @@ export const getBlob = (canvas) => {
       })
   })
 }
+
+
+
+export const drawImage = async(image, x, y, width, height, dx, dy, dWidth, dHeight) => {
+      
+    const canvas = document.createElement('canvas')
+    canvas.width = dWidth
+    canvas.height = dHeight
+    const ctx = canvas.getContext('2d')
+
+    ctx.imageSmoothingEnabled = false;
+
+    ctx.drawImage(image, x, y, width, height, dx, dy, dWidth, dWidth)
+
+    return canvas
+}
+
 
 
 export default function(file, maxWidth, maxHeight, minWidth, minHeight){
@@ -63,15 +80,10 @@ export default function(file, maxWidth, maxHeight, minWidth, minHeight){
       img.onload = async() => {
 
           const scaled = calcScaled(img.width, img.height, maxWidth, maxHeight, minWidth, minHeight)
-              
-          const canvas = document.createElement('canvas');
-          canvas.width = scaled.dWidth;
-          canvas.height = scaled.dHeight;
-          const ctx = canvas.getContext('2d');
 
-          ctx.drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight);
-          
-          resolve(await getBlob(canvas))
+          const canvas = drawImage(img, scaled.sx, scaled.sy, scaled.sWidth, scaled.sHeight, scaled.dx, scaled.dy, scaled.dWidth, scaled.dHeight)
+              
+          resolve(await blobFromCanvas(canvas))
       }
 
       img.onerror = () => {

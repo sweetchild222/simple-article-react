@@ -11,12 +11,14 @@ import { LuImagePlus } from "react-icons/lu";
 
 import './MDXEditor.css'
 import AuthContext from "../../util/AuthContext.js";
-import {pickImageFile} from "../../util/ImagePicker.js";
+import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
+import ImageCropModal from '../../common/ImageCropModal.js'
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
-import ImageScale from "../../util/ImageScale.js";
+import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 import { FiYoutube } from "react-icons/fi";
+import { LuImageUp } from "react-icons/lu";
 
 import {dracula} from 'thememirror';
 import { EditorView } from '@codemirror/view'
@@ -27,7 +29,6 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   toolbarPlugin, linkDialogPlugin, insertDirective$, ConditionalContents, Separator, HighlightToggle, StrikeThroughSupSubToggles,
   diffSourcePlugin, InsertTable, InsertThematicBreak, InsertCodeBlock, InsertFrontmatter, InsertAdmonition, insertImage$,
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin, ButtonWithTooltip} from '@mdxeditor/editor'
-
 
 export default function({ref, placeHolder, postImage, initMarkdown, onChange, onParsingError, onUserError}){
 
@@ -164,11 +165,92 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
   }
 
 
+
+  const ImageCropButton = () =>{
+
+    const insertImage = usePublisher(insertImage$)
+
+    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
+    const [imageFile, setImageFile] = useState(null)
+
+    const refImageCrop = useRef(null)
+
+    const selectImage = async() => {
+
+      const imageFile = await pickImageFile()
+
+      if(imageFile == null)
+            return
+        
+      if(imageFile.format == 'unknown'){
+          window.showToast('파일을 사용할 수 없습니다', 'error')
+          return
+      }
+
+      if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
+          
+          const blob = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
+
+          if(blob == null){
+              window.showToast('파일을 사용할 수 없습니다', 'error')
+              return
+          }
+      
+          setImageFile(blob)
+          
+          setIsImageCropModalOpen(true)
+      }
+      else{
+
+          setImageFile(imageFile.file)
+
+          setIsImageCropModalOpen(true)
+      }
+    }
+
+
+    const onClickApply = async() => {
+
+      const rect = refImageCrop.current.rect()
+
+      const image = refImageCrop.current.image()
+
+      const dWidth = rect.width
+      const dHeight = rect.height
+
+      const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
+
+      const url = await postImage(await blobFromCanvas(canvas))
+
+      if(url == null){
+        userErrorHandle('파일을 업로드할 수 없습니다')
+        setIsImageCropModalOpen(false)
+        return
+      }
+
+      setIsImageCropModalOpen(false)
+
+      insertImage({
+        src: url,
+        altText: '',
+        title: ''
+      });
+    }
+    
+
+    return (
+      <div>
+        <ButtonWithTooltip style={{height:'100%'}} onClick={selectImage} title="이미지 파일 삽입"><LuImageUp size={23}/></ButtonWithTooltip>
+        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} ></ImageCropModal>}        
+      </div>
+    )
+  }
+
+
   const ImageButton = () =>{
 
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
-    const [imageUrl, setImageUrl] = useState('')
-    const [isLoadingUpload, setIsLoadingUpload] = useState(false)
+    const [imageUrl, setImageUrl] = useState('')    
     const [isDisabledConfirm, setIsDisabledConfirm] = useState(true)
     
     const refInputUrl = useRef(null)
@@ -177,40 +259,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
 
     const insertImage = usePublisher(insertImage$)
 
-    const modal_config = {text: '이미지 정보를 입력하세요', type: 'custom', isCloseOutsideClick: false}
+    const modal_config = {text: '이미지 링크를 입력하세요', type: 'custom', isCloseOutsideClick: false}
 
-    const selectImage = async () =>{
-      
-        const imageFile = await pickImageFile()
-
-        if(imageFile == null)
-            return
-        
-        if(imageFile.format == 'unknown'){
-            window.showToast('파일을 사용할 수 없습니다', 'error')
-            return
-        }
-
-        const blob = await ImageScale(imageFile.file, 512, 512, 64, 64)
-
-        if(blob == null){
-          window.showToast('파일을 사용할 수 없습니다', 'error')
-          return
-        }
-
-        setIsLoadingUpload(true)
-
-        const url = await postImage(blob)
-    
-        setIsLoadingUpload(false)
-        
-        if(url == null){
-          userErrorHandle('파일을 업로드할 수 없습니다')
-          return
-        }
-        
-        setImageUrl(url)
-    }
 
     useEffect(()=>{
 
@@ -279,17 +329,15 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
         refInputAlt.current.value = ''
 
       setImageUrl('')
-      setIsDisabledConfirm(true)
-      setIsLoadingUpload(false)
+      setIsDisabledConfirm(true)      
       setIsImageModalOpen(true)
     }
 
     return (
       <div>
-        <ButtonWithTooltip style={{height:'100%'}} onClick={openModal} title="이미지 삽입"><LuImagePlus size={23}/></ButtonWithTooltip>
+        <ButtonWithTooltip style={{height:'100%'}} onClick={openModal} title="이미지 링크 삽입"><LuImagePlus size={23}/></ButtonWithTooltip>
         <Modal config={modal_config} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>          
-          <BeautyButton type='warning' isLoading={isLoadingUpload} onClick={selectImage}>파일</BeautyButton>          
           <input ref={refInputUrl} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
           <input ref={refInputTitle} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
           <input ref={refInputAlt} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>
@@ -368,6 +416,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
                 <Separator />
                 <CreateLink/>
                 <ImageButton/>
+                <ImageCropButton/>
                 {/* <InsertImage /> */}
                 <YouTubeButton />
                 <Separator />

@@ -15,7 +15,7 @@ import { Prompt } from 'react-router'
 import ImageCropModal from '../../common/ImageCropModal.js'
 import PostModal from './PostModal.js'
 
-import ImageScale, {getBlob} from "../../util/ImageScale.js";
+import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import '../../common/RotateLoading.css'
 
@@ -134,7 +134,7 @@ export default function() {
         const resArticleImage = await BlobAPI.postArticleImage(auth.jwt, formData)
 
         if(resArticleImage == null)
-            return
+            return null
         
         const url = process.env.API_TARGET + '/api/blob/article/' + resArticleImage.id
 
@@ -270,15 +270,15 @@ export default function() {
 
         if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
 
-            const blob = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
+            const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
 
-            if(blob == null){
+            if(canvas == null){
 
                 window.showToast('파일을 사용할 수 없습니다', 'error')
                 return
             }
 
-            setImageFile(blob)
+            setImageFile(blobFromCanvas(canvas))
             
             setIsImageCropModalOpen(true)
         }
@@ -293,54 +293,37 @@ export default function() {
 
     const canvasToFormData = async(canvas) =>{
 
-        const blob = await getBlob(canvas)
 
-        const formData = new FormData()
-        formData.append('image', blob)
 
         return formData
     }
 
 
-    const onClickApply = async(rect) => {
-
-        if(rect == null)
-            return
-
-        if(refImageCrop.current == null)
-            return
-
+    const onClickApply = async() => {
+    
+        const rect = refImageCrop.current.rect()
         const image = refImageCrop.current.image()
 
-        const canvasWidth = 1024
-        const canvasHeight = 768
+        const dWidth = 1024
+        const dHeight = 768
 
-        const canvas = document.createElement('canvas')
-        canvas.width = canvasWidth
-        canvas.height = canvasHeight
+        const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
         
-        const ctx = canvas.getContext('2d')
+        const blob = await blobFromCanvas(canvas)
 
-        ctx.imageSmoothingEnabled = false;
-
-        ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, canvasWidth, canvasHeight)
-
-        const formData = await canvasToFormData(canvas)
+        const formData = new FormData()
+        formData.append('image', blob)
 
         const resArticleThumbnail = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
 
         if(resArticleThumbnail == null)
             return
 
-        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + resArticleThumbnail.id
-
-        console.log(url)
+        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + resArticleThumbnail.id        
 
         setThumbnailUrl(url)
         setIsImageCropModalOpen(false)
-        setIsTouched(true)
-
-        return
+        setIsTouched(true)        
     }
 
     const onPost = async(category_id, open_type) => {

@@ -74,8 +74,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
       const url = mdastNode.attributes.url
       const shorts = mdastNode.attributes.shorts
 
-      const wdith = shorts == 'true' ? 315 : 560;
-      const height = shorts == 'true' ? 560 : 315;
+      const wdith = shorts == 'y' ? 315 : 560;
+      const height = shorts == 'n' ? 560 : 315;
 
       return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position:'relative'}}>
@@ -131,7 +131,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
         }
         const videoId = match[3]
         const prefix = match[1]
-        const shorts = (prefix == 'youtube.com/shorts') ? 'true' : 'false'
+        const shorts = (prefix == 'youtube.com/shorts') ? 'y' : 'n'
         const url = 'https://www.youtube.com/embed/' + videoId
 
         if(videoId){

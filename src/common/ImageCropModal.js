@@ -15,9 +15,7 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
   const refDiv = useRef(null)
 
   const [isApplyLoading, setIsApplyLoading] = useState(false)  
-
-  console.log(selectMinWidth)
-  
+    
   useEffect(() => {
       
     if(isOpen)

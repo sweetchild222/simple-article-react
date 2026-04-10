@@ -80,7 +80,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
       return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position:'relative'}}>
           <div style={{position:'relative', display: 'flex', flexDirection: 'column'}}>
-            {!readOnly && <button style={{position:'absolute', border:'0px', backgroundColor:'white', borderRadius: '0 0 0 3px', zIndex:'10', alignSelf: 'flex-end'}}
+            <button style={{position:'absolute', border:'0px', backgroundColor:'white', borderRadius: '0 0 0 3px', zIndex:'10', alignSelf: 'flex-end'}}
               onClick={() => {
                 parentEditor.update(() => {
                   lexicalNode.selectNext()
@@ -88,8 +88,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
                 })
               }}
             >
-            <PiTrash size={23}/>
-            </button>}
+              <PiTrash size={23}/>
+            </button>
             <iframe width={wdith} height={height} src={url} title="YouTube" style={{ border: '1px solid gray'}}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
             ></iframe>

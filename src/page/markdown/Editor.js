@@ -17,11 +17,15 @@ import PostModal from './PostModal.js'
 
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";
+import Previewer from "./Previewer.js";
 import '../../common/RotateLoading.css'
 
 export default function() {
     
     const location = useLocation()
+
+    if(location.state == null)
+        return (<div>잘못된 방식으로 접근하였습니다</div>)
 
     const refTitle = useRef(null)
     const refMDX = useRef(null)
@@ -31,7 +35,12 @@ export default function() {
     const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)    
     const [isTouched, setIsTouched] = useState(false)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
+    const [isPreView, setIsPreview] = useState(false)
     const [imageFile, setImageFile] = useState(null)
+
+    const [markdown, setMarkdown] = useState(null)
+    
+
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
     const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
@@ -42,8 +51,7 @@ export default function() {
 
     const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
-    if(location.state == null)
-        return (<div>잘못된 접근입니다</div>)
+
     
     const navigate = useNavigate()
     
@@ -355,6 +363,21 @@ export default function() {
         })
     }
 
+    const onClickPreview = () =>{
+
+        //if(refMDX.current)
+        
+        //const content = refMDX.current.getMarkdown()
+
+
+        setMarkdown(refMDX.current.getMarkdown())
+
+        setIsPreview(set => !set)
+
+        console.log(isPreView)
+
+    }
+
 
     return validAuth(auth) ? (
         
@@ -364,12 +387,20 @@ export default function() {
                 <div style={{display: 'flex', flexDirection: 'row', margin:'5px'}}>
                     <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=160x120') : null} onClick={onClickThumbnail} width={160} height={120}/>
                     {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1.333}></ImageCropModal>}
-                    <input ref={refTitle} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>                    
+                    <input ref={refTitle} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
+                    <BeautyButton type='success' onClick={onClickPreview}>미리보기</BeautyButton>
                 </div>
-                <div style={{border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, margin:'0px 5px 5px 5px'}}>
+                <div style={{display: isPreView ? 'none' : 'block', border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, margin:'0px 5px 5px 5px'}}>
                     <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
-                    onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
+                    onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>                    
                 </div>
+
+                <div style={{display: isPreView ? 'block' : 'none', border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, margin:'0px 5px 5px 5px'}}>
+                    <Previewer display={!isPreView ? 'none' : 'visible'} markdown={markdown}></Previewer>
+                </div>
+                
+                            
+            
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', flex: 0, margin:'0px 5px 5px 5px'}}>
                     <label ref={refLength}></label>
                     <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>

@@ -3,9 +3,11 @@ import axios from 'axios';
 
 import AuthContext from "../../util/AuthContext.js";
 
-import React, { useContext} from 'react';
+import React, { useContext, useEffect, useRef} from 'react';
 
+import { renderToString } from 'react-dom/server';
 import {micromark} from 'micromark'
+
 import {directive, directiveHtml} from 'micromark-extension-directive'
 import {frontmatter, frontmatterHtml} from 'micromark-extension-frontmatter'
 import {gfm, gfmHtml} from 'micromark-extension-gfm'
@@ -18,10 +20,16 @@ import {gfmTaskListItem,gfmTaskListItemHtml} from 'micromark-extension-gfm-task-
 import {math, mathHtml} from 'micromark-extension-math'
 import {defList, defListHtml } from 'micromark-extension-definition-list';
 
+import hljs from 'highlight.js/lib/core';
+import 'highlight.js/styles/github-dark-dimmed.min.css';
 
 
-export default function() {
+export default function({markdown}) {
 
+
+    if(markdown == null){
+        return (<div></div>)
+    }
 
 
     const text = `sdfsdf
@@ -38,6 +46,9 @@ fsdfsdfsdfssdf
 kkkkdsafs
 :::
 
+\`\`\`python
+colors = ["red", "blue", "green", "yellow"]
+\`\`\`
 
 :::caution
 kkkkdsafs
@@ -47,11 +58,28 @@ safdsdfsdf
 
 
 
-\`\`\`ts
-sdfsdfsdf
-asfdadsf
-adsf
+\`\`\`java
+int a = 5;
+\`\`\`
 
+\`\`\`javascript
+const a = 5;
+\`\`\`
+
+
+\`\`\`html
+<div>
+    <label>sdfsdf</label>
+</div>
+\`\`\`
+
+\`\`\`json
+[
+  { "나무위키": "여러분이 가꾸어 나가는 지식의 나무" },
+  { "위키백과": "우리 모두의 백과사전" },
+  { "백과사전": "너희 모두의 백과사전" },
+  { "위키낱말사전": "말과 글의 누리" }
+]
 \`\`\`
 
 
@@ -130,34 +158,27 @@ sdf`
         }
     })
 
+    const extension = [directive(), frontmatter(), gfm(), gfmAutolinkLiteral(), gfmFootnote(), gfmStrikethrough(), gfmTable(), gfmTableHtml(), gfmTaskListItem(), math(), defList]
 
+    const htmlExtension = [directiveYoutube, frontmatterHtml(), gfmHtml(), gfmAutolinkLiteralHtml(), gfmFootnoteHtml(), gfmStrikethroughHtml(), gfmTaskListItemHtml(), mathHtml(), defListHtml]
 
-    const aa= `| a | b  |  c |  d  |
-| - | :- | -: | :-: |
-`
+    const html = micromark(text, {extensions: extension, htmlExtensions: htmlExtension})
 
-    // const xx = micromark(aa, {
-    // extensions: [gfm()],
-    // htmlExtensions: [gfmHtml()]
-    // });
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html')
 
-    //console.log(xx); // <p><mark>highlight me</mark></p>
+    doc.querySelectorAll('pre').forEach(tag => {
 
-    // const xx = micromark('a ==b==', {
-    // extensions: [highlightMark],
-    // htmlExtensions: [highlightMarkHtml],
-    // })
+        tag.firstChild.style.borderRadius = '3px'
+                
+        hljs.highlightElement(tag.firstChild)
+    })    
 
-    //console.log(xx)
+    return (        
+        <div dangerouslySetInnerHTML={{__html: doc.body.innerHTML}} style={{margin:'10px'}}>
+        </div>
 
-    const output = "<div></div>"
-
-    //const output = micromark('a ==b== c.', {extensions: [directive(), highlightMark()], htmlExtensions: [directiveYoutube, highlightMarkFromMarkdown]})
-
-    
-
-    return (
-        <div dangerouslySetInnerHTML={{ __html: output }}/>        
     );
 }
+
 

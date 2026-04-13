@@ -452,7 +452,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
                     )
                   }]}
                 />
-                <InsertFrontmatter />
+                {/* <InsertFrontmatter /> */}
               </>
               )
             }
@@ -501,7 +501,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
     imagePlugin({disableImageSettingsButton: true}),
     tablePlugin(),    
     thematicBreakPlugin(),
-    frontmatterPlugin(),
+    //frontmatterPlugin(),
     maxLengthPlugin(65535),
     codeBlockPlugin({ defaultCodeBlockLanguage: 'ts'}),
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
@@ -514,7 +514,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
   ]
 
   return (    
-      <MDXEditor placeholder={placeHolder} ref={refEditor} markdown={initMarkdown} onChange={onChange}
+      <MDXEditor placeholder={placeHolder} suppressHtmlProcessing={true} ref={refEditor} markdown={initMarkdown} onChange={onChange}
         plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
         translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>    
   )

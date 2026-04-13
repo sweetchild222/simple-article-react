@@ -5,7 +5,6 @@ import AuthContext from "../../util/AuthContext.js";
 
 import React, { useContext, useEffect, useRef} from 'react';
 
-
 import {micromark} from 'micromark'
 
 import {directive, directiveHtml} from 'micromark-extension-directive'
@@ -48,8 +47,17 @@ export default function({markdown}) {
     }
 
 
-    const text = `sdfsdf
+    const text = `
 
+
+| head1  | head2 | head3 |
+| ----- | ------- | ------ |
+| adsf  | wef     | wef    |
+| wefew | wf      | wef    |
+| adsf  | wef     | wef    |
+| wefew | wf      | wef    |
+| adsf  | wef     | wef    |
+| xxx | xxfsdf      | xxc    |
 
 :::caution
 caution
@@ -159,7 +167,7 @@ const js = a
 #include <stdio.h>
 int main()
 {
-     printf("hello world!\n");
+     printf("hello world!");
      return 0;
 }
 \`\`\`
@@ -173,7 +181,7 @@ sdf`
 
     const createAdmonition = (name, content) => {
 
-        const titleIconMap = {info:'&#9733;', danger:'&#10006;', note:'&#9888;', tip:'&#10004;', caution:'&#10140;'}
+        const titleIconMap = {info:'&#10004;', danger:'&#10006;', note:'&#10140;', tip:'&#9733;', caution:'&#9888;'}
         const titleColorMap = {info:'#00DE6D;', danger:'#F22731;', note:'#1D2C79;', tip:'#3A8DDF;', caution:'#EFCF00;'}
 
         const title = name
@@ -195,9 +203,9 @@ sdf`
     }
 
 
-    const directiveYoutube = directiveHtml({
+    const directiveFunc = directiveHtml({
 
-        youtube(directive){    
+        youtube(directive){
 
             const url = directive.attributes.url
             const shorts = directive.attributes.shorts == 'y' ? true : false
@@ -239,7 +247,7 @@ sdf`
 
     const extension = [directive(), frontmatter(), gfm(), highlightMark(), math(), defList]
 
-    const htmlExtension = [directiveYoutube, frontmatterHtml(), gfmHtml(), highlightMarkHtml, mathHtml(), defListHtml]
+    const htmlExtension = [directiveFunc, frontmatterHtml(), gfmHtml(), highlightMarkHtml, mathHtml(), defListHtml]
 
     const html = micromark(text, {extensions: extension, htmlExtensions: htmlExtension})
 
@@ -247,10 +255,71 @@ sdf`
     const doc = parser.parseFromString(html, 'text/html')
 
     doc.querySelectorAll('pre').forEach(tag => {
-        
-        tag.firstChild.style.borderRadius = '3px'
-        hljs.highlightElement(tag.firstChild)        
-    })    
+
+        if(tag.firstChild.nodeName == 'CODE') {
+            tag.firstChild.style.borderRadius = '3px'
+            hljs.highlightElement(tag.firstChild)
+        }
+    })
+
+    doc.querySelectorAll('table').forEach(tag => {
+
+        tag.style.width='100%';
+        tag.style.borderCollapse='separate';
+        tag.style.borderSpacing='0'
+
+        tag.querySelectorAll('thead').forEach(tag => {
+            
+            const trList = tag.querySelectorAll('tr')
+
+            if(trList.length > 0){
+                trList[0].firstElementChild.style.borderRadius = '3px 0 0 0'
+                trList[0].lastElementChild.style.borderRadius = '0 3px 0 0'
+            }
+
+            trList.forEach(tag => {
+
+                tag.style.backgroundColor='#42444e'
+                tag.style.color = '#fff'
+                tag.style.textAlign = 'left'
+
+                tag.querySelectorAll('th').forEach(tag => {
+                    tag.style.padding='6px 10px'
+                })
+            })
+        })
+
+        let count = 0
+
+        tag.querySelectorAll('tbody').forEach( tag => {
+
+            const trList = tag.querySelectorAll('tr')
+
+            if(trList.length > 0){
+                trList[trList.length-1].firstElementChild.style.borderRadius = '0px 0px 0px 3px'
+                trList[trList.length-1].lastElementChild.style.borderRadius = '0px 0px 3px 0px'
+            }
+
+            trList.forEach(tag => {
+
+                tag.style.backgroundColor= (++count % 2) ? '#eaeaed' : '#FFFFFF';
+
+                const tdList = tag.querySelectorAll('td')
+
+                if(tdList.length > 1)
+                    tdList[0].style.borderLeft ='1px solid #c6c9cc';
+
+                tdList.forEach(tag => {
+                    tag.style.borderRight ='1px solid #c6c9cc';
+                    tag.style.borderBottom = '1px solid #c6c9cc'
+                    tag.style.padding='6px 10px'
+                })
+            })
+        })
+    })
+
+
+    console.log(doc.body.innerHTML)
 
     return (        
         <div dangerouslySetInnerHTML={{__html: doc.body.innerHTML}} style={{margin:'10px'}}>

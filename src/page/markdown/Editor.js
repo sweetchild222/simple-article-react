@@ -51,8 +51,6 @@ export default function() {
 
     const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
-
-    
     const navigate = useNavigate()
     
     useEffect(()=> {

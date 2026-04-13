@@ -11,14 +11,9 @@ import {micromark} from 'micromark'
 import {directive, directiveHtml} from 'micromark-extension-directive'
 import {frontmatter, frontmatterHtml} from 'micromark-extension-frontmatter'
 import {gfm, gfmHtml} from 'micromark-extension-gfm'
-import {gfmAutolinkLiteral, gfmAutolinkLiteralHtml} from 'micromark-extension-gfm-autolink-literal'
-import {gfmFootnote, gfmFootnoteHtml} from 'micromark-extension-gfm-footnote'
-import {gfmStrikethrough, gfmStrikethroughHtml} from 'micromark-extension-gfm-strikethrough'
-import {gfmTable, gfmTableHtml} from 'micromark-extension-gfm-table'
-import {gfmTagfilterHtml} from 'micromark-extension-gfm-tagfilter'
-import {gfmTaskListItem,gfmTaskListItemHtml} from 'micromark-extension-gfm-task-list-item'
 import {math, mathHtml} from 'micromark-extension-math'
 import {defList, defListHtml } from 'micromark-extension-definition-list'
+import {highlightMark, highlightMarkHtml} from 'micromark-extension-highlight-mark'
 
 import hljs from 'highlight.js/lib/core'
 import 'highlight.js/styles/github-dark-dimmed.min.css'
@@ -42,7 +37,7 @@ hljs.registerLanguage('typescript', typescript)
 hljs.registerLanguage('css', css)
 hljs.registerLanguage('json', json)
 hljs.registerLanguage('csharp', csharp)
-hljs.registerLanguage('c', csharp)
+hljs.registerLanguage('c', c)
 
 
 export default function({markdown}) {
@@ -55,25 +50,37 @@ export default function({markdown}) {
 
     const text = `sdfsdf
 
-:::danger
-kkkk
+
+:::caution
+caution
 :::
 
-fsdfsdfsdfssdf
+:::danger
+danger
+:::
 
-
+:::note
+note
+:::
 
 :::info
-kkkkdsafs
+info
 :::
+
+:::tip
+info
+:::
+
+sdfsd==fsdfsd==f
+
+
+
 
 \`\`\`python
 colors = ["red", "blue", "green", "yellow"]
 \`\`\`
 
-:::caution
-kkkkdsafs
-:::
+
 
 safdsdfsdf
 
@@ -164,10 +171,10 @@ sdf
 
 sdf`
 
-    const createAdmonition = (name, content)=>{
+    const createAdmonition = (name, content) => {
 
-        const titleIconMap = {info:'&#10004;', danger:'&#10006;', note:'&#9733;', tip:'&#10140;', caution:'&#9888;'}
-        const titleColorMap = {info:'#3A8DDF;', danger:'#F22731;', note:'#00DE6D;', tip:'#EFCF00;', caution:'#1D2C79;'}
+        const titleIconMap = {info:'&#9733;', danger:'&#10006;', note:'&#9888;', tip:'&#10004;', caution:'&#10140;'}
+        const titleColorMap = {info:'#00DE6D;', danger:'#F22731;', note:'#1D2C79;', tip:'#3A8DDF;', caution:'#EFCF00;'}
 
         const title = name
         const titleIcon = titleIconMap[title]
@@ -176,8 +183,8 @@ sdf`
         
         const contentDiv = '<div style="margin-top:10px; overflow-wrap: break-word;">' + content + '</div>'
         
-        const containColorMap = {info:'#EBF3FC;', danger:'#FEE9EA;', note:'#E5FCF0;', tip:'#FDFAE5;', caution:'#E8E9F1;'}
-        const containBorderColor = {info:'#3A8DDF;', danger:'#F22731;', note:'#00DE6D;', tip:'#EFCF00;', caution:'#1D2C79;'}
+        const containColorMap = {info:'#E5FCF0;', danger:'#FEE9EA;', note:'#E8E9F1;', tip:'#EBF3FC;', caution:'#FDFAE5;'}
+        const containBorderColor = {info:'#00DE6D;', danger:'#F22731;', note:'#1D2C79;', tip:'#3A8DDF;', caution:'#EFCF00;'}
 
         const containColor = containColorMap[title]
         const containBorder = containBorderColor[title]
@@ -230,9 +237,9 @@ sdf`
         }
     })
 
-    const extension = [directive(), frontmatter(), gfm(), gfmAutolinkLiteral(), gfmFootnote(), gfmStrikethrough(), gfmTable(), gfmTableHtml(), gfmTaskListItem(), math(), defList]
+    const extension = [directive(), frontmatter(), gfm(), highlightMark(), math(), defList]
 
-    const htmlExtension = [directiveYoutube, frontmatterHtml(), gfmHtml(), gfmAutolinkLiteralHtml(), gfmFootnoteHtml(), gfmStrikethroughHtml(), gfmTaskListItemHtml(), mathHtml(), defListHtml]
+    const htmlExtension = [directiveYoutube, frontmatterHtml(), gfmHtml(), highlightMarkHtml, mathHtml(), defListHtml]
 
     const html = micromark(text, {extensions: extension, htmlExtensions: htmlExtension})
 
@@ -242,9 +249,6 @@ sdf`
     doc.querySelectorAll('pre').forEach(tag => {
         
         tag.firstChild.style.borderRadius = '3px'
-
-        console.log(tag)
-
         hljs.highlightElement(tag.firstChild)        
     })    
 

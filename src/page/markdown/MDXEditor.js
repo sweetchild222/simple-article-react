@@ -29,6 +29,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   toolbarPlugin, linkDialogPlugin, insertDirective$, ConditionalContents, Separator, HighlightToggle, StrikeThroughSupSubToggles,
   diffSourcePlugin, InsertTable, InsertThematicBreak, InsertCodeBlock, InsertFrontmatter, InsertAdmonition, insertImage$,
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin, ButtonWithTooltip} from '@mdxeditor/editor'
+import javascript from 'highlight.js/lib/languages/javascript'
 
 export default function({ref, placeHolder, postImage, initMarkdown, onChange, onParsingError, onUserError}){
 
@@ -503,9 +504,9 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
     thematicBreakPlugin(),
     //frontmatterPlugin(),
     maxLengthPlugin(65535),
-    codeBlockPlugin({ defaultCodeBlockLanguage: 'ts'}),
+    codeBlockPlugin({ defaultCodeBlockLanguage: 'typescript'}),
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
-    codeMirrorPlugin({ codeMirrorExtensions: [dracula], codeBlockLanguages: { jsx:'react js', tsx:'react ts', js: 'javascript', ts: 'typescript', python: 'Python', json:'json',  css: 'CSS', txt: 'plain text'},  }),
+    codeMirrorPlugin({ codeMirrorExtensions: [dracula], codeBlockLanguages: {javascript: 'javascript', typescript: 'typescript', python: 'python', json:'json', xml:'html', css: 'css', txt: 'txt', csharp:'c#', c:'c'}}),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: initMarkdown}),
     markdownShortcutPlugin(),

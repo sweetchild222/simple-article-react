@@ -5,7 +5,7 @@ import AuthContext from "../../util/AuthContext.js";
 
 import React, { useContext, useEffect, useRef} from 'react';
 
-import { renderToString } from 'react-dom/server';
+
 import {micromark} from 'micromark'
 
 import {directive, directiveHtml} from 'micromark-extension-directive'
@@ -18,10 +18,31 @@ import {gfmTable, gfmTableHtml} from 'micromark-extension-gfm-table'
 import {gfmTagfilterHtml} from 'micromark-extension-gfm-tagfilter'
 import {gfmTaskListItem,gfmTaskListItemHtml} from 'micromark-extension-gfm-task-list-item'
 import {math, mathHtml} from 'micromark-extension-math'
-import {defList, defListHtml } from 'micromark-extension-definition-list';
+import {defList, defListHtml } from 'micromark-extension-definition-list'
 
-import hljs from 'highlight.js/lib/core';
-import 'highlight.js/styles/github-dark-dimmed.min.css';
+import hljs from 'highlight.js/lib/core'
+import 'highlight.js/styles/github-dark-dimmed.min.css'
+
+import python from 'highlight.js/lib/languages/python'
+import java from 'highlight.js/lib/languages/java'
+import javascript from 'highlight.js/lib/languages/javascript'
+import xml from 'highlight.js/lib/languages/xml'
+import typescript from 'highlight.js/lib/languages/typescript'
+import css from 'highlight.js/lib/languages/css'
+import json from 'highlight.js/lib/languages/json'
+import csharp from 'highlight.js/lib/languages/csharp'
+import c from 'highlight.js/lib/languages/c'
+
+
+hljs.registerLanguage('python', python)
+hljs.registerLanguage('java', java)
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('xml', xml)
+hljs.registerLanguage('typescript', typescript)
+hljs.registerLanguage('css', css)
+hljs.registerLanguage('json', json)
+hljs.registerLanguage('csharp', csharp)
+hljs.registerLanguage('c', csharp)
 
 
 export default function({markdown}) {
@@ -62,12 +83,38 @@ safdsdfsdf
 int a = 5;
 \`\`\`
 
+
+\`\`\`css
+.headings {
+    color: lime;
+    text-decoration: overline;
+}
+.headings2 { 
+    color: blue; 
+    font-size: 50px; 
+}
+\`\`\`
+
+
+
 \`\`\`javascript
 const a = 5;
 \`\`\`
 
 
-\`\`\`html
+\`\`\`json
+[
+  {a:'4'}
+]
+\`\`\`
+
+\`\`\`typescript
+const a:number = 3;
+const b:string = '5';
+console.log(a*b)
+\`\`\`
+
+\`\`\`xml
 <div>
     <label>sdfsdf</label>
 </div>
@@ -82,8 +129,33 @@ const a = 5;
 ]
 \`\`\`
 
+\`\`\`csharp
+using System;
 
+namespace Namu
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("hello namu!");
+        }
+    }
+}
+\`\`\`
 
+\`\`\`javascript
+const js = a 
+\`\`\`
+
+\`\`\`c
+#include <stdio.h>
+int main()
+{
+     printf("hello world!\n");
+     return 0;
+}
+\`\`\`
 sdf
 ::youtube{url="https://www.youtube.com/embed/ZtZ9SEfgJ34" shorts="n"}
 sdf
@@ -168,10 +240,12 @@ sdf`
     const doc = parser.parseFromString(html, 'text/html')
 
     doc.querySelectorAll('pre').forEach(tag => {
-
+        
         tag.firstChild.style.borderRadius = '3px'
-                
-        hljs.highlightElement(tag.firstChild)
+
+        console.log(tag)
+
+        hljs.highlightElement(tag.firstChild)        
     })    
 
     return (        

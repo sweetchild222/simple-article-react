@@ -34,14 +34,14 @@ export default function() {
     const refLength = useRef(null)
     const refImageCrop = useRef(null)
 
-    const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)    
+    const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
     const [isTouched, setIsTouched] = useState(false)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
     const [isPreView, setIsPreview] = useState(false)
     const [imageFile, setImageFile] = useState(null)
 
     const [markdown, setMarkdown] = useState(null)
-    
+    const [timerAutoPreview, setTimerAutoPreview] = useState(null)
 
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
@@ -116,7 +116,33 @@ export default function() {
 
     },[refLength])
 
-    
+
+    const restartTimerAutoPreview = ()=> {
+
+        if(timerAutoPreview != null){
+            clearTimeout(timerAutoPreview)
+            setTimerAutoPreview(null)
+        }
+
+        const timeout = 1000 * 1
+
+        const timerId = setTimeout(async() => {
+
+            setTimerAutoPreview(null)
+
+            if(isPreView){
+
+                if(refMDX.current == null)
+                    return
+
+                setMarkdown(refMDX.current.getMarkdown())
+            }
+
+        }, timeout)
+
+        setTimerAutoPreview(timerId)
+    }
+
     
     const onClickPostModal = async() => {
 
@@ -173,10 +199,7 @@ export default function() {
             posted:posted,
             thumbnail:thumbUrl,
             category_id:category_id
-        }
-
-
-        console.log(content)
+        }        
         
         return await ArticleAPI.putArticle(auth.jwt, article_id, payload)
     }
@@ -223,12 +246,11 @@ export default function() {
     const onChangeContent = (content, isInternalChange) =>{
         
         if(!isInternalChange){
+
             setIsTouched(true)
 
-            if(isPreView){
-                console.log(content)
-                setMarkdown(content)
-            }
+            if(isPreView)
+                restartTimerAutoPreview()
 
             if(refLength.current)
                 refLength.current.textContent = content.length + '/65535'
@@ -370,8 +392,7 @@ export default function() {
 
     const onClickPreview = () =>{
 
-
-        if(!refMDX.current)
+        if(refMDX.current == null)
             return
 
         setMarkdown(refMDX.current.getMarkdown())
@@ -404,7 +425,7 @@ export default function() {
                     }
                     
                 </Split>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', flex: 0, margin:'0px 5px 5px 5px'}}>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'0px 5px 5px 5px'}}>
                     <label ref={refLength}></label>
                     <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>
                     <BeautyButton type='confirm' onClick={onClickPostModal}>올리기</BeautyButton>

@@ -341,7 +341,8 @@ sdf`
     })
 
     const sanitizedHTML = DOMPurify.sanitize(doc.body.innerHTML);
-    
+
+    console.log(sanitizedHTML)
 
     return (        
         <div dangerouslySetInnerHTML={{__html: sanitizedHTML}} style={{margin:'10px'}}>

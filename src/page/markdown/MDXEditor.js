@@ -9,7 +9,7 @@ import { CiYoutube } from "react-icons/ci";
 import { LuImagePlus } from "react-icons/lu";
 
 
-import './MDXEditor.css'
+
 import AuthContext from "../../util/AuthContext.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import ImageCropModal from '../../common/ImageCropModal.js'
@@ -22,6 +22,7 @@ import { LuImageUp } from "react-icons/lu";
 
 import {dracula} from 'thememirror';
 import { EditorView } from '@codemirror/view'
+import './MDXEditor.css'
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
   DiffSourceToggleWrapper, CodeMirrorEditor, directivesPlugin, quotePlugin, InsertImage, thematicBreakPlugin, UndoRedo, CodeToggle, CreateLink, ListsToggle,
@@ -453,7 +454,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
                     )
                   }]}
                 />
-                {/* <InsertFrontmatter /> */}
+                <InsertFrontmatter />
               </>
               )
             }
@@ -502,7 +503,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
     imagePlugin({disableImageSettingsButton: true}),
     tablePlugin(),    
     thematicBreakPlugin(),
-    //frontmatterPlugin(),
+    frontmatterPlugin(),
     maxLengthPlugin(65535),
     codeBlockPlugin({ defaultCodeBlockLanguage: 'typescript'}),
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
@@ -514,7 +515,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
     toolbarPlugin({ toolbarClassName: 'toolbarRoot', toolbarContents: () => (<CustomToolbar />)})
   ]
 
-  return (    
+  return (
       <MDXEditor placeholder={placeHolder} suppressHtmlProcessing={true} ref={refEditor} markdown={initMarkdown} onChange={onChange}
         plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
         translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>    

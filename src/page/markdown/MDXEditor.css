@@ -10,14 +10,14 @@
 
 
 .toolbarRoot {
-  z-index: 2;    
-  border-radius: '2px';  
+  z-index: 2;
+  border-radius: '2px';
   background-color: #B2ABBB;
 }
 
 
 .toolbarRootHide {
-  z-index: 2;    
+  z-index: 2;
   border-radius: '2px';  
   background-color: white;
 }

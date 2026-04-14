@@ -20,6 +20,8 @@ import LoadingImage from "../../common/LoadingImage.js";
 import Previewer from "./Previewer.js";
 import '../../common/RotateLoading.css'
 
+import Split from '@uiw/react-split';
+
 export default function() {
     
     const location = useLocation()
@@ -373,12 +375,10 @@ export default function() {
         setIsPreview(set => !set)
 
         console.log(isPreView)
-
     }
 
 
     return validAuth(auth) ? (
-        
         <div style={{flex:1, position: 'relative'}}>
             {isOverlayLoading && <div style={{width:'100%', height:'100%', position: 'absolute', zIndex: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}} className={`rotateLoading`}/>}
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
@@ -388,17 +388,20 @@ export default function() {
                     <input ref={refTitle} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
                     <BeautyButton type='success' onClick={onClickPreview}>미리보기</BeautyButton>
                 </div>
-                <div style={{display: isPreView ? 'none' : 'block', border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, margin:'0px 5px 5px 5px'}}>
-                    <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
-                    onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>                    
-                </div>
 
-                <div style={{display: isPreView ? 'block' : 'none', border:'1px solid lightgray', borderRadius:'4px', overflowY:'auto', maxHeight:'calc(100vh - 192px)', flex: 1, margin:'0px 5px 5px 5px'}}>
-                    <Previewer display={!isPreView ? 'none' : 'visible'} markdown={markdown}></Previewer>
-                </div>
-                
-                            
-            
+                <Split visible={true} style={{maxHeight:'calc(100vh - 240px)', width:'100%'}}>
+                    <div style={{overflowY:'auto', minWidth:'20%', width: isPreView ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:isPreView ? '5px 5px 5px 5px' : '5px 5px 5px 5px'}}>
+                        <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
+                        onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
+                    </div>
+
+                    {isPreView &&
+                        <div style={{overflowY:'auto', minWidth:'20%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'5px'}}>
+                            <Previewer markdown={markdown}></Previewer>
+                        </div>
+                    }
+                    
+                </Split>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', flex: 0, margin:'0px 5px 5px 5px'}}>
                     <label ref={refLength}></label>
                     <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>
@@ -409,6 +412,7 @@ export default function() {
                 </div>
             </div>
         </div>
+
     ) : (<GoLogin onClickGoLoginCustom={onClickGoLogin} />)
 }
 

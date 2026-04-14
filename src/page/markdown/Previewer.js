@@ -81,7 +81,7 @@ info
 
 sdfsd==fsdfsd==f
 
-
+<img height="262" width="241" src="http://13.124.193.201:8080/api/blob/article/20260414021819-ee806f8a-e545-4861-9fc9-fc1e34bd19d5.webp" />
 
 
 \`\`\`python
@@ -158,6 +158,8 @@ namespace Namu
     }
 }
 \`\`\`
+
+ㅁㄴㅇㄹ![](http://13.124.193.201:8080/api/blob/article/20260414021617-35a90695-9984-45c0-b574-0cc8de2ceda0.webp)
 
 \`\`\`javascript
 const js = a 
@@ -249,7 +251,7 @@ sdf`
 
     const htmlExtension = [directiveFunc, frontmatterHtml(), gfmHtml(), highlightMarkHtml, mathHtml(), defListHtml]
 
-    const html = micromark(text, {extensions: extension, htmlExtensions: htmlExtension})
+    const html = micromark(text, {extensions: extension, htmlExtensions: htmlExtension, allowDangerousHtml: true})
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html')

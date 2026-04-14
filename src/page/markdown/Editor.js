@@ -225,6 +225,11 @@ export default function() {
         if(!isInternalChange){
             setIsTouched(true)
 
+            if(isPreView){
+                console.log(content)
+                setMarkdown(content)
+            }
+
             if(refLength.current)
                 refLength.current.textContent = content.length + '/65535'
         }
@@ -365,16 +370,13 @@ export default function() {
 
     const onClickPreview = () =>{
 
-        //if(refMDX.current)
-        
-        //const content = refMDX.current.getMarkdown()
 
+        if(!refMDX.current)
+            return
 
         setMarkdown(refMDX.current.getMarkdown())
 
         setIsPreview(set => !set)
-
-        console.log(isPreView)
     }
 
 

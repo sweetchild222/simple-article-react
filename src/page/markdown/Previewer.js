@@ -44,10 +44,8 @@ hljs.registerLanguage('c', c)
 export default function({markdown}) {
 
 
-    if(markdown == null){
+    if(markdown == null)
         return (<div></div>)
-    }
-
 
     const text = `
 
@@ -211,7 +209,7 @@ sdf`
 
     const directiveFunc = directiveHtml({
 
-        youtube(directive){
+        youtube(directive){            
 
             const url = directive.attributes.url
             const shorts = directive.attributes.shorts == 'y' ? true : false
@@ -220,7 +218,7 @@ sdf`
             const height = shorts ? 560 : 315
 
             const iframe = '<iframe width=' + width + ' height=' + height + ' title=Youtube ' + 'style="border:1px solid gray" '
-                            + ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;" '
+                            + ' allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;" '
                             + ' src="' + url + '"></iframe>'
 
 
@@ -255,7 +253,7 @@ sdf`
 
     const htmlExtension = [directiveFunc, frontmatterHtml(), gfmHtml(), highlightMarkHtml, mathHtml(), defListHtml]
 
-    const html = micromark(text, {extensions: extension, htmlExtensions: htmlExtension, allowDangerousHtml: true})
+    const html = micromark(markdown, {extensions: extension, htmlExtensions: htmlExtension, allowDangerousHtml: true})
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html')
@@ -340,7 +338,8 @@ sdf`
         })
     })
 
-    const sanitizedHTML = DOMPurify.sanitize(doc.body.innerHTML);
+    
+    const sanitizedHTML = DOMPurify.sanitize(doc.body.innerHTML, { ADD_TAGS: ["iframe"], ADD_ATTR: ['allow']});
 
     console.log(sanitizedHTML)
 

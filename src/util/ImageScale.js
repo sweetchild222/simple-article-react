@@ -41,7 +41,7 @@ export const blobFromCanvas = (canvas) => {
 
   return new Promise((resolve) => {
 
-    canvas.toBlob((blob) => {
+    canvas.toBlob((blob) => { // default is png
 
       resolve(blob)
 

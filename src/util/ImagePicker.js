@@ -9,7 +9,7 @@ const pickFile = async() => {
         const options = {
             types: [{
                 description: 'Images',
-                accept: {'image/png': ['.png'], 'image/jpeg': ['.jpeg', '.jpg'], 'image/gif': ['.gif']}}
+                accept: {'image/png': ['.png'], 'image/jpeg': ['.jpeg', '.jpg'], 'image/gif': ['.gif'], 'image/webp': ['.webp']}}
             ],
             excludeAcceptAllOption: false,
             multiple: false
@@ -55,6 +55,11 @@ export const getImageFormat = (file) => {
         reader.onload = (event) => {
 
             const bytes = new Uint8Array(event.target.result)
+
+            if(bytes.length < 12){
+                resolve('unknown')
+                return
+            }
             
             if (bytes[0] === 0xFF && bytes[1] === 0xD8)
                 resolve('image/jpeg')
@@ -62,6 +67,8 @@ export const getImageFormat = (file) => {
                 resolve('image/png')
             else if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46)
                 resolve('image/gif')
+            else if(bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 && bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50)
+                resolve('image/webp')
             else{
                 resolve('unknown')
             }
@@ -72,7 +79,7 @@ export const getImageFormat = (file) => {
             reject('error')
         }
 
-        reader.readAsArrayBuffer(file.slice(0, 4))
+        reader.readAsArrayBuffer(file.slice(0, 12))
     })
 }
 

@@ -146,7 +146,7 @@ export default function() {
         const dHeight = 256
 
         const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
-
+        
         const blob = await blobFromCanvas(canvas)
 
         const formData = new FormData()
@@ -154,21 +154,30 @@ export default function() {
         
         const resProfile = await BlobAPI.postProfile(auth.jwt, formData)
 
-        if(resProfile == null)
+        if(resProfile == null){
+            setIsImageCropModalOpen(false)
+            window.showToast('프로필 설정에 실패했습니다', 'error')
             return
+        }
 
         const url = process.env.API_TARGET + '/api/blob/profile/' + resProfile.id
             
         const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {profile: url})
 
-        if(resUser == null)
+        if(resUser == null){
+            setIsImageCropModalOpen(false)
+            window.showToast('프로필 설정에 실패했습니다', 'error')
             return
+        }
 
         const profileId = resProfile.id + '?size=64x64'
         const profile = await BlobAPI.getProfile(auth.jwt, profileId)
     
-        if(profile == null)
+        if(profile == null){
+            setIsImageCropModalOpen(false)
+            window.showToast('프로필을 가져 올 수 없습니다', 'error')
             return
+        }
 
         setProfileImage(url)
         updateProfile(url + '?size=64x64')

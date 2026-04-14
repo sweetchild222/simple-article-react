@@ -17,6 +17,8 @@ import {highlightMark, highlightMarkHtml} from 'micromark-extension-highlight-ma
 import hljs from 'highlight.js/lib/core'
 import 'highlight.js/styles/github-dark-dimmed.min.css'
 
+import DOMPurify from 'dompurify';
+
 import python from 'highlight.js/lib/languages/python'
 import java from 'highlight.js/lib/languages/java'
 import javascript from 'highlight.js/lib/languages/javascript'
@@ -81,7 +83,9 @@ info
 
 sdfsd==fsdfsd==f
 
+
 <img height="262" width="241" src="http://13.124.193.201:8080/api/blob/article/20260414021819-ee806f8a-e545-4861-9fc9-fc1e34bd19d5.webp" />
+
 
 
 \`\`\`python
@@ -215,7 +219,7 @@ sdf`
             const width = shorts ? 315 : 560
             const height = shorts ? 560 : 315
 
-            const iframe = '<iframe width=' + width + ' height=' + height + ' title=Youtube ' + 'style="border: p1x solid gray" '
+            const iframe = '<iframe width=' + width + ' height=' + height + ' title=Youtube ' + 'style="border:1px solid gray" '
                             + ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;" '
                             + ' src="' + url + '"></iframe>'
 
@@ -262,6 +266,22 @@ sdf`
             tag.firstChild.style.borderRadius = '3px'
             hljs.highlightElement(tag.firstChild)
         }
+    })
+
+
+    doc.querySelectorAll('img').forEach(tag => {
+
+        const div = document.createElement("div");
+
+        div.style.display='flex'
+        div.style.flexDirection='column'
+        div.style.alignItems='center'
+            
+        div.appendChild(tag.cloneNode(true))
+
+        div.firstChild.style.border = '1px solid gray'
+
+        tag.replaceWith(div)
     })
 
     doc.querySelectorAll('table').forEach(tag => {
@@ -320,11 +340,11 @@ sdf`
         })
     })
 
-
-    console.log(doc.body.innerHTML)
+    const sanitizedHTML = DOMPurify.sanitize(doc.body.innerHTML);
+    
 
     return (        
-        <div dangerouslySetInnerHTML={{__html: doc.body.innerHTML}} style={{margin:'10px'}}>
+        <div dangerouslySetInnerHTML={{__html: sanitizedHTML}} style={{margin:'10px'}}>
         </div>
 
     );

@@ -406,11 +406,11 @@ export default function() {
                 </div>
 
                 <Split visible={true} style={{maxHeight:'calc(100vh - 240px)', width:'100%'}}>
-                    <div style={{overflowY:'auto', minWidth:'20%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:'0px 5px 5px 5px'}}>
+                    <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:'0px 5px 5px 5px'}}>
                         {memoMDXEditor}
                     </div>
                 
-                    {isPreview && <div style={{overflowY:'auto', minWidth:'20%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'0px 5px 5px 5px'}}>
+                    {isPreview && <div style={{overflowY:'auto', minWidth:'10%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'0px 5px 5px 5px'}}>
                         <div ref={refPreview}  style={{margin:'10px'}}/>
                     </div>
                     }

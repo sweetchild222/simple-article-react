@@ -196,13 +196,13 @@ export default function() {
 
     const saveCore = async() => {
         
-        if(refTitle.current == null || refMDX.current == null)
+        if(refMDX.current == null)
             return null
 
         const payloadSource = location.state
         
         const article_id = payloadSource.id
-        const title = refTitle.current.value
+        const title = 'test title'
         const content = refMDX.current.getMarkdown()
         const open = payloadSource.open
         const posted = 0
@@ -396,16 +396,16 @@ export default function() {
 
 
     return validAuth(auth) ? (
-        <div style={{flex:1, position: 'relative'}}>
+        <div style={{flex:1, position: 'relative', margin:'0px 20px 0px 20px'}}>
             {isOverlayLoading && <div style={{width:'100%', height:'100%', position: 'absolute', zIndex: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}} className={`rotateLoading`}/>}
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
-                <div style={{display: 'flex', flexDirection: 'row', margin:'5px'}}>
+                {/* <div style={{display: 'flex', flexDirection: 'row', margin:'5px'}}>
                     <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=160x120') : null} onClick={onClickThumbnail} width={160} height={120}/>
                     {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1.333}></ImageCropModal>}
                     <input ref={refTitle} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
-                </div>
+                </div> */}
 
-                <Split visible={true} style={{maxHeight:'calc(100vh - 240px)', width:'100%'}}>
+                <Split visible={true} style={{maxHeight:'calc(100vh - 190px)', width:'100%'}}>
                     <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:'0px 5px 5px 5px'}}>
                         {memoMDXEditor}
                     </div>
@@ -415,9 +415,8 @@ export default function() {
                     </div>
                     }
                 </Split>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'0px 5px 5px 5px',  alignItems: 'center'}}>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'20px 5px 20px 5px',  alignItems: 'center'}}>
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
-                    
                     <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickPostModal}>올리기</BeautyButton>
                     
                     <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>

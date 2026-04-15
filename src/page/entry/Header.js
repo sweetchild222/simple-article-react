@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-rou
 import AuthContext from "../../util/AuthContext.js";
 import ProfileContext from "../../util/ProfileContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
+import BeautyButton from "../../common/BeautyButton.js";
 
 export default function() {
 
@@ -59,13 +60,15 @@ export default function() {
 
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', height:'64px', backgroundColor: 'gray', paddingLeft:'30px'}}>
-            <img src='/logo/logo.svg' alt='logo image' height='100%' width='64px' onClick={onClickHome}/>
-            <div style={{flexGrow:1, backgroundColor:'blue'}} ></div>
-            <input id="myInput" placeholder="검색" style={{color:'green', width:'100px'}} onKeyDown={onKeyDown}></input>
-            <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickSearch}>검색</button>
-            {!isLoggedIn && <button style={{backgroundColor:'red',  whiteSpace: 'nowrap', textAlign: 'center', flexGrow:0, margin:'10px', padding:'10px'}} onClick={onClickLogIn}>로그인</button>}
-            {isLoggedIn && <LoadingImage src={profile} height={64} width={64} border={'0px'} borderRadius={'0px'} onClick={onClickUser}/>}
-        </div>
+            <div style={{ display: 'flex', alignItems: 'center', padding:'10px 10px 10px 10px', backgroundColor:' #494D5F'}}>
+                <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickHome}/>
+                <div style={{flexGrow:1, backgroundColor:'blue'}} ></div>
+                <BeautyButton  type='success' onClick={onClickSearch} style={{margin:'0px 5px 0 5px'}}>검색</BeautyButton>
+                <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown}></input>
+                <div style={{margin:'0px 5px 0 5px', width:'64px'}}>
+                    {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
+                    {isLoggedIn && <LoadingImage src={profile} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickUser}/>}
+                </div>
+            </div>
     );    
 }

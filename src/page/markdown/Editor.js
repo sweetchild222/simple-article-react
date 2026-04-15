@@ -33,7 +33,7 @@ export default function() {
     const refMDX = useRef(null)
     const refLength = useRef(null)
     const refImageCrop = useRef(null)
-
+    
     const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
     const [isTouched, setIsTouched] = useState(false)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
@@ -41,8 +41,6 @@ export default function() {
     const [imageFile, setImageFile] = useState(null)
 
     const [markdown, setMarkdown] = useState(null)
-    const [timerAutoPreview, setTimerAutoPreview] = useState(null)
-
     
     const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
     const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
@@ -73,6 +71,7 @@ export default function() {
         else
             return false
     })
+
 
     useEffect(() => {
     
@@ -117,18 +116,20 @@ export default function() {
     },[refLength])
 
 
+    let timerAutoPreview = null
+
     const restartTimerAutoPreview = ()=> {
 
         if(timerAutoPreview != null){
             clearTimeout(timerAutoPreview)
-            setTimerAutoPreview(null)
+            timerAutoPreview  = null
         }
 
         const timeout = 1000 * 1
 
         const timerId = setTimeout(async() => {
 
-            setTimerAutoPreview(null)
+            timerAutoPreview  = null
 
             if(isPreView){
 
@@ -139,8 +140,8 @@ export default function() {
             }
 
         }, timeout)
-
-        setTimerAutoPreview(timerId)
+        
+        timerAutoPreview  = timerId
     }
 
     
@@ -244,7 +245,7 @@ export default function() {
 
 
     const onChangeContent = (content, isInternalChange) =>{
-        
+
         if(!isInternalChange){
 
             setIsTouched(true)
@@ -409,29 +410,32 @@ export default function() {
                     <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=160x120') : null} onClick={onClickThumbnail} width={160} height={120}/>
                     {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1.333}></ImageCropModal>}
                     <input ref={refTitle} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
-                    <BeautyButton type='success' onClick={onClickPreview}>미리보기</BeautyButton>
                 </div>
 
                 <Split visible={true} style={{maxHeight:'calc(100vh - 240px)', width:'100%'}}>
-                    <div style={{overflowY:'auto', minWidth:'20%', width: isPreView ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:isPreView ? '5px 5px 5px 5px' : '5px 5px 5px 5px'}}>
+                    <div style={{overflowY:'auto', minWidth:'20%', width: isPreView ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:'0px 5px 5px 5px'}}>
                         <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
                         onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                     </div>
 
                     {isPreView &&
-                        <div style={{overflowY:'auto', minWidth:'20%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'5px'}}>
+                        <div style={{overflowY:'auto', minWidth:'20%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'0px 5px 5px 5px'}}>
                             <Previewer markdown={markdown}></Previewer>
                         </div>
                     }
                     
                 </Split>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'0px 5px 5px 5px'}}>
-                    <label ref={refLength}></label>
-                    <BeautyButton type='success' disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>
-                    <BeautyButton type='confirm' onClick={onClickPostModal}>올리기</BeautyButton>
-                    <BeautyButton type='danger' onClick={onClickLeave}>나가기</BeautyButton>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'0px 5px 5px 5px',  alignItems: 'center'}}>
+                    <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
+                    
+                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickPostModal}>올리기</BeautyButton>
+                    
+                    <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>
                     <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     {categories != null && <PostModal categories={categories} isOpen={isPostModalOpen} onClose={()=>setIsPostModalOpen(false)} onPost={onPost}/>}
+                    <label ref={refLength}></label>
+                    <div style={{flex:'1', backgroundColor:'red'}}></div>
+                    <BeautyButton type='success' onClick={onClickPreview}>미리보기</BeautyButton>
                 </div>
             </div>
         </div>

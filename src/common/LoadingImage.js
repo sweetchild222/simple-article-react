@@ -3,6 +3,10 @@ import './RotateLoading.css';
 import { CiImageOff } from "react-icons/ci";
 
 export default function({src, onClick, onLoad, onError, border='1px solid gray', borderRadius='3px', width=64, height=64}) {
+
+    if(src == null)
+        return (<div onClick={onClick} style={{width: width + 'px', height: height + 'px', position: 'relative', border: border, borderRadius:borderRadius, display: 'flex', justifyContent: 'center', alignItems:'center'}}></div>)
+
     
     const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)

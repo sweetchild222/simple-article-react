@@ -30,7 +30,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   toolbarPlugin, linkDialogPlugin, insertDirective$, ConditionalContents, Separator, HighlightToggle, StrikeThroughSupSubToggles,
   diffSourcePlugin, InsertTable, InsertThematicBreak, InsertCodeBlock, InsertFrontmatter, InsertAdmonition, insertImage$,
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin, ButtonWithTooltip} from '@mdxeditor/editor'
-import javascript from 'highlight.js/lib/languages/javascript'
+
 
 export default function({ref, placeHolder, postImage, initMarkdown, onChange, onParsingError, onUserError}){
 
@@ -76,8 +76,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
       const url = mdastNode.attributes.url
       const shorts = mdastNode.attributes.shorts
 
-      const wdith = shorts == 'y' ? 315 : 560;
-      const height = shorts == 'n' ? 560 : 315;
+      const wdith = (shorts == 'y') ? 315 : 560;
+      const height = (shorts == 'y') ? 560 : 315;
 
       return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position:'relative'}}>

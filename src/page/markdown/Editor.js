@@ -118,34 +118,6 @@ export default function() {
     },[refLength])
 
 
-    let timerAutoPreview = null
-
-    const restartTimerAutoPreview = ()=> {
-        
-        if(timerAutoPreview != null){
-            clearTimeout(timerAutoPreview)
-            timerAutoPreview  = null
-        }
-
-        const timeout = 1000 * 1
-
-        const timerId = setTimeout(async() => {
-
-            timerAutoPreview  = null
-
-            if(refPreview.current && refMDX.current){
-
-                const html = MarkdownToHtml(refMDX.current.getMarkdown())
-
-                refPreview.current.innerHTML = html                         
-            }
-
-        }, timeout)
-        
-        timerAutoPreview  = timerId
-    }
-
-    
     const onClickPostModal = async() => {
 
         const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
@@ -249,9 +221,12 @@ export default function() {
         if(!isInternalChange){
 
             setIsTouched(true)
+            
+            if(refPreview.current && refMDX.current){
 
-            if(refPreview.current)
-                restartTimerAutoPreview()
+                const html = MarkdownToHtml(refMDX.current.getMarkdown())
+                refPreview.current.innerHTML = html                         
+            }                            
 
             if(refLength.current)
                 refLength.current.textContent = content.length + '/65535'

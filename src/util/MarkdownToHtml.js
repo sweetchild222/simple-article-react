@@ -110,6 +110,8 @@ const adjustStyle = (html) => {
 
     doc.querySelectorAll('pre').forEach(tag => {
 
+        tag.style.fontSize='18px'
+
         if(tag.firstChild.nodeName == 'CODE') {
             tag.firstChild.style.borderRadius = '3px'
             hljs.highlightElement(tag.firstChild)

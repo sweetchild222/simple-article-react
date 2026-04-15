@@ -17,8 +17,9 @@ import PostModal from './PostModal.js'
 
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";
-import Previewer from "./Previewer.js";
 import '../../common/RotateLoading.css'
+
+import MarkdownToHtml from '../../util/MarkdownToHtml.js'
 
 import Split from '@uiw/react-split';
 
@@ -31,13 +32,14 @@ export default function() {
 
     const refTitle = useRef(null)
     const refMDX = useRef(null)
+    const refPreview = useRef(null)
     const refLength = useRef(null)
     const refImageCrop = useRef(null)
     
     const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
     const [isTouched, setIsTouched] = useState(false)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
-    const [isPreView, setIsPreview] = useState(false)
+    const [isPreview, setIsPreview] = useState(true)
     const [imageFile, setImageFile] = useState(null)
 
     const [markdown, setMarkdown] = useState(null)
@@ -119,7 +121,7 @@ export default function() {
     let timerAutoPreview = null
 
     const restartTimerAutoPreview = ()=> {
-
+        
         if(timerAutoPreview != null){
             clearTimeout(timerAutoPreview)
             timerAutoPreview  = null
@@ -131,12 +133,11 @@ export default function() {
 
             timerAutoPreview  = null
 
-            if(isPreView){
+            if(refPreview.current && refMDX.current){
 
-                if(refMDX.current == null)
-                    return
+                const html = MarkdownToHtml(refMDX.current.getMarkdown())
 
-                setMarkdown(refMDX.current.getMarkdown())
+                refPreview.current.innerHTML = html                         
             }
 
         }, timeout)
@@ -243,20 +244,19 @@ export default function() {
         return res
     }
 
-
-    const onChangeContent = (content, isInternalChange) =>{
+    const onChangeContent = (content, isInternalChange) => {
 
         if(!isInternalChange){
 
             setIsTouched(true)
 
-            if(isPreView)
+            if(refPreview.current)
                 restartTimerAutoPreview()
 
             if(refLength.current)
                 refLength.current.textContent = content.length + '/65535'
         }
-    }
+    };
 
 
     const onChangeTitle = (event) => {
@@ -393,13 +393,31 @@ export default function() {
 
     const onClickPreview = () =>{
 
-        if(refMDX.current == null)
-            return
-
-        setMarkdown(refMDX.current.getMarkdown())
-
-        setIsPreview(set => !set)
+        setIsPreview(set => !set)            
     }
+
+
+
+    useEffect(()=>{
+
+        if(isPreview){
+
+            if(refPreview.current && refMDX.current){
+
+                const html = MarkdownToHtml(refMDX.current.getMarkdown())
+
+                refPreview.current.innerHTML = html
+            }
+        }
+
+    }, [isPreview])
+
+    const memoMDXEditor = useMemo(() => {
+
+        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
+                    onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
+                            
+    }, [])
 
 
     return validAuth(auth) ? (
@@ -413,17 +431,14 @@ export default function() {
                 </div>
 
                 <Split visible={true} style={{maxHeight:'calc(100vh - 240px)', width:'100%'}}>
-                    <div style={{overflowY:'auto', minWidth:'20%', width: isPreView ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:'0px 5px 5px 5px'}}>
-                        <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
-                        onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
+                    <div style={{overflowY:'auto', minWidth:'20%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:'0px 5px 5px 5px'}}>
+                        {memoMDXEditor}
                     </div>
-
-                    {isPreView &&
-                        <div style={{overflowY:'auto', minWidth:'20%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'0px 5px 5px 5px'}}>
-                            <Previewer markdown={markdown}></Previewer>
-                        </div>
+                
+                    {isPreview && <div style={{overflowY:'auto', minWidth:'20%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'0px 5px 5px 5px'}}>
+                        <div ref={refPreview}  style={{margin:'10px'}}/>
+                    </div>
                     }
-                    
                 </Split>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'0px 5px 5px 5px',  alignItems: 'center'}}>
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>

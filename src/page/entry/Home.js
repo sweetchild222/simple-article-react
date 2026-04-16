@@ -77,6 +77,8 @@ export default function Home() {
 
   const goEditor=(state)=>{
 
+    console.log(state)
+
     navigate('/editor', {state:state})
   }
 
@@ -101,8 +103,8 @@ export default function Home() {
       const resArticle = await ArticleAPI.getArticle(auth.jwt, article.id)
 
       if(resArticle == null)
-        return
-
+        return      
+      
       goEditor(resArticle)
       return
     }

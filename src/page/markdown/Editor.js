@@ -25,36 +25,28 @@ import Split from '@uiw/react-split';
 
 export default function() {
     
-    const location = useLocation()
+    const location = useLocation()    
 
     if(location.state == null)
         return (<div>잘못된 방식으로 접근하였습니다</div>)
 
-    const refTitle = useRef(null)
+    if(location.state.updated == null)
+        location.state.updated = location.state.content
+    
     const refMDX = useRef(null)
     const refPreview = useRef(null)
     const refLength = useRef(null)
-    const refImageCrop = useRef(null)
     
-    const [isSaveTempLoading, setIsSaveTempLoading] = useState(false)
+    const [isTempSaveLoading, setIsTempSaveLoading] = useState(false)
     const [isTouched, setIsTouched] = useState(false)
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false)
-    const [isPreview, setIsPreview] = useState(true)
-    const [imageFile, setImageFile] = useState(null)
-
-    const [markdown, setMarkdown] = useState(null)
-    
-    const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
-    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
-    const [isPostModalOpen, setIsPostModalOpen] = useState(false)
-    const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
-    const [categories, setCategories] = useState(null)
+    const [isPreview, setIsPreview] = useState(false)
+    const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)    
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
     const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
     const navigate = useNavigate()
-    
+
     useEffect(()=> {
 
         if(!validAuth(auth)){
@@ -67,7 +59,10 @@ export default function() {
     
 
     const blocker = useBlocker(({ currentLocation, nextLocation }) => {
-        
+
+        if(nextLocation.pathname == '/editor/posting')
+            return false        
+
         if (isTouched && currentLocation.pathname !== nextLocation.pathname)
             return true
         else
@@ -110,27 +105,24 @@ export default function() {
     }, [beforeUnload])
 
 
-    useEffect(()=>{
+    const onClickNext = async() => {
 
-        if(refLength.current)
-            refLength.current.textContent = location.state.content.length + '/65535'
+        if(isTouched == true){
 
-    },[refLength])
+            const success = await tempSave()
 
+            if(success == false)
+                return
+        }
 
-    const onClickPostModal = async() => {
-
-        const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
+        const state = { ...location.state, updated: refMDX.current.getMarkdown()}
         
-        if(res == null)
-            return -1
+        navigate(location.pathname, { 
+            replace: true,
+            state: state
+        });        
 
-        if(res.length == 0)
-            return -1
-
-        setCategories(res)
-
-        setIsPostModalOpen(true)
+        navigate('posting', {state:state})
     }
 
 
@@ -180,35 +172,45 @@ export default function() {
 
     const onClickSave = async() => {
         
-        setIsSaveTempLoading(true)
+        await tempSave()
+    }
+
+
+    const tempSave = async() =>{
+
+        setIsTempSaveLoading(true)
     
-        const res = await saveCore()
+        const res = await tempSaveCore()
+
+        setIsTempSaveLoading(false)
 
         if(res != null)
             window.showToast('임시 저장됨', 'info')
         else
             window.showToast('임시 저장 실패', 'error')
+        
+        setIsTouched(res != null ? false : true)
 
-        setIsSaveTempLoading(false)
-        setIsTouched(false)
+        return res != null ? true : false
     }
 
 
-    const saveCore = async() => {
+    const tempSaveCore = async() => {
         
         if(refMDX.current == null)
             return null
 
         const payloadSource = location.state
-        
+
         const article_id = payloadSource.id
-        const title = 'test title'
+        const title = location.state.title
         const content = refMDX.current.getMarkdown()
         const open = payloadSource.open
         const posted = 0
         const category_id = payloadSource.category_id
+        const thumbnail = payloadSource.thumbnail
 
-        const res = await putArticle(article_id, title, content, thumbnailUrl, open, posted, category_id)
+        const res = await putArticle(article_id, title, content, thumbnail, open, posted, category_id)
 
         if(res == null)
             return null
@@ -232,12 +234,6 @@ export default function() {
                 refLength.current.textContent = content.length + '/65535'
         }
     };
-
-
-    const onChangeTitle = (event) => {
-
-        setIsTouched(true)
-    }
 
 
     const onClickLeave=()=> {
@@ -267,96 +263,6 @@ export default function() {
     }
 
 
-    const onClickThumbnail = async() => {
-
-        const imageFile = await pickImageFile()
-
-        if(imageFile == null)
-            return
-        
-        if(imageFile.format == 'unknown'){
-            window.showToast('파일을 사용할 수 없습니다', 'error')
-            return
-        }
-
-        if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
-
-            const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
-
-            if(canvas == null){
-                window.showToast('파일을 사용할 수 없습니다', 'error')
-                return
-            }
-
-            setImageFile(await blobFromCanvas(canvas))
-            
-            setIsImageCropModalOpen(true)
-        }
-        else{
-
-            setImageFile(imageFile.file)
-
-            setIsImageCropModalOpen(true)
-        }
-    }
-
-
-    const onClickApply = async() => {
-    
-        const rect = refImageCrop.current.rect()
-        const image = refImageCrop.current.image()
-
-        const dWidth = 1024
-        const dHeight = 768
-
-        const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
-        
-        const blob = await blobFromCanvas(canvas)
-            
-        const formData = new FormData()
-        formData.append('image', blob)
-
-        const resArticleThumbnail = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
-
-        if(resArticleThumbnail == null)
-            return
-
-        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + resArticleThumbnail.id
-
-        setThumbnailUrl(url)
-        setIsImageCropModalOpen(false)
-        setIsTouched(true)
-    }
-
-    const onPost = async(category_id, open_type) => {
-
-        const payloadSource = location.state
-
-        if(refTitle.current == null || refMDX.current == null)
-            return null
-        
-        const article_id = payloadSource.id
-        const title = refTitle.current.value
-        const content = refMDX.current.getMarkdown()
-        const posted = 1
-        
-        setIsOverlayLoading(true)
-
-        const res = await putArticle(article_id, title, content, thumbnailUrl, open_type, posted, category_id)
-
-        setIsOverlayLoading(false)
-
-        if(res == null){
-            window.showToast('글 게시에 실패하였습니다', 'error')
-            return null
-        }
-        
-        setIsTouched(false)
-        setIsPostModalOpen(false)
-        navigate(-1)
-    }
-
-
     const onClickGoLogin = () => {
 
         setIsTouched(false)
@@ -368,9 +274,8 @@ export default function() {
 
     const onClickPreview = () =>{
 
-        setIsPreview(set => !set)            
+        setIsPreview(set => !set)
     }
-
 
 
     useEffect(()=>{
@@ -380,30 +285,24 @@ export default function() {
             if(refPreview.current && refMDX.current){
 
                 const html = MarkdownToHtml(refMDX.current.getMarkdown())
-
                 refPreview.current.innerHTML = html
             }
         }
 
     }, [isPreview])
 
+
     const memoMDXEditor = useMemo(() => {
 
-        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content}
+        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content} markdown={location.state.updated}
                     onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                             
     }, [])
 
 
     return validAuth(auth) ? (
-        <div style={{flex:1, position: 'relative', margin:'0px 20px 0px 20px'}}>
-            {isOverlayLoading && <div style={{width:'100%', height:'100%', position: 'absolute', zIndex: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}} className={`rotateLoading`}/>}
+        <div style={{flex:1, position: 'relative', margin:'0px 20px 0px 20px'}}>            
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
-                {/* <div style={{display: 'flex', flexDirection: 'row', margin:'5px'}}>
-                    <LoadingImage src={thumbnailUrl != '' ? (thumbnailUrl + '?size=160x120') : null} onClick={onClickThumbnail} width={160} height={120}/>
-                    {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1.333}></ImageCropModal>}
-                    <input ref={refTitle} maxLength="256" style={{flex:'1', fontSize: '25px'}}  placeholder="제목을 입력하세요" defaultValue={location.state.title} onChange={onChangeTitle}></input>
-                </div> */}
 
                 <Split visible={true} style={{maxHeight:'calc(100vh - 190px)', width:'100%'}}>
                     <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:'0px 5px 5px 5px'}}>
@@ -417,14 +316,12 @@ export default function() {
                 </Split>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'20px 5px 20px 5px',  alignItems: 'center'}}>
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
-                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickPostModal}>올리기</BeautyButton>
-                    
-                    <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isSaveTempLoading} onClick={onClickSave}>임시저장</BeautyButton>
+                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickNext}>다음</BeautyButton>
+                    <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</BeautyButton>
                     <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
-                    {categories != null && <PostModal categories={categories} isOpen={isPostModalOpen} onClose={()=>setIsPostModalOpen(false)} onPost={onPost}/>}
-                    <label ref={refLength}></label>
                     <div style={{flex:'1', backgroundColor:'red'}}></div>
-                    <BeautyButton type='success' onClick={onClickPreview}>미리보기</BeautyButton>
+                    <BeautyButton type='success' onClick={onClickPreview} style={{marginRight:'10px'}}>미리보기</BeautyButton>
+                    <label ref={refLength}>{location.state.content.length + '/65535'}</label>
                 </div>
             </div>
         </div>

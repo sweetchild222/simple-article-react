@@ -32,7 +32,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin, ButtonWithTooltip} from '@mdxeditor/editor'
 
 
-export default function({ref, placeHolder, postImage, initMarkdown, onChange, onParsingError, onUserError}){
+export default function({ref, placeHolder, postImage, initMarkdown, markdown, onChange, onParsingError, onUserError}){
 
   const refEditor = useRef(null);
     
@@ -516,7 +516,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, onChange, on
   ]
 
   return (
-      <MDXEditor placeholder={placeHolder} suppressHtmlProcessing={true} ref={refEditor} markdown={initMarkdown} onChange={onChange}
+      <MDXEditor placeholder={placeHolder} suppressHtmlProcessing={true} ref={refEditor} markdown={markdown} onChange={onChange}
         plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
         translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>    
   )

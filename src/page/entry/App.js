@@ -18,6 +18,7 @@ import Withdraw from '../user/Withdraw.js'
 import ChangePassword from '../user/ChangePassword.js'
 
 import Editor from '../markdown/Editor.js'
+import Posting from '../markdown/Posting.js'
 import PageNotFound from './PageNotFound.js'
 
 
@@ -45,7 +46,10 @@ export default function() {
       element: <RootLayout />,
       children: [
         { index: true, element: <Home/>},
-        { path: 'editor', element: <Editor/>},
+        { path: 'editor', children: [
+          { index: true, element: <Editor/>},
+          { path: 'posting', element: <Posting/>}
+        ]},
 
         { path: 'login', children: [
           { index: true, element: <Login/>},
@@ -57,7 +61,7 @@ export default function() {
           { index: true, element: <User/>},
           { path: 'widthdraw', element: <Withdraw/>},
           { path: 'change_password', element: <ChangePassword/>}          
-        ]},              
+        ]},
       ],
       errorElement: <PageNotFound />
     }

@@ -255,8 +255,6 @@ export default function() {
     }
 
 
-    
-
     const onClickPreview = () =>{
 
         setIsPreview(set => !set)

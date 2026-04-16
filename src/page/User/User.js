@@ -1,4 +1,3 @@
-import './User.css'
 import '../../common/RotateLoading.css'
 import LoadingImage from "../../common/LoadingImage.js";
 
@@ -20,7 +19,7 @@ import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker, useParams} from 'react-router-dom';
 
 export default function() {
     
@@ -34,36 +33,26 @@ export default function() {
     const refImageCrop = useRef(null)
 
     const navigate = useNavigate()
+    const { id } = useParams()
 
-    const getHighQualityProfile = async(auth) =>{
+    const isAuthUser = (validAuth(auth) && auth.user_id == id)
 
-        const resUser = await UserAPI.getUser(auth.user_id)
+    useEffect(()=> {
 
-        if(resUser == null)
-            return null
-
-        if(resUser.profile == null)
-            return '/image/user.png'
-        
-
-        return resUser.profile
-    }
-
-    useEffect(()=>{
-
-        if(!validAuth(auth))
-            return
-        
-        getHighQualityProfile(auth).then((profile)=>{
+        UserAPI.getUser(id).then((resUser)=>{
             
-            if(profile == null)
-                window.showToast('프로필 가져오기가 실패하였습니다', 'error')
-            else
-                setProfileImage(profile)
+            if(resUser == null) {
+                navigate('/notfound')
+                return
+            }
+
+            setProfileImage(resUser.profile ?  resUser.profile : '/image/user.png')
         })
-    }, [auth])
+
+    }, [])
     
     const modal_config = {text: '로그 아웃 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+
 
     const onResult = (result) => {
 
@@ -76,7 +65,7 @@ export default function() {
     }
 
 
-    const onClickLogout = ()=>{
+    const onClickLogout = ()=> {
 
         setIsModalOpen(true)        
     }
@@ -84,17 +73,27 @@ export default function() {
 
     const onClickPasswordChange = ()=>{
 
+        if(!isAuthUser)
+            return
+
         navigate('change_password')
     }
 
 
     const onClickUserWithdraw = async() =>{
 
+        if(!isAuthUser)
+            return
+
         navigate('widthdraw')
     }
 
 
     const onClickProfile = async() =>{
+
+        if(!isAuthUser)
+            return
+            
         
         const imageFile = await pickImageFile()
 
@@ -129,6 +128,9 @@ export default function() {
 
 
     const onClickApply = async() => {
+
+        if(!isAuthUser)
+            return
 
         const rect = refImageCrop.current.rect()
         const image = refImageCrop.current.image()
@@ -175,16 +177,21 @@ export default function() {
         setIsImageCropModalOpen(false)
     }
 
-
-    return validAuth(auth) ? (
-      <div id='profile'>
+    const onClickNavigateLibrary = () => {
+        
+        navigate('library');
+    }
+      
+    return (
+      <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <LoadingImage src={profileImage} onClick={onClickProfile} width={256} height={256}/>
         {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
-        <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
-        <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
-        <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>
-        <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
+        {isAuthUser && id == auth.user_id && <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>}
+        {isAuthUser && <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>}
+        {isAuthUser && <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>}
+        {isAuthUser && <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>}
+        <BeautyButton onClick={onClickNavigateLibrary} type='success'>작성한 글</BeautyButton>
       </div>
-    ) : (<GoLogin/>)
+    )
 }
 

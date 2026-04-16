@@ -16,6 +16,7 @@ import Regist from '../user/Regist.js'
 import Login from '../user/Login.js'
 import Withdraw from '../user/Withdraw.js'
 import ChangePassword from '../user/ChangePassword.js'
+import Library from '../user/Library.js'
 
 import Editor from '../markdown/Editor.js'
 import Posting from '../markdown/Posting.js'
@@ -35,7 +36,7 @@ export default function() {
       <Header/>
       <div style={{width:'100%', height:'1px', backgroundColor:'#F0F0F0'}}></div>
       <div style={{height:'20px'}}/>
-      <Outlet/>      
+      <Outlet/>
     </div>
   )
 
@@ -53,15 +54,17 @@ export default function() {
 
         { path: 'login', children: [
           { index: true, element: <Login/>},
-          { path: 'regist', element: <Regist/>}
-        ]},
+          { path: 'regist', element: <Regist/>}]
+        },
 
-
-        { path: 'user', children: [
+        { path: 'user/:id', children: [
           { index: true, element: <User/>},
           { path: 'widthdraw', element: <Withdraw/>},
-          { path: 'change_password', element: <ChangePassword/>}          
-        ]},
+          { path: 'change_password', element: <ChangePassword/>},
+          { path: 'library', element: <Library/>},
+          { path: '*', element: <PageNotFound />}],
+        },
+        { path: 'notfound', element: <PageNotFound/>}        
       ],
       errorElement: <PageNotFound />
     }

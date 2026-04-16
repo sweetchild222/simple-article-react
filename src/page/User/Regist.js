@@ -30,13 +30,7 @@ export default function() {
   const [isLoadingRegist, setIsLoadingRegist] = useState(false)
   const [isDisabledRegist, setIsDisabledRegist] = useState(false)
 
-
   useEffect(() => {
-
-    if(validAuth(auth)){        
-        navigate(-1)
-        return
-    }
 
     if(isVerified == true){
       input_email.disabled = true
@@ -47,7 +41,7 @@ export default function() {
     else
       setIsDisabledRegist(true)
 
-  }, [auth, isVerified])
+  }, [isVerified])
 
 
 
@@ -157,13 +151,14 @@ export default function() {
     setIsLoadingRegist(false)
     
     if(auth == null){
-      window.showToast('회원 가입이 실패하였습니다', 'error')
-      navigate(-1)
+      window.showToast('회원 가입이 실패하였습니다', 'error')      
       return
     }
 
     updateAuth(auth)
-    window.showToast('회원 가입이 성공하였습니다', 'success')    
+    window.showToast('회원 가입이 성공하였습니다', 'success')
+
+    navigate('/')
   }
 
   
@@ -242,7 +237,7 @@ export default function() {
       setIsDisabledRegist(!valid)
   }
 
-  return validAuth(auth) ? (
+  return !validAuth(auth) ? (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <input id='input_email' type="text" maxLength="254" onChange={onChangeEmail} placeholder="이메일"/>

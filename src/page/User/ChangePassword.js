@@ -16,15 +16,6 @@ export default function() {
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
-
-        if(!validAuth(auth)){
-            window.showToast('로그인 해주세요.', 'error')
-            navigate(-1)
-        }
-
-    },[auth])
-
 
     const onClickPasswordChange = async()=>{
         
@@ -78,10 +69,10 @@ export default function() {
             window.showToast('비밀번호 변경이 실패하였습니다', 'error')
             return
         }
+        
+        window.showToast('비밀번호 변경이 성공하였습니다', 'success')
 
         navigate(-1)
-
-        window.showToast('비밀번호 변경이 성공하였습니다', 'success')
     }
     
 
@@ -126,7 +117,6 @@ export default function() {
             input_repeat_password.focus()
     }
 
-    
 
     return validAuth(auth) ? (
         

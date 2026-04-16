@@ -43,25 +43,15 @@ export default function() {
     const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
     const navigate = useNavigate()
-
-    useEffect(()=> {
-
-        if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'error')
-            navigate(-1)
-            return
-        }
-
-    }, [auth])
     
-
     const blocker = useBlocker(({ currentLocation, nextLocation }) => {
-
+        
         if(nextLocation.pathname == '/editor/posting')
             return false
 
-        if (isTouched && currentLocation.pathname !== nextLocation.pathname)
+        if (isTouched && currentLocation.pathname !== nextLocation.pathname){            
             return true
+        }
         else
             return false
     })
@@ -69,7 +59,12 @@ export default function() {
 
     useEffect(() => {
     
-        if (blocker.state === "blocked" && validAuth(auth)) {
+        if (blocker.state === "blocked") {
+
+            if(!validAuth(auth)){
+                blocker.proceed()
+                return
+            }
 
             const proceed = window.confirm("저장하지 않고 나가시겠습니까?")
 
@@ -112,13 +107,12 @@ export default function() {
                 return
         }
 
-
         location.state.content = refMDX.current.getMarkdown()
                 
-        navigate(location.pathname, { 
+        navigate(location.pathname, {
             replace: true,
             state: location.state
-        });        
+        });
 
         navigate('posting', {state:location.state})
     }
@@ -261,14 +255,7 @@ export default function() {
     }
 
 
-    const onClickGoLogin = () => {
-
-        setIsTouched(false)
-
-        setTimeout(()=> {
-            navigate('/login')
-        })
-    }
+    
 
     const onClickPreview = () =>{
 
@@ -296,7 +283,7 @@ export default function() {
                     onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                             
     }, [])
-
+    
 
     return validAuth(auth) ? (
         <div style={{flex:1, position: 'relative', margin:'0px 20px 0px 20px'}}>
@@ -320,11 +307,9 @@ export default function() {
                     <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     <div style={{flex:'1', backgroundColor:'red'}}></div>
                     <BeautyButton type='success' onClick={onClickPreview}>미리보기</BeautyButton>
-                    
                 </div>
             </div>
         </div>
-
-    ) : (<GoLogin onClickGoLoginCustom={onClickGoLogin} />)
+    ) : (<GoLogin/>)
 }
 

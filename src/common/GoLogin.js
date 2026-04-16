@@ -8,35 +8,30 @@ import ProfileContext from "../util/ProfileContext.js";
 
 
 
-export default function({onClickGoLoginCustom}) {
+export default function() {
 
     const navigate = useNavigate()
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
-    
+        
+    useEffect(()=> {
 
-    useEffect(()=>{
-
-        if(validAuth(auth))            
-            navigate(-1)        
-        else            
-            removeProfile()        
+        removeAuth()
+        removeProfile()
         
     }, [auth])
 
-    
-
-
-    const onClickGoLogin = () => {
-
-        navigate('/login')
+    const onClickNavigateLogin = () => {
+        
+        navigate('/login', {state:{relogin:true}})
     }
     
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <label>세션이 만료 되었습니다. 다시 로그인 해주세요</label>
-            <BeautyButton type='success' onClick={onClickGoLoginCustom != null ? onClickGoLoginCustom :  onClickGoLogin}>로그인 다시 하기</BeautyButton>
+            <div style={{height:'10px'}}></div>
+            <BeautyButton type='success' onClick={onClickNavigateLogin}>로그인 다시 하기</BeautyButton>
         </div>
     )
 }

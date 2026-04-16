@@ -16,7 +16,7 @@ export default function() {
         
     const navigate = useNavigate()
 
-    useEffect(() => {
+    useEffect(() => {        
 
         setIsLoggedIn(validAuth(auth))
 
@@ -30,21 +30,15 @@ export default function() {
     }
 
 
-    const onClickLogIn = (e) =>{
+    const onClickLogIn = (e) =>{        
 
         navigate("/login")
     }
 
 
     const onClickUser = (e) =>{
-
-
-        if(validAuth(auth))
-            navigate('/user')
-        else
-            navigate('/login')
-
-
+        
+        navigate('/user')
     }
 
 

@@ -8,7 +8,6 @@ import * as UserAPI from '../../api/UserAPI.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 import { useState } from 'react';
-import { useNavigate} from 'react-router-dom';
 
 import AuthContext from "../../util/AuthContext.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
@@ -21,7 +20,7 @@ import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
-
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
 
 export default function() {
     
@@ -52,12 +51,10 @@ export default function() {
 
     useEffect(()=>{
 
-        if(!validAuth(auth)){
-            navigate(-1)
+        if(!validAuth(auth))
             return
-        }
         
-        getHighQualityProfile(auth).then((profile)=>{            
+        getHighQualityProfile(auth).then((profile)=>{
             
             if(profile == null)
                 window.showToast('프로필 가져오기가 실패하였습니다', 'error')
@@ -74,6 +71,7 @@ export default function() {
             removeAuth()
             removeProfile()
             window.showToast('로그 아웃이 성공하였습니다', 'success')
+            navigate('/')
         }
     }
 
@@ -127,13 +125,6 @@ export default function() {
 
             setIsImageCropModalOpen(true)
         }
-    }
-
-
-
-    const canvasToFormData = async(canvas) =>{
-
-
     }
 
 

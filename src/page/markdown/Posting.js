@@ -27,8 +27,6 @@ export default function() {
     if(location.state == null)
         return (<div>잘못된 방식으로 접근하였습니다</div>)
 
-
-
     console.log(location.state)
 
     const refTitle = useRef(null)
@@ -44,19 +42,7 @@ export default function() {
     const [categories, setCategories] = useState(null)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     
-    const navigate = useNavigate()
-    
-    useEffect(()=> {
-
-        if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'error')
-            navigate(-2)
-            return
-        }
-
-    }, [auth])
-    
-
+    const navigate = useNavigate()        
 
     const onClickPost = async() => {
 
@@ -86,7 +72,6 @@ export default function() {
 
         return url
     }
-
 
 
     const putArticle = async(article_id, title, content, thumbUrl, open, posted, category_id) => {
@@ -234,7 +219,7 @@ export default function() {
             window.showToast('글 게시에 실패하였습니다', 'error')
             return null
         }
-                
+
         navigate(-1)
     }
 
@@ -247,21 +232,32 @@ export default function() {
     }
 
 
-    return validAuth(auth) ? (
-        <div style={{flex:1, position: 'relative', margin:'0px 20px 0px 20px'}}>
-            {isOverlayLoading && <div style={{width:'100%', height:'100%', position: 'absolute', zIndex: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}} className={`rotateLoading`}/>}
-            <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
-                <div style={{overflowY:'auto', minWidth:'10%', width: '100%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'0px 5px 5px 5px'}}>
-                    <div ref={refPreview}  style={{margin:'10px'}}/>
-                </div>                    
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'20px 5px 20px 5px',  alignItems: 'center'}}>
-                    <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>뒤로 가기</BeautyButton>
-                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickPost}>올리기</BeautyButton>                                        
-                    {/* {categories != null && <PostModal categories={categories} isOpen={isPostModalOpen} onClose={()=>setIsPostModalOpen(false)} onPost={onPost}/>} */}
-                </div>
-            </div>
-        </div>
 
-    ) : (<GoLogin onClickGoLoginCustom={onClickGoLogin} />)
+    return !validAuth(auth) ? (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <label htmlFor='input_title'>제목</label>
+            <input id='input_username' type='text'/>
+            <BeautyButton type='success'>다음</BeautyButton>
+            <BeautyButton type='success'>뒤로가기</BeautyButton>            
+        </div>
+        ) : (<GoLogin onClickGoLoginCustom={onClickGoLogin} />)
+
+
+    // return validAuth(auth) ? (
+    //     <div style={{flex:1, position: 'relative', margin:'0px 20px 0px 20px'}}>
+    //         {isOverlayLoading && <div style={{width:'100%', height:'100%', position: 'absolute', zIndex: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}} className={`rotateLoading`}/>}
+    //         <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
+    //             <div style={{overflowY:'auto', minWidth:'10%', width: '100%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'0px 5px 5px 5px'}}>
+    //                 <div ref={refPreview}  style={{margin:'10px'}}/>
+    //             </div>                    
+    //             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'20px 5px 20px 5px',  alignItems: 'center'}}>
+    //                 <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>뒤로 가기</BeautyButton>
+    //                 <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickPost}>올리기</BeautyButton>                                        
+    //                 {/* {categories != null && <PostModal categories={categories} isOpen={isPostModalOpen} onClose={()=>setIsPostModalOpen(false)} onPost={onPost}/>} */}
+    //             </div>
+    //         </div>
+    //     </div>
+
+    // ) : (<GoLogin onClickGoLoginCustom={onClickGoLogin} />)
 }
 

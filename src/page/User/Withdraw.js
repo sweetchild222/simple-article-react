@@ -12,6 +12,7 @@ import Modal from "../../common/Modal.js"
 import BeautyButton from '../../common/BeautyButton.js';
 import GoLogin from "../../common/GoLogin.js";
 
+
 export default function() {
     
     const {auth, validAuth, removeAuth} = useContext(AuthContext)
@@ -19,20 +20,10 @@ export default function() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const modal_config = {text: '회원 탈퇴를 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
-
-    useEffect(()=>{
-
-        if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'error')
-            navigate(-1)
-            return
-        }
-        
-    },[auth])
-
+    
     
     const onClickUserWithdraw = async()=> {
 
@@ -74,6 +65,10 @@ export default function() {
         removeProfile()
 
         window.showToast('회원 탈퇴가 성공하였습니다', 'success')
+
+        
+
+        navigate('/')
     }
 
     

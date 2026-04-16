@@ -21,16 +21,21 @@ export default function() {
     const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     const [isLoading, setIsLoading] = useState(false)
     
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+
+    const location = useLocation()
+    
+    const relogin = location.state != null && location.state.relogin == true    
 
     useEffect(() => {
-        
+
         if(validAuth(auth)){
-            navigate(-1)
+            
+            if(!relogin)
+                navigate('/')
         }
-        else{            
+        else
             removeProfile()
-        }
 
     }, [auth])
 
@@ -41,6 +46,7 @@ export default function() {
         //const password = input_password.value
         
         const username = 'crazygun22@nate.com'
+        //const username = 'sweetchild22.ik@gmail.com'
         const password = 'Sweetchild@22'
 
         if(username === ''){
@@ -69,7 +75,7 @@ export default function() {
         
         const resUser = await UserAPI.getUser(resAuth.user_id)
         
-        if(resUser == null) {            
+        if(resUser == null) {
             setIsLoading(false)
             window.showToast('회원 정보를 가져 올 수 없습니다', 'error')
             return
@@ -81,6 +87,10 @@ export default function() {
         const url = resUser.profile + '?size=64x64'
         
         updateProfile(url)
+        
+        if(relogin)
+            navigate(-1)
+
         setIsLoading(false)
     }
 
@@ -99,14 +109,15 @@ export default function() {
     }
     
 
-    return !validAuth(auth) ? (
+    return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <label htmlFor='input_username'>사용자 이름</label>
             <input id='input_username' type='text' onKeyDown={onKeyDownUserName}/>
             <label htmlFor='input_password'>비밀번호</label>
             <input id='input_password' type='password' onKeyDown={onKeyDownPassword}/>
             <BeautyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</BeautyButton>
-            <BeautyButton onClick={() => {navigate('regist', {replace:true})}}>회원가입</BeautyButton>
+            {!relogin && <BeautyButton onClick={() => {navigate('regist', {replace:true})}}>회원가입</BeautyButton>}
         </div>
-    ) : (<GoBack value={'이미 로그인된 사용자 입니다'} />)
+    )
 }
+

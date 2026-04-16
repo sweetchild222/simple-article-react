@@ -27,6 +27,10 @@ export default function() {
     if(location.state == null)
         return (<div>잘못된 방식으로 접근하였습니다</div>)
 
+
+
+    console.log(location.state)
+
     const refTitle = useRef(null)
     const refPreview = useRef(null)
     const refImageCrop = useRef(null)    

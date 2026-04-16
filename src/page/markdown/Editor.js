@@ -25,13 +25,10 @@ import Split from '@uiw/react-split';
 
 export default function() {
     
-    const location = useLocation()    
+    const location = useLocation()
 
     if(location.state == null)
         return (<div>잘못된 방식으로 접근하였습니다</div>)
-
-    if(location.state.updated == null)
-        location.state.updated = location.state.content
     
     const refMDX = useRef(null)
     const refPreview = useRef(null)
@@ -40,7 +37,7 @@ export default function() {
     const [isTempSaveLoading, setIsTempSaveLoading] = useState(false)
     const [isTouched, setIsTouched] = useState(false)
     const [isPreview, setIsPreview] = useState(false)
-    const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)    
+    const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
     const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
@@ -61,7 +58,7 @@ export default function() {
     const blocker = useBlocker(({ currentLocation, nextLocation }) => {
 
         if(nextLocation.pathname == '/editor/posting')
-            return false        
+            return false
 
         if (isTouched && currentLocation.pathname !== nextLocation.pathname)
             return true
@@ -115,14 +112,15 @@ export default function() {
                 return
         }
 
-        const state = { ...location.state, updated: refMDX.current.getMarkdown()}
-        
+
+        location.state.content = refMDX.current.getMarkdown()
+                
         navigate(location.pathname, { 
             replace: true,
-            state: state
+            state: location.state
         });        
 
-        navigate('posting', {state:state})
+        navigate('posting', {state:location.state})
     }
 
 
@@ -227,8 +225,8 @@ export default function() {
             if(refPreview.current && refMDX.current){
 
                 const html = MarkdownToHtml(refMDX.current.getMarkdown())
-                refPreview.current.innerHTML = html                         
-            }                            
+                refPreview.current.innerHTML = html
+            }
 
             if(refLength.current)
                 refLength.current.textContent = content.length + '/65535'
@@ -294,14 +292,14 @@ export default function() {
 
     const memoMDXEditor = useMemo(() => {
 
-        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content} markdown={location.state.updated}
+        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content} markdown={location.state.content}
                     onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                             
     }, [])
 
 
     return validAuth(auth) ? (
-        <div style={{flex:1, position: 'relative', margin:'0px 20px 0px 20px'}}>            
+        <div style={{flex:1, position: 'relative', margin:'0px 20px 0px 20px'}}>
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
 
                 <Split visible={true} style={{maxHeight:'calc(100vh - 190px)', width:'100%'}}>

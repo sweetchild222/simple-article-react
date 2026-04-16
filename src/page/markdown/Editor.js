@@ -314,7 +314,7 @@ export default function() {
                 </Split>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, margin:'20px 5px 20px 5px',  alignItems: 'center'}}>
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
-                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickNext}>다음</BeautyButton>
+                    <BeautyButton type='confirm' style={{marginRight:'10px'}} isLoading={isTempSaveLoading} onClick={onClickNext}>다음</BeautyButton>
                     <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</BeautyButton>
                     <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     <div style={{flex:'1', backgroundColor:'red'}}></div>

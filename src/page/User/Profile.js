@@ -13,12 +13,13 @@ import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import ProfileContext from "../../util/ProfileContext.js";
 import Modal from "../../common/Modal.js"
 import GoLogin from "../../common/GoLogin.js";
-import ChangePassword from "./Password.js"
 
 import BeautyButton from '../../common/BeautyButton.js';
+import Password from './Password.js';
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
+import * as validator from '../../util/Validator.js'
 
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker, useParams} from 'react-router-dom';
 import PageNotFound from '../entry/PageNotFound.js';
@@ -29,6 +30,7 @@ export default function() {
     const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
     const [isModalLogout, setIsModalLogout] = useState(false)
     const [isModalPassword, setIsModalPassword] = useState(false)
+    const [isModalWithdraw, setIsModalWithdraw] = useState(false)
     const [profileImage, setProfileImage] = useState(null)
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
@@ -48,18 +50,17 @@ export default function() {
 
         UserAPI.getUser(auth.user_id).then((resUser)=>{
             
-            if(resUser == null) {
-                //navigate('/notfound')
-                return
-            }
+            if(resUser == null)                
+                return            
 
             setProfileImage(resUser.profile ?  resUser.profile : '/image/user.png')
         })
 
     }, [auth])
     
-    const modal_config_logout = {text: '로그 아웃 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+    const modal_config_logout = {text: '로그아웃 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
     const modal_config_password = {type: 'custom', isCloseOutsideClick: true}
+    const modal_config_withdraw = {text: '패스워드를 입력하세요', type: 'input', isCloseOutsideClick: true}
 
     const onResultLogout = (result) => {
 
@@ -80,7 +81,7 @@ export default function() {
 
     const onClickPassword = ()=>{
 
-        console.log('adfaf')
+        
 
         setIsModalPassword(true)
     }
@@ -88,7 +89,7 @@ export default function() {
 
     const onClickUserWithdraw = async() =>{
 
-        navigate('widthdraw')
+        setIsModalWithdraw(true)
     }
 
 
@@ -127,6 +128,9 @@ export default function() {
 
 
     const onClickApply = async() => {
+
+        if(!validAuth(auth))
+            return
 
         if(!refImageCrop.current)
             return
@@ -175,6 +179,53 @@ export default function() {
         updateProfile(url + '?size=64x64')
         setIsModalImageCrop(false)
     }
+
+    const onInputPassword = async(input) => {
+
+        if(input == ''){
+            window.showToast('현재 비밀번호를 입력하세요', 'error')
+            return
+        }        
+        
+        if(validator.password(input) == false) {
+            window.showToast('비밀번호가 틀렸습니다', 'error')
+            return
+        }
+
+        const res = await withdraw(input)
+
+        if(res == null){
+            window.showToast('회원 탈퇴가 실패하였습니다', 'error')
+            return
+        }
+
+        window.showToast('회원 탈퇴가 성공하였습니다', 'error')
+
+        removeAuth()
+        removeProfile()
+
+        navigate('/')
+    }
+
+
+    const withdraw = async(password) => {
+
+        if(!validAuth(auth))
+            return
+    
+        const resPasswordCheck = await UserAPI.getUserPasswordCheck(auth.jwt, auth.user_id, password)
+
+        if(resPasswordCheck == null)
+            return null
+
+        if(resPasswordCheck.correct == false)
+            return null
+
+        const payload = {withdraw:true}
+
+        return await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
+    }
+    
     
     
     return isAuthUser ? (
@@ -185,10 +236,10 @@ export default function() {
         <Modal config={modal_config_logout} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
         <BeautyButton onClick={onClickPassword} type='default'>비밀번호 변경</BeautyButton>
         <Modal config={modal_config_password} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)}>
-            <ChangePassword onClose={() => setIsModalPassword(false)}/>
+            <Password onClose={() => setIsModalPassword(false)}/>
         </Modal>
-
-        <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>        
+        <Modal config={modal_config_withdraw} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPassword}/>
+        <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
       </div>) : null
 }
 

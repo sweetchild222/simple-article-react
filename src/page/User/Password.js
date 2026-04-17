@@ -29,6 +29,9 @@ export default function({onClose}) {
 
     const onClickPasswordChange = async()=>{
 
+        if(!validAuth(auth))
+            return
+
         if(!refCurPassword.current || !refNewPassword.current || !refRepeatPassword.current)
             return
         

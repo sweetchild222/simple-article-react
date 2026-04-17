@@ -40,7 +40,7 @@ export default function() {
     const onClickUser = (e) =>{
 
         if(validAuth(auth))
-            navigate('/user/' + auth.user_id)
+            navigate('/user')
         else{
             removeProfile()
             navigate('/login')

@@ -34,23 +34,23 @@ export default function() {
     const refImageCrop = useRef(null)
 
     const navigate = useNavigate()
+    const { id } = useParams()
+
+    const isAuthUser = (validAuth(auth) && auth.user_id == id)    
 
     useEffect(()=> {
 
-        if(!validAuth(auth)){
-            navigate('/')
-            return
-        }
-
-        UserAPI.getUser(auth.user_id).then((resUser)=>{
+        UserAPI.getUser(id).then((resUser)=>{
             
-            if(resUser == null)
+            if(resUser == null) {
+                //navigate('/notfound')
                 return
+            }
 
             setProfileImage(resUser.profile ?  resUser.profile : '/image/user.png')
         })
 
-    }, [auth])
+    }, [])
     
     const modal_config = {text: '로그 아웃 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
@@ -174,7 +174,7 @@ export default function() {
         navigate('library');
     }
     
-    return validAuth(auth) ? (
+    return isAuthUser ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <LoadingImage src={profileImage} onClick={onClickProfile} width={256} height={256}/>
         {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
@@ -183,6 +183,6 @@ export default function() {
         <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>
         <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
         <BeautyButton onClick={onClickNavigateLibrary} type='success'>작성한 글</BeautyButton>
-      </div>) : null
+      </div>) : <PageNotFound/>
 }
 

@@ -55,14 +55,12 @@ export default function() {
           { path: 'regist', element: <Regist/>}]
         },
 
-        { path: 'user/:id', children: [
+        { path: 'user', children: [
           { index: true, element: <User/>},
           { path: 'widthdraw', element: <Withdraw/>},
           { path: 'change_password', element: <ChangePassword/>},
-          { path: 'library', element: <Library/>},
-          { path: '*', element: <PageNotFound />}],
-        },
-        { path: 'notfound', element: <PageNotFound/>}        
+          { path: 'library', element: <Library/>}]
+        }
       ],
       errorElement: <PageNotFound />
     }

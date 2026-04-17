@@ -134,8 +134,6 @@ export async function getUserCategories(jwt, user_id, query = undefined) {
 
       const url = '/api/user/' + user_id + '/category' + (query ? ('?' + query) : '')
 
-      console.log(url)
-
       const response = await axios.get(url, { headers: {Authorization: authorization} })
 
       return response.data    

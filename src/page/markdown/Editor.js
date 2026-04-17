@@ -99,15 +99,27 @@ export default function() {
 
     const onClickNext = async() => {
 
+        if(refMDX.current == null)
+            return
+
+        const markdown = refMDX.current.getMarkdown()
+
+        if(!markdown || markdown.trim().length === 0){
+
+            window.showToast('글이 입력되지 않았습니다', 'error')
+            return 
+        }
+
+
         if(isTouched == true){
 
-            const success = await tempSave()
+            const success = await tempSave(markdown)
 
             if(success == false)
                 return
         }
 
-        location.state.content = refMDX.current.getMarkdown()
+        location.state.content = markdown
                 
         navigate(location.pathname, {
             replace: true,
@@ -163,16 +175,21 @@ export default function() {
     }
 
     const onClickSave = async() => {
+
+        if(refMDX.current == null)
+            return
+
+        const markdown = refMDX.current.getMarkdown()
         
-        await tempSave()
+        await tempSave(markdown)
     }
 
 
-    const tempSave = async() =>{
+    const tempSave = async(markdown) =>{
 
         setIsTempSaveLoading(true)
     
-        const res = await tempSaveCore()
+        const res = await tempSaveCore(markdown)
 
         setIsTempSaveLoading(false)
 
@@ -187,16 +204,13 @@ export default function() {
     }
 
 
-    const tempSaveCore = async() => {
-        
-        if(refMDX.current == null)
-            return null
-
+    const tempSaveCore = async(markdown) => {
+                
         const payloadSource = location.state
 
         const article_id = payloadSource.id
         const title = location.state.title
-        const content = refMDX.current.getMarkdown()
+        const content = markdown
         const open = payloadSource.open
         const posted = 0
         const category_id = payloadSource.category_id
@@ -284,21 +298,20 @@ export default function() {
     
 
     return validAuth(auth) ? (
-        <div style={{flex:1, position: 'relative', margin:'0px 20px 0px 20px'}}>
+        <div style={{flex:1, position: 'relative', margin:'20px 20px 20px 20px'}}>
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
-
-                <Split visible={true} style={{maxHeight:'calc(100vh - 180px)', width:'100%'}}>
-                    <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px', margin:'0px 5px 5px 5px'}}>
+                <Split visible={true} style={{maxHeight:'calc(100vh - 192px)', width:'100%'}}>
+                    <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px'}}>
                         {memoMDXEditor}
                     </div>
                 
-                    {isPreview && <div style={{overflowY:'auto', minWidth:'10%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'4px', margin:'0px 5px 5px 5px'}}>
-                        <div ref={refPreview}  style={{margin:'10px'}}/>
+                    {isPreview && <div style={{overflowY:'auto', minWidth:'10%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'6px'}}>
+                        <div ref={refPreview} style={{margin:'10px', wordBreak:'break-all'}}/>
                     </div>
                     }
                 </Split>
-                <label ref={refLength} style={{marginLeft:'auto', marginRight:'5px', fontSize:'12px', color:'gray'}}>{location.state.content.length + '/65535'}</label>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, alignItems: 'center', margin:'5px 5px 0px 5px'}}>
+                <label ref={refLength} style={{marginLeft:'auto', fontSize:'12px', color:'gray'}}>{location.state.content.length + '/65535'}</label>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, alignItems: 'center', marginTop:'10px'}}>
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
                     <BeautyButton type='confirm' style={{marginRight:'10px'}} isLoading={isTempSaveLoading} onClick={onClickNext}>다음</BeautyButton>
                     <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</BeautyButton>

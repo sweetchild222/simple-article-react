@@ -132,6 +132,9 @@ export default function() {
         if(!isAuthUser)
             return
 
+        if(!refImageCrop.current)
+            return
+
         const rect = refImageCrop.current.rect()
         const image = refImageCrop.current.image()
 

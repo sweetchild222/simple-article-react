@@ -34,8 +34,6 @@ export default function() {
   const RootLayout = () => (
     <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
       <Header/>
-      <div style={{width:'100%', height:'1px', backgroundColor:'#F0F0F0'}}></div>
-      <div style={{height:'20px'}}/>
       <Outlet/>
     </div>
   )

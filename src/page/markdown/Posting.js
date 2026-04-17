@@ -14,21 +14,22 @@ import { Prompt } from 'react-router'
 
 import ImageCropModal from '../../common/ImageCropModal.js'
 import PostModal from './PostModal.js'
+import LoadingImage from "../../common/LoadingImage.js";
 
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import '../../common/RotateLoading.css'
 
 import MarkdownToHtml from '../../util/MarkdownToHtml.js'
 
+
 export default function() {
     
     const location = useLocation()
+    const smapleData = ["1번", "2번", "3번", "4번"];
 
     if(location.state == null)
         return (<div>잘못된 방식으로 접근하였습니다</div>)
-
-    console.log(location.state)
-
+    
     const refTitle = useRef(null)
     const refPreview = useRef(null)
     const refImageCrop = useRef(null)    
@@ -36,25 +37,70 @@ export default function() {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)    
     const [imageFile, setImageFile] = useState(null)
     
-    const [thumbnailUrl, setThumbnailUrl] = useState(location.state.thumbnail)
-    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)    
+    const [thumbnail, setThumbnail] = useState(location.state.thumbnail)
+    const [title, setTitle] = useState(location.state.title)
+    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     const [categories, setCategories] = useState(null)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    
-    const navigate = useNavigate()        
 
-    const onClickPost = async() => {
+    const [openType, setOpenType] = useState(location.state.open)
+    const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0)
+
+    const onChangeRadio = (e) => {        
+
+        setOpenType(e.target.value == 'open' ? 1 : 0)
+    }
+
+
+    const onChangeCategory = (e) => {
+
+        setSelectedCategoryIndex(e.target.options.selectedIndex)
+    }
+
+    
+    const navigate = useNavigate()
+
+    useEffect(() => {
+
+        getCategory().then((categories)=> {
+            
+            if(categories == null || categories.length == 0){
+                window.showToast('카테고리를 가져 올 수 없습니다', 'error')
+                return
+            }
+        
+            setCategories(categories)
+
+            const index = categories.findIndex(categorie => categorie.id === location.state.category_id)
+
+            if(index != -1)
+                setSelectedCategoryIndex(index)
+        })
+
+    }, [])
+
+    
+
+    const getCategory = async() => {
 
         const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
         
         if(res == null)
-            return -1
+            return null
 
         if(res.length == 0)
-            return -1
+            return null
+    
+        res.sort((a, b)=> {
 
-        setCategories(res)        
+            if(a.is_default != b.is_default)
+                return b.is_default - a.is_default
+            else
+                return a.id - b.id
+        })
+
+        return res
     }
 
 
@@ -89,10 +135,8 @@ export default function() {
     }
 
 
-
-
     const saveCore = async() => {
-                
+
         const payloadSource = location.state
         
         const article_id = payloadSource.id
@@ -117,23 +161,6 @@ export default function() {
         navigate(-1)
     }
 
-
-    const onResultConfirmSave = async(result) => {
-
-        setIsTouched(false)
-        
-        if(result == true){
-            
-            const res = await saveCore()
-
-            if(res != null)
-                window.showToast('임시 저장 됨', 'info')
-            else
-                window.showToast('임시 저장 실패', 'error')
-        }
-
-        navigate(-1)
-    }
 
 
     const onClickThumbnail = async() => {
@@ -171,47 +198,98 @@ export default function() {
 
 
     const onClickApply = async() => {
+
+        if(!refImageCrop.current)
+            return
     
         const rect = refImageCrop.current.rect()
         const image = refImageCrop.current.image()
 
-        const dWidth = 1024
-        const dHeight = 768
+        const dWidth = 192
+        const dHeight = 128
 
         const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
         
         const blob = await blobFromCanvas(canvas)
-            
-        const formData = new FormData()
-        formData.append('image', blob)
-
-        const resArticleThumbnail = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
-
-        if(resArticleThumbnail == null)
-            return
-
-        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + resArticleThumbnail.id
-
-        setThumbnailUrl(url)
+        setThumbnail(URL.createObjectURL(blob))
         setIsImageCropModalOpen(false)
-        setIsTouched(true)
     }
 
-    const onPost = async(category_id, open_type) => {
+
+    const postThumbnail = async(url) =>{                    
+
+        if(url.startsWith('blob:')){
+        
+            const response = await fetch(url)
+            
+            const blob = await response.blob()
+
+            const formData = new FormData()
+            formData.append('image', blob)
+
+            const res = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
+
+            if(res == null)
+                return null
+
+            return process.env.API_TARGET + '/api/blob/article/thumbnail/' + res.id            
+        }
+        else{
+
+            const isHttpHttps = /^(http|https):\/\//i.test(url)
+
+            if(!isHttpHttps)
+                return null
+
+            return url
+        }
+    }
+
+
+
+
+    const onClickPost = async() => {
 
         const payloadSource = location.state
 
-        if(refTitle.current == null || refMDX.current == null)
+        console.log(payloadSource)
+
+        if(refTitle.current == null)
             return null
-        
+                
         const article_id = payloadSource.id
         const title = refTitle.current.value
-        const content = refMDX.current.getMarkdown()
-        const posted = 1
+        const content = payloadSource.content
+
+        if(!title || title.trim().length === 0){
+            window.showToast('제목을 입력하세요', 'error')
+            return
+        }
+
+        if(thumbnail == '') {
+            window.showToast('대표 이미지를 설정하세요', 'error')
+            return
+        }
         
+        const thumbnailUrl = await postThumbnail(thumbnail)
+
+        if(thumbnailUrl == null) {
+            window.showToast('대표 이미지 설정에 실패하였습니다', 'error')
+            return 
+        }
+        
+        const posted = 1
+
+        if(!categories) {
+            window.showToast('카테고리가 설정되지 않았습니다', 'error')
+            return 
+        }
+
+        const category_id = categories[selectedCategoryIndex].id
+                        
         setIsOverlayLoading(true)
 
-        const res = await putArticle(article_id, title, content, thumbnailUrl, open_type, posted, category_id)
+        const res = await putArticle(article_id, title, content, thumbnailUrl, openType, posted, category_id)
 
         setIsOverlayLoading(false)
 
@@ -220,27 +298,34 @@ export default function() {
             return null
         }
 
-        navigate(-1)
+        // navigate(-1)
     }
 
+    
 
-    const onClickGoLogin = () => {
-
-        setTimeout(()=> {
-            navigate('/login')
-        })
-    }
-
-
-
-    return !validAuth(auth) ? (
+    return validAuth(auth) ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            {/* {!isOverlayLoading && <div style={{width:'100%', height:'100%', position: 'absolute', zIndex: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}} className={`rotateLoading`}/>} */}
             <label htmlFor='input_title'>제목</label>
-            <input id='input_username' type='text'/>
-            <BeautyButton type='success'>다음</BeautyButton>
-            <BeautyButton type='success'>뒤로가기</BeautyButton>            
+            <input ref={refTitle} id='input_title' type='text' defaultValue={title}></input>
+
+            <select style={{width:'100px'}} value={categories ? categories[selectedCategoryIndex].name : ''} onChange={onChangeCategory}>
+                {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}                
+            </select>
+
+
+            <input type='radio' id='open' name='is_open' value='open' onChange={onChangeRadio} checked={openType == true}/>
+            <label htmlFor='open'>공개</label>
+            <input type='radio' id='private' name='is_open' value='private' onChange={onChangeRadio} checked={openType == false}/>
+            <label htmlFor='private'>비공개</label>
+
+            <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={192} height={128}/>
+            {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1.5}></ImageCropModal>}
+    
+            <BeautyButton type='success' onClick={onClickPost}>다음</BeautyButton>
+            <BeautyButton type='success'>뒤로가기</BeautyButton>
         </div>
-        ) : (<GoLogin onClickGoLoginCustom={onClickGoLogin} />)
+        ) : (<GoLogin/>)
 
 
     // return validAuth(auth) ? (

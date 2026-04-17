@@ -34,13 +34,17 @@ export default function() {
     const refImageCrop = useRef(null)
 
     const navigate = useNavigate()
-    const { id } = useParams()
-
-    const isAuthUser = (validAuth(auth) && auth.user_id == id)    
+    
+    const isAuthUser = (validAuth(auth))
 
     useEffect(()=> {
 
-        UserAPI.getUser(id).then((resUser)=>{
+        if(!validAuth(auth)){
+            navigate('/')
+            return
+        }
+
+        UserAPI.getUser(auth.user_id).then((resUser)=>{
             
             if(resUser == null) {
                 //navigate('/notfound')
@@ -50,10 +54,9 @@ export default function() {
             setProfileImage(resUser.profile ?  resUser.profile : '/image/user.png')
         })
 
-    }, [])
+    }, [auth])
     
     const modal_config = {text: '로그 아웃 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
-
 
     const onResult = (result) => {
 
@@ -68,7 +71,7 @@ export default function() {
 
     const onClickLogout = ()=> {
 
-        setIsModalOpen(true)        
+        setIsModalOpen(true)
     }
 
 
@@ -85,7 +88,6 @@ export default function() {
 
 
     const onClickProfile = async() =>{
-
 
         const imageFile = await pickImageFile()
 
@@ -168,11 +170,7 @@ export default function() {
         updateProfile(url + '?size=64x64')
         setIsImageCropModalOpen(false)
     }
-
-    const onClickNavigateLibrary = () => {
-        
-        navigate('library');
-    }
+    
     
     return isAuthUser ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
@@ -181,8 +179,7 @@ export default function() {
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
         <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>
-        <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
-        <BeautyButton onClick={onClickNavigateLibrary} type='success'>작성한 글</BeautyButton>
-      </div>) : <PageNotFound/>
+        <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>        
+      </div>) : null
 }
 

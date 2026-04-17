@@ -59,7 +59,7 @@ export default function() {
 
         { path: 'user', children: [
           { index: true, element: <User/>},
-          { path: 'Profile', element: <Profile/>},
+          { path: 'profile', element: <Profile/>},
           { path: 'blog', element: <Blog/>}]
         }
       ],

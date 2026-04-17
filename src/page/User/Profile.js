@@ -13,6 +13,7 @@ import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import ProfileContext from "../../util/ProfileContext.js";
 import Modal from "../../common/Modal.js"
 import GoLogin from "../../common/GoLogin.js";
+import ChangePassword from "./Password.js"
 
 import BeautyButton from '../../common/BeautyButton.js';
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
@@ -26,9 +27,10 @@ export default function() {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalLogout, setIsModalLogout] = useState(false)
+    const [isModalPassword, setIsModalPassword] = useState(false)
     const [profileImage, setProfileImage] = useState(null)
-    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
+    const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
 
     const refImageCrop = useRef(null)
@@ -56,9 +58,10 @@ export default function() {
 
     }, [auth])
     
-    const modal_config = {text: '로그 아웃 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+    const modal_config_logout = {text: '로그 아웃 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+    const modal_config_password = {type: 'custom', isCloseOutsideClick: true}
 
-    const onResult = (result) => {
+    const onResultLogout = (result) => {
 
         if(result == true){
             removeAuth()
@@ -71,13 +74,15 @@ export default function() {
 
     const onClickLogout = ()=> {
 
-        setIsModalOpen(true)
+        setIsModalLogout(true)
     }
 
 
-    const onClickPasswordChange = ()=>{
+    const onClickPassword = ()=>{
 
-        navigate('change_password')
+        console.log('adfaf')
+
+        setIsModalPassword(true)
     }
 
 
@@ -110,13 +115,13 @@ export default function() {
         
             setImageFile(await blobFromCanvas(canvas))
             
-            setIsImageCropModalOpen(true)        
+            setIsModalImageCrop(true)        
         }
         else{
 
             setImageFile(imageFile.file)
 
-            setIsImageCropModalOpen(true)
+            setIsModalImageCrop(true)
         }
     }
 
@@ -142,7 +147,7 @@ export default function() {
         const resProfile = await BlobAPI.postProfile(auth.jwt, formData)
 
         if(resProfile == null){
-            setIsImageCropModalOpen(false)
+            setIsModalImageCrop(false)
             window.showToast('프로필 설정에 실패했습니다', 'error')
             return
         }
@@ -152,7 +157,7 @@ export default function() {
         const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {profile: url})
 
         if(resUser == null){
-            setIsImageCropModalOpen(false)
+            setIsModalImageCrop(false)
             window.showToast('프로필 설정에 실패했습니다', 'error')
             return
         }
@@ -161,24 +166,28 @@ export default function() {
         const profile = await BlobAPI.getProfile(auth.jwt, profileId)
     
         if(profile == null){
-            setIsImageCropModalOpen(false)
+            setIsModalImageCrop(false)
             window.showToast('프로필을 가져 올 수 없습니다', 'error')
             return
         }
 
         setProfileImage(url)
         updateProfile(url + '?size=64x64')
-        setIsImageCropModalOpen(false)
+        setIsModalImageCrop(false)
     }
     
     
     return isAuthUser ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <LoadingImage src={profileImage} onClick={onClickProfile} width={256} height={256}/>
-        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
+        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
-        <Modal config={modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal>
-        <BeautyButton onClick={onClickPasswordChange} type='default'>비밀번호 변경</BeautyButton>
+        <Modal config={modal_config_logout} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
+        <BeautyButton onClick={onClickPassword} type='default'>비밀번호 변경</BeautyButton>
+        <Modal config={modal_config_password} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)}>
+            <ChangePassword onClose={() => setIsModalPassword(false)}/>
+        </Modal>
+
         <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>        
       </div>) : null
 }

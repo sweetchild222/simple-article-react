@@ -17,7 +17,7 @@ import Profile from '../user/Profile.js'
 import Regist from '../user/Regist.js'
 import Login from '../user/Login.js'
 import Withdraw from '../user/Withdraw.js'
-import ChangePassword from '../user/ChangePassword.js'
+import ChangePassword from '../user/Password.js'
 import Library from '../user/Blog.js'
 
 import Writer from '../markdown/Writer.js'

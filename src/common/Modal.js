@@ -24,7 +24,6 @@ export default ({config, isOpen, onResult, onClose, onInput, children}) => {
     const refInput = useRef(null)
     const refDiv = useRef(null)
 
-
     useEffect(() => {
         
         if(isOpen){

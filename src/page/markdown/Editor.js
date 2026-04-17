@@ -27,7 +27,9 @@ export default function() {
     
     const location = useLocation()
 
-    if(location.state == null)
+    const state = location.state
+
+    if(state == null)
         return (<div>잘못된 방식으로 접근하였습니다</div>)
     
     const refMDX = useRef(null)
@@ -119,14 +121,14 @@ export default function() {
                 return
         }
 
-        location.state.content = markdown
+        state.content = markdown
                 
         navigate(location.pathname, {
             replace: true,
-            state: location.state
+            state: state
         });
 
-        navigate('posting', {state:location.state})
+        navigate('posting', {state:state})
     }
 
 
@@ -206,15 +208,15 @@ export default function() {
 
     const tempSaveCore = async(markdown) => {
                 
-        const payloadSource = location.state
+        
 
-        const article_id = payloadSource.id
-        const title = location.state.title
+        const article_id = state.id
+        const title = state.title
         const content = markdown
-        const open = payloadSource.open
+        const open = state.open
         const posted = 0
-        const category_id = payloadSource.category_id
-        const thumbnail = payloadSource.thumbnail
+        const category_id = state.category_id
+        const thumbnail = state.thumbnail
 
         const res = await putArticle(article_id, title, content, thumbnail, open, posted, category_id)
 
@@ -291,7 +293,7 @@ export default function() {
 
     const memoMDXEditor = useMemo(() => {
 
-        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={location.state.content} markdown={location.state.content}
+        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={state.content} markdown={state.content}
                     onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                             
     }, [])
@@ -310,7 +312,7 @@ export default function() {
                     </div>
                     }
                 </Split>
-                <label ref={refLength} style={{marginLeft:'auto', fontSize:'12px', color:'gray'}}>{location.state.content.length + '/65535'}</label>
+                <label ref={refLength} style={{marginLeft:'auto', fontSize:'12px', color:'gray'}}>{state.content.length + '/65535'}</label>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, alignItems: 'center', marginTop:'10px'}}>
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
                     <BeautyButton type='confirm' style={{marginRight:'10px'}} isLoading={isTempSaveLoading} onClick={onClickNext}>다음</BeautyButton>

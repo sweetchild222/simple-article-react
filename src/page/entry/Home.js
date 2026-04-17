@@ -79,12 +79,12 @@ export default function Home() {
 
     console.log(state)
 
-    navigate('/editor', {state:state})
+    navigate('/write', {state:state})
   }
 
   const getCommonCategory = async()=>{
 
-    const resCategories = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id, 'is_common=1')
+    const resCategories = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id, 'is_default=1')
 
     if(resCategories == null)
       return -1

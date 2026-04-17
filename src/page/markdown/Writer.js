@@ -2,6 +2,7 @@
 import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
 
 import Modal from '../../common/Modal.js'
+import OverlayLoading from '../../common/OverlayLoading.js'
 import MDXEditor from './MDXEditor.js'
 import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
@@ -41,6 +42,7 @@ export default function() {
     const [isPreview, setIsPreview] = useState(false)
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const [isOverlayLoading, setIsOverlayLoading] = useState(false)
 
     const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
 
@@ -48,7 +50,7 @@ export default function() {
     
     const blocker = useBlocker(({ currentLocation, nextLocation }) => {
         
-        if(nextLocation.pathname == '/editor/posting')
+        if(nextLocation.pathname == '/write/posting')
             return false
 
         if (isTouched && currentLocation.pathname !== nextLocation.pathname){            
@@ -107,28 +109,38 @@ export default function() {
         const markdown = refMDX.current.getMarkdown()
 
         if(!markdown || markdown.trim().length === 0){
-
-            window.showToast('글이 입력되지 않았습니다', 'error')
+            window.showToast('입력된 글이 없습니다', 'error')
             return 
         }
 
-
         if(isTouched == true){
+        
 
-            const success = await tempSave(markdown)
+            setIsOverlayLoading(true)
+            setIsTempSaveLoading(true)
 
-            if(success == false)
+            const res = await tempSave()
+
+            setIsOverlayLoading(false)
+            setIsTempSaveLoading(false)
+            
+
+            if(res != null)
+                window.showToast('임시 저장됨', 'info')
+            else{
+                window.showToast('임시 저장 실패', 'error')
                 return
+            }
         }
 
         state.content = markdown
-                
+
         navigate(location.pathname, {
             replace: true,
             state: state
         });
 
-        navigate('posting', {state:state})
+        navigate('posting', {state:state})        
     }
 
 
@@ -176,22 +188,25 @@ export default function() {
         return await ArticleAPI.putArticle(auth.jwt, article_id, payload)
     }
 
+
+    const tempSave = async() => {
+
+        if(refMDX.current == null)
+            return null
+
+        const markdown = refMDX.current.getMarkdown()
+    
+        return await tempSaveCore(markdown)
+    }
+
     const onClickSave = async() => {
 
         if(refMDX.current == null)
-            return
-
-        const markdown = refMDX.current.getMarkdown()
-        
-        await tempSave(markdown)
-    }
-
-
-    const tempSave = async(markdown) =>{
+            return        
 
         setIsTempSaveLoading(true)
-    
-        const res = await tempSaveCore(markdown)
+        
+        const res = await tempSave()
 
         setIsTempSaveLoading(false)
 
@@ -199,17 +214,13 @@ export default function() {
             window.showToast('임시 저장됨', 'info')
         else
             window.showToast('임시 저장 실패', 'error')
-        
-        setIsTouched(res != null ? false : true)
 
-        return res != null ? true : false
+        setIsTouched(res != null ? false : true)
     }
 
 
     const tempSaveCore = async(markdown) => {
                 
-        
-
         const article_id = state.id
         const title = state.title
         const content = markdown
@@ -250,7 +261,7 @@ export default function() {
             setIsConfirmSaveModalOpen(true)
         else
             navigate(-1)
-    }
+    }                    
 
 
     const onResultConfirmSave = async(result) => {
@@ -258,8 +269,12 @@ export default function() {
         setIsTouched(false)
         
         if(result == true){
+
+            setIsTempSaveLoading(true)
             
-            const res = await saveCore()
+            const res = await tempSave()
+
+            setIsTempSaveLoading(false)
 
             if(res != null)
                 window.showToast('임시 저장 됨', 'info')
@@ -301,6 +316,7 @@ export default function() {
 
     return validAuth(auth) ? (
         <div style={{flex:1, position: 'relative', margin:'20px 20px 20px 20px'}}>
+            {isOverlayLoading && <OverlayLoading/>}
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
                 <Split visible={true} style={{maxHeight:'calc(100vh - 192px)', width:'100%'}}>
                     <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px'}}>
@@ -315,7 +331,7 @@ export default function() {
                 <label ref={refLength} style={{marginLeft:'auto', fontSize:'12px', color:'gray'}}>{state.content.length + '/65535'}</label>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, alignItems: 'center', marginTop:'10px'}}>
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
-                    <BeautyButton type='confirm' style={{marginRight:'10px'}} isLoading={isTempSaveLoading} onClick={onClickNext}>다음</BeautyButton>
+                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickNext}>다음</BeautyButton>
                     <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</BeautyButton>
                     <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     <div style={{flex:'1', backgroundColor:'red'}}></div>

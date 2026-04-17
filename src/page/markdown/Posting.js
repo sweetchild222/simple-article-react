@@ -10,7 +10,7 @@ import GoLogin from "../../common/GoLogin.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
-import { Prompt } from 'react-router'
+import { Prompt, useFetcher } from 'react-router'
 
 import ImageCropModal from '../../common/ImageCropModal.js'
 import PostModal from './PostModal.js'
@@ -25,8 +25,7 @@ import MarkdownToHtml from '../../util/MarkdownToHtml.js'
 
 export default function() {
     
-    const location = useLocation()
-    const smapleData = ["1번", "2번", "3번", "4번"];
+    const location = useLocation()    
 
     const state = location.state
 
@@ -37,7 +36,7 @@ export default function() {
     const refPreview = useRef(null)
     const refImageCrop = useRef(null)    
 
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false)    
+    const [isOverlayLoading, setIsOverlayLoading] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     
     const [thumbnail, setThumbnail] = useState(state.thumbnail != '' ? state.thumbnail : null)
@@ -82,6 +81,14 @@ export default function() {
         })
 
     }, [])
+
+    useEffect(()=>{
+
+        if(refTitle.current)
+            refTitle.current.focus()
+
+
+    },[refTitle])
 
     
 
@@ -158,6 +165,9 @@ export default function() {
 
 
     const onClickLeave=()=> {
+
+
+        console.log('asdfas')
 
         navigate(-1)
     }
@@ -307,7 +317,7 @@ export default function() {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {isOverlayLoading && <OverlayLoading/>}
             <label htmlFor='input_title'>제목</label>
-            <input ref={refTitle} id='input_title' type='text' defaultValue={title}></input>
+            <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title}></input>
 
             <select style={{width:'100px'}} value={categories ? categories[selectedCategoryIndex].name : ''} onChange={onChangeCategory}>
                 {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}                
@@ -323,7 +333,7 @@ export default function() {
             {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1.5}></ImageCropModal>}
     
             <BeautyButton type='success' onClick={onClickPost}>다음</BeautyButton>
-            <BeautyButton type='danger'>뒤로가기</BeautyButton>
+            <BeautyButton type='danger' onClick={onClickLeave}>뒤로가기</BeautyButton>
         </div>
         ) : (<GoLogin/>)
 }

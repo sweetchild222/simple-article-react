@@ -11,14 +11,12 @@ import Home from './Home.js'
 
 
 
-import Blog from '../user/Blog.js'
+import Blog from '../blog/Blog.js'
 import User from '../user/User.js'
 import Profile from '../user/Profile.js'
 import Regist from '../user/Regist.js'
 import Login from '../user/Login.js'
-import Withdraw from '../user/Withdraw.js'
-import ChangePassword from '../user/Password.js'
-import Library from '../user/Blog.js'
+import Library from '../blog/Blog.js'
 
 import Writer from '../markdown/Writer.js'
 import Posting from '../markdown/Posting.js'

@@ -10,17 +10,18 @@ import BeautyButton from "../../common/BeautyButton.js";
 
 export default function() {
 
-    const {auth, updateAuth, validAuth} = useContext(AuthContext)
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
         
     const navigate = useNavigate()
 
-    useEffect(() => {        
+    useEffect(() => {
 
         setIsLoggedIn(validAuth(auth))
 
-    }, [auth])
+    }, [auth, profile])
+
 
 
     const onKeyDown = (e) => {
@@ -30,7 +31,7 @@ export default function() {
     }
 
 
-    const onClickLogIn = (e) =>{        
+    const onClickLogIn = (e) =>{
 
         navigate("/login")
     }
@@ -40,6 +41,10 @@ export default function() {
 
         if(validAuth(auth))
             navigate('/user/' + auth.user_id)
+        else{
+            removeProfile()
+            navigate('/login')
+        }
     }
 
 

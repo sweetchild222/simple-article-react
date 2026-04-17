@@ -82,7 +82,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
       return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position:'relative'}}>
           <div style={{position:'relative', display: 'flex', flexDirection: 'column'}}>
-            <button style={{position:'absolute', border:'0px', backgroundColor:'white', borderRadius: '0 0 0 3px',  alignSelf: 'flex-end'}}
+            <button style={{position:'absolute', border:'0px', backgroundColor:'white', borderRadius: '0 0 0 3px', alignSelf: 'flex-end'}}
               onClick={() => {
                 parentEditor.update(() => {
                   lexicalNode.selectNext()
@@ -165,7 +165,6 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
       </div>
     )
   }
-
 
 
   const ImageFileButton = () =>{

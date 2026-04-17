@@ -11,14 +11,16 @@ import Home from './Home.js'
 
 
 
+import Blog from '../user/Blog.js'
 import User from '../user/User.js'
+import Profile from '../user/Profile.js'
 import Regist from '../user/Regist.js'
 import Login from '../user/Login.js'
 import Withdraw from '../user/Withdraw.js'
 import ChangePassword from '../user/ChangePassword.js'
-import Library from '../user/Library.js'
+import Library from '../user/Blog.js'
 
-import Editor from '../markdown/Editor.js'
+import Writer from '../markdown/Writer.js'
 import Posting from '../markdown/Posting.js'
 import PageNotFound from './PageNotFound.js'
 
@@ -45,8 +47,8 @@ export default function() {
       element: <RootLayout />,
       children: [
         { index: true, element: <Home/>},
-        { path: 'editor', children: [
-          { index: true, element: <Editor/>},
+        { path: 'write', children: [
+          { index: true, element: <Writer/>},
           { path: 'posting', element: <Posting/>}
         ]},
 
@@ -57,9 +59,8 @@ export default function() {
 
         { path: 'user', children: [
           { index: true, element: <User/>},
-          { path: 'widthdraw', element: <Withdraw/>},
-          { path: 'change_password', element: <ChangePassword/>},
-          { path: 'library', element: <Library/>}]
+          { path: 'Profile', element: <Profile/>},
+          { path: 'blog', element: <Blog/>}]
         }
       ],
       errorElement: <PageNotFound />

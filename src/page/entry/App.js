@@ -6,6 +6,7 @@ import ErrorBoundary from './ErrorBoundary.js'
 import {Routes, Route, useNavigate, BrowserRouter, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
 
 import Header from './Header.js'
+import BlogHeader from '../blog/BlogHeader.js'
 import Home from './Home.js'
 
 
@@ -28,12 +29,21 @@ import ProfileContext from '../../util/ProfileProvider.js'
 import ToastContainer from '../../common/ToastContainer.js'
 
 
-
 export default function() {
 
   const RootLayout = () => (
+
     <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
       <Header/>
+      <Outlet/>
+    </div>
+  )
+
+
+  const BlogLayout = () => (
+    
+    <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
+      <BlogHeader/>
       <Outlet/>
     </div>
   )
@@ -57,11 +67,17 @@ export default function() {
 
         { path: 'user', children: [
           { index: true, element: <User/>},
-          { path: 'profile', element: <Profile/>},
-          { path: 'blog', element: <Blog/>}]
+          { path: 'profile', element: <Profile/>}]
         }
       ],
       errorElement: <PageNotFound />
+    },
+    {
+      path: "/blog",
+      element: <BlogLayout />,
+      children: [
+        { index: true, element: <Blog/>},
+      ]
     }
   ])
 

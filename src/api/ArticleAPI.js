@@ -136,7 +136,7 @@ export async function getUserCategories(jwt, user_id, query = undefined) {
 
       const response = await axios.get(url, { headers: {Authorization: authorization} })
 
-      return response.data    
+      return response.data
 
   }
   catch(error){
@@ -269,4 +269,28 @@ export async function postComment(jwt, payload){
 
     return null;
   }
+}
+
+
+
+
+export async function getBlog(user_id) {
+
+    try{
+
+      const url = '/api/user/' + user_id + '/blog'
+
+      const response = await axios.get(url)
+
+      return response.data    
+
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null;
+  }
+
+
 }

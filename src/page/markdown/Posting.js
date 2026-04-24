@@ -163,9 +163,7 @@ export default function() {
     }
 
 
-
     const onClickLeave=()=> {
-
 
         console.log('asdfas')
 

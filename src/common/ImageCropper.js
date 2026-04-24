@@ -127,15 +127,15 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
 
     const imageRect = getPropertyImageRect()
     
-    const x = selectRect.x - imageRect.x
-    const y = selectRect.y - imageRect.y
+    const x = Math.round(selectRect.x - imageRect.x)
+    const y = Math.round(selectRect.y - imageRect.y)
 
     const ctx = cover.getContext("2d")
     
     ctx.reset()
 
     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
-    
+        
     ctx.fillRect(0, 0, imageRect.width, y)
     ctx.fillRect(0, y + selectRect.height, imageRect.width, imageRect.height - y - selectRect.height)
     ctx.fillRect(0, y, x, selectRect.height)
@@ -144,7 +144,7 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
     setIsLoading(false)
     
     const rect = isContain ? calcContainRect(selectRect, imageRect) : calcCoverRect(selectRect, imageRect)
-
+        
     setImageSelectRect(rect)
     //onSelectRect(rect)
 
@@ -158,7 +158,7 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
     const selectX = (selectRect.x - imageRect.x) * inversScale
     const selectY = (selectRect.y - imageRect.y) * inversScale
     const selectWidth = selectRect.width * inversScale
-    const selectHeight = selectRect.height * inversScale    
+    const selectHeight = selectRect.height * inversScale
 
     return {x:Math.floor(selectX), y: Math.floor(selectY), width:Math.ceil(selectWidth), height:Math.ceil(selectHeight)}
   }

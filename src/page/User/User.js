@@ -48,8 +48,6 @@ export default function() {
 
     }, [auth])
 
-
-
     const onClickNavigateProfile = async() =>{
 
         if(!validAuth(auth))
@@ -59,12 +57,19 @@ export default function() {
     }
 
 
-    const onClickNavigateBlog = () => {
+    const onClickNavigateBlog = async() => {
 
         if(!validAuth(auth))
             return
+
+        const res = await ArticleAPI.getBlog(auth.user_id)
+
+        if(res == null){
+            window.showToast('블로그 가져오기가 실패 했습니다', 'error')
+            return
+        }
         
-        navigate('blog')
+        navigate('/blog', {state:res})
     }
 
 

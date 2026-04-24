@@ -1,37 +1,28 @@
-import { useEffect, useRef, useState } from "react";
 
-const usePrevious = (value) => {
-  const prevValueRef = useRef();
-  useEffect(() => {
-    prevValueRef.current = value;
-  }, [value]);
+import React, {useState, useContext, useEffect, useRef } from "react";
+import axios from 'axios';
 
-  return { prev: prevValueRef.current, current: value };
-};
-
-const CountDisplay = ({ count }) => {
-  
-  console.log('rerender')
-
-  const { prev, current } = usePrevious(count);
-  
-  return <div>Library</div>;
-};
-
-
+import * as BlobAPI from '../../api/BlobAPI.js'
+import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
+import AuthContext from "../../util/AuthContext.js";
+import ProfileContext from "../../util/ProfileContext.js";
+import LoadingImage from "../../common/LoadingImage.js";
+import BeautyButton from "../../common/BeautyButton.js";
 
 export default function() {
-  const [count, setCount] = useState(0);
+  
+  const location = useLocation()
 
-  const onClick = () => {
+  const state = location.state
 
-    setCount((c) => c + 1);
-  };
+  if(state == null)
+      return (<div>잘못된 방식으로 접근하였습니다</div>)
+
+    
 
   return (
     <div className="App">
-      <button onClick={onClick}>Library</button>
-      <CountDisplay count={count} />
+      <button>Library</button>      
     </div>
   );
 }

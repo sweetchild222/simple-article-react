@@ -84,9 +84,11 @@ export default function() {
         if(resUser.profile == null)
             return
 
-        const url = resUser.profile + '?size=64x64'
+
+        console.log(resUser)
+            
         
-        updateProfile(url)
+        updateProfile(resUser)
         
         if(relogin)
             navigate(-1)

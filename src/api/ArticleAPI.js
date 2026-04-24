@@ -251,7 +251,6 @@ export async function deleteComment(jwt, comment_id){
 
 
 
-
 export async function postComment(jwt, payload){
 
 
@@ -272,25 +271,3 @@ export async function postComment(jwt, payload){
 }
 
 
-
-
-export async function getBlog(user_id) {
-
-    try{
-
-      const url = '/api/user/' + user_id + '/blog'
-
-      const response = await axios.get(url)
-
-      return response.data    
-
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
-
-
-}

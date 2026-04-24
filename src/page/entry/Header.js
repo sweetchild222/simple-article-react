@@ -12,12 +12,18 @@ export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
+    const {profile, updateProfile, validProfile, removeProfile} = useContext(ProfileContext)
+    const [profileUrl, setProfileUrl] = useState(null)
         
     const navigate = useNavigate()
 
     useEffect(() => {
-
+                
+        if(validProfile(profile)){
+            setProfileUrl(profile.profile + '?size=64x64')
+            console.log(profile.profile + '?size=64x64')
+        }                
+        
         setIsLoggedIn(validAuth(auth))
 
     }, [auth, profile])
@@ -62,12 +68,12 @@ export default function() {
     return (
             <div style={{ display: 'flex', alignItems: 'center', padding:'10px 10px 10px 10px', backgroundColor:' #494D5F'}}>
                 <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickHome}/>
-                <div style={{flexGrow:1, backgroundColor:'blue'}} ></div>
+                <div style={{flexGrow:1, backgroundColor:'blue'}} />
                 <BeautyButton  type='success' onClick={onClickSearch} style={{margin:'0px 5px 0 5px'}}>검색</BeautyButton>
-                <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown}></input>
+                <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown} ></input>
                 <div style={{margin:'0px 5px 0 5px', width:'64px'}}>
                     {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
-                    {isLoggedIn && <LoadingImage src={profile} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickUser}/>}
+                    {isLoggedIn && <LoadingImage src={profileUrl} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickUser}/>}
                 </div>
             </div>
     );    

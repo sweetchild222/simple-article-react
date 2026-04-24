@@ -67,8 +67,7 @@
 .beauty-button.success:hover {
 
   background: #73B9C9;
-  color: #F7FFFF;
-  box-shadow: 0px 2px 3px #7FCCDE;
+  color: #F7FFFF;  
 }
 
 
@@ -76,8 +75,7 @@
 
   background: #73B9C9;
   color: #F7FFFF;
-  transform: translateY(1px);
-  box-shadow: 0 0 0;
+  transform: translateY(1px);  
 }
 
 
@@ -86,8 +84,7 @@
     background: #7FCCDE;
     color: #666666;
     cursor: not-allowed;
-    opacity: 0.5;
-    box-shadow: 0 0 0;
+    opacity: 0.5;    
 }
 
 
@@ -106,9 +103,9 @@
 
 
 .beauty-button.confirm:hover {
+
   background: #87A86F;
-  color: #F7FFFF;
-  box-shadow: 0px 2px 3px #9ABF7F;
+  color: #F7FFFF;  
 }
 
 
@@ -116,8 +113,7 @@
 
   background: #87A86F;
   color: #F7FFFF;
-  transform: translateY(1px);
-  box-shadow: 0 0 0;
+  transform: translateY(1px);  
 }
 
 
@@ -126,8 +122,7 @@
   background: #9ABF7F;
   color: #666666;
   cursor: not-allowed;
-  opacity: 0.5;
-  box-shadow: 0 0 0;
+  opacity: 0.5;  
 }
 
 
@@ -141,7 +136,6 @@
 
 
 .beauty-button.cancel {
-
   
   background: #F0D264;
   color: #F7FFFF;
@@ -151,8 +145,7 @@
 .beauty-button.cancel:hover {
 
   background: #D1B757;
-  color: #F7FFFF;
-  box-shadow: 0px 2px 3px #F0D264;
+  color: #F7FFFF;  
 }
 
 
@@ -160,8 +153,7 @@
 
   background: #D1B757;
   color: #F7FFFF;
-  transform: translateY(1px);
-  box-shadow: 0 0 0;
+  transform: translateY(1px);  
 }
 
 
@@ -170,8 +162,7 @@
     background: #F0D264;
     color: #666666;
     cursor: not-allowed;
-    opacity: 0.5;
-    box-shadow: 0 0 0;
+    opacity: 0.5;    
 }
 
 
@@ -193,8 +184,7 @@
 .beauty-button.danger:hover {
 
   background: #E04342;
-  color: #F7FFFF;
-  box-shadow: 0px 2px 3px #FA5A5A;
+  color: #F7FFFF;  
 }
 
 
@@ -202,8 +192,7 @@
 
   background: #E04342;
   color: #F7FFFF;
-  transform: translateY(1px);
-  box-shadow: 0 0 0;
+  transform: translateY(1px);  
 }
 
 
@@ -212,8 +201,7 @@
     background: #FA5A5A;
     color: #666666;
     cursor: not-allowed;
-    opacity: 0.5;
-    box-shadow: 0 0 0;
+    opacity: 0.5;    
 }
 
 
@@ -235,8 +223,7 @@
 .beauty-button.warning:hover {
 
   background: #AD83A8;
-  color: #F7FFFF;
-  box-shadow: 0px 2px 3px #CB99C5;
+  color: #F7FFFF;  
 }
 
 
@@ -244,8 +231,7 @@
 
   background: #AD83A8;
   color: #F7FFFF;
-  transform: translateY(1px);
-  box-shadow: 0 0 0;
+  transform: translateY(1px);  
 }
 
 
@@ -254,8 +240,7 @@
     background: #CB99C5;
     color: #666666;
     cursor: not-allowed;
-    opacity: 0.5;
-    box-shadow: 0 0 0;
+    opacity: 0.5;    
 }
 
 
@@ -277,8 +262,7 @@
 .beauty-button.default:hover {
 
   background: #74A3B0;
-  color: #F7FFFF;
-  box-shadow: 0px 2px 3px #7FB1BF;
+  color: #F7FFFF;  
 }
 
 
@@ -287,7 +271,7 @@
   background: #74A3B0;
   color: #F7FFFF;
   transform: translateY(1px);
-  box-shadow: 0 0 0;
+  
 }
 
 
@@ -296,11 +280,52 @@
   background: #7FB1BF;
   color: #666666;
   cursor: not-allowed;
-  opacity: 0.5;
-  box-shadow: 0 0 0;  
+  opacity: 0.5; 
 }
 
 
 .beauty-button.default.circle::after {
   border-top-color: #804E40;
 }
+
+
+/*-------------------------------------------------------*/
+
+.beauty-button.transparent{
+
+  background: #00000000;
+  color: #F7FFFF;
+}
+
+
+.beauty-button.transparent:hover {
+
+  background: #00000080;
+  color: #F7FFFF;
+}
+
+
+.beauty-button.transparent:enabled:active {
+
+  background: #00000080;
+  color: #F7FFFF;
+  transform: translateY(1px);
+  
+}
+
+
+.beauty-button.transparent:disabled {
+
+  background: #00000000;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.5;  
+}
+
+
+.beauty-button.transparent.circle::after {
+  border-top-color: #34663A;
+}
+
+
+/*-------------------------------------------------------*/

@@ -11,15 +11,6 @@ import BeautyButton from "../../common/BeautyButton.js";
 
 export default function() {
   
-  const location = useLocation()
-
-  const state = location.state
-
-  if(state == null)
-      return (<div>잘못된 방식으로 접근하였습니다</div>)
-
-    
-
   return (
     <div className="App">
       <button>Library</button>      

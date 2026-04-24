@@ -48,10 +48,10 @@ export default function() {
             return
         }
 
-        UserAPI.getUser(auth.user_id).then((resUser)=>{
+        UserAPI.getUser(auth.user_id).then((resUser)=> {
             
-            if(resUser == null)                
-                return            
+            if(resUser == null)
+                return
 
             setProfileImage(resUser.profile ?  resUser.profile : '/image/user.png')
         })
@@ -166,17 +166,11 @@ export default function() {
             return
         }
 
-        const profileId = resProfile.id + '?size=64x64'
-        const profile = await BlobAPI.getProfile(auth.jwt, profileId)
-    
-        if(profile == null){
-            setIsModalImageCrop(false)
-            window.showToast('프로필을 가져 올 수 없습니다', 'error')
-            return
-        }
-
         setProfileImage(url)
-        updateProfile(url + '?size=64x64')
+
+        profile.profile = url
+                
+        updateProfile(profile)
         setIsModalImageCrop(false)
     }
 

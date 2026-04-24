@@ -64,7 +64,6 @@ export default function() {
           { index: true, element: <Login/>},
           { path: 'regist', element: <Regist/>}]
         },
-
         { path: 'user', children: [
           { index: true, element: <User/>},
           { path: 'profile', element: <Profile/>}]
@@ -73,7 +72,7 @@ export default function() {
       errorElement: <PageNotFound />
     },
     {
-      path: "/blog",
+      path: "/blog/:id",
       element: <BlogLayout />,
       children: [
         { index: true, element: <Blog/>},

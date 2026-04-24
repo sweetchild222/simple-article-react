@@ -23,28 +23,6 @@ export async function postProfile(jwt, payload) {
 
 
 
-export async function getProfile(jwt, id) {
-
-  try{
-
-    const authorization = 'Bearer '.concat(jwt)
-
-    const response = await axios.get('/api/blob/profile/' + id, { headers: {Authorization: authorization}, responseType: 'blob'})
-
-    return response.data
-
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
-}
-
-
-
-
 export async function postArticleImage(jwt, payload) {
 
   try {

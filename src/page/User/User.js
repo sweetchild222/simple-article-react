@@ -8,6 +8,7 @@ import * as BlobAPI from '../../api/BlobAPI.js'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 import { useState } from 'react';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
+import * as BlogAPI from '../../api/BlogAPI.js'
 
 import AuthContext from "../../util/AuthContext.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
@@ -26,7 +27,7 @@ import PageNotFound from '../entry/PageNotFound.js';
 export default function() {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
+    const {profile, updateProfile, validProfile, removeProfile} = useContext(ProfileContext)
     const [profileImage, setProfileImage] = useState(null)
     
     const navigate = useNavigate()
@@ -48,6 +49,7 @@ export default function() {
 
     }, [auth])
 
+
     const onClickNavigateProfile = async() =>{
 
         if(!validAuth(auth))
@@ -62,16 +64,11 @@ export default function() {
         if(!validAuth(auth))
             return
 
-        const res = await ArticleAPI.getBlog(auth.user_id)
-
-        if(res == null){
-            window.showToast('블로그 가져오기가 실패 했습니다', 'error')
-            return
-        }
+        if(!validProfile(profile))
+            return                
         
-        navigate('/blog', {state:res})
+        navigate('/blog/' + profile.blog_id)
     }
-
 
 
     const getCommonCategory = async()=> {

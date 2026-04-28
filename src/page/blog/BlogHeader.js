@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect, useRef } from "react";
+import React, {useState, useContext, useEffect, useRef, useCallback } from "react";
 import axios from 'axios';
 
 import * as BlobAPI from '../../api/BlobAPI.js'
@@ -19,7 +19,9 @@ export default function() {
     //const location = useLocation()
     //const state = location.state
 
-    const refTitle = useRef(null)
+    const refInputTitle = useRef(null)
+    const refLabelTitle = useRef(null)
+
     const [title, setTitle] = useState(null)
     const [titleEditMode, setTitleEditMode] = useState(false)
 
@@ -60,21 +62,45 @@ export default function() {
 
     useEffect(()=>{
 
-        if(refTitle.current)
-            refTitle.current.focus()
+        if(refInputTitle.current)
+            refInputTitle.current.focus()
 
     }, [titleEditMode])
 
-    const onClickEditTitle = () =>{
 
-        setTitleEditMode(true)
+    const onClickEditTitle = (e) =>{
+
+        e.stopPropagation()
+
+        if(titleEditMode)
+            setTitleEditMode(false)
+        else{
+            setTitleEditMode(true)
+        }
     }
+    
+
+    const onClickOutside = useCallback((e) => {
+
+        if(refInputTitle.current == null)
+            return
+
+        if(!refInputTitle.current.contains(e.target))
+            setTitleEditMode(false)        
+    })
+    
+
+    useEffect(() => {
+
+        window.addEventListener('click', onClickOutside)
+        
+        return () => {
 
 
-    const onClickApplyTitle = () => {
-
-        setTitleEditMode(false)
-    }
+            window.removeEventListener('click', onClickOutside)
+        }
+    
+    }, [onClickOutside])
 
 
     return (
@@ -82,10 +108,9 @@ export default function() {
                 <div style={{backgroundColor:'#00000030', display: 'flex', alignItems: 'center', width:'100%', height:'100%'}}>
                     <LoadingImage src={profileImage} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateBlog}/>
                     <div style={{display: 'flex', alignItems: 'center'}}>
-                        {titleEditMode && <input ref={refTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', borderColor:'white', fieldSizing:'content', maxWidth:'512px'}} placeholder="제목" maxLength="32" defaultValue={title}></input>}
-                        {!titleEditMode && <label style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', display:'flex', alignItems:'center'}}>{title}</label>}
-                        {titleEditMode && <BeautyButton type='transparent' style={{}} onClick={onClickApplyTitle}><PiTrash size={30}/></BeautyButton>}
-                        {!titleEditMode && <BeautyButton type='transparent' style={{}} onClick={onClickEditTitle}><CiYoutube size={30}/></BeautyButton>}
+                        {titleEditMode && <input ref={refInputTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', borderColor:'white', fieldSizing:'content', maxWidth:'512px'}} placeholder="제목" maxLength="32" defaultValue={title}></input>}
+                        {!titleEditMode && <label ref={refLabelTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', display:'flex', alignItems:'center'}}>{title}</label>}
+                        <BeautyButton type='transparent' onClick={onClickEditTitle}>{titleEditMode ? <CiYoutube size={30}/> : <PiTrash size={30}/>}</BeautyButton>
                     </div>
                     
                     <div style={{flexGrow:1, backgroundColor:'blue'}} ></div>

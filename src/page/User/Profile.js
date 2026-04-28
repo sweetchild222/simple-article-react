@@ -80,9 +80,7 @@ export default function() {
 
 
     const onClickPassword = ()=>{
-
         
-
         setIsModalPassword(true)
     }
 
@@ -165,11 +163,11 @@ export default function() {
             window.showToast('프로필 설정에 실패했습니다', 'error')
             return
         }
-
-        setProfileImage(url)
+        
+        setProfileImage(url + '?size=256x256')
 
         profile.profile = url
-                
+
         updateProfile(profile)
         setIsModalImageCrop(false)
     }

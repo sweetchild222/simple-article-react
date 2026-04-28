@@ -65,8 +65,8 @@ export default function() {
             return
 
         if(!validProfile(profile))
-            return                
-        
+            return
+
         navigate('/blog/' + profile.blog_id)
     }
 

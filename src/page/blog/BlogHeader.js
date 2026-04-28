@@ -11,50 +11,63 @@ import BeautyButton from "../../common/BeautyButton.js";
 import * as UserAPI from '../../api/UserAPI.js'
 import { PiTrash } from "react-icons/pi";
 import { CiYoutube } from "react-icons/ci";
+import { MdEdit } from "react-icons/md";
+import { FaCheck } from "react-icons/fa";
+
+import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
+import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
+import ImageCropModal from '../../common/ImageCropModal.js'
 
 export default function() {
 
-    const { id } = useParams();
-    
-    //const location = useLocation()
-    //const state = location.state
+    const { id } = useParams()
 
     const refInputTitle = useRef(null)
     const refLabelTitle = useRef(null)
 
+    const refImageCrop  = useRef(null)
+
     const [title, setTitle] = useState(null)
     const [titleEditMode, setTitleEditMode] = useState(false)
-
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [profileImage, setProfileImage] = useState(null)
-    
+    const [blogImage, setBlogImage] = useState(null)
 
-            
+    const [isModalImageCrop, setIsModalImageCrop] = useState(false)
+    const [imageFile, setImageFile] = useState(null)
+    
+    
     const navigate = useNavigate()
 
+    
     useEffect(()=>{
         
         BlogAPI.getBlog(id).then((blog)=> {
 
+            if(blog == null)
+                return
+
             console.log(blog)
 
             setTitle(blog.title)
+            setBlogImage(blog.image + '?size=1920x320')
 
+            UserAPI.getUser(blog.user_id).then((resUser)=> {
+
+                if(resUser == null)
+                    return
+
+                setProfileImage(resUser.profile ?  resUser.profile : '/image/user.png')
+            })
         })
 
-
-
-        // UserAPI.getUser(state.user_id).then((resUser)=> {
-                
-        //     if(resUser == null)
-        //         return
-    
-        //     setProfileImage(resUser.profile ?  resUser.profile : '/image/user.png')
-        // })
     }, [id])
 
 
-    const onClickNavigateBlog = () =>{
 
+
+
+    const onClickNavigateBlog = () =>{
 
         console.log('sdfa')
     }
@@ -62,18 +75,58 @@ export default function() {
 
     useEffect(()=>{
 
-        if(refInputTitle.current)
-            refInputTitle.current.focus()
+        if(titleEditMode){
+            if(refInputTitle.current)
+                refInputTitle.current.focus()
+        }
 
     }, [titleEditMode])
 
 
-    const onClickEditTitle = (e) =>{
+    const getTitle = () =>{
+
+        if(refInputTitle.current == null)
+            return null        
+        
+        const title = refInputTitle.current.value
+    
+        if(title == '')
+            return null
+
+        return title
+    }
+
+
+    const onClickEditTitle = async(e) =>{
 
         e.stopPropagation()
 
-        if(titleEditMode)
+        if(titleEditMode){
+
+            const title = getTitle()
+            
+            if(title == null){
+                window.showToast('제목이 없습니다', 'error')
+                return
+            }
+        
+            if(!validAuth(auth)){
+                window.showToast('다시 로그인 해주세요', 'error')
+                navigate('/')
+                return null
+            }
+            
+            const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {title:title})
+        
+            if(res == null){
+                window.showToast('제목 수정에 실패하였습니다', 'error')
+                return
+            }
+            
+            setTitle(title)
+
             setTitleEditMode(false)
+        }
         else{
             setTitleEditMode(true)
         }
@@ -96,47 +149,106 @@ export default function() {
         
         return () => {
 
-
             window.removeEventListener('click', onClickOutside)
         }
     
     }, [onClickOutside])
 
 
+    const onClickEditImage = async() =>{
+
+        const imageFile = await pickImageFile()
+
+        if(imageFile == null)
+            return
+        
+        if(imageFile.format == 'unknown'){
+            window.showToast('파일을 사용할 수 없습니다', 'error')
+            return
+        }
+
+        if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
+            
+            const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
+
+            if(canvas == null){
+                window.showToast('파일을 사용할 수 없습니다', 'error')
+                return
+            }
+        
+            setImageFile(await blobFromCanvas(canvas))
+            
+            setIsModalImageCrop(true)
+        }
+        else{
+
+            setImageFile(imageFile.file)
+
+            setIsModalImageCrop(true)
+        }
+    }
+
+    const onClickImageApply = async() => {
+
+        if(!validAuth(auth))
+            return
+
+        if(refImageCrop.current == null)
+            return
+
+        const rect = refImageCrop.current.rect()
+        const image = refImageCrop.current.image()
+
+        const dWidth = 1920
+        const dHeight = 320
+
+        const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
+        
+        const blob = await blobFromCanvas(canvas)
+
+        const formData = new FormData()
+        formData.append('image', blob)
+        
+        const resImage = await BlobAPI.postBlogImage(auth.jwt, formData)
+
+        if(resImage == null){
+            setIsModalImageCrop(false)
+            window.showToast('블로그 이미지 설정에 실패했습니다', 'error')
+            return
+        }
+
+        const url = process.env.API_TARGET + '/api/blob/blog/image/' + resImage.id
+
+        const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {image:url})
+        
+        if(res == null){
+            window.showToast('블로그 이미지 설정에 실패했습니다', 'error')
+            return
+        }
+
+        setBlogImage(url + '?size=1920x320')
+        setIsModalImageCrop(false)
+    }
+
+
     return (
-            <div style={{backgroundColor:' #494D5F', height:'256px', backgroundImage:`url(` + profileImage + `)`, backgroundSize:'cover', backgroundPosition:'center'}}>
+            <div style={{backgroundColor:' #494D5F', height:'320px', backgroundImage:`url(` + blogImage + `)`, backgroundSize:'cover', backgroundPosition:'center'}}>
                 <div style={{backgroundColor:'#00000030', display: 'flex', alignItems: 'center', width:'100%', height:'100%'}}>
                     <LoadingImage src={profileImage} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateBlog}/>
                     <div style={{display: 'flex', alignItems: 'center'}}>
-                        {titleEditMode && <input ref={refInputTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', borderColor:'white', fieldSizing:'content', maxWidth:'512px'}} placeholder="제목" maxLength="32" defaultValue={title}></input>}
+                        {titleEditMode && <input ref={refInputTitle} style={{backgroundColor:'#00000080', color:'white', fontSize:'48px', borderColor:'white', fieldSizing:'content', maxWidth:'512px'}} placeholder="제목" maxLength="32" defaultValue={title}></input>}
                         {!titleEditMode && <label ref={refLabelTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', display:'flex', alignItems:'center'}}>{title}</label>}
-                        <BeautyButton type='transparent' onClick={onClickEditTitle}>{titleEditMode ? <CiYoutube size={30}/> : <PiTrash size={30}/>}</BeautyButton>
+                        <BeautyButton type='transparent' onClick={onClickEditTitle}>{titleEditMode ? <FaCheck size={30}/> : <MdEdit size={30}/>}</BeautyButton>
                     </div>
                     
                     <div style={{flexGrow:1, backgroundColor:'blue'}} ></div>
-                    <BeautyButton  type='success' style={{margin:'0px 5px 0 5px'}}><PiTrash size={100}/></BeautyButton>
+                    <BeautyButton  type='transparent' onClick={onClickEditImage}> <PiTrash size={30}/></BeautyButton>
+                    {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
                 
                     <div style={{margin:'0px 5px 0 5px', width:'64px'}}>
                     </div>
                 </div>
             </div>
     )
-
-    
-
-    // return (
-    //         <div style={{ display: 'flex', position: 'relative', flexDirection: 'row', alignItems: 'center', justifyContent:'center', height:'128px'}}>
-    //             <div className={`rotateLoading`} style={{position: 'absolute', width:'100%', height:'100%', zIndex:'0', backgroundColor:'rgba(0, 0, 0, 0.5)' }}>
-    //             <img src={profileImage} style={{position: 'absolute', width:'100%', height:'100%', zIndex:'0', backgroundColor:'rgba(0, 0, 0, 0.5)' }}/>
-    //             <div style={{position: 'absolute', backgroundColor:'green'}}>
-    //                 <LoadingImage src={profileImage} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateBlog}/>
-    //             </div>
-    //             <div style={{flexGrow:1, backgroundColor:'blue'}} ></div>
-    //             <div style={{margin:'0px 5px 0 5px', width:'64px'}}>
-    //                 {/* {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
-    //                 {isLoggedIn && <LoadingImage src={profile} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickUser}/>} */}
-    //             </div>
-    //             </div>
-    //         </div>
-    // );    
 }
+

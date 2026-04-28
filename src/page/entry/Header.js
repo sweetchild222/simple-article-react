@@ -18,12 +18,11 @@ export default function() {
     const navigate = useNavigate()
 
     useEffect(() => {
-                
-        if(validProfile(profile)){
-            setProfileUrl(profile.profile + '?size=64x64')
-            console.log(profile.profile + '?size=64x64')
-        }                
-        
+
+                    
+        if(validProfile(profile))
+            setProfileUrl(profile.profile ? profile.profile + '?size=64x64' : '/image/user.png')
+                        
         setIsLoggedIn(validAuth(auth))
 
     }, [auth, profile])

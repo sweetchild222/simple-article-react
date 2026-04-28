@@ -127,8 +127,8 @@ export default function() {
 
     const onClickApply = async() => {
 
-        if(!validAuth(auth))
-            return
+        if(!validAuth(auth))            
+            return        
 
         if(!refImageCrop.current)
             return

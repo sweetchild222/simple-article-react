@@ -4,6 +4,7 @@ import axios from 'axios';
 import {useContext, useEffect, useState} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import AuthContext from "../../util/AuthContext.js";
+import ProfileContext from "../../util/ProfileContext.js";
 
 
 import * as RegistAPI from '../../api/RegistAPI.js'
@@ -13,11 +14,11 @@ import BeautyButton from "../../common/BeautyButton.js";
 import GoBack from "../../common/GoBack.js";
 
 
-
 export default function() {
 
   const navigate = useNavigate();
   const {auth, updateAuth, validAuth} = useContext(AuthContext)
+  const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
 
   const [passwordValid, setPasswordValid] = useState(false);
   const [isVerified, setIsVerified] = useState(false)
@@ -147,17 +148,27 @@ export default function() {
     setIsLoadingRegist(true)
 
     const auth = await regist(email, password)
-
-    setIsLoadingRegist(false)
-    
+        
     if(auth == null){
-      window.showToast('회원 가입이 실패하였습니다', 'error')      
+      setIsLoadingRegist(false)
+      window.showToast('회원 가입이 실패하였습니다', 'error')
       return
     }
 
-    updateAuth(auth)
-    window.showToast('회원 가입이 성공하였습니다', 'success')
+    updateAuth(auth)    
+        
+    const resUser = await UserAPI.getUser(auth.user_id)
 
+    setIsLoadingRegist(false)
+
+    if(resUser == null) {
+        window.showToast('회원 정보를 가져 올 수 없습니다', 'error')
+        return
+    }
+
+    window.showToast('회원 가입이 성공하였습니다', 'success')
+    
+    updateProfile(resUser)
     navigate('/')
   }
 

@@ -25,7 +25,7 @@ import MarkdownToHtml from '../../util/MarkdownToHtml.js'
 
 export default function() {
     
-    const location = useLocation()    
+    const location = useLocation()
 
     const state = location.state
 
@@ -164,8 +164,7 @@ export default function() {
 
 
     const onClickLeave=()=> {
-
-        console.log('asdfas')
+        
 
         navigate(-1)
     }

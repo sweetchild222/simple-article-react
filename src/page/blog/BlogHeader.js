@@ -53,18 +53,17 @@ export default function() {
         setIsLoggedIn(validAuth(auth))
 
         if(editMode && !validAuth(auth)) {
-            
             navigate('/')
             return
-        }
+        }        
 
-        if(!Number.isInteger(id)){
+        if(!Number.isInteger(parseInt(id))){            
             navigate('/pageNotFound')
             return
         }
         
         BlogAPI.getBlog(id).then((blog)=> {
-            
+                        
             if(blog == null){
                 navigate('/pageNotFound')
                 return

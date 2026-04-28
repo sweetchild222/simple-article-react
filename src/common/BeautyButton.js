@@ -16,7 +16,7 @@ export default function(props) {
     }
 
     return (
-        <button id={props.id} className={`beauty-button ${props.type ? props.type : 'default'} ${props.isLoading ? 'circle': ''}`} disabled={isDisable(props)} style={combinedStyle} onClick={props.onClick}>
+        <button id={props.id} title={props.tooltip} className={`beauty-button ${props.type ? props.type : 'default'} ${props.isLoading ? 'circle': ''}`} disabled={isDisable(props)} style={combinedStyle} onClick={props.onClick}>
             <span>{props.children}</span>
         </button>
     );

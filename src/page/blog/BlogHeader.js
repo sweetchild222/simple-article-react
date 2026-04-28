@@ -13,6 +13,7 @@ import { PiTrash } from "react-icons/pi";
 import { CiYoutube } from "react-icons/ci";
 import { MdEdit } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
+import { CgImage } from "react-icons/cg";
 
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
@@ -28,6 +29,7 @@ export default function() {
     const refImageCrop  = useRef(null)
 
     const [title, setTitle] = useState(null)
+    const [isLoadingTitle, setIsLoadingTitle] = useState(null)
     const [titleEditMode, setTitleEditMode] = useState(false)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [profileImage, setProfileImage] = useState(null)
@@ -35,19 +37,20 @@ export default function() {
 
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
-    
-    
+        
     const navigate = useNavigate()
 
-    
     useEffect(()=>{
+
+        if(!validAuth(auth)){
+            navigate('/')
+            return
+        }
         
         BlogAPI.getBlog(id).then((blog)=> {
 
             if(blog == null)
                 return
-
-            console.log(blog)
 
             setTitle(blog.title)
             setBlogImage(blog.image + '?size=1920x320')
@@ -61,9 +64,7 @@ export default function() {
             })
         })
 
-    }, [id])
-
-
+    }, [auth, id])
 
 
 
@@ -110,13 +111,14 @@ export default function() {
                 return
             }
         
-            if(!validAuth(auth)){
-                window.showToast('다시 로그인 해주세요', 'error')
-                navigate('/')
-                return null
-            }
+            if(!validAuth(auth))
+                return
+
+            setIsLoadingTitle(true)
             
             const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {title:title})
+
+            setIsLoadingTitle(false)
         
             if(res == null){
                 window.showToast('제목 수정에 실패하였습니다', 'error')
@@ -155,6 +157,7 @@ export default function() {
     }, [onClickOutside])
 
 
+
     const onClickEditImage = async() =>{
 
         const imageFile = await pickImageFile()
@@ -187,6 +190,7 @@ export default function() {
             setIsModalImageCrop(true)
         }
     }
+
 
     const onClickImageApply = async() => {
 
@@ -233,19 +237,18 @@ export default function() {
 
     return (
             <div style={{backgroundColor:' #494D5F', height:'320px', backgroundImage:`url(` + blogImage + `)`, backgroundSize:'cover', backgroundPosition:'center'}}>
-                <div style={{backgroundColor:'#00000030', display: 'flex', alignItems: 'center', width:'100%', height:'100%'}}>
+                <div style={{backgroundColor:'#00000080', display: 'flex', alignItems: 'center', height:'100%', padding:'0px 32px 0px 32px'}}>
                     <LoadingImage src={profileImage} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateBlog}/>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                        {titleEditMode && <input ref={refInputTitle} style={{backgroundColor:'#00000080', color:'white', fontSize:'48px', borderColor:'white', fieldSizing:'content', maxWidth:'512px'}} placeholder="제목" maxLength="32" defaultValue={title}></input>}
-                        {!titleEditMode && <label ref={refLabelTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', display:'flex', alignItems:'center'}}>{title}</label>}
-                        <BeautyButton type='transparent' onClick={onClickEditTitle}>{titleEditMode ? <FaCheck size={30}/> : <MdEdit size={30}/>}</BeautyButton>
+                    <div style={{display: 'flex', alignItems: 'center', marginLeft:'32px'}}>
+                        {titleEditMode && <input ref={refInputTitle} style={{backgroundColor:'#00000080', color:'white', fontSize:'48px', borderColor:'white', fieldSizing:'content', minWidth:'512px', maxWidth:'1024px'}} placeholder="제목" maxLength="40" defaultValue={title}></input>}
+                        {!titleEditMode && <label ref={refLabelTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', alignItems:'center', textOverflow:'ellipsis', overflow:'hidden', minWidth:'512px', maxWidth:'1024px'}}>{title}</label>}
+                        <BeautyButton tooltip='제목 수정' type='transparent' isLoading={isLoadingTitle} onClick={onClickEditTitle}>{titleEditMode ? <FaCheck size={30}/> : <MdEdit size={30}/>}</BeautyButton>
                     </div>
-                    
-                    <div style={{flexGrow:1, backgroundColor:'blue'}} ></div>
-                    <BeautyButton  type='transparent' onClick={onClickEditImage}> <PiTrash size={30}/></BeautyButton>
-                    {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
-                
-                    <div style={{margin:'0px 5px 0 5px', width:'64px'}}>
+                    <div style={{flex:1}}/>
+                    <div style={{display: 'flex', flexDirection:'column', height:'100%', justifyContent:'center'}}>
+                        <LoadingImage src={profileImage} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateBlog} style={{alignSelf:"flex-start", marginBottom:'auto', paddingTop:'32px'}}/>
+                        <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <CgImage size={30}/></BeautyButton>
+                        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
                     </div>
                 </div>
             </div>

@@ -67,7 +67,8 @@ export default function() {
         { path: 'user', children: [
           { index: true, element: <User/>},
           { path: 'profile', element: <Profile/>}]
-        }
+        },
+        { path: 'pageNotFound', element: <PageNotFound/>}
       ],
       errorElement: <PageNotFound />
     },

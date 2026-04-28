@@ -18,12 +18,15 @@ export default function() {
     const navigate = useNavigate()
 
     useEffect(() => {
-
-                    
-        if(validProfile(profile))
+        
+        if(validAuth(auth) && validProfile(profile)){
             setProfileUrl(profile.profile ? profile.profile + '?size=64x64' : '/image/user.png')
-                        
-        setIsLoggedIn(validAuth(auth))
+            setIsLoggedIn(true)
+        }
+        else {
+            setProfileUrl('/image/user.png')
+            setIsLoggedIn(false)
+        }
 
     }, [auth, profile])
 
@@ -60,7 +63,7 @@ export default function() {
 
     const onClickHome = (e) =>{
 
-        navigate('/');
+        navigate('/')
     }
 
 
@@ -70,10 +73,10 @@ export default function() {
                 <div style={{flexGrow:1, backgroundColor:'blue'}} />
                 <BeautyButton  type='success' onClick={onClickSearch} style={{margin:'0px 5px 0 5px'}}>검색</BeautyButton>
                 <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown} ></input>
-                <div style={{margin:'0px 5px 0 5px', width:'64px'}}>
+                <div style={{margin:'0px 0px 0px 10px', width:'64px'}}>
                     {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
                     {isLoggedIn && <LoadingImage src={profileUrl} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickUser}/>}
                 </div>
             </div>
-    );    
+    )
 }

@@ -28,7 +28,6 @@ export default function() {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const {profile, updateProfile, validProfile, removeProfile} = useContext(ProfileContext)
-    const [profileImage, setProfileImage] = useState(null)
     
     const navigate = useNavigate()
 
@@ -37,15 +36,7 @@ export default function() {
         if(!validAuth(auth)){
             navigate('/')
             return
-        }
-
-        UserAPI.getUser(auth.user_id).then((resUser)=>{
-            
-            if(resUser == null)
-                return
-
-            setProfileImage(resUser.profile ?  resUser.profile +'?128x128' : '/image/user.png')
-        })
+        }        
 
     }, [auth])
 
@@ -67,7 +58,7 @@ export default function() {
         if(!validProfile(profile))
             return
 
-        navigate('/blog/' + profile.blog_id)
+        navigate('/blog/' + profile.blog_id, {state:{editMode:true}})
     }
 
 
@@ -121,7 +112,7 @@ export default function() {
 
     return validAuth(auth) ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
-        <LoadingImage src={profileImage} width={128} height={128}/>
+        <label>{profile.username}</label>
         <BeautyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</BeautyButton>
         <BeautyButton onClick={onClickNavigateBlog} type='success'>내 블로그</BeautyButton>
         <BeautyButton onClick={onClickNavigateWrite} type='success'>새글 쓰기</BeautyButton>

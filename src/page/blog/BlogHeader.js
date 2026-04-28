@@ -14,6 +14,7 @@ import { CiYoutube } from "react-icons/ci";
 import { MdEdit } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { CgImage } from "react-icons/cg";
+import { FiUpload } from "react-icons/fi";
 
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
@@ -22,35 +23,57 @@ import ImageCropModal from '../../common/ImageCropModal.js'
 export default function() {
 
     const { id } = useParams()
-
+    
+    const location = useLocation()
+    const state = location.state
+    const editMode = state == null ? false : state.editMode
+    
     const refInputTitle = useRef(null)
     const refLabelTitle = useRef(null)
-
     const refImageCrop  = useRef(null)
 
     const [title, setTitle] = useState(null)
     const [isLoadingTitle, setIsLoadingTitle] = useState(null)
     const [titleEditMode, setTitleEditMode] = useState(false)
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [profileImage, setProfileImage] = useState(null)
+    
+    const [userImage, setUserImage] = useState(null)
     const [blogImage, setBlogImage] = useState(null)
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
+
+    const {profile, updateProfile, validProfile, removeProfile} = useContext(ProfileContext)
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
         
     const navigate = useNavigate()
 
     useEffect(()=>{
 
-        if(!validAuth(auth)){
+        setIsLoggedIn(validAuth(auth))
+
+        if(editMode && !validAuth(auth)) {
+            
             navigate('/')
+            return
+        }
+
+        if(!Number.isInteger(id)){
+            navigate('/pageNotFound')
             return
         }
         
         BlogAPI.getBlog(id).then((blog)=> {
-
-            if(blog == null)
+            
+            if(blog == null){
+                navigate('/pageNotFound')
                 return
+            }
+
+            if(editMode && (auth.user_id != blog.user_id)){
+                navigate('/')
+                return
+            }
 
             setTitle(blog.title)
             setBlogImage(blog.image + '?size=1920x320')
@@ -60,17 +83,37 @@ export default function() {
                 if(resUser == null)
                     return
 
-                setProfileImage(resUser.profile ?  resUser.profile : '/image/user.png')
+                setUserImage(resUser.profile ?  resUser.profile : '/image/user.png')
             })
         })
 
     }, [auth, id])
 
 
+    const onClickNavigateBlog = () => {
 
-    const onClickNavigateBlog = () =>{
+        BlogAPI.getBlog(id).then((blog)=> {
 
-        console.log('sdfa')
+            const newEditMode = editMode && validAuth(auth) && (auth.user_id == blog.user_id)
+
+            navigate('/blog/' + id, {state:{editMode:newEditMode}})
+        })
+    }
+
+
+    const onClickNavigateUser = () =>{
+
+        if(validAuth(auth))
+            navigate('/user')
+        else
+            navigate('/login')
+    }
+
+
+    const onClickNavigateLogin = () =>{
+
+        navigate('/login')
+
     }
 
 
@@ -84,10 +127,11 @@ export default function() {
     }, [titleEditMode])
 
 
+
     const getTitle = () =>{
 
         if(refInputTitle.current == null)
-            return null        
+            return null
         
         const title = refInputTitle.current.value
     
@@ -98,10 +142,14 @@ export default function() {
     }
 
 
-    const onClickEditTitle = async(e) =>{
+
+    const onClickEditTitle = async(e) => {
+
+        if(!editMode)
+            return
 
         e.stopPropagation()
-
+        
         if(titleEditMode){
 
             const title = getTitle()
@@ -137,16 +185,19 @@ export default function() {
 
     const onClickOutside = useCallback((e) => {
 
+        if(!editMode)
+            return
+
         if(refInputTitle.current == null)
             return
 
         if(!refInputTitle.current.contains(e.target))
-            setTitleEditMode(false)        
+            setTitleEditMode(false)
     })
     
 
     useEffect(() => {
-
+        
         window.addEventListener('click', onClickOutside)
         
         return () => {
@@ -237,17 +288,18 @@ export default function() {
 
     return (
             <div style={{backgroundColor:' #494D5F', height:'320px', backgroundImage:`url(` + blogImage + `)`, backgroundSize:'cover', backgroundPosition:'center'}}>
-                <div style={{backgroundColor:'#00000080', display: 'flex', alignItems: 'center', height:'100%', padding:'0px 32px 0px 32px'}}>
-                    <LoadingImage src={profileImage} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateBlog}/>
+                <div style={{backgroundColor:'#00000080', display: 'flex', alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
+                    <LoadingImage src={userImage} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateBlog}/>
                     <div style={{display: 'flex', alignItems: 'center', marginLeft:'32px'}}>
                         {titleEditMode && <input ref={refInputTitle} style={{backgroundColor:'#00000080', color:'white', fontSize:'48px', borderColor:'white', fieldSizing:'content', minWidth:'512px', maxWidth:'1024px'}} placeholder="제목" maxLength="40" defaultValue={title}></input>}
                         {!titleEditMode && <label ref={refLabelTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', alignItems:'center', textOverflow:'ellipsis', overflow:'hidden', minWidth:'512px', maxWidth:'1024px'}}>{title}</label>}
-                        <BeautyButton tooltip='제목 수정' type='transparent' isLoading={isLoadingTitle} onClick={onClickEditTitle}>{titleEditMode ? <FaCheck size={30}/> : <MdEdit size={30}/>}</BeautyButton>
+                        {editMode && <BeautyButton tooltip='제목 수정' type='transparent' isLoading={isLoadingTitle} onClick={onClickEditTitle}>{titleEditMode ? <FaCheck size={30}/> : <MdEdit size={30}/>}</BeautyButton>}
                     </div>
                     <div style={{flex:1}}/>
                     <div style={{display: 'flex', flexDirection:'column', height:'100%', justifyContent:'center'}}>
-                        <LoadingImage src={profileImage} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateBlog} style={{alignSelf:"flex-start", marginBottom:'auto', paddingTop:'32px'}}/>
-                        <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <CgImage size={30}/></BeautyButton>
+                        {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickNavigateLogin} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'32px'}}>로그인</BeautyButton>}
+                        {isLoggedIn && <LoadingImage src={profile.profile ? profile.profile : '/image/user.png'} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
+                        {editMode && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <FiUpload size={30}/></BeautyButton>}
                         {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
                     </div>
                 </div>

@@ -100,7 +100,7 @@ export default function() {
         <div style={{ display: 'flex', flexDirection: 'row'}}>
           {categories && categories.map((data, index) => <BeautyButton type='success'  key={data.id} style={{color:'black', width:'100px', marginRight:'10px'}} onClick={()=> onClickCategory(data.id)}>{data.name}</BeautyButton>)}
         </div>
-        {categories && <div key={animationKey} className={'movingbar'} style={{width:'100px', height:'5px', backgroundColor:'red', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'5px'}}></div>}
+        {categories && <div key={animationKey} className={'movingbar'} style={{width:'100px', height:'3px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px'}}></div>}
       </div>
     </div>
   );

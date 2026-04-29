@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 import AuthContext from "../../util/AuthContext.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
-import ProfileContext from "../../util/ProfileContext.js";
+
 import Modal from "../../common/Modal.js"
 import GoLogin from "../../common/GoLogin.js";
 
@@ -26,8 +26,7 @@ import PageNotFound from '../entry/PageNotFound.js';
 
 export default function() {
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
+    const {auth, updateAuth, validAuth, reloadAuth, removeAuth} = useContext(AuthContext)    
     const [isModalLogout, setIsModalLogout] = useState(false)
     const [isModalPassword, setIsModalPassword] = useState(false)
     const [isModalWithdraw, setIsModalWithdraw] = useState(false)
@@ -53,7 +52,7 @@ export default function() {
             if(resUser == null)
                 return
 
-            setProfileImage(resUser.profile ?  resUser.profile : '/image/user.png')
+            setProfileImage(resUser.image ?  resUser.image : '/image/user.png')
         })
 
     }, [auth])
@@ -65,8 +64,7 @@ export default function() {
     const onResultLogout = (result) => {
 
         if(result == true){
-            removeAuth()
-            removeProfile()
+            removeAuth()            
             window.showToast('로그 아웃이 성공하였습니다', 'success')
             navigate('/')
         }
@@ -156,7 +154,7 @@ export default function() {
 
         const url = process.env.API_TARGET + '/api/blob/profile/' + resProfile.id
             
-        const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {profile: url})
+        const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {image: url})
 
         if(resUser == null){
             setIsModalImageCrop(false)
@@ -165,11 +163,9 @@ export default function() {
         }
         
         setProfileImage(url + '?size=256x256')
-
-        profile.profile = url
-
-        updateProfile(profile)
         setIsModalImageCrop(false)
+
+        reloadAuth(auth)
     }
 
     const onInputPassword = async(input) => {
@@ -193,8 +189,7 @@ export default function() {
 
         window.showToast('회원 탈퇴가 성공하였습니다', 'error')
 
-        removeAuth()
-        removeProfile()
+        removeAuth()        
 
         navigate('/')
     }

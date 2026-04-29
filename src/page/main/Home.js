@@ -11,7 +11,6 @@ import * as blobToBase64 from '../../util/BlobToBase64.js'
 
 
 import AuthContext from "../../util/AuthContext.js";
-import ProfileContext from "../../util/ProfileContext.js";
 import Modal from "../../common/Modal.js"
 
 

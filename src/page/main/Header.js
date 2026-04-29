@@ -4,7 +4,6 @@ import axios from 'axios';
 import * as BlobAPI from '../../api/BlobAPI.js'
 import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 import AuthContext from "../../util/AuthContext.js";
-import ProfileContext from "../../util/ProfileContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import ProfileImage from "../../common/ProfileImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
@@ -12,8 +11,8 @@ import BeautyButton from "../../common/BeautyButton.js";
 export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [isLoggedIn, setIsLoggedIn] = useState(false)    
-
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [reloadKey, setReloadKey] = useState(0)
     const [userId, setUserId] = useState(null)
     const navigate = useNavigate()
 
@@ -21,7 +20,8 @@ export default function() {
         
         if(validAuth(auth)){
             setUserId(auth.user_id)
-            setIsLoggedIn(true)
+            setReloadKey(prev => prev + 1)
+            setIsLoggedIn(true)        
         }
         else {                        
             setIsLoggedIn(false)
@@ -48,8 +48,7 @@ export default function() {
 
         if(validAuth(auth))
             navigate('/user')
-        else{
-            removeProfile()
+        else{            
             navigate('/login')
         }
     }
@@ -64,7 +63,7 @@ export default function() {
 
         navigate('/')
     }
-
+        
 
     return (
             <div style={{ display: 'flex', alignItems: 'center', padding:'10px 10px 10px 10px', backgroundColor:' #494D5F'}}>
@@ -74,7 +73,7 @@ export default function() {
                 <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown} ></input>
                 <div style={{margin:'0px 0px 0px 10px', width:'64px'}}>
                     {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
-                    {isLoggedIn && <ProfileImage userId={userId} onClick={onClickUser}/>}
+                    {isLoggedIn && <ProfileImage key={reloadKey} userId={userId} onClick={onClickUser}/>}
                 </div>
             </div>
     )

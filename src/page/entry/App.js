@@ -24,7 +24,6 @@ import ErrorBoundary from './ErrorBoundary.js'
 import PageNotFound from './PageNotFound.js'
 
 import AuthProvider from '../../util/AuthProvider.js'
-import ProfileContext from '../../util/ProfileProvider.js'
 import ToastContainer from '../../common/ToastContainer.js'
 
 
@@ -82,11 +81,9 @@ export default function() {
 
   return (
       <ErrorBoundary>
-        <AuthProvider>
-          <ProfileContext>
+        <AuthProvider>          
           <ToastContainer />
-            <RouterProvider router={router}/>
-          </ProfileContext>
+            <RouterProvider router={router}/>          
         </AuthProvider>
       </ErrorBoundary>    
   )

@@ -12,7 +12,6 @@ import * as BlogAPI from '../../api/BlogAPI.js'
 
 import AuthContext from "../../util/AuthContext.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
-import ProfileContext from "../../util/ProfileContext.js";
 import Modal from "../../common/Modal.js"
 import GoLogin from "../../common/GoLogin.js";
 
@@ -27,8 +26,8 @@ import PageNotFound from '../entry/PageNotFound.js';
 export default function() {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const {profile, updateProfile, validProfile, removeProfile} = useContext(ProfileContext)
-    
+    const [userName, setUserName] = useState('...')
+        
     const navigate = useNavigate()
 
     useEffect(()=> {
@@ -36,7 +35,17 @@ export default function() {
         if(!validAuth(auth)){
             navigate('/')
             return
-        }        
+        }
+
+        UserAPI.getUser(auth.user_id).then((res)=>{
+
+            if(res == null){
+                setUserName('?')
+                return
+            }
+
+            setUserName(res.username)
+        })
 
     }, [auth])
 
@@ -55,10 +64,7 @@ export default function() {
         if(!validAuth(auth))
             return
 
-        if(!validProfile(profile))
-            return
-
-        navigate('/blog/' + profile.blog_id, {state:{editMode:true}})
+        navigate('/blog/' + auth.blog_id, {state:{editMode:true}})
     }
 
 
@@ -112,7 +118,7 @@ export default function() {
 
     return validAuth(auth) ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
-        <label>{profile.username}</label>
+        <label>{userName}</label>
         <BeautyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</BeautyButton>
         <BeautyButton onClick={onClickNavigateBlog} type='success'>내 블로그</BeautyButton>
         <BeautyButton onClick={onClickNavigateWrite} type='success'>새글 쓰기</BeautyButton>

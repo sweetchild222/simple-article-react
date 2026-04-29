@@ -9,6 +9,8 @@ import * as UserAPI from '../api/UserAPI.js'
 
 export default function(props) {
 
+    console.log('dsfsd')
+
     const width = props.size == null ? 64 : props.size
     const height = width
     const borderRadius = parseInt(width / 2)
@@ -31,14 +33,14 @@ export default function(props) {
                 return
             }
 
-            if(res.profile == null){
+            if(res.image == null){
                 setImage('/image/user.png')
                 return
             }
 
-            setImage(res.profile + '?size=64x64')
+            setImage(res.image + '?size=64x64')
         })
-                        
+
     },  [props.userId])
 
     return (<LoadingImage src={image} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{...combinedStyle}}/>)

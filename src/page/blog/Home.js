@@ -10,7 +10,6 @@ import * as BlogAPI from '../../api/BlogAPI.js'
 import * as ArticleAPI from '../../api/ArticleAPI.js'
 
 import AuthContext from "../../util/AuthContext.js";
-import ProfileContext from "../../util/ProfileContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
 
@@ -22,7 +21,7 @@ export default function() {
 
   const [categories, setCategories] = useState(null)
   const [movingbarPos, setMovingbarPos] = useState({curIndex:0, start:0, end:0})
-  const [animationKey, setAnimationKey] = useState(0);
+  const [animationKey, setAnimationKey] = useState(0)
   
     
   useEffect(()=> {
@@ -90,7 +89,7 @@ export default function() {
     restartAnimation()
   }
   
-  const restartAnimation = () => setAnimationKey(prev => prev + 1);
+  const restartAnimation = () => setAnimationKey(prev => prev + 1)
 
   
   return (

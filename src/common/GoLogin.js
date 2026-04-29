@@ -2,9 +2,8 @@
 import BeautyButton from '../common/BeautyButton';
 import { useNavigate, useLocation} from 'react-router-dom';
 import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
-
 import AuthContext from "../util/AuthContext.js";
-import ProfileContext from "../util/ProfileContext.js";
+
 
 
 
@@ -13,12 +12,11 @@ export default function() {
     const navigate = useNavigate()
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
+    
         
     useEffect(()=> {
 
-        removeAuth()
-        removeProfile()
+        removeAuth()        
         
     }, [auth])
 

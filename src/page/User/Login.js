@@ -2,7 +2,6 @@
 import axios from 'axios';
 
 import AuthContext from "../../util/AuthContext.js";
-import ProfileContext from "../../util/ProfileContext.js";
 import React, { useContext, useEffect, useState} from 'react';
 
 
@@ -17,8 +16,7 @@ import GoBack from '../../common/GoBack.js';
 
 export default function() {
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const {profile, updateProfile, removeProfile} = useContext(ProfileContext)
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
     const [isLoading, setIsLoading] = useState(false)
     
     const navigate = useNavigate()
@@ -33,9 +31,7 @@ export default function() {
             
             if(!relogin)
                 navigate('/')
-        }
-        else
-            removeProfile()
+        }        
 
     }, [auth])
 
@@ -86,10 +82,8 @@ export default function() {
         if(resUser.profile == null)
             return
 
-
         console.log(resUser)
-            
-        
+                    
         updateProfile(resUser)
         
         if(relogin)

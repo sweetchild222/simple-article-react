@@ -23,6 +23,16 @@ export default function({children}){
     }
 
 
+    const reloadAuth = (auth) => {
+
+        const newAuth = { ...auth }
+
+        newAuth.expire_time = (auth.expire_time - 1)    //hack to reload 
+        localStorage.setItem(key, JSON.stringify(newAuth))
+        setAuth(newAuth)
+    }
+
+
     const removeAuth = () => {
 
         localStorage.setItem(key, logout)
@@ -63,7 +73,7 @@ export default function({children}){
     }, [])
 
     
-    const values = {auth, updateAuth, removeAuth, validAuth}
+    const values = {auth, updateAuth, removeAuth, reloadAuth, validAuth}
 
     return (
         <AuthContext.Provider value={values}>

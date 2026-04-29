@@ -5,7 +5,7 @@ import * as BlobAPI from '../../api/BlobAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
 import AuthContext from "../../util/AuthContext.js";
-import ProfileContext from "../../util/ProfileContext.js";
+
 import LoadingImage from "../../common/LoadingImage.js";
 import ProfileImage from "../../common/ProfileImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
@@ -301,7 +301,7 @@ export default function() {
                     <div style={{flex:1}}/>
                     <div style={{display: 'flex', flexDirection:'column', height:'100%', justifyContent:'center'}}>
                         {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickNavigateLogin} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'32px'}}>로그인</BeautyButton>}
-                        {isLoggedIn && <ProfileImage userId={userId} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
+                        {isLoggedIn && <ProfileImage userId={userId} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
                         {editMode && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <FiUpload size={30}/></BeautyButton>}
                         {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
                     </div>

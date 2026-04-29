@@ -23,7 +23,7 @@ export default function() {
 
     const location = useLocation()
     
-    const relogin = location.state != null && location.state.relogin == true    
+    const relogin = location.state != null && location.state.relogin == true
 
     useEffect(() => {
 

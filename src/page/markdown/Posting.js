@@ -209,14 +209,11 @@ export default function() {
 
         if(!refImageCrop.current)
             return
-    
-        const rect = refImageCrop.current.rect()
-        const image = refImageCrop.current.image()
-
+        
         const dWidth = 192
         const dHeight = 128
 
-        const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
+        const canvas = await refImageCrop.current.export(dWidth, dHeight)
         
         const blob = await blobFromCanvas(canvas)
         setThumbnail(URL.createObjectURL(blob))

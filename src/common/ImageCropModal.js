@@ -42,8 +42,22 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
       setIsApplyLoading(false)
     }
   }
-  
-  
+
+
+  const drawImage = async(image, x, y, width, height, dx, dy, dWidth, dHeight) => {
+    
+    const canvas = document.createElement('canvas')
+    canvas.width = dWidth
+    canvas.height = dHeight
+    const ctx = canvas.getContext('2d')
+
+    ctx.imageSmoothingEnabled = false;
+
+    ctx.drawImage(image, x, y, width, height, dx, dy, dWidth, dHeight)
+
+    return canvas
+  }
+    
   useImperativeHandle(ref, () => {
       
     return {
@@ -52,7 +66,17 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
       },
       rect(){
         return refCropper.current.rect()
+      },
+      async export(dWidth, dHeight){
+
+        const rect = refCropper.current.rect()
+        const image = refCropper.current.image()
+        
+        const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
+
+        return canvas
       }
+
     }
   }, [refCropper])
 

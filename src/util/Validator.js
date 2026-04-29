@@ -18,8 +18,8 @@ export function email(email) {
     if(email == null)
         return false
     
-    if(email == '')        
-        return false        
+    if(email == '')
+        return false
 
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

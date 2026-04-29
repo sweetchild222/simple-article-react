@@ -214,24 +214,13 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
 
       const rect = refImageCrop.current.rect()
       const image = refImageCrop.current.image()
-
-      //const dWidth = rect.width
-      //const dHeight = rect.height
-
+      
       const maxResolution = 512
 
       const widthRatio = rect.width / maxResolution
       const heightRatio = rect.height / maxResolution
 
       const ratio = widthRatio > heightRatio ? widthRatio : heightRatio
-
-      console.log(widthRatio, heightRatio)
-
-      if(ratio > 1){
-        console.log('over')
-      }
-      else
-        console.log('xxx')
 
       const dWidth = ratio > 1 ? Math.round(rect.width / ratio) : rect.width
       const dHeight = ratio > 1 ? Math.round(rect.height / ratio) : rect.height

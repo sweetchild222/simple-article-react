@@ -158,7 +158,7 @@ export default function() {
     updateAuth(auth)
     
     window.showToast('회원 가입이 성공하였습니다', 'success')
-        
+       
     navigate('/')
   }
 
@@ -258,7 +258,5 @@ export default function() {
       <label>{passwordValid ? '유효한 패스워드' : '무효한 패스워드'}</label>
       <BeautyButton isLoading={isLoadingRegist} disabled={isDisabledRegist} onClick={onClickRegist} type='confirm'>회원 가입</BeautyButton>
     </div>
-  ) : (<GoBack value={'이미 로그인된 사용자입니다'}/>)
+  ) : (<GoBack value={'로그인된 사용자는 접근 할 수 없습니다'}/>)
 }
-
-

@@ -94,8 +94,7 @@ export default function() {
 
   
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>      
-
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <div style={{ display: 'flex', flexDirection: 'column'}}>
         <div style={{ display: 'flex', flexDirection: 'row'}}>
           {categories && categories.map((data, index) => <BeautyButton type='success'  key={data.id} style={{color:'black', width:'100px', marginRight:'10px'}} onClick={()=> onClickCategory(data.id)}>{data.name}</BeautyButton>)}

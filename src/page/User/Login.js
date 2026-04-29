@@ -72,6 +72,8 @@ export default function() {
         
         updateAuth(resAuth)
         window.showToast('로그인이 성공하였습니다', 'success')
+
+        console.log(resAuth)
         
         const resUser = await UserAPI.getUser(resAuth.user_id)
         

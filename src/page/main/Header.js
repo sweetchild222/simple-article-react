@@ -6,29 +6,28 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-rou
 import AuthContext from "../../util/AuthContext.js";
 import ProfileContext from "../../util/ProfileContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
+import ProfileImage from "../../common/ProfileImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
 
 export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const {profile, updateProfile, validProfile, removeProfile} = useContext(ProfileContext)
-    const [profileUrl, setProfileUrl] = useState(null)
-        
+    const [isLoggedIn, setIsLoggedIn] = useState(false)    
+
+    const [userId, setUserId] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
         
-        if(validAuth(auth) && validProfile(profile)){
-            setProfileUrl(profile.profile ? profile.profile + '?size=64x64' : '/image/user.png')
+        if(validAuth(auth)){
+            setUserId(auth.user_id)
             setIsLoggedIn(true)
         }
-        else {
-            setProfileUrl('/image/user.png')
+        else {                        
             setIsLoggedIn(false)
         }
 
-    }, [auth, profile])
+    }, [auth])
 
 
 
@@ -75,7 +74,7 @@ export default function() {
                 <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown} ></input>
                 <div style={{margin:'0px 0px 0px 10px', width:'64px'}}>
                     {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
-                    {isLoggedIn && <LoadingImage src={profileUrl} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickUser}/>}
+                    {isLoggedIn && <ProfileImage userId={userId} onClick={onClickUser}/>}
                 </div>
             </div>
     )

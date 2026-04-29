@@ -97,7 +97,7 @@ export default function() {
 
 
     const onClickNavigateBlog = () => {
-
+        
         BlogAPI.getBlog(id).then((blog)=> {
 
             const newEditMode = editMode && validAuth(auth) && (auth.user_id == blog.user_id) && (auth.blog_id == parseInt(id))
@@ -226,26 +226,10 @@ export default function() {
             window.showToast('파일을 사용할 수 없습니다', 'error')
             return
         }
-
-        if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
-            
-            const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
-
-            if(canvas == null){
-                window.showToast('파일을 사용할 수 없습니다', 'error')
-                return
-            }
         
-            setImageFile(await blobFromCanvas(canvas))
-            
-            setIsModalImageCrop(true)
-        }
-        else{
+        setImageFile(imageFile.file)
 
-            setImageFile(imageFile.file)
-
-            setIsModalImageCrop(true)
-        }
+        setIsModalImageCrop(true)        
     }
 
 

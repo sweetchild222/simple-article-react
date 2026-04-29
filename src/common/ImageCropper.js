@@ -56,18 +56,46 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
   }
 
 
-  const createCanvas = (image) => {
+  const createCanvas = (image, sX, sY, sWidth, sHeight, dWidth, dHeight) => {
     
     const canvas = document.createElement('canvas')
 
-    canvas.width = image.naturalWidth
-    canvas.height = image.naturalHeight
+    canvas.width = dWidth
+    canvas.height = dHeight
     const ctx = canvas.getContext('2d')
     ctx.imageSmoothingEnabled = false
-    ctx.drawImage(image, 0, 0)
+    
+    ctx.drawImage(image, sX, sY, sWidth, sHeight, 0, 0, dWidth, dHeight)    
 
     return canvas
   }
+
+
+
+  const createCanvasForCover = (image, dWidth, dHeight) => {
+
+    return createCanvas(image, 0, 0, image.naturalWidth, image.naturalHeight, dWidth, dHeight)
+  }
+
+
+  const createCanvasForContain = (image, dWidth, dHeight) => {
+
+    const scale = calcCoverScale(dWidth, dHeight, image.naturalWidth, image.naturalHeight)
+      
+    const inversScale = 1 / scale
+
+    const sWidth = Math.round(inversScale * containerWidth)
+    const sHeight = Math.round(inversScale * containerHeight)
+      
+    const sX = ((image.naturalWidth) - (sWidth)) / 2
+    const sY = ((image.naturalHeight) - (sHeight)) / 2
+
+    return createCanvas(image, sX, sY, sWidth, sHeight, dWidth, dHeight)      
+  }
+
+
+
+  
 
   useEffect(()=> {
         
@@ -87,11 +115,20 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
     image.onload = () => {
       
       let imageRect = calcContainScaledImageRect(containerWidth, containerHeight, image.naturalWidth, image.naturalHeight)
-            
+
+      let isContain = true
+                  
       if(imageRect.width < selectMinWidth || imageRect.height < selectMinHeight){
         imageRect = {x:0, y:0, width:containerWidth, height:containerHeight}
+        isContain = false
         setContain(false)
       }
+      
+      const canvas = isContain ? createCanvasForCover(image, imageRect.width, imageRect.height) : createCanvasForContain(image, containerWidth, containerHeight)
+
+      setContainerCanvasUrl(canvas.toDataURL())
+            
+      
       
       setPropertyImageRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height)
       setCoverSize({width:imageRect.width, height:imageRect.height})
@@ -101,8 +138,7 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
 
       setSelectRect({ x: centerX, y: centerY, width: selectMinWidth, height: selectMinHeight})
 
-      const canvas = createCanvas(image)      
-      setContainerCanvasUrl(canvas.toDataURL())      
+      
       
       setImage(image)
       setPropertyIsLoadImage(true)

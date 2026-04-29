@@ -154,12 +154,7 @@ export default function() {
         const posted = 0
         const category_id = state.category_id
 
-        const res = await putArticle(article_id, title, content, thumbnailUrl, open, posted, category_id)
-
-        if(res == null)
-            return null
-
-        return res
+        return await putArticle(article_id, title, content, thumbnailUrl, open, posted, category_id)        
     }
 
 
@@ -183,25 +178,9 @@ export default function() {
             return
         }
 
-        if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
+        setImageFile(imageFile.file)
 
-            const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
-
-            if(canvas == null){
-                window.showToast('파일을 사용할 수 없습니다', 'error')
-                return
-            }
-
-            setImageFile(await blobFromCanvas(canvas))
-            
-            setIsImageCropModalOpen(true)
-        }
-        else{
-
-            setImageFile(imageFile.file)
-
-            setIsImageCropModalOpen(true)
-        }
+        setIsImageCropModalOpen(true)        
     }
 
 
@@ -267,7 +246,7 @@ export default function() {
             return
         }
 
-        if(thumbnail == '') {
+        if(thumbnail == null || thumbnail == '') {
             window.showToast('대표 이미지를 설정하세요', 'error')
             return
         }

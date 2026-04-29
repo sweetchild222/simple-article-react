@@ -188,25 +188,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
           return
       }
 
-      if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
-          
-          const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
-
-          if(canvas == null){
-              window.showToast('파일을 사용할 수 없습니다', 'error')
-              return
-          }
-      
-          setImageFile(await blobFromCanvas(canvas))
-          
-          setIsImageCropModalOpen(true)
-      }
-      else{
-
-          setImageFile(imageFile.file)
-
-          setIsImageCropModalOpen(true)
-      }
+      setImageFile(imageFile.file)
+      setIsImageCropModalOpen(true)
     }
 
 

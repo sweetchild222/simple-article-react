@@ -71,7 +71,7 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
 
         const rect = refCropper.current.rect()
         const image = refCropper.current.image()
-        
+                        
         const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
 
         return canvas

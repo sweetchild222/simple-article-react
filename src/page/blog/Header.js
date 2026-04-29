@@ -55,9 +55,9 @@ export default function() {
         if(editMode && !validAuth(auth)) {
             navigate('/')
             return
-        }        
+        }
 
-        if(!Number.isInteger(parseInt(id))){            
+        if(!Number.isInteger(parseInt(id))){
             navigate('/pageNotFound')
             return
         }

@@ -1,28 +1,27 @@
+
+
 import React, { useContext, useEffect, useState} from 'react';
-
-import './App.css'
-import ErrorBoundary from './ErrorBoundary.js'
-
 import {Routes, Route, useNavigate, BrowserRouter, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
 
-import Header from './Header.js'
-import BlogHeader from '../blog/BlogHeader.js'
-import Home from './Home.js'
+import './App.css'
 
 
+import BlogHeader from '../blog/Header.js'
+import BlogHome  from '../blog/Home.js'
+import MainHeader from '../main/Header.js'
+import MainHome from '../main/Home.js'
 
-
-import Blog from '../blog/Blog.js'
-import User from '../user/User.js'
 import Profile from '../user/Profile.js'
+import User from '../user/User.js'
 import Regist from '../user/Regist.js'
 import Login from '../user/Login.js'
-import Library from '../blog/Blog.js'
 
 import Writer from '../markdown/Writer.js'
 import Posting from '../markdown/Posting.js'
-import PageNotFound from './PageNotFound.js'
 
+
+import ErrorBoundary from './ErrorBoundary.js'
+import PageNotFound from './PageNotFound.js'
 
 import AuthProvider from '../../util/AuthProvider.js'
 import ProfileContext from '../../util/ProfileProvider.js'
@@ -34,7 +33,7 @@ export default function() {
   const RootLayout = () => (
 
     <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
-      <Header/>
+      <MainHeader/>
       <Outlet/>
     </div>
   )
@@ -54,7 +53,7 @@ export default function() {
       path: "/",
       element: <RootLayout />,
       children: [
-        { index: true, element: <Home/>},
+        { index: true, element: <MainHome/>},
         { path: 'write', children: [
           { index: true, element: <Writer/>},
           { path: 'posting', element: <Posting/>}
@@ -76,7 +75,7 @@ export default function() {
       path: "/blog/:id",
       element: <BlogLayout />,
       children: [
-        { index: true, element: <Blog/>},
+        { index: true, element: <BlogHome/>},
       ]
     }
   ])

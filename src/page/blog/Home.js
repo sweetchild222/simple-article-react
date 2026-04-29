@@ -13,7 +13,7 @@ export default function() {
   
   return (
     <div className="App">
-      <button>Library</button>      
+      <button>Library</button>
     </div>
   );
 }

@@ -23,6 +23,8 @@ import ImageCropModal from '../../common/ImageCropModal.js'
 export default function() {
 
     const { id } = useParams()
+
+    const navigate = useNavigate()
     
     const location = useLocation()
     const state = location.state
@@ -46,10 +48,14 @@ export default function() {
     const {profile, updateProfile, validProfile, removeProfile} = useContext(ProfileContext)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
         
-    const navigate = useNavigate()
-
+    
     useEffect(()=>{
 
+        if(!Number.isInteger(parseInt(id))){            
+            navigate('/pageNotFound')
+            return
+        }
+        
         setIsLoggedIn(validAuth(auth))
 
         if(editMode && !validAuth(auth)) {
@@ -57,10 +63,7 @@ export default function() {
             return
         }
 
-        if(!Number.isInteger(parseInt(id))){
-            navigate('/pageNotFound')
-            return
-        }
+
         
         BlogAPI.getBlog(id).then((blog)=> {
                         

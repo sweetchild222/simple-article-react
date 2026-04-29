@@ -64,7 +64,7 @@ export default function() {
 
     const getCommonCategory = async()=> {
     
-        const resCategories = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id, 'is_default=1')
+        const resCategories = await ArticleAPI.getCategories(auth.user_id, 'is_default=1')
     
         if(resCategories == null)
           return -1

@@ -94,7 +94,7 @@ export default function() {
 
     const getCategory = async() => {
 
-        const res = await ArticleAPI.getUserCategories(auth.jwt, auth.user_id)
+        const res = await ArticleAPI.getCategories(auth.user_id)
         
         if(res == null)
             return null
@@ -317,7 +317,7 @@ export default function() {
             <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title}></input>
 
             <select style={{width:'100px'}} value={categories ? categories[selectedCategoryIndex].name : ''} onChange={onChangeCategory}>
-                {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}                
+                {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}
             </select>
 
 

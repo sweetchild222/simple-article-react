@@ -355,7 +355,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
       <div>
         <ButtonWithTooltip style={{height:'100%'}} onClick={openModal} title="이미지 링크 삽입"><LuImagePlus size={23}/></ButtonWithTooltip>
         <Modal config={modal_config} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>          
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <input ref={refInputUrl} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
           <input ref={refInputTitle} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
           <input ref={refInputAlt} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>

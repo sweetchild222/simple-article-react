@@ -48,28 +48,31 @@ export default function() {
     const [imageFile, setImageFile] = useState(null)
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+
+    const [reloadKey, setReloadKey] = useState(0)
+
         
-    
     useEffect(()=>{
 
-        if(!Number.isInteger(parseInt(id))){            
+        if(!Number.isInteger(parseInt(id))){
             navigate('/pageNotFound')
             return
         }
 
-        if(validAuth(auth)){
-            setUserId(auth.user_id)
+        if(validAuth(auth)){            
             setIsLoggedIn(true)
+            setUserId(auth.user_id)
+            setReloadKey(prev => prev + 1)
         }
         else{
             setIsLoggedIn(false)
         }
+        
 
-        if(editMode && !validAuth(auth)) {
+        if(!(editMode && validAuth(auth) && auth.blog_id == parseInt(id))) {
             navigate('/')
             return
         }
-
 
         
         BlogAPI.getBlog(id).then((blog)=> {
@@ -97,7 +100,7 @@ export default function() {
 
         BlogAPI.getBlog(id).then((blog)=> {
 
-            const newEditMode = editMode && validAuth(auth) && (auth.user_id == blog.user_id)
+            const newEditMode = editMode && validAuth(auth) && (auth.user_id == blog.user_id) && (auth.blog_id == parseInt(id))
 
             navigate('/blog/' + id, {state:{editMode:newEditMode}})
         })
@@ -298,7 +301,7 @@ export default function() {
                     <div style={{flex:1}}/>
                     <div style={{display: 'flex', flexDirection:'column', height:'100%', justifyContent:'center'}}>
                         {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickNavigateLogin} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'32px'}}>로그인</BeautyButton>}
-                        {isLoggedIn && <ProfileImage userId={userId} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
+                        {isLoggedIn && <ProfileImage key={reloadKey} userId={userId} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
                         {editMode && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <FiUpload size={30}/></BeautyButton>}
                         {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
                     </div>

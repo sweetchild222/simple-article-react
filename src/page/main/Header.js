@@ -19,11 +19,11 @@ export default function() {
     useEffect(() => {
         
         if(validAuth(auth)){
+            setIsLoggedIn(true)
             setUserId(auth.user_id)
             setReloadKey(prev => prev + 1)
-            setIsLoggedIn(true)        
         }
-        else {                        
+        else {      
             setIsLoggedIn(false)
         }
 

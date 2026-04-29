@@ -8,9 +8,7 @@ import * as UserAPI from '../api/UserAPI.js'
 
 
 export default function(props) {
-
-    console.log('dsfsd')
-
+    
     const width = props.size == null ? 64 : props.size
     const height = width
     const borderRadius = parseInt(width / 2)

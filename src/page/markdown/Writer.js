@@ -14,7 +14,6 @@ import * as ArticleAPI from '../../api/ArticleAPI.js'
 import { Prompt } from 'react-router'
 
 import ImageCropModal from '../../common/ImageCropModal.js'
-import PostModal from './PostModal.js'
 
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import LoadingImage from "../../common/LoadingImage.js";

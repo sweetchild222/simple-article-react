@@ -1,0 +1,8 @@
+#imgCropDialog {
+  background-color: #CECECE;
+  outline: none;
+}
+
+#imgCropDialog:focus {  
+  outline: none;
+}

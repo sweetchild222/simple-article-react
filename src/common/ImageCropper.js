@@ -95,8 +95,6 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
 
 
 
-  
-
   useEffect(()=> {
         
     setSelectEdge(-1)
@@ -128,8 +126,6 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
 
       setContainerCanvasUrl(canvas.toDataURL())
             
-      
-      
       setPropertyImageRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height)
       setCoverSize({width:imageRect.width, height:imageRect.height})
 
@@ -196,7 +192,13 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
     const selectWidth = selectRect.width * inversScale
     const selectHeight = selectRect.height * inversScale
 
-    return {x:Math.floor(selectX), y: Math.floor(selectY), width:Math.ceil(selectWidth), height:Math.ceil(selectHeight)}
+    const x = Math.floor(selectX) < 0 ? 0 : Math.floor(selectX)
+    const y = Math.floor(selectY) < 0 ? 0 : Math.floor(selectY)
+
+    const width = Math.ceil(selectWidth) > image.naturalWidth ? image.naturalWidth : Math.ceil(selectWidth)
+    const height = Math.ceil(selectHeight) > image.naturalHeight ? image.naturalHeight : Math.ceil(selectHeight)
+
+    return {x:x, y: y, width:width, height:height}
   }
 
 
@@ -214,7 +216,13 @@ export default function({ref, file, containerWidth=512, containerHeight=512, sel
     const selectImageWidth = selectRect.width * inversScale
     const selectImageHeight = selectRect.height * inversScale
 
-    return {x:Math.floor(selectImageX), y: Math.floor(selectImageY), width:Math.ceil(selectImageWidth), height:Math.ceil(selectImageHeight)}
+    const x = Math.floor(selectImageX) < 0 ? 0 : Math.floor(selectImageX)
+    const y = Math.floor(selectImageY) < 0 ? 0 : Math.floor(selectImageY)
+
+    const width = Math.ceil(selectImageWidth) > image.naturalWidth ? image.naturalWidth : Math.ceil(selectImageWidth)
+    const height = Math.ceil(selectImageHeight) > image.naturalHeight ? image.naturalHeight : Math.ceil(selectImageHeight)
+    
+    return {x:x, y: y, width:width, height:height}
   }
 
 

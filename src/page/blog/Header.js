@@ -14,6 +14,7 @@ import { PiTrash } from "react-icons/pi";
 import { CiYoutube } from "react-icons/ci";
 import { MdEdit } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
+import { RiImageAiFill } from "react-icons/ri";
 import { CgImage } from "react-icons/cg";
 import { FiUpload } from "react-icons/fi";
 
@@ -286,7 +287,7 @@ export default function() {
                     <div style={{display: 'flex', flexDirection:'column', height:'100%', justifyContent:'center'}}>
                         {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickNavigateLogin} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'32px'}}>로그인</BeautyButton>}
                         {isLoggedIn && <ProfileImage key={reloadKey} userId={userId} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
-                        {editMode && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <FiUpload size={30}/></BeautyButton>}
+                        {editMode && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <RiImageAiFill size={30}/></BeautyButton>}
                         {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
                     </div>
                 </div>

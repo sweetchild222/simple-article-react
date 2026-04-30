@@ -12,6 +12,9 @@ import * as ArticleAPI from '../../api/ArticleAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
+import { FaCheck } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+import CategoryModal from '../../common/CategoryModal.js'
 
 export default function() {
 
@@ -22,6 +25,8 @@ export default function() {
   const [categories, setCategories] = useState(null)
   const [movingbarPos, setMovingbarPos] = useState({curIndex:0, start:0, end:0})
   const [animationKey, setAnimationKey] = useState(0)
+
+  const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
   
     
   useEffect(()=> {
@@ -79,6 +84,9 @@ export default function() {
   const onClickCategory = async(id) => {
 
     const index = categories.findIndex(categorie => categorie.id === id)
+
+    if(index == -1)
+      return
     
     const width = 100
     const margin = 10
@@ -86,17 +94,33 @@ export default function() {
     const endPos = index * (width + margin)
       
     setMovingbarPos({curIndex: index, start:movingbarPos.end, end:endPos})
-    restartAnimation()
+    setAnimationKey(prev => prev + 1)
   }
-  
-  const restartAnimation = () => setAnimationKey(prev => prev + 1)
 
+  const onClickModifyCategory = async()=> {
+
+
+    setIsOpenCategoryModal(true)
+
+  }
+
+  const onClickApplyCategory = async() =>{
+    
+  }
+
+
+  
+  
+  
   
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <div style={{ display: 'flex', flexDirection: 'column'}}>
         <div style={{ display: 'flex', flexDirection: 'row'}}>
           {categories && categories.map((data, index) => <BeautyButton type='success'  key={data.id} style={{color:'black', width:'100px', marginRight:'10px'}} onClick={()=> onClickCategory(data.id)}>{data.name}</BeautyButton>)}
+
+          <BeautyButton type='transparent'  style={{color:'black', width:'100px', marginRight:'10px'}} onClick={onClickModifyCategory}><MdEdit size={30}/></BeautyButton>
+          <CategoryModal isOpen={isOpenCategoryModal} file={null} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} keepRatio={1}></CategoryModal>
         </div>
         {categories && <div key={animationKey} className={'movingbar'} style={{width:'100px', height:'3px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px'}}></div>}
       </div>

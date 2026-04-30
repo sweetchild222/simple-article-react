@@ -120,7 +120,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
 
     if(newCategories.length == maxCount) {
 
-      window.showToast('카테고리는 최대 10개 까지만 만들 수 있습니다', 'error')
+      window.showToast('카테고리는 최대 '+ maxCount + '개 까지만 만들 수 있습니다', 'error')
       return
     }
     

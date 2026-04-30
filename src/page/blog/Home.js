@@ -226,12 +226,25 @@ export default function() {
 
     setIsOpenCategoryModal(false)
       
-    if(applyCount > 0)
-      reloadAuth(auth)
+    if(applyCount > 0){
+
+      loadCategory(id).then(categories => {
+
+        if(categories == null){
+          window.showToast('카테고리를 가져 올 수 없습니다', 'error')
+          navigate('/pageNotFound')
+          return null
+        }
+
+        setCategories(categories)
+        setMovingbarPos({curIndex:0, start:0, end:0})
+      })      
+    }
+      
     else
       window.showToast('카테고리가 변경되지 않았습니다', 'info')
     
-    setMovingbarPos({curIndex:0, start:0, end:0})
+    
   }
 
   

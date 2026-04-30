@@ -16,7 +16,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
   const refListDiv = useRef(null)
 
   const [isApplyLoading, setIsApplyLoading] = useState(false)
-  const [items, setItems] = useState(structuredClone(categories))
+  const [newCategories, setNewCategories] = useState(structuredClone(categories))
 
   useEffect(() => {
       
@@ -35,12 +35,69 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
       }
   }
 
-  
+
+
+  const getInputList = () => {
+
+    if(refListDiv.current == null)
+      return null
+
+    const list = []
+
+    const upperDivNodes = refListDiv.current.childNodes
+
+    if(upperDivNodes.length == 0)
+      return
+    
+    for(const divNodes of upperDivNodes) {
+
+      if(divNodes.childNodes.length != 2)
+        continue
+      
+      const inputNode = divNodes.childNodes[0]
+
+      list.push(inputNode)
+    }
+
+    return list
+  }
+
+
+  const setFocusInvalidName = () => {
+
+    const inputList = getInputList()
+
+    for(const input of inputList) {
+
+      const value = input.value
+                  
+      if(value == ''){
+        window.showToast('카테고리 이름을 입력하지 않았습니다', 'error')
+        input.focus()
+        return true     
+      }
+
+      const maxLength = 8
+
+      if(value.length > maxLength) {
+        window.showToast('카테고리 이름은 최대 '+ maxLength + ' 자 입니다', 'error')
+        inputfocus()
+        return true
+      }      
+    }
+
+    return false
+  }
+
   const onClickApplyCore = async() =>{
     
     if(onClickApply != null){
+
+      if(setFocusInvalidName())
+        return
+
       setIsApplyLoading(true)
-      await onClickApply()    
+      await onClickApply(newCategories)
       setIsApplyLoading(false)
     }
   }
@@ -48,28 +105,24 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
 
   useEffect(()=>{
 
-    if(!refListDiv.current)
-      return
-  
-    const upperDivNodes = refListDiv.current.childNodes;
+    const inputList = getInputList()
 
-    if(upperDivNodes.length == 0)
-      return
+    if(inputList != null && inputList.length > 0)
+      inputList[inputList.length - 1].focus()      
 
-    const lowerNodes = upperDivNodes[upperDivNodes.length - 1].childNodes
-    
-    if(lowerNodes.length != 2)
-      return
-
-    const inputNode = lowerNodes[0]
-    
-    inputNode.focus()    
-
-  }, [items])
+  }, [newCategories])
   
 
 
   const onCliCkAdd = async() => {
+
+    const maxCount = 7
+
+    if(newCategories.length == maxCount) {
+
+      window.showToast('카테고리는 최대 10개 까지만 만들 수 있습니다', 'error')
+      return
+    }
     
     const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -79,24 +132,22 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
 
     const categorie = {id:randomId, name:radomNames[random(0, radomNames.length - 1)], is_default:0, article_count:0}
 
-    setItems(prevList => [...prevList, categorie])
+    setNewCategories(prevList => [...prevList, categorie])
   }
 
 
   const onClickDelete = async(id) => {
     
-     setItems(items.filter(item => {
+     setNewCategories(newCategories.filter(categorie => {
       
-      if(item.id === id){
-
-        if(item.is_default == 1){
-          
+      if(categorie.id === id) {
+        if(categorie.is_default == 1) {
           window.showToast('기본 카테고리는 삭제 할 수 없습니다', 'error')
           return true
         }
         else{
 
-          if(item.article_count > 0) {
+          if(categorie.article_count > 0) {
             window.showToast('글이 있는 카테고리는 삭제 할 수 없습니다', 'error')
             return true
           }
@@ -106,22 +157,32 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
       else
         return true
     }));
-
   }
 
+  const onChange = (e, id) => {
 
+    setNewCategories(newCategories => {
+
+      const category = newCategories.find(category => (category.id == id))
+
+      if(category == null)
+        return newCategories
+    
+      category.name = e.nativeEvent.target.value
+
+      return newCategories
+    })
+  }
 
   return ReactDOM.createPortal(
           <dialog id='CategoryDialog' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
                 <div ref={refListDiv} style={{ display: 'flex', flexDirection: 'column'}}>
-                  {items && items.map((data, index) => 
+                  {newCategories && newCategories.map((data, index) => 
                     <div key={data.id} style={{ display: 'flex', flexDirection: 'row'}}>
-                      <input key={data.id} style={{color:'black', width:'100px'}} defaultValue={data.name}/>
-                      <BeautyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash size={15}/></BeautyButton>
+                      <input key={data.id} style={{color:'black', width:'150px'}} maxLength={8} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
+                      <BeautyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.is_default == 1 || data.article_count > 0) ? 'gray' : 'black')}}size={15}/></BeautyButton>
                     </div>
-
-                  
                   )}
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>

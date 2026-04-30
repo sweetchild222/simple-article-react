@@ -52,7 +52,6 @@ export default function() {
 
     const [reloadKey, setReloadKey] = useState(0)
 
-        
     useEffect(()=>{
 
         if(!Number.isInteger(parseInt(id))){
@@ -60,7 +59,7 @@ export default function() {
             return
         }
 
-        if(validAuth(auth)){            
+        if(validAuth(auth)){
             setIsLoggedIn(true)
             setUserId(auth.user_id)
             setReloadKey(prev => prev + 1)
@@ -68,14 +67,15 @@ export default function() {
         else{
             setIsLoggedIn(false)
         }
-        
 
-        if(!(editMode && validAuth(auth) && auth.blog_id == parseInt(id))) {
-            navigate('/')
-            return
+        if(editMode){
+
+            if(!(validAuth(auth) && auth.blog_id == parseInt(id))){
+                navigate('/')
+                return
+            }
         }
 
-        
         BlogAPI.getBlog(id).then((blog)=> {
                         
             if(blog == null){
@@ -83,14 +83,17 @@ export default function() {
                 return
             }
 
-            if(editMode && (auth.user_id != blog.user_id)){
-                navigate('/')
-                return
+            if(editMode){
+
+                if((auth.user_id != blog.user_id)){
+
+                    navigate('/')
+                    return
+                }
             }
 
             setTitle(blog.title)
             setBlogImage(blog.image + '?size=1920x320')
-
             setOtherId(blog.user_id)            
         })
 
@@ -98,13 +101,8 @@ export default function() {
 
 
     const onClickNavigateBlog = () => {
-        
-        BlogAPI.getBlog(id).then((blog)=> {
 
-            const newEditMode = editMode && validAuth(auth) && (auth.user_id == blog.user_id) && (auth.blog_id == parseInt(id))
-
-            navigate('/blog/' + id, {state:{editMode:newEditMode}})
-        })
+        navigate('/blog/' + id)    
     }
 
 
@@ -152,7 +150,7 @@ export default function() {
 
     const onClickEditTitle = async(e) => {
 
-        if(!editMode)
+        if(!isEditable())
             return
 
         e.stopPropagation()
@@ -188,11 +186,16 @@ export default function() {
             setTitleEditMode(true)
         }
     }
+
+    const isEditable = ()=> {
+
+        return (editMode && validAuth(auth) && auth.blog_id == parseInt(id))
+    }
     
 
     const onClickOutside = useCallback((e) => {
 
-        if(!editMode)
+        if(!isEditable())
             return
 
         if(refInputTitle.current == null)
@@ -236,7 +239,7 @@ export default function() {
 
     const onClickImageApply = async() => {
 
-        if(!validAuth(auth))
+        if(!isEditable())
             return
 
         if(refImageCrop.current == null)
@@ -281,13 +284,13 @@ export default function() {
                     <div style={{display: 'flex', alignItems: 'center', marginLeft:'32px'}}>
                         {titleEditMode && <input ref={refInputTitle} style={{backgroundColor:'#00000080', color:'white', fontSize:'48px', borderColor:'white', fieldSizing:'content', minWidth:'512px', maxWidth:'1024px'}} placeholder="제목" maxLength="40" defaultValue={title}></input>}
                         {!titleEditMode && <label ref={refLabelTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', alignItems:'center', textOverflow:'ellipsis', overflow:'hidden', minWidth:'512px', maxWidth:'1024px'}}>{title}</label>}
-                        {editMode && <BeautyButton tooltip='제목 수정' type='transparent' isLoading={isLoadingTitle} onClick={onClickEditTitle}>{titleEditMode ? <FaCheck size={30}/> : <MdEdit size={30}/>}</BeautyButton>}
+                        {isEditable() && <BeautyButton tooltip='제목 수정' type='transparent' isLoading={isLoadingTitle} onClick={onClickEditTitle}>{titleEditMode ? <FaCheck size={30}/> : <MdEdit size={30}/>}</BeautyButton>}
                     </div>
                     <div style={{flex:1}}/>
                     <div style={{display: 'flex', flexDirection:'column', height:'100%', justifyContent:'center'}}>
                         {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickNavigateLogin} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'32px'}}>로그인</BeautyButton>}
                         {isLoggedIn && <ProfileImage key={reloadKey} userId={userId} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
-                        {editMode && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <RiImageAiFill size={30}/></BeautyButton>}
+                        {isEditable() && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <RiImageAiFill size={30}/></BeautyButton>}
                         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
                     </div>
                 </div>

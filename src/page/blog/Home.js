@@ -99,28 +99,24 @@ export default function() {
 
   const onClickModifyCategory = async()=> {
 
+    if(categories == null)
+      return
 
     setIsOpenCategoryModal(true)
-
   }
 
   const onClickApplyCategory = async() =>{
     
   }
 
-
-  
-  
-  
   
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <div style={{ display: 'flex', flexDirection: 'column'}}>
         <div style={{ display: 'flex', flexDirection: 'row'}}>
           {categories && categories.map((data, index) => <BeautyButton type='success'  key={data.id} style={{color:'black', width:'100px', marginRight:'10px'}} onClick={()=> onClickCategory(data.id)}>{data.name}</BeautyButton>)}
-
           <BeautyButton type='transparent'  style={{color:'black', width:'100px', marginRight:'10px'}} onClick={onClickModifyCategory}><MdEdit size={30}/></BeautyButton>
-          <CategoryModal isOpen={isOpenCategoryModal} file={null} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} keepRatio={1}></CategoryModal>
+          {categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories}></CategoryModal>}
         </div>
         {categories && <div key={animationKey} className={'movingbar'} style={{width:'100px', height:'3px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px'}}></div>}
       </div>

@@ -302,7 +302,7 @@ export default function() {
             <label htmlFor='private'>비공개</label>
 
             <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={192} height={128}/>
-            {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1.5}></ImageCropModal>}
+            {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1.5}></ImageCropModal>}
     
             <BeautyButton type='success' onClick={onClickPost}>다음</BeautyButton>
             <BeautyButton type='danger' onClick={onClickLeave}>뒤로가기</BeautyButton>

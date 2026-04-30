@@ -14,7 +14,7 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
   const refDialog = useRef(null)
   const refDiv = useRef(null)
 
-  const [isApplyLoading, setIsApplyLoading] = useState(false)  
+  const [isApplyLoading, setIsApplyLoading] = useState(false)
     
   useEffect(() => {
       

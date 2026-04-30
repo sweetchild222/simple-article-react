@@ -7,18 +7,20 @@ import Modal from './Modal.js'
 import ImageCropper from './ImageCropper.js'
 import BeautyButton from "./BeautyButton.js"
 import ReactDOM from 'react-dom';
+import { MdEdit } from "react-icons/md";
+import { VscTrash } from "react-icons/vsc";
 
-export default function({ref, isOpen, onClose, file, onClickApply, containerWidth=512, containerHeight=512, selectMinWidth, keepRatio}) {
-    
-  const refCropper = useRef(null)
+export default function({ref, isOpen, onClose, onClickApply, categories}) {
+      
   const refDialog = useRef(null)
-  const refDiv = useRef(null)
+  const refListDiv = useRef(null)
 
-  const [isApplyLoading, setIsApplyLoading] = useState(false)  
-    
+  const [isApplyLoading, setIsApplyLoading] = useState(false)
+  const [items, setItems] = useState(structuredClone(categories))
+
   useEffect(() => {
       
-    if(isOpen && file)
+    if(isOpen)
         refDialog.current.showModal()
     else
         refDialog.current.close()
@@ -44,47 +46,86 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
   }
 
 
-  const drawImage = async(image, x, y, width, height, dx, dy, dWidth, dHeight) => {
+  useEffect(()=>{
+
+    if(!refListDiv.current)
+      return
+  
+    const upperDivNodes = refListDiv.current.childNodes;
+
+    if(upperDivNodes.length == 0)
+      return
+
+    const lowerNodes = upperDivNodes[upperDivNodes.length - 1].childNodes
     
-    const canvas = document.createElement('canvas')
-    canvas.width = dWidth
-    canvas.height = dHeight
-    const ctx = canvas.getContext('2d')
+    if(lowerNodes.length != 2)
+      return
 
-    ctx.imageSmoothingEnabled = false;
+    const inputNode = lowerNodes[0]
+    
+    inputNode.focus()    
 
-    ctx.drawImage(image, x, y, width, height, dx, dy, dWidth, dHeight)
+  }, [items])
+  
 
-    return canvas
+
+  const onCliCkAdd = async() => {
+    
+    const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+    const randomId = random(0, 100000) // avoid warning Duplicate form field id in the same form
+
+    const radomNames = ['일상', '여행', '요리', '건강', '맛집']
+
+    const categorie = {id:randomId, name:radomNames[random(0, radomNames.length - 1)], is_default:0, article_count:0}
+
+    setItems(prevList => [...prevList, categorie])
   }
+
+
+  const onClickDelete = async(id) => {
     
-  useImperativeHandle(ref, () => {
+     setItems(items.filter(item => {
       
-    return {
-      image() {
-        return refCropper.current.image()
-      },
-      rect(){
-        return refCropper.current.rect()
-      },
-      async export(dWidth, dHeight){
+      if(item.id === id){
 
-        const rect = refCropper.current.rect()
-        const image = refCropper.current.image()
-                        
-        const canvas = await drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, dWidth, dHeight)
+        if(item.is_default == 1){
+          
+          window.showToast('기본 카테고리는 삭제 할 수 없습니다', 'error')
+          return true
+        }
+        else{
 
-        return canvas
+          if(item.article_count > 0) {
+            window.showToast('글이 있는 카테고리는 삭제 할 수 없습니다', 'error')
+            return true
+          }
+          return false
+        }
       }
+      else
+        return true
+    }));
 
-    }
-  }, [refCropper])
+  }
+
+
 
   return ReactDOM.createPortal(
           <dialog id='CategoryDialog' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
-              <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
-                {isOpen && file && <ImageCropper ref={refCropper} file={file} containerWidth={containerWidth} containerHeight={containerHeight} selectMinWidth={selectMinWidth} keepRatio={keepRatio}/>}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+                <div ref={refListDiv} style={{ display: 'flex', flexDirection: 'column'}}>
+                  {items && items.map((data, index) => 
+                    <div key={data.id} style={{ display: 'flex', flexDirection: 'row'}}>
+                      <input key={data.id} style={{color:'black', width:'100px'}} defaultValue={data.name}/>
+                      <BeautyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash size={15}/></BeautyButton>
+                    </div>
+
+                  
+                  )}
+                </div>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                  <BeautyButton type='confirm' onClick={onCliCkAdd}>추가</BeautyButton>
                   <BeautyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</BeautyButton>
                   <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>
                 </div>

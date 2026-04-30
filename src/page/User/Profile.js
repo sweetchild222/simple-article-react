@@ -213,7 +213,7 @@ export default function() {
     return isAuthUser ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <LoadingImage src={profileImage} onClick={onClickProfile} width={256} height={256}/>
-        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
+        {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal config={modal_config_logout} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
         <BeautyButton onClick={onClickPassword} type='default'>비밀번호 변경</BeautyButton>

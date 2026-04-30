@@ -231,7 +231,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
     return (
       <div>
         <ButtonWithTooltip style={{height:'100%'}} onClick={onClickPickFile} title="이미지 파일 삽입"><LuImageUp size={23}/></ButtonWithTooltip>
-        {imageFile && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} selectMinWidth={64} onClickApply={onClickApply}/>}
+        {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} selectMinWidth={64} onClickApply={onClickApply}/>}
       </div>
     )
   }

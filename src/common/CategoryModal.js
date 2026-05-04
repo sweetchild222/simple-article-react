@@ -116,7 +116,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
 
   const onCliCkAdd = async() => {
 
-    const maxCount = 7
+    const maxCount = 5
 
     if(newCategories.length == maxCount) {
 

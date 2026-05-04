@@ -32,6 +32,8 @@ export default function() {
   const [movingbarPos, setMovingbarPos] = useState({curIndex:0, start:0, end:0})
   const [animationKey, setAnimationKey] = useState(0)
 
+  const [blog, setBlog] = useState(null)
+
   const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
   
 
@@ -50,29 +52,43 @@ export default function() {
       }
     }
 
-    loadCategory(id).then(categories => {
+    BlogAPI.getBlog(id).then((res)=>{
 
-      if(categories == null){
-        window.showToast('카테고리를 가져 올 수 없습니다', 'error')
+      if(res == null){
+        window.showToast('블로그 정보를 가져 올 수 없습니다', 'error')
         navigate('/pageNotFound')
-        return null
+        return
       }
 
-      setCategories(categories)
+      setBlog(res)
+
+      loadCategory(res.user_id)
+
     })
-  
+
   }, [auth, id])
+  
+
+  useEffect(() =>{
+
+    if(categories != null && categories.length > 0)
+      onClickCategory(categories[0].id)
+
+  }, [categories])
 
 
+  const loadCategory = async(user_id) => {
 
-  const loadCategory = async(id) => {
+    const category = await getCategory(user_id)      
 
-    const resBlog = await BlogAPI.getBlog(id)
-
-    if(resBlog == null)
-      return null  
-
-    return await getCategory(resBlog.user_id)
+    if(category == null){
+      window.showToast('카테고리를 가져 올 수 없습니다', 'error')
+      navigate('/pageNotFound')
+      return
+    }
+    
+    setCategories(category)
+    setMovingbarPos({curIndex:0, start:0, end:0})    
   }
 
 
@@ -92,12 +108,26 @@ export default function() {
               return b.is_default - a.is_default
           else
               return a.id - b.id
-      })
+      })      
 
       return res
   }
 
-  
+  const moving = (index) =>{
+
+    if(movingbarPos.curIndex == index)
+      return
+    
+    const width = 150
+    const margin = 10
+    
+    const endPos = index * (width + margin)
+
+    setMovingbarPos({curIndex: index, start:movingbarPos.end, end:endPos})
+    setAnimationKey(prev => prev + 1)
+  }
+
+
   const onClickCategory = async(id) => {
 
     const index = categories.findIndex(categorie => categorie.id === id)
@@ -105,13 +135,42 @@ export default function() {
     if(index == -1)
       return
     
-    const width = 150
-    const margin = 10
+    moving(index)
+
+    const query = 'offset=0&limit=3&order=1&posted=1&category_id=' + id + (auth.user_id != blog.user_id ? '&open=1' : '')
+            
+    const res = await ArticleAPI.getUserArticles(auth.jwt, blog.user_id, query)
     
-    const endPos = index * (width + margin)
-      
-    setMovingbarPos({curIndex: index, start:movingbarPos.end, end:endPos})
-    setAnimationKey(prev => prev + 1)
+    if(res == null)
+      return
+
+    console.log(res)
+
+
+    //console.log(id)
+
+    //console.log(movingbarPos.curIndex)
+
+  }
+
+  const onClickWrittingCategory = async() => {
+    
+    if(categories == null){
+      moving(0)
+      return
+    }
+
+    moving(categories.length)
+
+    const query = 'offset=0&limit=3&order=1&posted=0'
+            
+    const res = await ArticleAPI.getUserArticles(auth.jwt, blog.user_id, query)
+    
+    if(res == null)
+      return
+
+    console.log(res)
+
   }
 
 
@@ -226,37 +285,22 @@ export default function() {
 
     setIsOpenCategoryModal(false)
       
-    if(applyCount > 0){
-
-      loadCategory(id).then(categories => {
-
-        if(categories == null){
-          window.showToast('카테고리를 가져 올 수 없습니다', 'error')
-          navigate('/pageNotFound')
-          return null
-        }
-
-        setCategories(categories)
-        setMovingbarPos({curIndex:0, start:0, end:0})
-      })      
-    }
-      
+    if(applyCount > 0)
+      await loadCategory(blog.user_id)
     else
       window.showToast('카테고리가 변경되지 않았습니다', 'info')
-    
-    
   }
-
   
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <div style={{ display: 'flex', flexDirection: 'column'}}>
         <div style={{ display: 'flex', flexDirection: 'row'}}>
-          {categories && categories.map((data, index) => <BeautyButton type='transparent'  key={data.id} style={{color:'black', width:'150px', marginRight:'10px'}} onClick={()=> onClickCategory(data.id)}>{data.name}</BeautyButton>)}
+          {categories && categories.map((data, index) => <BeautyButton type='transparent'  key={data.id} style={{color:'black', width:'150px', height:'60px', marginRight:'10px'}} onClick={()=> onClickCategory(data.id)}>{data.name}</BeautyButton>)}
+          {isEditable() && <BeautyButton type='transparent' key={Number.MAX_SAFE_INTEGER} style={{color:'black', width:'150px', height:'60px', marginRight:'10px'}} onClick={()=> onClickWrittingCategory()}>작성 중</BeautyButton>}
           {isEditable() &&  <BeautyButton type='transparent' tooltip='카테고리 수정' style={{color:'black', width:'50px', marginRight:'10px'}} onClick={onClickModifyCategory}><MdEdit size={30}/></BeautyButton>}
           {categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories}></CategoryModal>}
         </div>
-        {categories && <div key={animationKey} className={'movingbar'} style={{width:'150px', height:'3px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px'}}></div>}
+        {<div key={animationKey} className={'movingbar'} style={{width:'150px', height:'3px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px'}}></div>}
       </div>
     </div>
   );

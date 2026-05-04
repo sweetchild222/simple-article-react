@@ -81,10 +81,10 @@ export default function() {
 
   return (
       <ErrorBoundary>
-        <AuthProvider>          
+        <AuthProvider>
           <ToastContainer />
-            <RouterProvider router={router}/>          
+            <RouterProvider router={router}/>
         </AuthProvider>
-      </ErrorBoundary>    
+      </ErrorBoundary>
   )
 }

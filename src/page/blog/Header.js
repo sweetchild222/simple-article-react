@@ -41,9 +41,8 @@ export default function() {
     const [titleEditMode, setTitleEditMode] = useState(false)
     
     const [otherId, setOtherId] = useState(null)
-    const [userId, setUserId] = useState(null)
+    const [loggedUserId, setLoggedUserId] = useState(null)
     const [blogImage, setBlogImage] = useState(null)
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
@@ -60,12 +59,11 @@ export default function() {
         }
 
         if(validAuth(auth)){
-            setIsLoggedIn(true)
-            setUserId(auth.user_id)
+            setLoggedUserId(auth.user_id)
             setReloadKey(prev => prev + 1)
         }
         else{
-            setIsLoggedIn(false)
+            setLoggedUserId(null)
         }
 
         if(editMode){
@@ -77,7 +75,7 @@ export default function() {
         }
 
         BlogAPI.getBlog(id).then((blog)=> {
-                        
+
             if(blog == null){
                 navigate('/pageNotFound')
                 return
@@ -94,7 +92,7 @@ export default function() {
 
             setTitle(blog.title)
             setBlogImage(blog.image + '?size=1920x320')
-            setOtherId(blog.user_id)            
+            setOtherId(blog.user_id)
         })
 
     }, [auth, id])
@@ -102,7 +100,7 @@ export default function() {
 
     const onClickNavigateBlog = () => {
 
-        navigate('/blog/' + id)    
+        navigate('/blog/' + id)
     }
 
 
@@ -288,8 +286,8 @@ export default function() {
                     </div>
                     <div style={{flex:1}}/>
                     <div style={{display: 'flex', flexDirection:'column', height:'100%', justifyContent:'center'}}>
-                        {!isLoggedIn && <BeautyButton type='confirm' onClick={onClickNavigateLogin} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'32px'}}>로그인</BeautyButton>}
-                        {isLoggedIn && <ProfileImage key={reloadKey} userId={userId} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
+                        {!loggedUserId && <BeautyButton type='confirm' onClick={onClickNavigateLogin} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'32px'}}>로그인</BeautyButton>}
+                        {loggedUserId && <ProfileImage key={reloadKey} userId={loggedUserId} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
                         {isEditable() && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <RiImageAiFill size={30}/></BeautyButton>}
                         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
                     </div>

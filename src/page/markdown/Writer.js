@@ -43,7 +43,7 @@ export default function() {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
 
-    const leave_modal_config = {text: '나가기 전에 임시 저장 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+    
 
     const navigate = useNavigate()
     
@@ -309,7 +309,7 @@ export default function() {
                     onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                             
     }, [])
-    
+        
 
     return validAuth(auth) ? (
         <div style={{flex:1, position: 'relative', margin:'20px 20px 20px 20px'}}>
@@ -330,7 +330,7 @@ export default function() {
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
                     <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickNext}>다음</BeautyButton>
                     <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</BeautyButton>
-                    <Modal config={leave_modal_config} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
+                    <Modal title={'나가기 전에 임시 저장 하시겠습니까?'} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     <div style={{flex:'1', backgroundColor:'red'}}></div>
                     <BeautyButton type='success' onClick={onClickPreview}>미리보기</BeautyButton>
                 </div>

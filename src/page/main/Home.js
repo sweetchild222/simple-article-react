@@ -31,8 +31,7 @@ export default function Home() {
 
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
-  const create_exist_modal_config = {text: '이미 작성 중인 글이 있습니다. 이어서 작성하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
-  const modify_exist_modal_config = {text: '이미 수정 중인 글이 있습니다. 이어서 수정하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
+  
   
   
   const onClickEditor = async() => {
@@ -401,12 +400,12 @@ export default function Home() {
     console.log(res)
   }
 
+  
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={onClickEditor}>새글 작성</BeautyButton>
-      <Modal config={create_exist_modal_config} isOpen={isCreateExistModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateExitModalOpen(false)}></Modal>
-      <Modal config={modify_exist_modal_config} isOpen={isModifyExistModalOpen} onResult={onResultModify} onClose={()=>setIsModifyExitModalOpen(false)}></Modal>
-      {/* <Modal config={modify_exist_modal_config} isOpen={isModalOpen} onResult={onResult} onClose={()=>setIsModalOpen(false)}></Modal> */}
+      <Modal title={'이미 작성 중인 글이 있습니다. 이어서 작성하시겠습니까?'} type={'yesno'} isOpen={isCreateExistModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateExitModalOpen(false)}></Modal>
+      <Modal title={'이미 수정 중인 글이 있습니다. 이어서 작성하시겠습니까?'} type={'yesno'} isOpen={isModifyExistModalOpen} onResult={onResultModify} onClose={()=>setIsModifyExitModalOpen(false)}></Modal>      
       <BeautyButton disabled={false} isLoading={isLoading} type='default' onClick={modifyArticle}>수정하기</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='success' onClick={deleteComment}>댓글 삭제</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='success' onClick={postComment}>댓글 추가</BeautyButton>

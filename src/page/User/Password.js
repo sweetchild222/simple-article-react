@@ -134,12 +134,12 @@ export default function({onClose}) {
         <div style={{flex:1, backgroundColor:'rgba(255,255,0,0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {isOverlayLoading && <OverlayLoading/>}
             <label htmlFor='input_current_password'>기존 비밀번호</label>
-            <input ref={refCurPassword} id='input_current_password' type='text' onKeyDown={onKeyDownCurrent}/>
+            <input ref={refCurPassword} id='input_current_password' type='text' maxLength={20} onKeyDown={onKeyDownCurrent}/>
             <label>비밀번호 조건: 8자 ~ 20자 사이 문자열로 영어소문자, 영어대문자, 숫자, 특수문자 포함</label>
             <label htmlFor='input_new_password'>새 비밀번호</label>
-            <input ref={refNewPassword} id='input_new_password' type='text' onKeyDown={onKeyDownNew}/>
+            <input ref={refNewPassword} id='input_new_password' type='text' maxLength={20} onKeyDown={onKeyDownNew}/>
             <label htmlFor='input_repeat_password'>비밀번호 확인</label>
-            <input ref={refRepeatPassword} id='input_repeat_password' type='text' onKeyDown={onKeyDownRepeat}/>
+            <input ref={refRepeatPassword} id='input_repeat_password' type='text' maxLength={20} onKeyDown={onKeyDownRepeat}/>
             <BeautyButton type="confirm" onClick={onClickPasswordChange}>비밀번호 변경</BeautyButton>
             <BeautyButton type="confirm" onClick={onClose} type='danger'>취소</BeautyButton>
         </div>

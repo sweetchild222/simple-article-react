@@ -30,9 +30,12 @@ export default function() {
     const [isModalLogout, setIsModalLogout] = useState(false)
     const [isModalPassword, setIsModalPassword] = useState(false)
     const [isModalWithdraw, setIsModalWithdraw] = useState(false)
+    const [isModalNickname, setIsModalNickname] = useState(false)
     const [profileImage, setProfileImage] = useState(null)
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
+
+    const [nickname, setNickname] = useState(null)
 
     const refImageCrop = useRef(null)
 
@@ -53,13 +56,12 @@ export default function() {
                 return
 
             setProfileImage(resUser.image ?  resUser.image : '/image/user.png')
+
+            setNickname(resUser.nickname)            
         })
 
     }, [auth])
-    
-    const modal_config_logout = {text: '로그아웃 하시겠습니까?', type: 'yesno', isCloseOutsideClick: true}
-    const modal_config_password = {type: 'custom', isCloseOutsideClick: true}
-    const modal_config_withdraw = {text: '패스워드를 입력하세요', type: 'input', isCloseOutsideClick: true}
+            
 
     const onResultLogout = (result) => {
 
@@ -89,6 +91,12 @@ export default function() {
     }
 
 
+    const onClickUserNickname = async() =>{
+
+        setIsModalNickname(true)
+    }
+
+
     const onClickProfile = async() =>{
 
         const imageFile = await pickImageFile()
@@ -101,25 +109,8 @@ export default function() {
             return
         }
 
-        // if(imageFile.file.size > 1000 * 1000 * 30) { //downscaling to smooth moving region select on large file
-            
-        //     const canvas = await ImageScale(imageFile.file, 4096, 4096, 512, 512)
-
-        //     if(canvas == null){
-        //         window.showToast('파일을 사용할 수 없습니다', 'error')
-        //         return
-        //     }
-        
-        //     setImageFile(await blobFromCanvas(canvas))
-            
-        //     setIsModalImageCrop(true)        
-        // }
-        // else{
-
         setImageFile(imageFile.file)
-
-        setIsModalImageCrop(true)
-        //}
+        setIsModalImageCrop(true)        
     }
 
 
@@ -150,7 +141,7 @@ export default function() {
         }
 
         const url = process.env.API_TARGET + '/api/blob/profile/' + resProfile.id
-            
+
         const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {image: url})
 
         if(resUser == null){
@@ -164,6 +155,7 @@ export default function() {
 
         reloadAuth(auth)
     }
+
 
     const onInputPassword = async(input) => {
 
@@ -192,6 +184,38 @@ export default function() {
     }
 
 
+
+
+    const onInputNickname = async(input) => {
+        
+        if(!validAuth(auth))
+            return
+
+        if(input == ''){
+            window.showToast('닉네임을 입력하세요', 'error')
+            return
+        }
+
+
+        if(input == nickname)
+            return
+        
+        const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {nickname: input})
+
+        if(resUser == null) {
+            window.showToast('닉네임 수정에 실패 했습니다', 'error')
+            return
+        }        
+
+        window.showToast('닉네임 수정에 성공했습니다', 'info')
+                
+        setNickname(input)        
+
+        reloadAuth(auth)
+    }
+
+
+
     const withdraw = async(password) => {
 
         if(!validAuth(auth))
@@ -209,19 +233,22 @@ export default function() {
 
         return await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
     }
+
     
     return isAuthUser ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <LoadingImage src={profileImage} onClick={onClickProfile} width={256} height={256}/>
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
-        <Modal config={modal_config_logout} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
+        <Modal title={'로그아웃 하시겠습니까?'} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
         <BeautyButton onClick={onClickPassword} type='default'>비밀번호 변경</BeautyButton>
-        <Modal config={modal_config_password} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)}>
+        <Modal type={'custom'} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)}>
             <Password onClose={() => setIsModalPassword(false)}/>
         </Modal>
-        <Modal config={modal_config_withdraw} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPassword}/>
+        <Modal title={'패스워드를 입력하세요'} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPassword}/>
         <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
+        <Modal title={'닉네임을 입력하세요'} type={'input'} isCloseOutsideClick={false} defaultValue={nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
+        <BeautyButton onClick={onClickUserNickname} type='success'>닉네임 설정</BeautyButton>
       </div>) : null
 }
 

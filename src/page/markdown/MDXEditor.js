@@ -156,12 +156,11 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
       }
     }
 
-    const modal_config = {text: '유튜브 URL을 입력하세요', type: 'input', isCloseOutsideClick: true}
-  
+      
     return (
       <div>  
         <ButtonWithTooltip style={{height:'100%'}} onClick={() => {setIsModalOpen(true)}} title="유튜브 삽입"><FiYoutube size={23}/></ButtonWithTooltip>
-        <Modal config={modal_config} isOpen={isModalOpen} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
+        <Modal title= {'유튜브 URL을 입력하세요'} type={'input'} isCloseOutsideClick={false} isOpen={isModalOpen} maxLength={2048} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
       </div>
     )
   }
@@ -249,7 +248,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
 
     const insertImage = usePublisher(insertImage$)
 
-    const modal_config = {text: '이미지 링크를 입력하세요', type: 'custom', isCloseOutsideClick: false}
+    
 
 
     useEffect(()=>{
@@ -321,12 +320,12 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
       setImageUrl('')
       setIsDisabledConfirm(true)      
       setIsImageModalOpen(true)
-    }
+    }  
 
     return (
       <div>
         <ButtonWithTooltip style={{height:'100%'}} onClick={openModal} title="이미지 링크 삽입"><LuImagePlus size={23}/></ButtonWithTooltip>
-        <Modal config={modal_config} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
+        <Modal title={'이미지 링크를 입력하세요'} type={'custom'} maxLength={2048} isCloseOutsideClick={false} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <input ref={refInputUrl} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
           <input ref={refInputTitle} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>

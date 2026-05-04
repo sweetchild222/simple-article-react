@@ -14,6 +14,7 @@ export default function(props) {
     const borderRadius = parseInt(width / 2)
 
     const [image, setImage] = useState(null)
+    const [nickname, setNickname] = useState(null)
 
     const combinedStyle = {
         ...props.style
@@ -37,10 +38,11 @@ export default function(props) {
             }
 
             setImage(res.image + '?size=64x64')
+            setNickname(res.nickname != null ? res.nickname : res.username)
         })
 
     },  [props.userId])
 
-    return (<LoadingImage src={image} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{...combinedStyle}}/>)
+    return (<LoadingImage src={image} tooltip={nickname} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{...combinedStyle}}/>)
 }
 

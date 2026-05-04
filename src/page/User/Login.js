@@ -65,31 +65,14 @@ export default function() {
             return
         }
 
+        setIsLoading(false)
         
         updateAuth(resAuth)
+
         window.showToast('로그인이 성공하였습니다', 'success')
-
-        console.log(resAuth)
-        
-        const resUser = await UserAPI.getUser(resAuth.user_id)
-        
-        if(resUser == null) {
-            setIsLoading(false)
-            window.showToast('회원 정보를 가져 올 수 없습니다', 'error')
-            return
-        }
-        
-        if(resUser.profile == null)
-            return
-
-        console.log(resUser)
-                    
-        updateProfile(resUser)
         
         if(relogin)
             navigate(-1)
-
-        setIsLoading(false)
     }
 
 
@@ -110,9 +93,9 @@ export default function() {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <label htmlFor='input_username'>사용자 이름</label>
-            <input id='input_username' type='text' onKeyDown={onKeyDownUserName}/>
+            <input id='input_username' type='text' onKeyDown={onKeyDownUserName} maxLength={254}/>
             <label htmlFor='input_password'>비밀번호</label>
-            <input id='input_password' type='password' onKeyDown={onKeyDownPassword}/>
+            <input id='input_password' type='password' onKeyDown={onKeyDownPassword} maxLength={254}/>
             <BeautyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</BeautyButton>
             {!relogin && <BeautyButton onClick={() => {navigate('regist', {replace:true})}}>회원가입</BeautyButton>}
         </div>

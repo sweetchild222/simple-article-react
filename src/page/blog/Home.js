@@ -4,7 +4,6 @@ import React, {useState, useContext, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
 
 
-import './Home.css'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
 import * as ArticleAPI from '../../api/ArticleAPI.js'
@@ -12,6 +11,7 @@ import * as ArticleAPI from '../../api/ArticleAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
+import ArticleItem from "./ArticleItem.js";
 import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
@@ -27,11 +27,9 @@ export default function() {
   const state = location.state
   const editMode = state == null ? false : state.editMode
 
-  const {auth, updateAuth, validAuth, reloadAuth, removeAuth} = useContext(AuthContext)
-  const [categories, setCategories] = useState(null)
-  const [movingbarPos, setMovingbarPos] = useState({curIndex:0, start:0, end:0})
-  const [animationKey, setAnimationKey] = useState(0)
-
+  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+  const [categories, setCategories] = useState(null)  
+  const [articles, setArticles] = useState(null)
   const [blog, setBlog] = useState(null)
 
   const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
@@ -87,8 +85,7 @@ export default function() {
       return
     }
     
-    setCategories(category)
-    setMovingbarPos({curIndex:0, start:0, end:0})    
+    setCategories(category)    
   }
 
 
@@ -113,30 +110,15 @@ export default function() {
       return res
   }
 
-  const moving = (index) =>{
-
-    if(movingbarPos.curIndex == index)
-      return
-    
-    const width = 150
-    const margin = 10
-    
-    const endPos = index * (width + margin)
-
-    setMovingbarPos({curIndex: index, start:movingbarPos.end, end:endPos})
-    setAnimationKey(prev => prev + 1)
-  }
 
 
-  const onClickCategory = async(id) => {
+  const onClickCategory = async(id) => {    
 
     const index = categories.findIndex(categorie => categorie.id === id)
 
     if(index == -1)
       return
     
-    moving(index)
-
     const query = 'offset=0&limit=3&order=1&posted=1&category_id=' + id + (auth.user_id != blog.user_id ? '&open=1' : '')
             
     const res = await ArticleAPI.getUserArticles(auth.jwt, blog.user_id, query)
@@ -144,23 +126,14 @@ export default function() {
     if(res == null)
       return
 
-    console.log(res)
-
-
-    //console.log(id)
-
-    //console.log(movingbarPos.curIndex)
-
+    setArticles(res)
   }
 
   const onClickWrittingCategory = async() => {
     
     if(categories == null){
-      moving(0)
       return
     }
-
-    moving(categories.length)
 
     const query = 'offset=0&limit=3&order=1&posted=0'
             
@@ -169,8 +142,7 @@ export default function() {
     if(res == null)
       return
 
-    console.log(res)
-
+    setArticles(res)    
   }
 
 
@@ -291,17 +263,35 @@ export default function() {
       window.showToast('카테고리가 변경되지 않았습니다', 'info')
   }
   
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
-      <div style={{ display: 'flex', flexDirection: 'column'}}>
-        <div style={{ display: 'flex', flexDirection: 'row'}}>
-          {categories && categories.map((data, index) => <BeautyButton type='transparent'  key={data.id} style={{color:'black', width:'150px', height:'60px', marginRight:'10px'}} onClick={()=> onClickCategory(data.id)}>{data.name}</BeautyButton>)}
-          {isEditable() && <BeautyButton type='transparent' key={Number.MAX_SAFE_INTEGER} style={{color:'black', width:'150px', height:'60px', marginRight:'10px'}} onClick={()=> onClickWrittingCategory()}>작성 중</BeautyButton>}
-          {isEditable() &&  <BeautyButton type='transparent' tooltip='카테고리 수정' style={{color:'black', width:'50px', marginRight:'10px'}} onClick={onClickModifyCategory}><MdEdit size={30}/></BeautyButton>}
-          {categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories}></CategoryModal>}
+  return (    
+      <div style={{display: 'flex', flexDirection: 'column', width:'100%', height:'100%', backgroundColor:'yellow'}}>
+        <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', height:'100%'}}>
+          <div style={{backgroundColor:'blue', width:'800px', display: 'flex', flexDirection: 'column', alignItems:'center'}}>
+            {articles && articles.map((data, index) => <ArticleItem key={data.id} article={data} style={{width:'100%', backgroundColor:'red', height:'100px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}/>)}
+          </div>
+          <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'10px', marginRight:'10px'}}></div>
+          <div style={{backgroundColor:'red', width:'200px', alignItems:'center'}}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
+              {categories && categories.map((data, index) => <label key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px'}} onClick={()=> onClickCategory(data.id)}>{data.name}</label>)}
+              {isEditable() && <label key={Number.MAX_SAFE_INTEGER} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px'}} onClick={()=> onClickWrittingCategory()}>작성 중</label>}
+              {isEditable() &&  <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
+              {categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories}></CategoryModal>}
+            </div>            
+          </div>
+          
         </div>
-        {<div key={animationKey} className={'movingbar'} style={{width:'150px', height:'3px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px'}}></div>}
+        
+        
+
+        
+        
       </div>
-    </div>
+
+
+
+
+
+
+    
   );
 }

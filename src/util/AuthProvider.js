@@ -17,6 +17,7 @@ export default function({children}){
     const updateAuth = (auth) => {
 
         auth.expire_time = Date.now() + 1000 * 60 * 60
+        auth.update_time = Date.now()
         //auth.expire_time = Date.now() + 1000 * 15
         localStorage.setItem(key, JSON.stringify(auth))
         setAuth(auth)
@@ -24,10 +25,12 @@ export default function({children}){
 
 
     const reloadAuth = (auth) => {
+        
+        auth.update_time = Date.now()
 
         const newAuth = { ...auth }
 
-        newAuth.expire_time = (auth.expire_time - 1)    //hack to reload 
+        //newAuth.expire_time = (auth.expire_time - 1)    //hack to reload 
         localStorage.setItem(key, JSON.stringify(newAuth))
         setAuth(newAuth)
     }

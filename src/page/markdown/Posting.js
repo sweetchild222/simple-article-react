@@ -44,15 +44,8 @@ export default function() {
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     const [categories, setCategories] = useState(null)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-
-    const [openType, setOpenType] = useState(state.open)
+    
     const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0)
-
-    const onChangeRadio = (e) => {        
-
-        setOpenType(e.target.value == 'open' ? 1 : 0)
-    }
-
 
     const onChangeCategory = (e) => {
 
@@ -129,12 +122,11 @@ export default function() {
     }
 
 
-    const putArticle = async(article_id, title, content, thumbUrl, open, posted, category_id) => {
+    const putArticle = async(article_id, title, content, thumbUrl, posted, category_id) => {
 
         const payload = {
             title:title,
-            content:content,
-            open:open,
+            content:content,            
             posted:posted,
             thumbnail:thumbUrl,
             category_id:category_id
@@ -148,12 +140,11 @@ export default function() {
         
         const article_id = state.id
         const title = 'test title'
-        const content = 'test cotent'
-        const open = state.open
+        const content = 'test cotent'        
         const posted = 0
         const category_id = state.category_id
 
-        return await putArticle(article_id, title, content, thumbnailUrl, open, posted, category_id)        
+        return await putArticle(article_id, title, content, thumbnailUrl, posted, category_id)        
     }
 
 
@@ -268,7 +259,7 @@ export default function() {
                         
         setIsOverlayLoading(true)
 
-        const res = await putArticle(article_id, title, content, thumbnailUrl, openType, posted, category_id)
+        const res = await putArticle(article_id, title, content, thumbnailUrl, posted, category_id)
 
         setIsOverlayLoading(false)
 
@@ -294,12 +285,6 @@ export default function() {
             <select style={{width:'100px'}} value={categories ? categories[selectedCategoryIndex].name : ''} onChange={onChangeCategory}>
                 {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}
             </select>
-
-
-            <input type='radio' id='open' name='is_open' value='open' onChange={onChangeRadio} checked={openType == true}/>
-            <label htmlFor='open'>공개</label>
-            <input type='radio' id='private' name='is_open' value='private' onChange={onChangeRadio} checked={openType == false}/>
-            <label htmlFor='private'>비공개</label>
 
             <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={192} height={128}/>
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1.5}></ImageCropModal>}

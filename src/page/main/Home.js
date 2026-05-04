@@ -59,8 +59,7 @@ export default function Home() {
 
     const payload = {
       title:'',
-      content:'',
-      open:0,
+      content:'',      
       posted:0,
       thumbnail:'',
       category_id:category_id
@@ -115,8 +114,7 @@ export default function Home() {
     
     const payload = {
       title:'',
-      content:'',
-      open:0,
+      content:'',      
       posted:0,
       thumbnail:'',
       category_id:category_id
@@ -171,8 +169,7 @@ export default function Home() {
     const payload = {
 
       title:'gwegwe',
-      content:'wegw',
-      open:1,
+      content:'wegw',      
       posted:0,
       thumbnail:'http://ssaabbb',
       category_id:10,      
@@ -204,7 +201,7 @@ export default function Home() {
   
   const getUserArticles = async() => {
 
-    const query = 'offset=0&limit=3&order=1&open=0&source_id=70'
+    const query = 'offset=0&limit=3&order=1&source_id=70'
     
     const res = await ArticleAPI.getUserArticles(auth.jwt, auth.user_id, query)
 
@@ -299,8 +296,7 @@ export default function Home() {
 
       const payload = {
         title:resArticle.title,
-        content:resArticle.content,
-        open:resArticle.open,
+        content:resArticle.content,        
         posted:0,
         thumbnail:resArticle.thumbnail,
         category_id:resArticle.category_id,
@@ -344,8 +340,7 @@ export default function Home() {
 
     const payloadOri = {
       title:resOriArticle.title,
-      content:resOriArticle.content,
-      open:resOriArticle.open,
+      content:resOriArticle.content,      
       posted:0,
       thumbnail:resOriArticle.thumbnail,
       category_id:resOriArticle.category_id,

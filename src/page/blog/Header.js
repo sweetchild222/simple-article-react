@@ -244,7 +244,7 @@ export default function() {
             return
 
         const dWidth = 1920
-        const dHeight = 320
+        const dHeight = 168
 
         const canvas = await refImageCrop.current.export(dWidth, dHeight)
         
@@ -276,9 +276,9 @@ export default function() {
 
 
     return (
-            <div style={{backgroundColor:' #494D5F', height:'320px', backgroundImage:`url(` + blogImage + `)`, backgroundSize:'cover', backgroundPosition:'center'}}>
+            <div style={{backgroundColor:' #494D5F', height:'168px', backgroundImage:`url(` + blogImage + `)`, backgroundSize:'cover', backgroundPosition:'center'}}>
                 <div style={{backgroundColor:'#00000080', display: 'flex', alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
-                    <ProfileImage userId={otherId} onClick={onClickNavigateBlog}/>
+                    <ProfileImage size={96} userId={otherId} onClick={onClickNavigateBlog}/>
                     <div style={{display: 'flex', alignItems: 'center', marginLeft:'32px'}}>
                         {titleEditMode && <input ref={refInputTitle} style={{backgroundColor:'#00000080', color:'white', fontSize:'48px', borderColor:'white', fieldSizing:'content', minWidth:'512px', maxWidth:'1024px'}} placeholder="제목" maxLength="40" defaultValue={title}></input>}
                         {!titleEditMode && <label ref={refLabelTitle} style={{backgroundColor:'#00000000', color:'white', fontSize:'48px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', alignItems:'center', textOverflow:'ellipsis', overflow:'hidden', minWidth:'512px', maxWidth:'1024px'}}>{title}</label>}
@@ -287,7 +287,7 @@ export default function() {
                     <div style={{flex:1}}/>
                     <div style={{display: 'flex', flexDirection:'column', height:'100%', justifyContent:'center'}}>
                         {!loggedUserId && <BeautyButton type='confirm' onClick={onClickNavigateLogin} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'32px'}}>로그인</BeautyButton>}
-                        {loggedUserId && <ProfileImage key={reloadKey} userId={loggedUserId} height={64} width={64} borderWidth={0} borderRadius={32} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
+                        {loggedUserId && <ProfileImage key={reloadKey} userId={loggedUserId} size={64} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
                         {isEditable() && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <RiImageAiFill size={30}/></BeautyButton>}
                         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
                     </div>

@@ -264,11 +264,12 @@ export default function() {
   }
   
   return (    
-      <div style={{display: 'flex', flexDirection: 'column', width:'100%', height:'100%', backgroundColor:'yellow'}}>
-        <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', height:'100%'}}>
-          <div style={{backgroundColor:'blue', width:'800px', display: 'flex', flexDirection: 'column', alignItems:'center'}}>
-            {articles && articles.map((data, index) =>             
-              <ArticleItem key={data.id} article={data}/>)            
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%'}}>
+          <div style={{width:'200px'}}/>
+          <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
+            {articles && articles.map((data, index) =>
+              <ArticleItem key={data.id} article={data}/>)
             }
           </div>
           <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'10px', marginRight:'10px'}}></div>
@@ -279,8 +280,8 @@ export default function() {
               {isEditable() &&  <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
               {categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories}></CategoryModal>}
             </div>            
-          </div>
-          
+          </div>          
+          <div style={{width:'200px'}}/>
         </div>
         
         

@@ -7,6 +7,11 @@ import AuthContext from "../../util/AuthContext.js";
 import BeautyButton from '../../common/BeautyButton.js';
 import GoLogin from "../../common/GoLogin.js";
 import OverlayLoading from "../../common/OverlayLoading.js";
+import { FaEye } from "react-icons/fa";
+import { TiEye } from "react-icons/ti";
+import { MdThumbUpAlt } from "react-icons/md";
+import { BiSolidComment } from "react-icons/bi";
+import './ArticleItem.css'
 
 export default function(props) {
 
@@ -14,21 +19,73 @@ export default function(props) {
 
     const article = props.article
 
+    if(article.id == 162)
+        article.head = 'asdfasdfaskldfjsadklfjsdlkfjsdklfjwoiefweojfiwejfoiwejfoiwjfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfiosdjlkdsjsdflkasdjlksadjlkasdjlaksdjalksdfjlk;ldsfakjlsadkfjlaskdfjslakdfjsalkdfjasldkfjsalkdfjasldkfjsalkdfjaslsdfsdfsdfsdkfjsalkdfjasldsdfsdfkfjf'
+    
+
     const combinedStyle = {
         ...props.style
     }
 
+
+
+
+    const numberUnit = (count) => {
+
+        if(count > 1000){                        
+            if(count > 1000000)
+                return (count / 1000000).toFixed(1) + 'M'
+
+            return (count / 1000).toFixed(1) + 'K'
+        }
+
+        return count
+    }
+
+
+    const timestampToString = (timestamp) => {
+
+        const date = new Date(timestamp)
+
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+
+        const formattedDate = `${year}.${month}.${day}`;
+
+        return formattedDate
+    }
+
+    const onClickNavigateArticle = () =>{
+
+        console.log(article.id)
+    }
+
+    
     return (
-        <div style={{width:'100%', backgroundColor:'lightgray', marginTop:'5px', marginBottom:'5px', border:'1px solid rgba(255, 0, 0, 0.5)', display: 'flex', flexDirection: 'row', ...combinedStyle}}>
-
-            <img style={{width:'192px', height:'128px', borderRadius:'3px', objectFit:'cover'}} src='http://13.124.193.201:8080/api/blob/article/20260414021819-ee806f8a-e545-4861-9fc9-fc1e34bd19d5.webp'/>
-
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <div>{'showed: ' + article.showed}</div>
-                <div>{'great_count: ' + article.great_count}</div>
-                <label>{'title: ' + article.title}</label>
-                <label>{'head: ' + article.head}</label>
+        <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', marginTop:'5px', marginBottom:'10px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', flex:'1', marginLeft:'5px', marginRight:'5px'}}>
+                <label className={'clamped-text'} style={{'--line-count':'2', fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title}</label>
+                <div className={'clamped-text'} style={{'--line-count':'3', marginBottom:'10px', color:'#222222'}}>{article.head}</div>
+                <div style={{flex:'1'}}></div>
+                <div style={{display: 'flex', flexDirection: 'row',  alignItems:'center', color:'#888888'}}>
+                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                        <TiEye size={22}/>
+                        <div style={{width:'62px', marginLeft:'5px'}}>{numberUnit(article.showed)}</div>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                        <MdThumbUpAlt size={22}/>
+                        <div style={{width:'62px', marginLeft:'5px'}}>{numberUnit(article.great_count)}</div>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
+                        <BiSolidComment size={22}/>
+                        <div style={{width:'62px', marginLeft:'5px'}}>{numberUnit(article.comment_count)}</div>
+                    </div>
+                    <div>{timestampToString(article.create_at)}</div>
+                </div>
+                <div style={{backgroundColor:'lightgray', height:'1px'}}></div>
             </div>
+            <img style={{width:'170px', height:'170px', borderRadius:'3px', objectFit:'cover', alignSelf:'center'}} src='http://13.124.193.201:8080/api/blob/article/20260414021819-ee806f8a-e545-4861-9fc9-fc1e34bd19d5.webp'/>
         </div>
     )
 }

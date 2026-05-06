@@ -182,8 +182,8 @@ export default function() {
         if(!refImageCrop.current)
             return
         
-        const dWidth = 192
-        const dHeight = 128
+        const dWidth = 640
+        const dHeight = 480
 
         const canvas = await refImageCrop.current.export(dWidth, dHeight)
         
@@ -233,8 +233,6 @@ export default function() {
         const head = extractHead(MarkdownToHtml(state.content))
         const content = state.content
 
-        console.log(head)
-
         if(!title || title.trim().length === 0){
             window.showToast('제목을 입력하세요', 'error')
             return
@@ -276,17 +274,14 @@ export default function() {
     }
 
 
-
     const extractHead = (html) => {
 
-        console.log(html)
-            
         const parser = new DOMParser()
         const doc = parser.parseFromString(html, 'text/html')
         const plainText = doc.body.textContent
         const text = plainText.replace(/[\r\n]+/g, ' ')
         const head = text.substring(0, 128)
-                
+
         return head
     }
     

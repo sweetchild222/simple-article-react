@@ -122,11 +122,12 @@ export default function() {
     }
 
 
-    const putArticle = async(article_id, title, content, thumbUrl, posted, category_id) => {
+    const putArticle = async(article_id, title, head, content, thumbUrl, posted, category_id) => {
 
         const payload = {
             title:title,
-            content:content,            
+            content:content,
+            head:head,
             posted:posted,
             thumbnail:thumbUrl,
             category_id:category_id
@@ -136,15 +137,17 @@ export default function() {
     }
 
 
-    const saveCore = async() => {    
+    const saveCore = async() => {
         
         const article_id = state.id
         const title = 'test title'
-        const content = 'test cotent'        
+        const head = 'head'
+        const content = 'test cotent'
+        
         const posted = 0
         const category_id = state.category_id
 
-        return await putArticle(article_id, title, content, thumbnailUrl, posted, category_id)        
+        return await putArticle(article_id, title, head, content, thumbnailUrl, posted, category_id)
     }
 
 
@@ -220,8 +223,6 @@ export default function() {
     }
 
 
-
-
     const onClickPost = async() => {
         
         if(refTitle.current == null)
@@ -229,7 +230,10 @@ export default function() {
                 
         const article_id = state.id
         const title = refTitle.current.value
+        const head = extractHead(MarkdownToHtml(state.content))
         const content = state.content
+
+        console.log(head)
 
         if(!title || title.trim().length === 0){
             window.showToast('제목을 입력하세요', 'error')
@@ -252,14 +256,14 @@ export default function() {
 
         if(!categories) {
             window.showToast('카테고리가 설정되지 않았습니다', 'error')
-            return 
+            return
         }
 
         const category_id = categories[selectedCategoryIndex].id
-                        
+
         setIsOverlayLoading(true)
 
-        const res = await putArticle(article_id, title, content, thumbnailUrl, posted, category_id)
+        const res = await putArticle(article_id, title, head, content, thumbnailUrl, posted, category_id)
 
         setIsOverlayLoading(false)
 
@@ -268,13 +272,23 @@ export default function() {
             return null
         }
 
-        window.showToast('글이 등록 되었습니다 ', 'info')
-
-        console.log('sdfdf')
-
-        // navigate(-1)
+        window.showToast('글이 등록 되었습니다 ', 'info')        
     }
 
+
+
+    const extractHead = (html) => {
+
+        console.log(html)
+            
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(html, 'text/html')
+        const plainText = doc.body.textContent
+        const text = plainText.replace(/[\r\n]+/g, ' ')
+        const head = text.substring(0, 128)
+                
+        return head
+    }
     
     return validAuth(auth) ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

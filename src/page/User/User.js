@@ -97,6 +97,7 @@ export default function() {
         const payload = {
             title:'',
             content:'',
+            head:'',
             posted:0,
             thumbnail:'',
             category_id:category_id

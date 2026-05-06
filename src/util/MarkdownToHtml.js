@@ -337,9 +337,7 @@ sdf`
 
     const html = micromark(markdown, {extensions: extension, htmlExtensions: htmlExtension, allowDangerousHtml: true})
 
-    const styleHtml = adjustStyle(html)
-
-    console.log(styleHtml)
+    const styleHtml = adjustStyle(html)    
     
     const sanitizedHTML = DOMPurify.sanitize(styleHtml, { ADD_TAGS: ["iframe"], ADD_ATTR: ['allow']});
 

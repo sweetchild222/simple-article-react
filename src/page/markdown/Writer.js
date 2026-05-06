@@ -172,12 +172,12 @@ export default function() {
     }
     
 
-
     const putArticle = async(article_id, title, content, thumbUrl, posted, category_id) => {
 
         const payload = {
             title:title,
-            content:content,            
+            head:'',
+            content:content,
             posted:posted,
             thumbnail:thumbUrl,
             category_id:category_id
@@ -221,7 +221,7 @@ export default function() {
                 
         const article_id = state.id
         const title = state.title
-        const content = markdown        
+        const content = markdown
         const posted = 0
         const category_id = state.category_id
         const thumbnail = state.thumbnail

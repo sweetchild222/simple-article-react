@@ -28,8 +28,8 @@ class ErrorBoundary extends React.Component {
 
       return (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <h1>오류가 발생하였습니다.</h1>
-                <h1>빠른 시일내에 고치도록 하겠습니다.</h1>                
+                <h1>오류가 발생하였습니다</h1>
+                <h1>관리자에게 문의하세요</h1>
               </div>
             )
     }

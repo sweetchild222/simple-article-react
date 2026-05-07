@@ -51,6 +51,9 @@ export default function() {
 
     const [reloadKey, setReloadKey] = useState(0)
 
+    const blogImageWidth = 1920
+    const blogImageHeight = 168
+
     useEffect(()=>{
 
         if(!Number.isInteger(parseInt(id))){
@@ -91,7 +94,7 @@ export default function() {
             }
 
             setTitle(blog.title)
-            setBlogImage(blog.image + '?size=1920x320')
+            setBlogImage(blog.image + '?size=' + blogImageWidth + 'x' + blogImageHeight)
             setOtherId(blog.user_id)
         })
 
@@ -231,10 +234,11 @@ export default function() {
         
         setImageFile(imageFile.file)
 
+
         setIsModalImageCrop(true)        
     }
 
-
+    
     const onClickImageApply = async() => {
 
         if(!isEditable())
@@ -243,10 +247,7 @@ export default function() {
         if(refImageCrop.current == null)
             return
 
-        const dWidth = 1920
-        const dHeight = 168
-
-        const canvas = await refImageCrop.current.export(dWidth, dHeight)
+        const canvas = await refImageCrop.current.export(blogImageWidth, blogImageHeight)
         
         const blob = await blobFromCanvas(canvas)
 
@@ -270,13 +271,13 @@ export default function() {
             return
         }
 
-        setBlogImage(url + '?size=1920x320')
+        setBlogImage(url + '?size=' + blogImageWidth + 'x' + blogImageHeight)
         setIsModalImageCrop(false)
     }
 
 
     return (
-            <div style={{backgroundColor:' #494D5F', height:'168px', backgroundImage:`url(` + blogImage + `)`, backgroundSize:'cover', backgroundPosition:'center'}}>
+            <div style={{backgroundColor:' #494D5F', height:'168px', minHeight:'168px', backgroundImage:`url(` + blogImage + `)`, backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black', display:'block'}}>
                 <div style={{backgroundColor:'#00000080', display: 'flex', alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
                     <ProfileImage size={96} userId={otherId} onClick={onClickNavigateBlog}/>
                     <div style={{display: 'flex', alignItems: 'center', marginLeft:'32px'}}>
@@ -289,7 +290,7 @@ export default function() {
                         {!loggedUserId && <BeautyButton type='confirm' onClick={onClickNavigateLogin} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'32px'}}>로그인</BeautyButton>}
                         {loggedUserId && <ProfileImage key={reloadKey} userId={loggedUserId} size={64} onClick={onClickNavigateUser} style={{alignSelf:"flex-start", marginBottom:'auto', marginTop:'10px'}}/>}
                         {isEditable() && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage} style={{position: 'absolute', alignSelf:"center"}}> <RiImageAiFill size={30}/></BeautyButton>}
-                        {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={7.5} selectMinWidth={320}></ImageCropModal>}
+                        {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={blogImageWidth / blogImageHeight} selectMinWidth={blogImageHeight * 3}></ImageCropModal>}
                     </div>
                 </div>
             </div>

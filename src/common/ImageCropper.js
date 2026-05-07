@@ -2,7 +2,7 @@ import {useState, useRef, useEffect, useCallback, useImperativeHandle} from 'rea
 import './ImageCropper.css'
 import './RotateLoading.css'
 
-export default function({ref, file, containerWidth=512, containerHeight=512, selectMinWidth=128, keepRatio}) {
+export default function({ref, file, containerWidth=768, containerHeight=768, selectMinWidth=128, keepRatio}) {
 
   const transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 

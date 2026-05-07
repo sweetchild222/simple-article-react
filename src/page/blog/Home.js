@@ -15,6 +15,7 @@ import ArticleItem from "./ArticleItem.js";
 import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
+import './Home.css'
 
 export default function() {
 
@@ -28,7 +29,8 @@ export default function() {
   const editMode = state == null ? false : state.editMode
 
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-  const [categories, setCategories] = useState(null)  
+  const [categories, setCategories] = useState(null)
+  const [selectCategory, setSelectCategory] = useState(null)
   const [articles, setArticles] = useState(null)
   const [blog, setBlog] = useState(null)
 
@@ -77,7 +79,7 @@ export default function() {
 
   const loadCategory = async(user_id) => {
 
-    const category = await getCategory(user_id)      
+    const category = await getCategory(user_id)
 
     if(category == null){
       window.showToast('카테고리를 가져 올 수 없습니다', 'error')
@@ -85,7 +87,9 @@ export default function() {
       return
     }
     
-    setCategories(category)    
+    setCategories(category)
+
+    console.log(category)
   }
 
 
@@ -105,36 +109,34 @@ export default function() {
               return b.is_default - a.is_default
           else
               return a.id - b.id
-      })      
+      })
 
       return res
   }
 
 
 
-  const onClickCategory = async(id) => {    
+  const onClickCategory = async(id) => {
 
     const index = categories.findIndex(categorie => categorie.id === id)
 
     if(index == -1)
       return
     
-    const query = 'offset=0&limit=3&order=1&posted=1&category_id=' + id + (auth.user_id != blog.user_id ? '&open=1' : '')
-            
+    const query = 'offset=0&limit=10&order=1&posted=1&category_id=' + id + (auth.user_id != blog.user_id ? '&open=1' : '')
+
     const res = await ArticleAPI.getUserArticles(auth.jwt, blog.user_id, query)
     
     if(res == null)
       return
 
     setArticles(res)
+
+    setSelectCategory(categories[index].name)   
   }
 
   const onClickWrittingCategory = async() => {
-    
-    if(categories == null){
-      return
-    }
-
+        
     const query = 'offset=0&limit=3&order=1&posted=0'
             
     const res = await ArticleAPI.getUserArticles(auth.jwt, blog.user_id, query)
@@ -142,7 +144,9 @@ export default function() {
     if(res == null)
       return
 
-    setArticles(res)    
+    setArticles(res)
+
+    setSelectCategory('작성 중인 글 (' + res.length + ')')
   }
 
 
@@ -263,38 +267,31 @@ export default function() {
       window.showToast('카테고리가 변경되지 않았습니다', 'info')
   }
   
-  return (    
-      <div style={{display: 'flex', flexDirection: 'column'}}>
-        <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%'}}>
-          <div style={{width:'200px'}}/>
-          <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
+  return (
+      <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%', marginTop:'20px'}}>
+        <div style={{width:'100px'}}/>
+
+        <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
+          <label style={{color:'gray'}}>{selectCategory}</label>
+          <div style={{backgroundColor:'lightgray', width:'200px', height:'2px'}}></div>
+          <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px'}}>
             {articles && articles.map((data, index) =>
               <ArticleItem key={data.id} article={data}/>)
             }
           </div>
-          <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'10px', marginRight:'10px'}}></div>
-          <div style={{backgroundColor:'red', width:'200px', alignItems:'center'}}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
-              {categories && categories.map((data, index) => <label key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px'}} onClick={()=> onClickCategory(data.id)}>{data.name}</label>)}
-              {isEditable() && <label key={Number.MAX_SAFE_INTEGER} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px'}} onClick={()=> onClickWrittingCategory()}>작성 중</label>}
-              {isEditable() &&  <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
-              {categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories}></CategoryModal>}
-            </div>            
-          </div>          
-          <div style={{width:'200px'}}/>
         </div>
         
-        
-
-        
-        
+        <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'10px', marginRight:'10px'}}/>
+        <div style={{width:'200px', maxWidth:'200px', minWidth:'200px', alignItems:'center', display: 'block'}}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
+            {categories && categories.map((data, index) => <label className={'underline-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={()=> onClickCategory(data.id)}>{data.name + ' (' + data.article_count + ')'}</label>)}
+            {isEditable() && <label className={'underline-text'} key={Number.MAX_SAFE_INTEGER} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={()=> onClickWrittingCategory()}>작성 중인 글</label>}
+            {isEditable() &&  <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
+            {categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories}></CategoryModal>}
+          </div>            
+        </div>
+        <div style={{width:'100px'}}/>
       </div>
-
-
-
-
-
-
     
-  );
+  )
 }

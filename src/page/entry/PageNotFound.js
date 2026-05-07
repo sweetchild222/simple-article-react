@@ -1,4 +1,6 @@
+
 import { useEffect, useRef, useState } from "react";
+import './PageNotFound.css'
 
 const usePrevious = (value) => {
   const prevValueRef = useRef();
@@ -27,9 +29,11 @@ export default function() {
   };
 
   return (
-    <div className="App">
-      <button onClick={onClick}>increment</button>
-      <CountDisplay count={count} />
+    <div className="container">
+      <div style={{width:'100%', height:'100px', minWidth:'300px', maxWidth:'1000px', backgroundColor:'green'}}/>
+      <div style={{width:'100%', height:'100px', minWidth:'300px', maxWidth:'1000px', backgroundColor:'red'}}/>
+      <div style={{width:'100%', height:'100px', minWidth:'300px', maxWidth:'1000px', backgroundColor:'blue'}}/>
+      <div style={{width:'100%', height:'100px', minWidth:'300px', maxWidth:'1000px', backgroundColor:'yellow'}}/>      
     </div>
   );
 }

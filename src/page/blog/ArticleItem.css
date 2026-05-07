@@ -1,26 +1,15 @@
 .clamped-text {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: var(--line-count);
     overflow: hidden;
     word-break:break-all;
     text-overflow: ellipsis;
 }
 
 
-.single-line-ellipsis {
-    flex: 1;
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 
-.single-line {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    overflow: hidden;
-    word-break:break-all;
-    text-overflow: ellipsis;
+.clamped-text:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

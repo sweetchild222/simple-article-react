@@ -32,7 +32,7 @@ export default function(props) {
 
     const numberUnit = (count) => {
 
-        if(count > 1000){                        
+        if(count > 1000){
             if(count > 1000000)
                 return (count / 1000000).toFixed(1) + 'M'
 
@@ -43,9 +43,34 @@ export default function(props) {
     }
 
 
+    const calcDayBefore = (date)=> {
+
+        for(var i = 0; i < 3; i++){
+
+            const current = new Date()
+
+            const beforeDay = new Date((current.getTime() - i * (24 * 60 * 60 * 1000)))
+
+            if(beforeDay.getFullYear() == date.getFullYear() && beforeDay.getMonth() == date.getMonth() && beforeDay.getDate() == date.getDate())
+                return i
+        }
+        return -1        
+    }
+
+
     const timestampToString = (timestamp) => {
 
         const date = new Date(timestamp)
+
+        const dayBefore = calcDayBefore(date)
+
+        if(dayBefore == 0)
+            return '오늘'        
+        else if(dayBefore == 1)
+            return '어제'
+        else if(dayBefore == 2)
+            return '그제'
+        
 
         const year = date.getFullYear()
         const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -65,23 +90,23 @@ export default function(props) {
     return (
         <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', marginTop:'5px', marginBottom:'10px'}}>
             <div style={{display: 'flex', flexDirection: 'column', flex:'1', marginLeft:'5px', marginRight:'5px'}}>
-                <label className={'clamped-text'} style={{'--line-count':'2', fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title}</label>
-                <div className={'clamped-text'} style={{'--line-count':'3', marginBottom:'10px', color:'#222222'}}>{article.head}</div>
+                <div className={'clamped-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title + 'sdfgdsfgsdlkfghjsdklfgjsdklfgslkdfjskldfjgklsdfjgslkdfjgdoijoierjeoirjeirojeiorgjoierjoirejoigjeoij'}</div>
+                <div className={'clamped-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head}</div>
                 <div style={{flex:'1'}}></div>
                 <div style={{display: 'flex', flexDirection: 'row',  alignItems:'center', color:'#888888'}}>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <TiEye size={22}/>
-                        <div style={{width:'62px', marginLeft:'5px'}}>{numberUnit(article.showed)}</div>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.showed)}</div>
                     </div>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <MdThumbUpAlt size={22}/>
-                        <div style={{width:'62px', marginLeft:'5px'}}>{numberUnit(article.great_count)}</div>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.great_count)}</div>
                     </div>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
                         <BiSolidComment size={22}/>
-                        <div style={{width:'62px', marginLeft:'5px'}}>{numberUnit(article.comment_count)}</div>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.comment_count)}</div>
                     </div>
-                    <div>{timestampToString(article.create_at)}</div>
+                    <div style={{whiteSpace: 'nowrap'}} >{timestampToString(article.create_at)}</div>
                 </div>
                 <div style={{backgroundColor:'lightgray', height:'1px'}}></div>
             </div>

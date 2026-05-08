@@ -35,10 +35,9 @@ export default function() {
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)  
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [articles, setArticles] = useState(null)    
-
   const [isOverlayLoading, setIsOverlayLoading] = useState(false)
 
-  const countPerPage = 100
+  const countPerPage = 6
 
   useEffect(()=> {
 
@@ -86,6 +85,7 @@ export default function() {
     return res
   }
 
+  const [reloadKey, setReloadKey] = useState(0)
 
   const onClickCategory = async(category) => {
 
@@ -99,6 +99,8 @@ export default function() {
     setIsOverlayLoading(false)
 
     setSelectedCategory(category)
+    
+    setReloadKey(prev => prev + 1)
   }
   
   
@@ -126,7 +128,15 @@ export default function() {
 
 
   const onClickPage = async(page) => {
+        
+    setIsOverlayLoading(true)
+    
+    const articles = await getBlogArticles(page, selectedCategory.id, null)
 
+    if(articles != null)
+      setArticles(articles)
+
+    setIsOverlayLoading(false)        
   }
 
   
@@ -134,22 +144,24 @@ export default function() {
       <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%', marginTop:'20px'}}>
         {isOverlayLoading && <OverlayLoading/>}
         <div style={{width:'100px'}}/>
-        {selectedCategory &&
+        
           <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
-            <label style={{color:'gray'}}>{selectedCategory.name}</label>
+            <div style={{color:'gray'}}>{selectedCategory ? selectedCategory.name : '...'}</div>
             <div style={{backgroundColor:'lightgray', width:'300px', height:'2px'}}></div>
               {articles && (
-                articles.length > 0 ? (<div style={{display:'flex', flexDirection:'column'}}>
-                <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px'}}>
-                  {articles.map((data, index) => <ArticleItem key={data.id} article={data}/>)}
-                </div>
-                <Pagination totalCount={selectedCategory.article_count} displayPageCount={5} onClickPage={onClickPage}></Pagination>
-                </div>) : (<div style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
-                        <img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'150px'}}/>
-                      </div>)
-              )}              
+                articles.length > 0 ? 
+                (<div style={{display:'flex', flexDirection:'column'}}>
+                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px'}}>
+                    {articles.map((data, index) => <ArticleItem key={data.id} article={data}/>)}
+                  </div>
+                  {selectedCategory && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
+                </div>) : 
+                (<div style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
+                  <img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'150px'}}/>
+                </div>)
+              )}
           </div>
-        }        
+        
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'10px', marginRight:'10px'}}/>
         <div style={{width:'200px', maxWidth:'200px', minWidth:'200px', alignItems:'center', display: 'block'}}>          
           <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} onClickWriting={onClickWriting} isEditable={isEditable()}></Categories>          

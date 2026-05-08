@@ -65,7 +65,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
         if(res == null)
             return
 
-        setWritingCount(res.length)            
+        setWritingCount(res.length)
     }
 
 

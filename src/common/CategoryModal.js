@@ -77,11 +77,11 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
         return true     
       }
 
-      const maxLength = 8
+      const maxLength = 16
 
       if(value.length > maxLength) {
         window.showToast('카테고리 이름은 최대 '+ maxLength + ' 자 입니다', 'error')
-        inputfocus()
+        input.focus()
         return true
       }      
     }
@@ -116,7 +116,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
 
   const onCliCkAdd = async() => {
 
-    const maxCount = 5
+    const maxCount = 10
 
     if(newCategories.length == maxCount) {
 
@@ -180,7 +180,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
                 <div ref={refListDiv} style={{ display: 'flex', flexDirection: 'column'}}>
                   {newCategories && newCategories.map((data, index) => 
                     <div key={data.id} style={{ display: 'flex', flexDirection: 'row'}}>
-                      <input key={data.id} style={{color:'black', width:'150px'}} maxLength={8} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
+                      <input key={data.id} style={{color:'black', width:'150px'}} maxLength={16} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
                       <BeautyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.is_default == 1 || data.article_count > 0) ? 'gray' : 'black')}}size={15}/></BeautyButton>
                     </div>
                   )}

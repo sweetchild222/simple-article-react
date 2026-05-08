@@ -1,0 +1,231 @@
+
+import React, {useState, useContext, useEffect, useRef, useImperativeHandle} from "react";
+
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
+
+
+import * as BlobAPI from '../../api/BlobAPI.js'
+import * as BlogAPI from '../../api/BlogAPI.js'
+import * as ArticleAPI from '../../api/ArticleAPI.js'
+
+import AuthContext from "../../util/AuthContext.js";
+import LoadingImage from "../../common/LoadingImage.js";
+import BeautyButton from "../../common/BeautyButton.js";
+import ArticleItem from "./ArticleItem.js";
+import { FaCheck } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+import CategoryModal from '../../common/CategoryModal.js'
+import './Home.css'
+
+export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClickWriting, isEditable}) {
+    
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const [categories, setCategories] = useState(null)
+    const [writingCount, setWritingCount] = useState(null)    
+    const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
+
+    useEffect(()=> {
+        
+        loadCategory(blogId)
+        loadWrtingCount(blogId)
+    
+    }, [blogId])
+
+
+    const loadCategory = async() => {
+
+        const categoryies = await getCategories(blogId)
+
+        if(categoryies == null) {
+
+            window.showToast('카테고리를 가져 올 수 없습니다', 'error')
+
+            if(onLoadCategoryies != null)
+                onLoadCategoryies(null)
+
+            return
+        }
+        
+        setCategories(categoryies)
+
+        if(onLoadCategoryies != null)
+            onLoadCategoryies(categoryies)
+    }
+
+
+    const loadWrtingCount = async(blogId) => {
+        
+        if(!(validAuth(auth) && isEditable))
+            return        
+        
+        const query = 'posted=0'
+                
+        const res = await ArticleAPI.getBlogArticles(auth.jwt, blogId, query)
+        
+        if(res == null)
+            return
+
+        setWritingCount(res.length)            
+    }
+
+
+    const getCategories = async(blogId) => {
+    
+        const res = await ArticleAPI.getCategories(blogId)
+        
+        if(res == null)
+            return null
+
+        if(res.length == 0)
+            return null
+    
+        res.sort((a, b)=> {
+
+            if(a.is_default != b.is_default)
+                return b.is_default - a.is_default
+            else
+                return a.id - b.id
+        })
+
+        return res
+    }
+
+
+    const onClickWritingInner = async() =>{
+
+        if(onClickWriting != null)
+            onClickWriting()
+    }
+
+
+    const onClickCategoryInner = async(id) => {
+
+        const index = categories.findIndex(categorie => categorie.id === id)
+
+        if(index == -1)
+            return
+
+        if(onClickCategory != null)
+            onClickCategory(categories[index])    
+    }
+
+
+    const deleteCategories = async(categories) => {
+
+        let applyCount = 0
+
+        for(const category of categories) {
+
+            const res = await ArticleAPI.deleteCategory(auth.jwt, category.id)
+
+            if(res != null){
+                window.showToast(category.name + ' 이 삭제 되었습니다', 'info')
+                applyCount++
+            }
+            else
+                window.showToast(category.name + ' 삭제에 실패하였습니다.', 'error')
+        }
+
+        return applyCount
+    }
+
+
+    const addCategories = async(categories) => {
+
+        let applyCount = 0
+
+        for(const category of categories) {
+
+            const payload = {
+                name:category.name,
+                blog_id:blogId
+            }
+
+            const res = await ArticleAPI.postCategory(auth.jwt, payload)
+
+            if(res != null){
+                window.showToast(category.name + ' 이 추가 되었습니다', 'info')
+                applyCount++
+            }
+            else
+                window.showToast(category.name + ' 추가에 실패하였습니다.', 'error')
+        }
+
+        return applyCount
+    }
+
+
+    const modifyCategories = async(categories) => {
+
+        let applyCount = 0
+
+        for(const category of categories) {
+
+            const payload = { name:category.name }
+            
+            const res = await ArticleAPI.patchCategory(auth.jwt, category.id, payload)
+
+            if(res != null){
+                window.showToast(category.name + ' 로 이름이 변경 되었습니다', 'info')
+                applyCount++
+            }
+            else
+                window.showToast(category.name + ' 로 이름 변경에 실패하였습니다.', 'error')
+        }
+
+        return applyCount
+    }
+
+
+    const onClickApplyCategory = async(newCategories) => {
+
+        if(!isEditable)
+            return
+        
+        const deletList = categories.filter(item => newCategories.findIndex(newItem => item.id == newItem.id) == -1)
+        const addList = newCategories.filter(newItem => categories.findIndex(item => item.id == newItem.id) == -1)
+        const modifyList = newCategories.filter(newItem => {
+            
+            const findItem = categories.find(item => item.id === newItem.id)
+                
+            if(findItem != null && (findItem.name != newItem.name))
+                return true
+            else
+                return false
+        })
+
+    
+        let applyCount = await deleteCategories(deletList)
+        applyCount += await addCategories(addList)
+        applyCount += await modifyCategories(modifyList)
+
+        setIsOpenCategoryModal(false)
+        
+        if(applyCount > 0)
+            await loadCategory(blogId)
+        else
+            window.showToast('카테고리가 변경되지 않았습니다', 'info')
+    }
+
+
+    const onClickModifyCategory = async()=> {
+
+        if(!isEditable)
+            return
+
+        if(categories == null)
+            return
+
+        setIsOpenCategoryModal(true)
+    }
+
+
+    return (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
+                {categories && categories.map((data, index) => <label className={'underline-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</label>)}
+                {isEditable && <label className={'underline-text'} key={0} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={onClickWritingInner}>{'작성 중인 글' + (writingCount != null ? (' ('+ writingCount + ')') : '')}</label>}
+                {isEditable && <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
+                {isEditable && categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories}></CategoryModal>}
+            </div>
+    )    
+}

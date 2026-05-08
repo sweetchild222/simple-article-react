@@ -54,9 +54,8 @@ export default function() {
             
             if(resUser == null)
                 return
-
+        
             setProfileImage(resUser.image ?  resUser.image : '/image/user.png')
-
             setNickname(resUser.nickname)            
         })
 
@@ -148,9 +147,10 @@ export default function() {
             setIsModalImageCrop(false)
             window.showToast('프로필 설정에 실패했습니다', 'error')
             return
-        }
+        }        
         
         setProfileImage(url + '?size=256x256')
+        
         setIsModalImageCrop(false)
 
         reloadAuth(auth)

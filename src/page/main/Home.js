@@ -38,7 +38,7 @@ export default function Home() {
 
     const query = 'offset=0&limit=1&order=1&posted=0&source_id=none'
     
-    const resUserArticles = await ArticleAPI.getUserArticles(auth.jwt, auth.user_id, query)
+    const resUserArticles = await ArticleAPI.getBlogArticles(auth.jwt, auth.blog_id, query)
 
     if(resUserArticles == null)
       return
@@ -198,11 +198,11 @@ export default function Home() {
   }
 
   
-  const getUserArticles = async() => {
+  const getBlogArticles = async() => {
 
     const query = 'offset=0&limit=3&order=1&source_id=70'
     
-    const res = await ArticleAPI.getUserArticles(auth.jwt, auth.user_id, query)
+    const res = await ArticleAPI.getBlogArticles(auth.jwt, auth.blog_id, query)
 
     if(res == null)
       return
@@ -281,7 +281,7 @@ export default function Home() {
 
     const query = 'source_id='+ articleId
     
-    const res = await ArticleAPI.getUserArticles(auth.jwt, auth.user_id, query)
+    const res = await ArticleAPI.getBlogArticles(auth.jwt, auth.blog_id, query)
   
     if(res == null)
       return
@@ -414,7 +414,7 @@ export default function Home() {
       <BeautyButton disabled={false} isLoading={isLoading} type='danger' onClick={deleteArticle}>글 삭제하기</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='danger' onClick={putArticle}>글수정</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getArticles}>글목록</BeautyButton>
-      <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserArticles}>유저 글 목록</BeautyButton>
+      <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getBlogArticles}>유저 글 목록</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUser}>유저 목록</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUserCategories}>카테고리</BeautyButton>
       <BeautyButton disabled={false} isLoading={isLoading} type='cancel' onClick={deleteCategory}>카테고리 삭제</BeautyButton>

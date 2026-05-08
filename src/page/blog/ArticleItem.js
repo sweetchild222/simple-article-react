@@ -7,6 +7,7 @@ import AuthContext from "../../util/AuthContext.js";
 import BeautyButton from '../../common/BeautyButton.js';
 import GoLogin from "../../common/GoLogin.js";
 import OverlayLoading from "../../common/OverlayLoading.js";
+import LoadingImage from "../../common/LoadingImage.js";
 import { FaEye } from "react-icons/fa";
 import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
@@ -14,10 +15,8 @@ import { BiSolidComment } from "react-icons/bi";
 import './ArticleItem.css'
 
 export default function(props) {
-
-    console.log(props.article)
-
-    const article = props.article
+    
+    const article = props.article    
 
     if(article.id == 162)
         article.head = 'asdfasdfaskldfjsadklfjsdlkfjsdklfjwoiefweojfiwejfoiwejfoiwjfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfiosdjlkdsjsdflkasdjlksadjlkasdjlaksdjalksdfjlk;ldsfakjlsadkfjlaskdfjslakdfjsalkdfjasldkfjsalkdfjasldkfjsalkdfjaslsdfsdfsdfsdkfjsalkdfjasldsdfsdfkfjf'
@@ -110,7 +109,8 @@ export default function(props) {
                 </div>
                 <div style={{backgroundColor:'lightgray', height:'1px'}}></div>
             </div>
-            <img style={{width:'170px', height:'170px', borderRadius:'3px', objectFit:'cover', alignSelf:'center'}} src='http://13.124.193.201:8080/api/blob/article/20260414021819-ee806f8a-e545-4861-9fc9-fc1e34bd19d5.webp'/>
+            <LoadingImage src={article.thumbnail} width={170} height={170}/>
+            {/* <img style={{width:'170px', height:'170px', borderRadius:'3px', objectFit:'cover', alignSelf:'center'}} src={article.thumbnail}/> */}
         </div>
     )
 }

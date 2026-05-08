@@ -22,6 +22,7 @@ import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
 import ImageCropModal from '../../common/ImageCropModal.js'
 
+
 export default function() {
 
     const { id } = useParams()

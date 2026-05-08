@@ -64,15 +64,25 @@ export async function getArticle(jwt, article_id) {
 
 
 
-export async function getUserArticles(jwt, user_id, query) {
+export async function getBlogArticles(jwt, blog_id, query) {
 
   try{
 
+    if(jwt != null){
       const authorization = 'Bearer '.concat(jwt);
 
-      const response = await axios.get('/api/user/' + user_id + '/article?' + query, { headers: {Authorization: authorization}})
+      const response = await axios.get('/api/blog/' + blog_id + '/article?' + query, { headers: {Authorization: authorization}})
 
-      return response.data    
+      return response.data
+    }
+    else{
+
+      const response = await axios.get('/api/blog/' + blog_id + '/article?' + query)
+
+      return response.data
+    }
+
+    
 
   }
   catch(error){
@@ -82,6 +92,7 @@ export async function getUserArticles(jwt, user_id, query) {
     return null;
   }
 }
+
 
 
 export async function deleteArticle(jwt, article_id) {
@@ -126,11 +137,11 @@ export async function putArticle(jwt, article_id, payload){
 }
 
 
-export async function getCategories(user_id, query = undefined) {
+export async function getCategories(blog_id, query = undefined) {
 
   try{
     
-      const url = '/api/user/' + user_id + '/category' + (query ? ('?' + query) : '')
+      const url = '/api/blog/' + blog_id + '/category' + (query ? ('?' + query) : '')
 
       const response = await axios.get(url)
 
@@ -191,7 +202,7 @@ export async function patchCategory(jwt, category_id, payload){
 export async function postCategory(jwt, payload){
 
 
-    try{
+  try{
 
     const authorization = 'Bearer '.concat(jwt);
 

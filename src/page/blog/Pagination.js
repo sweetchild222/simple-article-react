@@ -13,17 +13,32 @@ import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 import './ArticleItem.css'
+import './Pagination.css'
+
 
 
 export default function({totalPageCount, displayPageCount, onClickPage}) {
         
-    const [curStartPage, setStartPage] = useState(0)
+    const [curStartPage, setStartPage] = useState(0)    
         
-    const list = Array.from({ length: totalPageCount }, (_, i) => i)
+    const totalPageList = Array.from({ length: totalPageCount }, (_, i) => i)
+
+    const [animationKey, setAnimationKey] = useState(0)
+    const [movingbarPos, setMovingbarPos] = useState({curIndex:0, start:0, end:0})
+
+    const pageNumWidth = 100
+
+
+
+    useEffect(() =>{
+
+
+    }, [curStartPage])
+    
     
     const getCurPageList = () => {
 
-        const subList = list.slice(curStartPage, curStartPage + displayPageCount)
+        const subList = totalPageList.slice(curStartPage, curStartPage + displayPageCount)
 
         return subList
     }
@@ -44,19 +59,61 @@ export default function({totalPageCount, displayPageCount, onClickPage}) {
         const calcPage = (curStartPage + displayPageCount) > totalPageCount ? totalPageCount : (curStartPage + displayPageCount)
 
         onClickPage(calcPage)
-        setStartPage(calcPage)        
+        setStartPage(calcPage)
     }
+
+    const restartAnimation = () => setAnimationKey(prev => prev + 1)
+
     
+    const onClickPageInner = (index, page) => {
+
+        if(onClickPage != null)
+            onClickPage(page)
+
+
+        const viewPageCount = (totalPageCount - curStartPage) < displayPageCount ? (totalPageCount - curStartPage) : displayPageCount
+
+
+        
+
+
+        console.log(index, viewPageCount)
+
+        //console.log(page - curStartPage)
+
+
+
+        
+
+
+
+        //setMovingbarPos({curIndex: index, start:movingbarPos.end, end:endPos})
+        //restartAnimation()
+
+
+        
+    // const index = categories.findIndex(categorie => categorie.id === id)
+    
+    // const width = 100
+    // const margin = 10
+    
+    // const endPos = index * (width + margin)
+      
+
+  }
+
 
     return (
         <div style={{display:'flex', flexDirection:'row', justifyContent:'center', backgroundColor:'orange'}}>
-
             <BeautyButton type={'transparent'} style={{color:'black', visibility:(curStartPage > 0 ? 'visible' : 'hidden')}} onClick={onClickForward}>{'<<'}</BeautyButton>
-            <div style={{display:'flex', flexDirection:'row', justifyContent:'center', backgroundColor:'lightblue', width:((displayPageCount * 30) + 'px')}}>
-                {getCurPageList().map((data, index) => <BeautyButton key={index} type={'transparent'} style={{color:'black'}} onClick={()=> onClickPage(data)}>{data}</BeautyButton>)}
+            <div style={{display:'flex', flexDirection:'column'}} >
+                <div style={{display:'flex', flexDirection:'row', justifyContent:'center', backgroundColor:'lightblue', width:((displayPageCount * pageNumWidth) + 'px')}}>
+                    {getCurPageList().map((data, index) => <BeautyButton key={index} type={'transparent'} style={{color:'black', width: pageNumWidth + 'px'}} onClick={()=> onClickPageInner(index, data)}>{data}</BeautyButton>)}
+                </div>
+                <div key={animationKey} className={'movingbar'} style={{width:'100px', height:'3px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px'}}></div>
             </div>
             <BeautyButton type={'transparent'} style={{color:'black', visibility:((curStartPage + displayPageCount < totalPageCount) ? 'visible' : 'hidden')}} onClick={onClickBackward}>{'>>'}</BeautyButton>
-
+            
 
             {/* //{articles.map((data, index) => <ArticleItem key={data.id} article={data}/>)}
 

@@ -45,6 +45,9 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
 
             return
         }
+
+
+        console.log(categoryies)
         
         setCategories(categoryies)
 
@@ -56,7 +59,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
     const loadWrtingCount = async(blogId) => {
         
         if(!(validAuth(auth) && isEditable))
-            return        
+            retur
         
         const query = 'posted=0'
                 

@@ -12,7 +12,6 @@ import { FaEye } from "react-icons/fa";
 import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
-import './ArticleItem.css'
 import './Pagination.css'
 import { FaForward } from "react-icons/fa";
 import { FaBackward } from "react-icons/fa6";

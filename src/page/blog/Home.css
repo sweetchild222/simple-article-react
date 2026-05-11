@@ -1,7 +1,7 @@
 .dynamicColumnContainer {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Two equal columns */
-  gap: 10px;
+  gap: 20px;
 }
 
 
@@ -9,9 +9,4 @@
   .dynamicColumnContainer {
     grid-template-columns: 1fr;
   }
-}
-
-.underline-text:hover {
-  text-decoration: underline;
-  cursor: pointer;
 }

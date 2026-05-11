@@ -15,7 +15,7 @@ import ArticleItem from "./ArticleItem.js";
 import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
-import './Home.css'
+
 
 export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEditable}) {
     

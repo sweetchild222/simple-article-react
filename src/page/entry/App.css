@@ -83,3 +83,19 @@ select {
 select:focus{
   border: 1px solid #000000;
 }
+
+
+.clamped-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--line-count);
+  overflow: hidden;
+  word-break:break-all;
+  text-overflow: ellipsis;
+}
+
+
+.underline-text:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

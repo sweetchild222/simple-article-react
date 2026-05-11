@@ -70,7 +70,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
         if(res == null)
             return
 
-        return res.length        
+        return res.length
     }
 
 

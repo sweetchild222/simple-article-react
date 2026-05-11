@@ -104,20 +104,7 @@ export default function() {
     setReloadKey(prev => prev + 1)
   }
   
-  
-  // const onClickWriting = async() => {
 
-  //   setIsOverlayLoading(true)
-    
-  //   const articles = await getBlogArticles(0, null, 0)
-        
-  //   if(articles != null)
-  //     setArticles(articles)
-
-  //   setIsOverlayLoading(false)
-    
-  //   setSelectedCategory({blog_id:blog_id, name:'작성 중인 글', article_count:articles.length})
-  // }
 
   const onLoadCategoryies = (categoryies) =>{
     

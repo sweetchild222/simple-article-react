@@ -18,10 +18,9 @@ export default function(props) {
     
     const article = props.article    
 
-    if(article.id == 162)
-        article.head = 'asdfasdfaskldfjsadklfjsdlkfjsdklfjwoiefweojfiwejfoiwejfoiwjfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfiosdjlkdsjsdflkasdjlksadjlkasdjlaksdjalksdfjlk;ldsfakjlsadkfjlaskdfjslakdfjsalkdfjasldkfjsalkdfjasldkfjsalkdfjaslsdfsdfsdfsdkfjsalkdfjasldsdfsdfkfjf'
+    // if(article.id == 162)
+    //     article.head = 'asdfasdfaskldfjsadklfjsdlkfjsdklfjwoiefweojfiwejfoiwejfoiwjfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfiosdjlkdsjsdflkasdjlksadjlkasdjlaksdjalksdfjlk;ldsfakjlsadkfjlaskdfjslakdfjsalkdfjasldkfjsalkdfjasldkfjsalkdfjaslsdfsdfsdfsdkfjsalkdfjasldsdfsdfkfjf'
     
-
     const combinedStyle = {
         ...props.style
     }
@@ -81,7 +80,6 @@ export default function(props) {
 
         console.log(article.id)
     }
-
     
     return (
         <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', marginTop:'10px', marginBottom:'10px'}}>
@@ -107,7 +105,6 @@ export default function(props) {
                 <div style={{backgroundColor:'lightgray', height:'1px'}}></div>
             </div>
             <LoadingImage src={article.thumbnail} width={170} height={170}/>
-            {/* <img style={{width:'170px', height:'170px', borderRadius:'3px', objectFit:'cover', alignSelf:'center'}} src={article.thumbnail}/> */}
         </div>
     )
 }

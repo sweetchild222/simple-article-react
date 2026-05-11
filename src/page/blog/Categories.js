@@ -221,7 +221,6 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
     return (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
                 {categories && categories.map((data, index) => <label className={'underline-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</label>)}
-                {/* {isEditable && <label className={'underline-text'} key={0} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={onClickWritingInner}>{'작성 중인 글' + (writingCount != null ? (' ('+ writingCount + ')') : '')}</label>} */}
                 {isEditable && <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
                 {isEditable && categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => item.id != 0)}></CategoryModal>}
             </div>

@@ -73,31 +73,25 @@ export default function({totalPageCount, displayPageCount, onClickPage}) {
 
         const viewPageCount = (totalPageCount - curStartPage) < displayPageCount ? (totalPageCount - curStartPage) : displayPageCount
 
-
         
-
 
         console.log(index, viewPageCount)
 
-        //console.log(page - curStartPage)
+        console.log(page - curStartPage)
 
+        const width = 100
+        const margin = 0
+    
+        const endPos = page - curStartPage * (width + margin)
 
-
-        
-
-
-
-        //setMovingbarPos({curIndex: index, start:movingbarPos.end, end:endPos})
-        //restartAnimation()
+        setMovingbarPos({curIndex: index, start:movingbarPos.end, end:endPos})
+        restartAnimation()
 
 
         
     // const index = categories.findIndex(categorie => categorie.id === id)
     
-    // const width = 100
-    // const margin = 10
     
-    // const endPos = index * (width + margin)
       
 
   }

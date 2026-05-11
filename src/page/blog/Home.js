@@ -87,11 +87,12 @@ export default function() {
 
   const [reloadKey, setReloadKey] = useState(0)
 
+
   const onClickCategory = async(category) => {
 
     setIsOverlayLoading(true)
     
-    const articles = await getBlogArticles(0, category.id, null)
+    const articles = await getBlogArticles(0, category.id != 0 ? category.id : null, category.id != 0 ? null : 0)
 
     if(articles != null)
       setArticles(articles)
@@ -104,19 +105,19 @@ export default function() {
   }
   
   
-  const onClickWriting = async() => {
+  // const onClickWriting = async() => {
 
-    setIsOverlayLoading(true)
+  //   setIsOverlayLoading(true)
     
-    const articles = await getBlogArticles(0, null, 0)
+  //   const articles = await getBlogArticles(0, null, 0)
         
-    if(articles != null)
-      setArticles(articles)
+  //   if(articles != null)
+  //     setArticles(articles)
 
-    setIsOverlayLoading(false)
+  //   setIsOverlayLoading(false)
     
-    setSelectedCategory({blog_id:blog_id, name:'작성 중인 글', article_count:articles.length})
-  }
+  //   setSelectedCategory({blog_id:blog_id, name:'작성 중인 글', article_count:articles.length})
+  // }
 
   const onLoadCategoryies = (categoryies) =>{
     
@@ -130,13 +131,13 @@ export default function() {
   const onClickPage = async(page) => {
         
     setIsOverlayLoading(true)
-    
-    const articles = await getBlogArticles(page, selectedCategory.id, null)
+        
+    const articles = await getBlogArticles(page, selectedCategory.id != 0 ? selectedCategory.id : null, selectedCategory.id != 0 ? null : 0)
 
     if(articles != null)
       setArticles(articles)
 
-    setIsOverlayLoading(false)        
+    setIsOverlayLoading(false)
   }
 
   
@@ -164,7 +165,7 @@ export default function() {
         
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'10px', marginRight:'10px'}}/>
         <div style={{width:'200px', maxWidth:'200px', minWidth:'200px', alignItems:'center', display: 'block'}}>          
-          <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} onClickWriting={onClickWriting} isEditable={isEditable()}></Categories>          
+          <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} isEditable={isEditable()}></Categories>          
         </div>
         <div style={{width:'100px'}}/>
       </div>

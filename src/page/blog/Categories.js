@@ -17,17 +17,15 @@ import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
 import './Home.css'
 
-export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClickWriting, isEditable}) {
+export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEditable}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [categories, setCategories] = useState(null)
-    const [writingCount, setWritingCount] = useState(null)    
     const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
 
     useEffect(()=> {
         
         loadCategory(blogId)
-        loadWrtingCount(blogId)
     
     }, [blogId])
 
@@ -36,7 +34,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
 
         const categoryies = await getCategories(blogId)
 
-        if(categoryies == null) {
+        if(categoryies == null && categoryies.length == 0) {
 
             window.showToast('카테고리를 가져 올 수 없습니다', 'error')
 
@@ -47,8 +45,15 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
         }
 
 
-        console.log(categoryies)
-        
+        if((validAuth(auth) && isEditable)){
+
+            const count = await loadWrtingCount(blogId)
+
+            const category = categoryies[0]            
+
+            categoryies.push({blog_id:category.id, article_count:count, name:'작성 중인 글', id:0, is_default:1})
+        }
+
         setCategories(categoryies)
 
         if(onLoadCategoryies != null)
@@ -57,10 +62,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
 
 
     const loadWrtingCount = async(blogId) => {
-        
-        if(!(validAuth(auth) && isEditable))
-            retur
-        
+                        
         const query = 'posted=0'
                 
         const res = await ArticleAPI.getBlogArticles(auth.jwt, blogId, query)
@@ -68,7 +70,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
         if(res == null)
             return
 
-        setWritingCount(res.length)
+        return res.length        
     }
 
 
@@ -77,9 +79,6 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
         const res = await ArticleAPI.getCategories(blogId)
         
         if(res == null)
-            return null
-
-        if(res.length == 0)
             return null
     
         res.sort((a, b)=> {
@@ -94,13 +93,6 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
     }
 
 
-    const onClickWritingInner = async() =>{
-
-        if(onClickWriting != null)
-            onClickWriting()
-    }
-
-
     const onClickCategoryInner = async(id) => {
 
         const index = categories.findIndex(categorie => categorie.id === id)
@@ -109,7 +101,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
             return
 
         if(onClickCategory != null)
-            onClickCategory(categories[index])    
+            onClickCategory(categories[index])
     }
 
 
@@ -184,12 +176,15 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
 
         if(!isEditable)
             return
+
+
+        const curCategories = categories.filter(item => item.id != 0)
         
-        const deletList = categories.filter(item => newCategories.findIndex(newItem => item.id == newItem.id) == -1)
-        const addList = newCategories.filter(newItem => categories.findIndex(item => item.id == newItem.id) == -1)
+        const deletList = curCategories.filter(item => newCategories.findIndex(newItem => item.id == newItem.id) == -1)
+        const addList = newCategories.filter(newItem => curCategories.findIndex(item => item.id == newItem.id) == -1)
         const modifyList = newCategories.filter(newItem => {
             
-            const findItem = categories.find(item => item.id === newItem.id)
+            const findItem = curCategories.find(item => item.id === newItem.id)
                 
             if(findItem != null && (findItem.name != newItem.name))
                 return true
@@ -226,9 +221,9 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, onClic
     return (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
                 {categories && categories.map((data, index) => <label className={'underline-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</label>)}
-                {isEditable && <label className={'underline-text'} key={0} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={onClickWritingInner}>{'작성 중인 글' + (writingCount != null ? (' ('+ writingCount + ')') : '')}</label>}
+                {/* {isEditable && <label className={'underline-text'} key={0} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={onClickWritingInner}>{'작성 중인 글' + (writingCount != null ? (' ('+ writingCount + ')') : '')}</label>} */}
                 {isEditable && <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
-                {isEditable && categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories}></CategoryModal>}
+                {isEditable && categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => item.id != 0)}></CategoryModal>}
             </div>
     )    
 }

@@ -39,8 +39,6 @@ export default function(props) {
 
             const imageUrl = res.image  + '?size=' + width + 'x' + width
 
-            console.log(imageUrl)
-
             setImage(imageUrl)
             setNickname(res.nickname != null ? res.nickname : res.username)
         })

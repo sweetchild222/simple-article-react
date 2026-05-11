@@ -280,7 +280,7 @@ export default function() {
         const doc = parser.parseFromString(html, 'text/html')
         const plainText = doc.body.textContent
         const text = plainText.replace(/[\r\n]+/g, ' ')
-        const head = text.substring(0, 128)
+        const head = text.substring(0, 256)
 
         return head
     }

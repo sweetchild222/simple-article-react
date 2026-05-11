@@ -129,17 +129,16 @@ export default function() {
 
   
   return (
-      <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%', marginTop:'20px'}}>
+      <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%', marginTop:'40px'}}>
         {isOverlayLoading && <OverlayLoading/>}
         <div style={{width:'100px'}}/>
-        
           <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
             <div style={{color:'gray'}}>{selectedCategory ? selectedCategory.name : '...'}</div>
             <div style={{backgroundColor:'lightgray', width:'300px', height:'2px'}}></div>
               {articles && (
                 articles.length > 0 ? 
                 (<div style={{display:'flex', flexDirection:'column'}}>
-                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px'}}>
+                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'20px'}}>
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data}/>)}
                   </div>
                   {selectedCategory && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
@@ -150,7 +149,7 @@ export default function() {
               )}
           </div>
         
-        <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'10px', marginRight:'10px'}}/>
+        <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{width:'200px', maxWidth:'200px', minWidth:'200px', alignItems:'center', display: 'block'}}>          
           <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} isEditable={isEditable()}></Categories>          
         </div>

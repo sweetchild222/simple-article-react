@@ -26,9 +26,6 @@ export default function(props) {
         ...props.style
     }
 
-
-
-
     const numberUnit = (count) => {
 
         if(count > 1000){
@@ -87,10 +84,10 @@ export default function(props) {
 
     
     return (
-        <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', marginTop:'5px', marginBottom:'10px'}}>
+        <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', marginTop:'10px', marginBottom:'10px'}}>
             <div style={{display: 'flex', flexDirection: 'column', flex:'1', marginLeft:'5px', marginRight:'5px'}}>
-                <div className={'clamped-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title + 'sdfgdsfgsdlkfghjsdklfgjsdklfgslkdfjskldfjgklsdfjgslkdfjgdoijoierjeoirjeirojeiorgjoierjoirejoigjeoij'}</div>
-                <div className={'clamped-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head}</div>
+                <div className={'clamped-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title}</div>
+                <div className={'clamped-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : article.head}</div>
                 <div style={{flex:'1'}}></div>
                 <div style={{display: 'flex', flexDirection: 'row',  alignItems:'center', color:'#888888'}}>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>

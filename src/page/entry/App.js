@@ -1,10 +1,10 @@
 
 
-import React, { useContext, useEffect, useState} from 'react';
-import {Routes, Route, useNavigate, BrowserRouter, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
-
 import './App.css'
 
+
+import React, { useContext, useEffect, useState} from 'react';
+import {Routes, Route, useNavigate, BrowserRouter, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
 
 import BlogHeader from '../blog/Header.js'
 import BlogHome  from '../blog/Home.js'
@@ -13,8 +13,8 @@ import MainHome from '../main/Home.js'
 
 import Profile from '../user/Profile.js'
 import User from '../user/User.js'
-import Regist from '../user/Regist.js'
-import Login from '../user/Login.js'
+import Regist from '../account/Regist.js'
+import Login from '../account/Login.js'
 
 import Writer from '../markdown/Writer.js'
 import Posting from '../markdown/Posting.js'
@@ -58,11 +58,11 @@ export default function() {
           { path: 'posting', element: <Posting/>}
         ]},
 
-        { path: 'login', children: [
+        { path: 'account', children: [
           { index: true, element: <Login/>},
           { path: 'regist', element: <Regist/>}]
         },
-        { path: 'user', children: [
+        { path: 'user/:id', children: [
           { index: true, element: <User/>},
           { path: 'profile', element: <Profile/>}]
         },

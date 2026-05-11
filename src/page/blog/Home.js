@@ -18,6 +18,7 @@ import CategoryModal from '../../common/CategoryModal.js'
 import OverlayLoading from "../../common/OverlayLoading.js";
 import './Home.css'
 import Categories  from "./Categories.js";
+import Recents  from "./Recents.js";
 import Pagination from "./Pagination.js";
 
 export default function() {
@@ -27,8 +28,15 @@ export default function() {
   const blog_id = parseInt(id)
 
   const navigate = useNavigate()
+
+  const location = useLocation()
+
+  const state = location.state
+
+  console.log(state)
+
         
-  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)  
+  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [articles, setArticles] = useState(null)    
   const [isOverlayLoading, setIsOverlayLoading] = useState(false)
@@ -63,13 +71,13 @@ export default function() {
 
     query += '&order=1'
 
-    query += category_id != null ? ('&category_id=' + category_id) : ''    
+    query += category_id != null ? ('&category_id=' + category_id) : ''
 
     query += posted != null ? ('&posted=' + posted) : ''
     
     const jwt = validAuth(auth.jwt) ? auth.jwt : null
     
-    const res = await ArticleAPI.getBlogArticles(jwt, blog_id, query)    
+    const res = await ArticleAPI.getBlogArticles(jwt, blog_id, query)
 
     return res
   }  
@@ -135,9 +143,9 @@ export default function() {
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{width:'200px', maxWidth:'200px', minWidth:'200px', alignItems:'center', display: 'block'}}>          
           {validBlogId(blog_id) && <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>}
+          {validBlogId(blog_id) && <Recents blogId={blog_id} isEdit={isEditable()}></Recents>}
         </div>
         <div style={{width:'100px'}}/>
-      </div>
-    
+      </div>    
   )
 }

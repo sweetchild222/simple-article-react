@@ -86,7 +86,7 @@ export default function() {
 
     const getCategory = async() => {
 
-        const res = await ArticleAPI.getCategories(auth.user_id)
+        const res = await ArticleAPI.getCategories(auth.blog_id)
         
         if(res == null)
             return null
@@ -131,7 +131,7 @@ export default function() {
             posted:posted,
             thumbnail:thumbUrl,
             category_id:category_id
-        }        
+        }
         
         return await ArticleAPI.putArticle(auth.jwt, article_id, payload)
     }
@@ -153,7 +153,6 @@ export default function() {
 
     const onClickLeave=()=> {
         
-
         navigate(-1)
     }
 
@@ -183,7 +182,7 @@ export default function() {
             return
         
         const dWidth = 640
-        const dHeight = 480
+        const dHeight = 640
 
         const canvas = await refImageCrop.current.export(dWidth, dHeight)
         
@@ -193,7 +192,7 @@ export default function() {
     }
 
 
-    const postThumbnail = async(url) =>{                    
+    const postThumbnail = async(url) =>{
 
         if(url.startsWith('blob:')){
         
@@ -242,25 +241,28 @@ export default function() {
             window.showToast('대표 이미지를 설정하세요', 'error')
             return
         }
+
+        setIsOverlayLoading(true)
         
         const thumbnailUrl = await postThumbnail(thumbnail)
 
         if(thumbnailUrl == null) {
+            setIsOverlayLoading(false)
             window.showToast('대표 이미지 설정에 실패하였습니다', 'error')
             return 
         }
         
-        const posted = 1
-
+        
         if(!categories) {
+            setIsOverlayLoading(false)
             window.showToast('카테고리가 설정되지 않았습니다', 'error')
             return
         }
 
-        const category_id = categories[selectedCategoryIndex].id
+        const posted = 1
 
-        setIsOverlayLoading(true)
-
+        const category_id = categories[selectedCategoryIndex].id        
+    
         const res = await putArticle(article_id, title, head, content, thumbnailUrl, posted, category_id)
 
         setIsOverlayLoading(false)
@@ -270,7 +272,9 @@ export default function() {
             return null
         }
 
-        window.showToast('글이 등록 되었습니다 ', 'info')        
+        window.showToast('글이 등록 되었습니다 ', 'info')
+
+        navigate(-2)
     }
 
 
@@ -289,16 +293,16 @@ export default function() {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {isOverlayLoading && <OverlayLoading/>}
             <label htmlFor='input_title'>제목</label>
-            <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title}></input>
+            <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title}/>
 
             <select style={{width:'100px'}} value={categories ? categories[selectedCategoryIndex].name : ''} onChange={onChangeCategory}>
                 {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}
             </select>
 
-            <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={192} height={128}/>
-            {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1.5}></ImageCropModal>}
+            <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={170} height={170}/>
+            {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}
     
-            <BeautyButton type='success' onClick={onClickPost}>다음</BeautyButton>
+            <BeautyButton type='success' onClick={onClickPost}>올리기</BeautyButton>
             <BeautyButton type='danger' onClick={onClickLeave}>뒤로가기</BeautyButton>
         </div>
         ) : (<GoLogin/>)

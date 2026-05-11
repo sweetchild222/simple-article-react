@@ -104,7 +104,7 @@ export default function(props) {
                 </div>
                 <div style={{backgroundColor:'lightgray', height:'1px'}}></div>
             </div>
-            <LoadingImage src={article.thumbnail} width={170} height={170}/>
+            <LoadingImage src={article.thumbnail + '?size=170x170'} width={170} height={170}/>
         </div>
     )
 }

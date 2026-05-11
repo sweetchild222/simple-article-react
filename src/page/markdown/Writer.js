@@ -42,7 +42,6 @@ export default function() {
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
-
     
 
     const navigate = useNavigate()
@@ -114,7 +113,6 @@ export default function() {
 
         if(isTouched == true){
         
-
             setIsOverlayLoading(true)
             setIsTempSaveLoading(true)
 

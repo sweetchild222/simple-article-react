@@ -15,7 +15,7 @@ import ArticleItem from "./ArticleItem.js";
 import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
-
+import { MdCategory } from "react-icons/md";
 
 export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit}) {
     
@@ -47,11 +47,9 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
 
         if(isEditable()){
 
-            console.log('adsfaf')
-
             const count = await loadWrtingCount(blogId)
 
-            const category = categoryies[0]            
+            const category = categoryies[0]
 
             categoryies.push({blog_id:category.id, article_count:count, name:'작성 중인 글', id:0, is_default:1})
         }
@@ -96,12 +94,10 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
 
 
     const isEditable = ()=> {
-
-        console.log(validAuth(auth))
-        console.log(isEdit)
-
+        
         return (validAuth(auth) && isEdit)
     }
+
 
     const onClickCategoryInner = async(id) => {
 
@@ -230,7 +226,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
     return (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
                 {categories && categories.map((data, index) => <label className={'underline-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</label>)}
-                {isEditable() && <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
+                {isEditable() && <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={30}/></label>}
                 {isEditable() && categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => item.id != 0)}></CategoryModal>}
             </div>
     )    

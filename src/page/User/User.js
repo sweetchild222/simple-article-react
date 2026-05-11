@@ -24,30 +24,49 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker, use
 import PageNotFound from '../entry/PageNotFound.js';
 
 export default function() {
+
+    const { id } = useParams()      
+    const user_id = parseInt(id)
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [userName, setUserName] = useState('...')
+    const [nickName, setNickName] = useState('...')
         
-    const navigate = useNavigate()
-
+    const navigate = useNavigate()    
+    
     useEffect(()=> {
 
-        if(!validAuth(auth)){
-            navigate('/')
+        if(!validUserId(user_id)){
+            navigate('/pageNotFound')
             return
         }
 
-        UserAPI.getUser(auth.user_id).then((res)=>{
+
+        UserAPI.getUser(user_id).then((res)=>{
 
             if(res == null){
-                setUserName('?')
+                navigate('/pageNotFound')
+                
                 return
             }
 
             setUserName(res.username)
+            setNickName(res.nickname)
         })
 
-    }, [auth])
+    }, [user_id])
+
+
+    const validUserId = (user_id) =>{
+
+        if(user_id == null)
+            return false
+        
+        if(!Number.isInteger(user_id))
+            return false
+
+        return true
+    }
 
 
     const onClickNavigateProfile = async() =>{
@@ -119,8 +138,9 @@ export default function() {
     return validAuth(auth) ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <label>{userName}</label>
+        <label>{nickName}</label>
         <BeautyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</BeautyButton>
-        <BeautyButton onClick={onClickNavigateBlog} type='success'>내 블로그</BeautyButton>
+        <BeautyButton onClick={onClickNavigateBlog} type='success'>블로그</BeautyButton>
         <BeautyButton onClick={onClickNavigateWrite} type='success'>새글 쓰기</BeautyButton>
         <div>작성 중인 글</div>
       </div>) : null

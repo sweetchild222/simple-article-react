@@ -70,7 +70,7 @@ export default function() {
             setUserId(blog.user_id)
         })
 
-    }, [auth, blog_id])
+    }, [blog_id])
 
 
     const validBlogId = (blog_id) =>{

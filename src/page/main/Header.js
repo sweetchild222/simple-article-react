@@ -39,16 +39,19 @@ export default function() {
 
     const onClickLogIn = (e) =>{
 
-        navigate("/login")
+        navigate("/account")
     }
 
 
     const onClickUser = (e) =>{
 
-        if(validAuth(auth))
-            navigate('/user')
+        if(validAuth(auth)){
+
+            console.log('sdfs')
+            navigate('/user/' + auth.user_id)
+        }
         else{            
-            navigate('/login')
+            navigate('/account')
         }
     }
 

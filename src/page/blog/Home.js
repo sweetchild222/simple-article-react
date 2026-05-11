@@ -23,47 +23,36 @@ import Pagination from "./Pagination.js";
 export default function() {
 
   const { id } = useParams()
-
+  
   const blog_id = parseInt(id)
 
-  const navigate = useNavigate()  
-      
-  const location = useLocation()
-  const state = location.state
-  const editMode = state == null ? false : state.editMode
-
+  const navigate = useNavigate()
+        
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)  
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [articles, setArticles] = useState(null)    
   const [isOverlayLoading, setIsOverlayLoading] = useState(false)
+  const [reloadKey, setReloadKey] = useState(0)
 
   const countPerPage = 6
-
-  useEffect(()=> {
-
-    if(!Number.isInteger(blog_id)){
-      navigate('/pageNotFound')
-      return
-    }
-    
-    if(editMode) {
-
-      if(!validAuth(auth) && auth.blog_id == blog_id){
-        navigate('/')
-        return
-      }
-    }
-
-
-  }, [auth, blog_id])
-
 
 
   const isEditable = ()=> {
 
-    return (editMode && validAuth(auth) && auth.blog_id == blog_id)    
+    return (validAuth(auth) && auth.blog_id == blog_id)
   }
 
+  
+  const validBlogId = (blog_id) =>{
+
+      if(blog_id == null)
+          return false
+      
+      if(!Number.isInteger(blog_id))
+          return false
+
+      return true
+  }
 
 
   const getBlogArticles = async(page, category_id, posted) => {
@@ -83,9 +72,7 @@ export default function() {
     const res = await ArticleAPI.getBlogArticles(jwt, blog_id, query)    
 
     return res
-  }
-
-  const [reloadKey, setReloadKey] = useState(0)
+  }  
 
 
   const onClickCategory = async(category) => {
@@ -105,15 +92,11 @@ export default function() {
   }
   
 
-
   const onLoadCategoryies = (categoryies) =>{
-    
+        
     if(categoryies != null)
       onClickCategory(categoryies[0])
-    else
-      navigate('/pageNotFound')
   }
-
 
   const onClickPage = async(page) => {
         
@@ -151,7 +134,7 @@ export default function() {
         
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{width:'200px', maxWidth:'200px', minWidth:'200px', alignItems:'center', display: 'block'}}>          
-          <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} isEditable={isEditable()}></Categories>          
+          {validBlogId(blog_id) && <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>}
         </div>
         <div style={{width:'100px'}}/>
       </div>

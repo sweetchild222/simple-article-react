@@ -64,7 +64,7 @@ export default function() {
         if(!validAuth(auth))
             return
 
-        navigate('/blog/' + auth.blog_id, {state:{editMode:true}})
+        navigate('/blog/' + auth.blog_id)
     }
 
 

@@ -17,7 +17,7 @@ import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
 
 
-export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEditable}) {
+export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [categories, setCategories] = useState(null)
@@ -33,8 +33,8 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
     const loadCategory = async() => {
 
         const categoryies = await getCategories(blogId)
-
-        if(categoryies == null && categoryies.length == 0) {
+        
+        if(categoryies == null || categoryies.length == 0) {
 
             window.showToast('카테고리를 가져 올 수 없습니다', 'error')
 
@@ -45,7 +45,9 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
         }
 
 
-        if((validAuth(auth) && isEditable)){
+        if(isEditable()){
+
+            console.log('adsfaf')
 
             const count = await loadWrtingCount(blogId)
 
@@ -92,6 +94,14 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
         return res
     }
 
+
+    const isEditable = ()=> {
+
+        console.log(validAuth(auth))
+        console.log(isEdit)
+
+        return (validAuth(auth) && isEdit)
+    }
 
     const onClickCategoryInner = async(id) => {
 
@@ -174,9 +184,8 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
 
     const onClickApplyCategory = async(newCategories) => {
 
-        if(!isEditable)
+        if(!isEditable())
             return
-
 
         const curCategories = categories.filter(item => item.id != 0)
         
@@ -208,7 +217,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
 
     const onClickModifyCategory = async()=> {
 
-        if(!isEditable)
+        if(!isEditable())
             return
 
         if(categories == null)
@@ -221,8 +230,8 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
     return (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
                 {categories && categories.map((data, index) => <label className={'underline-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</label>)}
-                {isEditable && <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
-                {isEditable && categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => item.id != 0)}></CategoryModal>}
+                {isEditable() && <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdEdit size={30}/></label>}
+                {isEditable() && categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => item.id != 0)}></CategoryModal>}
             </div>
     )    
 }

@@ -8,6 +8,7 @@ import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import GoLogin from "../../common/GoLogin.js";
+import ExtractHead from "../../util/ExtractHead.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
@@ -30,7 +31,7 @@ export default function() {
     const state = location.state
 
     if(state == null)
-        return (<div>잘못된 방식으로 접근하였습니다</div>)
+        return (<div>접근 할 수 없습니다</div>)
     
     const refMDX = useRef(null)
     const refPreview = useRef(null)
@@ -42,8 +43,9 @@ export default function() {
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
-    
+    const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
 
+    
     const navigate = useNavigate()
     
     const blocker = useBlocker(({ currentLocation, nextLocation }) => {
@@ -99,7 +101,7 @@ export default function() {
     }, [beforeUnload])
 
 
-    const onClickNext = async() => {
+    const onClickPost = async() => {
 
         if(refMDX.current == null)
             return
@@ -171,10 +173,10 @@ export default function() {
     
 
     const putArticle = async(article_id, title, content, thumbUrl, posted, category_id) => {
-
+        
         const payload = {
             title:title,
-            head:'',
+            head:ExtractHead(MarkdownToHtml(content), 256),
             content:content,
             posted:posted,
             thumbnail:thumbUrl,
@@ -256,7 +258,7 @@ export default function() {
             setIsConfirmSaveModalOpen(true)
         else
             navigate(-1)
-    }                    
+    }
 
 
     const onResultConfirmSave = async(result) => {
@@ -287,6 +289,32 @@ export default function() {
     }
 
 
+    const onClickDelete = async() => {
+
+        setIsConfirmDeleteModalOpen(true)
+    }
+
+
+    const onResultConfirmDelete = async(result) =>{
+
+        if(result == true){
+
+            setIsTouched(false)
+            
+            const res = await ArticleAPI.deleteArticle(auth.jwt, state.id)
+            
+            if(res == null){
+                window.showToast('삭제가 실패 하였습니다', 'error')
+                return
+            }
+
+            window.showToast('삭제 되었습니다', 'info')
+                        
+            navigate(-1)            
+        }        
+    }
+
+
     useEffect(()=>{
 
         if(isPreview){
@@ -307,7 +335,6 @@ export default function() {
                     onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                             
     }, [])
-        
 
     return validAuth(auth) ? (
         <div style={{flex:1, position: 'relative', margin:'20px 20px 20px 20px'}}>
@@ -324,9 +351,11 @@ export default function() {
                     }
                 </Split>
                 <label ref={refLength} style={{marginLeft:'auto', fontSize:'12px', color:'gray'}}>{state.content.length + '/65535'}</label>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flex: 0, alignItems: 'center', marginTop:'10px'}}>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'start', flex: 0, alignItems: 'center', marginTop:'10px'}}>
+                    <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickDelete}>삭제</BeautyButton>
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
-                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickNext}>다음</BeautyButton>
+                    <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
+                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickPost}>올리기</BeautyButton>
                     <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</BeautyButton>
                     <Modal title={'나가기 전에 임시 저장 하시겠습니까?'} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     <div style={{flex:'1', backgroundColor:'red'}}></div>

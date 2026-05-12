@@ -331,7 +331,7 @@ sdf
 
 sdf`
 
-    markdown = text
+    //markdown = text
 
     const extension = [directive(), frontmatter(), gfm(), highlightMark(), math(), defList]
 

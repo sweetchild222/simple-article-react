@@ -30,10 +30,10 @@ export default function() {
 
     const blog_id = ToInteger(b_id)
     const article_id = ToInteger(a_id)
-    
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [article, setArticle] = useState(null)
+    const [blog, setBlog] = useState(null)
 
     useEffect(()=>{
 
@@ -50,19 +50,37 @@ export default function() {
             }
 
             setArticle(article)
+
+            BlogAPI.getBlog(blog_id).then((blog)=> {
+            
+                if(blog == null){
+                    navigate('/pageNotFound')
+                    return
+                }
+    
+                setBlog(blog)
+            })
         })
 
     }, [auth, b_id, a_id])        
 
-    return article ? (<div style={{display:'flex', flexDirection: 'row', justifyContent:'center', marginTop:'20px'}}>        
-        <div style={{width:'2px', backgroundColor:'lightgray', marginRight:'20px'}}/>
+    return article ? (<div style={{display:'flex', flexDirection: 'row', justifyContent:'center', marginTop:'20px'}}>
+        <div style={{width:'2px', marginRight:'20px'}}/>
             <div style={{display:'flex', flexDirection: 'column', alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
-                <div className={'clamped-text'} style={{'--line-count':3, fontSize:'28px'}}>{article.title + 'asdfasdfklsdafjlasjdflsaidjiosjfioewjoiwejfieowjoiwejfwoiefjioaskldfjaslkdfjasdlkfjaskldfjaksldfklajdlfkjalsdkfjalkdsfasdfasdfklsdafjlasjdflsaidjiosjfioewjoiwejfieowjoiwejfwoiefjioaskldfjaslkdfjasdlkfjaskldfjaksldfklajdlfkjalsdkfjalkdsf'}</div>
+                <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title + '대구 이현공원sjdflsaidjiosjfioewjoiwejfieowjoiwejfwoiefjioaskldfjaslkdfjasdlkfjaskldfjaksldfklajdlfkjalsdkfjalkdsfasdfasdfklsdafjlasjdflsaidjiosjfioewjoiwejfieowjoiwejfwoiefjioaskldfjaslkdfjasdlkfjaskldfjaksldfklajdlfkjalsdkfjalkdsf'}</div>
+                <div style={{height:'30px', display:'flex', flexDirection: 'row', width:'100%'}}>
+                    <div>{'adsfsd'}</div>
+                    <div>{'adsfsd'}</div>
+                    <div>{'adsfsd'}</div>
+                    <div>{'adsfsd'}</div>
+
+                </div>
+                <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 <div style={{height:'30px'}}></div>
                 <LoadingImage src={article.thumbnail + '?size=170x170'} width={960} height={540} borderWidth={0}/>
                 <div style={{height:'30px'}}></div>
                 <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
             </div>
-        <div style={{width:'2px', backgroundColor:'lightgray', marginLeft:'20px'}}/>
+        <div style={{width:'2px', marginLeft:'20px'}}/>
         </div>) : <OverlayLoading/>
 }

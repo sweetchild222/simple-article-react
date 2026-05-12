@@ -1,10 +1,4 @@
 
-function isNumeric(str) {
-
-
-}
-
-
 export default function(id) {
     
     if (typeof id == "string"){

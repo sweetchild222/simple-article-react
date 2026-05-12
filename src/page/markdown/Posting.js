@@ -6,6 +6,7 @@ import MDXEditor from './MDXEditor.js'
 import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
+import ExtractHead from "../../util/ExtractHead.js";
 import GoLogin from "../../common/GoLogin.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
@@ -29,11 +30,11 @@ export default function() {
     const state = location.state
 
     if(state == null)
-        return (<div>잘못된 방식으로 접근하였습니다</div>)
+        return (<div>접근 할 수 없습니다</div>)
     
     const refTitle = useRef(null)
     const refPreview = useRef(null)
-    const refImageCrop = useRef(null)    
+    const refImageCrop = useRef(null)
 
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
     const [imageFile, setImageFile] = useState(null)
@@ -44,6 +45,7 @@ export default function() {
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     const [categories, setCategories] = useState(null)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
     
     const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0)
 
@@ -229,7 +231,7 @@ export default function() {
                 
         const article_id = state.id
         const title = refTitle.current.value
-        const head = extractHead(MarkdownToHtml(state.content))
+        const head = ExtractHead(MarkdownToHtml(state.content), 256)
         const content = state.content
 
         if(!title || title.trim().length === 0){
@@ -278,17 +280,31 @@ export default function() {
     }
 
 
-    const extractHead = (html) => {
+    const onClickDelete = async() => {
 
-        const parser = new DOMParser()
-        const doc = parser.parseFromString(html, 'text/html')
-        const plainText = doc.body.textContent
-        const text = plainText.replace(/[\r\n]+/g, ' ')
-        const head = text.substring(0, 256)
+        setIsConfirmDeleteModalOpen(true)
 
-        return head
     }
-    
+
+
+    const onResultConfirmDelete = async(result) =>{
+
+        if(result == true){
+                        
+            const res = await ArticleAPI.deleteArticle(auth.jwt, state.id)
+            
+            if(res == null){
+                window.showToast('삭제가 실패 하였습니다', 'error')
+                return
+            }
+
+            window.showToast('삭제 되었습니다', 'info')
+
+            navigate(-2)
+        }        
+    }
+
+
     return validAuth(auth) ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {isOverlayLoading && <OverlayLoading/>}
@@ -300,9 +316,10 @@ export default function() {
             </select>
 
             <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={170} height={170}/>
-            {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}
-    
+            {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}    
             <BeautyButton type='success' onClick={onClickPost}>올리기</BeautyButton>
+            <BeautyButton type='danger' onClick={onClickDelete}>삭제하기</BeautyButton>
+            <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
             <BeautyButton type='danger' onClick={onClickLeave}>뒤로가기</BeautyButton>
         </div>
         ) : (<GoLogin/>)

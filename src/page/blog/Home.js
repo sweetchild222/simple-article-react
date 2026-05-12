@@ -62,7 +62,7 @@ export default function() {
     const res = await ArticleAPI.getBlogArticles(jwt, blog_id, query)
 
     return res
-  }  
+  }
 
 
   const onClickCategory = async(category) => {
@@ -107,7 +107,7 @@ export default function() {
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data}/>)}
                   </div>
                   <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
-                    <div style={{flex:'1', display:'flex', flexDirection:'row', alignItems:'left'}}>
+                    <div style={{flex:'1', display:'flex', flexDirection:'row'}}>
                       <CreateArticle blogId={blog_id} isEdit={isEditable()}/>
                     </div>
                     {selectedCategory && selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
@@ -119,8 +119,7 @@ export default function() {
                   <div style={{fontSize:'18px', marginTop:'20px'}}>{'카테고리에 글이 없습니다. 글을 작성해 보세요'}</div>
                   <CreateArticle blogId={blog_id} isEdit={isEditable()}/>
                 </div>)
-              )}
-              
+              )}              
           </div>
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{maxWidth:'230px', alignItems:'center', display: 'block'}}>

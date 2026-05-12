@@ -87,7 +87,7 @@ export default function({totalPageCount, displayPageCount, onClickPage}) {
         <div style={{display:'flex', flexDirection:'row', justifyContent:'center'}}>
             <BeautyButton type={'transparent'} style={{color:'black', visibility:(curStartPage > 0 ? 'visible' : 'hidden')}} onClick={onClickForward}><FaBackward size={20}/></BeautyButton>
             <div style={{display:'flex', flexDirection:'column'}} >
-                <div style={{display:'flex', flexDirection:'row', justifyContent:'left', width:((displayPageCount * pageNumWidth) + 'px')}}>
+                <div style={{display:'flex', flexDirection:'row', justifyContent:'start', width:((displayPageCount * pageNumWidth) + 'px')}}>
                     {getCurPageList().map((data, index) => <BeautyButton key={index} type={'transparent'} style={{color:'black', width: pageNumWidth + 'px', fontSize:'20px'}} onClick={()=> onClickPageInner(index, data)}>{data}</BeautyButton>)}
                 </div>
                 <div key={animationKey} className={'movingbar'} style={{marginLeft:(movingBarMarginLeft + 'px'), width:(pageNumWidth - movingBarMarginLeft - movingBarMarginRight + 'px'), height:'4px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px', marginRight:(movingBarMarginRight + 'px')}}></div>

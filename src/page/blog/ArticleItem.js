@@ -8,6 +8,7 @@ import BeautyButton from '../../common/BeautyButton.js';
 import GoLogin from "../../common/GoLogin.js";
 import OverlayLoading from "../../common/OverlayLoading.js";
 import LoadingImage from "../../common/LoadingImage.js";
+import * as ArticleAPI from '../../api/ArticleAPI.js'
 import { FaEye } from "react-icons/fa";
 import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
@@ -17,6 +18,7 @@ import { BiSolidComment } from "react-icons/bi";
 export default function(props) {
     
     const article = props.article
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
     const navigate = useNavigate()
 
@@ -78,16 +80,33 @@ export default function(props) {
         return formattedDate
     }
 
-    const onClickNavigateArticle = () =>{
+    const onClickNavigateArticle = async() =>{
 
-        navigate('article/' + article.id)
+        if(article.posted == 1)
+            navigate('article/' + article.id)
+        else{
+            
+            if(validAuth(auth)){
+
+                if(auth.blog_id != article.blog_id)
+                    return
+
+                const res = await ArticleAPI.getArticle(auth.jwt, article.id)
+
+                if(res == null){
+                    window.showToast('작성 중인 글을 가져 올 수 없습니다', 'error')
+                    return
+                }
+                navigate('/write', {state:res})
+            }
+        }
     }
     
     return (
         <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', padding:'10px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5'}}>
             <div style={{display: 'flex', flexDirection: 'column', flex:'1', marginLeft:'5px', marginRight:'5px'}}>
-                <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title}</div>
-                <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : article.head}</div>
+                <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title != '' ? article.title : '...'}</div>
+                <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head : '......')}</div>
                 <div style={{flex:'1'}}></div>
                 <div style={{display: 'flex', flexDirection: 'row',  alignItems:'center', color:'#888888'}}>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>

@@ -16,6 +16,8 @@ export default function(props) {
     const [image, setImage] = useState(null)
     const [nickname, setNickname] = useState(null)
 
+    const [user, setUser] = useState(null)
+
     const combinedStyle = {
         ...props.style
     }
@@ -37,14 +39,13 @@ export default function(props) {
                 return
             }
 
-            const imageUrl = res.image  + '?size=' + width + 'x' + width
-
-            setImage(imageUrl)
-            setNickname(res.nickname != null ? res.nickname : res.username)
+            setUser(res)
         })
 
     },  [props.userId])
 
-    return (<LoadingImage src={image} tooltip={nickname} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{...combinedStyle}}/>)
+    return user ? 
+        (<LoadingImage src={user.image + '?size=' + width + 'x' + height} tooltip={user.nickname} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{...combinedStyle}}/>)
+        : null
 }
 

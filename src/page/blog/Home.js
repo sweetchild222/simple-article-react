@@ -28,13 +28,6 @@ export default function() {
   const blog_id = parseInt(id)
 
   const navigate = useNavigate()
-
-  const location = useLocation()
-
-  const state = location.state
-
-  console.log(state)
-
         
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const [selectedCategory, setSelectedCategory] = useState(null)
@@ -44,7 +37,7 @@ export default function() {
 
   const countPerPage = 6
 
-
+  
   const isEditable = ()=> {
 
     return (validAuth(auth) && auth.blog_id == blog_id)
@@ -119,8 +112,8 @@ export default function() {
   }
 
   
-  return (
-      <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%', marginTop:'40px'}}>
+  return validBlogId(blog_id) ? (
+      <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%'}}>
         {isOverlayLoading && <OverlayLoading/>}
         <div style={{width:'100px'}}/>
           <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
@@ -138,14 +131,13 @@ export default function() {
                   <img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'150px'}}/>
                 </div>)
               )}
-          </div>
-        
+          </div>        
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{width:'200px', maxWidth:'200px', minWidth:'200px', alignItems:'center', display: 'block'}}>          
-          {validBlogId(blog_id) && <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>}
-          {validBlogId(blog_id) && <Recents blogId={blog_id} isEdit={isEditable()}></Recents>}
+          <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
+          <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
         </div>
         <div style={{width:'100px'}}/>
-      </div>    
-  )
+      </div>
+  ) : null
 }

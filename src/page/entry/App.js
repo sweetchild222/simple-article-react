@@ -33,6 +33,7 @@ export default function() {
 
     <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
       <MainHeader/>
+      <div style={{height:'30px'}}/>
       <Outlet/>
     </div>
   )
@@ -42,6 +43,7 @@ export default function() {
     
     <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
       <BlogHeader/>
+      <div style={{height:'30px'}}/>
       <Outlet/>
     </div>
   )

@@ -12,19 +12,23 @@ import BeautyButton from "../../common/BeautyButton.js";
 export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [reloadKey, setReloadKey] = useState(0)
-    const [loggedUserId, setLoggedUserId] = useState(null)
-    const [nickname, setNickName] = useState(null)
+    const [user, setUser] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
-        
+                        
         if(validAuth(auth)) {
-            setLoggedUserId(auth.user_id)
-            setReloadKey(prev => prev + 1)
+
+            UserAPI.getUser(auth.user_id).then((res)=>{
+        
+                if(res == null){
+                    navigate('/pageNotFound')
+                    return
+                }
+    
+                setUser(res)
+            })
         }
-        else
-            setLoggedUserId(null)
 
     }, [auth])
 
@@ -45,14 +49,10 @@ export default function() {
 
     const onClickUser = (e) =>{
 
-        if(validAuth(auth)){
-
-            console.log('sdfs')
+        if(validAuth(auth))
             navigate('/user/' + auth.user_id)
-        }
-        else{            
+        else
             navigate('/account')
-        }
     }
 
 
@@ -65,17 +65,17 @@ export default function() {
 
         navigate('/')
     }
-        
+    
 
     return (
-            <div style={{ display: 'flex', alignItems: 'center', padding:'10px 10px 10px 10px', backgroundColor:' #494D5F'}}>
+            <div style={{ display: 'flex', alignItems: 'center', padding:'10px 10px 10px 10px', backgroundColor:' #494D5F', boxShadow: '0 4px 3px -3px black'}}>
                 <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickHome}/>
                 <div style={{flexGrow:1, backgroundColor:'blue'}} />
                 <BeautyButton  type='success' onClick={onClickSearch} style={{margin:'0px 5px 0 5px'}}>검색</BeautyButton>
                 <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown} ></input>
                 <div style={{margin:'0px 0px 0px 10px', width:'64px'}}>
-                    {!loggedUserId && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
-                    {loggedUserId && <ProfileImage tooltip={nickname} key={reloadKey} userId={loggedUserId} onClick={onClickUser}/>}
+                    {!validAuth(auth) && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
+                    {validAuth(auth) && user && <ProfileImage tooltip={user.nickname} userId={auth.user_id} onClick={onClickUser}/>}
                 </div>
             </div>
     )

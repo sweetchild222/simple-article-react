@@ -22,17 +22,17 @@ import ImageCropModal from '../../common/ImageCropModal.js'
 
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker, useParams} from 'react-router-dom';
 import PageNotFound from '../entry/PageNotFound.js';
+import ProfileImage from "../../common/ProfileImage.js";
 
 export default function() {
 
-    const { id } = useParams()      
+    const { id } = useParams()
     const user_id = parseInt(id)
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [userName, setUserName] = useState('...')
-    const [nickName, setNickName] = useState('...')
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const [user, setUser] = useState(null)
         
-    const navigate = useNavigate()    
+    const navigate = useNavigate()
     
     useEffect(()=> {
 
@@ -46,15 +46,20 @@ export default function() {
 
             if(res == null){
                 navigate('/pageNotFound')
-                
                 return
             }
 
-            setUserName(res.username)
-            setNickName(res.nickname)
+            setUser(res)
         })
 
     }, [user_id])
+
+
+
+    const isEditable = () => {
+
+        return (validAuth(auth) && auth.user_id == user_id)
+    }
 
 
     const validUserId = (user_id) =>{
@@ -71,78 +76,29 @@ export default function() {
 
     const onClickNavigateProfile = async() =>{
 
-        if(!validAuth(auth))
+        if(!isEditable())
             return
 
         navigate('profile')
     }
 
 
+
     const onClickNavigateBlog = async() => {
 
-        if(!validAuth(auth))
+        if(!user)
             return
-
-        navigate('/blog/' + auth.blog_id)
+        
+        navigate('/blog/' + user.blog_id)
     }
 
 
-    const getCommonCategory = async()=> {
-    
-        const resCategories = await ArticleAPI.getCategories(auth.user_id, 'is_default=1')
-    
-        if(resCategories == null)
-          return -1
-    
-        if(resCategories.length == 0)
-          return -1
-    
-        return resCategories[0].id
-    }
-    
-
-    const onClickNavigateWrite = async() => {
-
-        if(!validAuth(auth))
-            return
-
-        const category_id = await getCommonCategory()
-
-        if(category_id == -1){
-            window.showToast('카테고리를 가져 올 수 없습니다', 'error')
-            return
-        }
-        
-        const payload = {
-            title:'',
-            content:'',
-            head:'',
-            posted:0,
-            thumbnail:'',
-            category_id:category_id
-        }
-        
-        const resArticle = await ArticleAPI.postArticle(auth.jwt, payload)
-        
-        if(resArticle == null) {
-            window.showToast('새 글 생성에 실패 했습니다', 'error')
-            return
-        }
-
-        const state = {id:resArticle.id, ...payload}
-            
-        navigate('/write', {state:state})
-    }
-    
-
-    return validAuth(auth) ? (
+    return validUserId(user_id) ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
-        <label>{userName}</label>
-        <label>{nickName}</label>
-        <BeautyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</BeautyButton>
-        <BeautyButton onClick={onClickNavigateBlog} type='success'>블로그</BeautyButton>
-        <BeautyButton onClick={onClickNavigateWrite} type='success'>새글 쓰기</BeautyButton>
-        <div>작성 중인 글</div>
+        <label style={{marginBottom:'10px'}}>{user ? user.nickname : '...'}</label>
+        <LoadingImage src={user ? user.image : null} width={256} height={256}/>
+        <BeautyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</BeautyButton>
+        {isEditable() && <BeautyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</BeautyButton>}
       </div>) : null
 }
 

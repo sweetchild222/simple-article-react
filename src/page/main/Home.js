@@ -32,8 +32,6 @@ export default function Home() {
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
   
-  
-  
   const onClickEditor = async() => {
 
     const query = 'offset=0&limit=1&order=1&posted=0&source_id=none'
@@ -168,7 +166,7 @@ export default function Home() {
     const payload = {
 
       title:'gwegwe',
-      content:'wegw',      
+      content:'wegw',
       posted:0,
       thumbnail:'http://ssaabbb',
       category_id:10,      
@@ -402,7 +400,7 @@ export default function Home() {
 
   
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%', marginTop:'40px'}}>
       <BeautyButton disabled={isDisable} isLoading={isLoading} type='default' onClick={onClickEditor}>새글 작성</BeautyButton>
       <Modal title={'이미 작성 중인 글이 있습니다. 이어서 작성하시겠습니까?'} type={'yesno'} isOpen={isCreateExistModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateExitModalOpen(false)}></Modal>
       <Modal title={'이미 수정 중인 글이 있습니다. 이어서 작성하시겠습니까?'} type={'yesno'} isOpen={isModifyExistModalOpen} onResult={onResultModify} onClose={()=>setIsModifyExitModalOpen(false)}></Modal>      

@@ -36,12 +36,8 @@ export default function() {
     const refLabelTitle = useRef(null)
     const refImageCrop  = useRef(null)
 
-    const [title, setTitle] = useState(null)
+    const [blog, setBlog] = useState(null)
     const [isBlogTitleModalOpen, setIsBlogTitleModalOpen] = useState(false)
-    
-    const [userId, setUserId] = useState(null)
-    const [blogImage, setBlogImage] = useState(null)
-
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     
@@ -64,10 +60,8 @@ export default function() {
                 navigate('/pageNotFound')
                 return
             }
-            
-            setTitle(blog.title)
-            setBlogImage(blog.image + '?size=' + blogImageWidth + 'x' + blogImageHeight)
-            setUserId(blog.user_id)
+
+            setBlog(blog)
         })
 
     }, [blog_id])
@@ -87,7 +81,10 @@ export default function() {
 
     const onClickNavigateBlog = () => {
 
-        //navigate('/blog/' + id)
+        if(!blog)
+            return
+        
+        navigate('/user/' + blog.user_id)        
     }
 
 
@@ -155,9 +152,12 @@ export default function() {
             window.showToast('블로그 이미지 설정에 실패했습니다', 'error')
             return
         }
-
-        setBlogImage(url + '?size=' + blogImageWidth + 'x' + blogImageHeight)
+        
         setIsModalImageCrop(false)
+
+        const blogClone = Object.assign({}, blog)
+        blogClone.image = url
+        setBlog(blogClone)        
     }
 
 
@@ -177,9 +177,10 @@ export default function() {
             window.showToast('블로그 제목 수정에 실패하였습니다', 'error')
             return
         }
-            
-        setTitle(title)
-    
+
+        const blogClone = Object.assign({}, blog)
+        blogClone.title = title
+        setBlog(blogClone)
         window.showToast('블로그 제목 수정에 성공하였습니다', 'info')
     }
 
@@ -188,16 +189,16 @@ export default function() {
 
         navigate('/')
     }
-    
-    
-    return (
-            <div style={{backgroundColor:' #494D5F', height:'168px', minHeight:'168px', backgroundImage:`url(` + blogImage + `)`, backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black', display:'block'}}>
+
+        
+    return blog ? (
+            <div style={{backgroundColor:' #494D5F', height:'168px', minHeight:'168px', backgroundImage:`url(` + blog.image + '?size=' + blogImageWidth + 'x' + blogImageHeight + `)`, backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black', display:'block'}}>
                 <div style={{backgroundColor:'#00000080', display: 'flex', alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
-                    <ProfileImage size={96} userId={userId} onClick={onClickNavigateBlog}/>
+                    <ProfileImage size={96} userId={blog.user_id} onClick={onClickNavigateBlog}/>
                     <div style={{display: 'flex', alignItems: 'center', marginLeft:'32px', marginRight:'32px'}}>
-                        <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':2,  backgroundColor:'#00000000', color:'white', fontSize:'36px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', alignItems:'center', textOverflow:'ellipsis'}}>{title}</label>
+                        <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':2,  backgroundColor:'#00000000', color:'white', fontSize:'36px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', alignItems:'center', textOverflow:'ellipsis'}}>{blog.title}</label>
                         {isEditable() && <BeautyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></BeautyButton>}
-                        <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
+                        <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
                         {isEditable() && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></BeautyButton>}
                         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={blogImageWidth / blogImageHeight} selectMinWidth={blogImageHeight * 3}></ImageCropModal>}                        
                     </div>
@@ -205,6 +206,6 @@ export default function() {
                     <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
                 </div>
             </div>
-    )
+    ) : null
 }
 

@@ -8,6 +8,7 @@ import {Routes, Route, useNavigate, BrowserRouter, createBrowserRouter, RouterPr
 
 import BlogHeader from '../blog/Header.js'
 import BlogHome  from '../blog/Home.js'
+import Article  from '../blog/Article.js'
 import MainHeader from '../main/Header.js'
 import MainHome from '../main/Home.js'
 
@@ -18,8 +19,6 @@ import Login from '../account/Login.js'
 
 import Writer from '../markdown/Writer.js'
 import Posting from '../markdown/Posting.js'
-
-
 import ErrorBoundary from './ErrorBoundary.js'
 import PageNotFound from './PageNotFound.js'
 
@@ -73,10 +72,13 @@ export default function() {
       errorElement: <PageNotFound />
     },
     {
-      path: "/blog/:id",
+      path: "/blog/:b_id",
       element: <BlogLayout />,
       children: [
         { index: true, element: <BlogHome/>},
+        { path: 'article/:a_id', children: [
+          { index: true, element: <Article/>}]
+        }
       ]
     }
   ])

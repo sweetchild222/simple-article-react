@@ -1,14 +1,15 @@
 import React, {useState, useContext, useEffect, useRef, useCallback } from "react";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
 import axios from 'axios';
 
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
-import AuthContext from "../../util/AuthContext.js";
 
+import AuthContext from "../../util/AuthContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import ProfileImage from "../../common/ProfileImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
+import ToInteger from "../../util/ToInteger.js";
 import Modal from "../../common/Modal.js"
 import * as UserAPI from '../../api/UserAPI.js'
 
@@ -18,6 +19,7 @@ import { MdEdit } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { RiImageAiFill } from "react-icons/ri";
 import { CgImage } from "react-icons/cg";
+
 import { FiUpload } from "react-icons/fi";
 
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
@@ -27,9 +29,9 @@ import ImageCropModal from '../../common/ImageCropModal.js'
 
 export default function() {
 
-    const { id } = useParams()
-
-    const blog_id = parseInt(id)
+    const { b_id } = useParams()
+    
+    const blog_id = ToInteger(b_id)
 
     const navigate = useNavigate()
             
@@ -48,7 +50,7 @@ export default function() {
 
     useEffect(()=>{
 
-        if(!validBlogId(blog_id)){
+        if(!blog_id){
             navigate('/pageNotFound')
             return
         }
@@ -65,18 +67,6 @@ export default function() {
         })
 
     }, [blog_id])
-
-
-    const validBlogId = (blog_id) =>{
-
-        if(blog_id == null)
-            return false
-        
-        if(!Number.isInteger(blog_id))
-            return false
-
-        return true
-    }
 
 
     const onClickNavigateBlog = () => {

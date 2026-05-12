@@ -14,6 +14,7 @@ import AuthContext from "../../util/AuthContext.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import Modal from "../../common/Modal.js"
 import GoLogin from "../../common/GoLogin.js";
+import ToInteger from "../../util/ToInteger.js";
 
 import BeautyButton from '../../common/BeautyButton.js';
 import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
@@ -27,7 +28,8 @@ import ProfileImage from "../../common/ProfileImage.js";
 export default function() {
 
     const { id } = useParams()
-    const user_id = parseInt(id)
+
+    const user_id = ToInteger(id)
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
     const [user, setUser] = useState(null)
@@ -36,7 +38,7 @@ export default function() {
     
     useEffect(()=> {
 
-        if(!validUserId(user_id)){
+        if(!user_id){
             navigate('/pageNotFound')
             return
         }
@@ -62,18 +64,6 @@ export default function() {
     }
 
 
-    const validUserId = (user_id) =>{
-
-        if(user_id == null)
-            return false
-        
-        if(!Number.isInteger(user_id))
-            return false
-
-        return true
-    }
-
-
     const onClickNavigateProfile = async() =>{
 
         if(!isEditable())
@@ -93,7 +83,7 @@ export default function() {
     }
 
 
-    return validUserId(user_id) ? (
+    return user_id ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <label style={{marginBottom:'10px'}}>{user ? user.nickname : '...'}</label>
         <LoadingImage src={user ? user.image : null} width={256} height={256}/>

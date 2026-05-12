@@ -119,8 +119,7 @@ export default function({ref, blogId, isEdit}) {
 
     const onClickArticle = (id) =>{
 
-        console.log(id)
-
+        navigate('article/' + id)        
     }
 
 

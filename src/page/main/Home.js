@@ -293,7 +293,7 @@ export default function Home() {
 
       const payload = {
         title:resArticle.title,
-        content:resArticle.content,        
+        content:resArticle.content,
         posted:0,
         thumbnail:resArticle.thumbnail,
         category_id:resArticle.category_id,

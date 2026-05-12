@@ -16,6 +16,7 @@ import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
 import OverlayLoading from "../../common/OverlayLoading.js";
+import ToInteger from "../../util/ToInteger.js";
 import './Home.css'
 import Categories  from "./Categories.js";
 import Recents  from "./Recents.js";
@@ -23,9 +24,9 @@ import Pagination from "./Pagination.js";
 
 export default function() {
 
-  const { id } = useParams()
+  const { b_id } = useParams()
   
-  const blog_id = parseInt(id)
+  const blog_id = ToInteger(b_id)
 
   const navigate = useNavigate()
         
@@ -37,22 +38,9 @@ export default function() {
 
   const countPerPage = 6
 
-  
   const isEditable = ()=> {
 
     return (validAuth(auth) && auth.blog_id == blog_id)
-  }
-
-  
-  const validBlogId = (blog_id) =>{
-
-      if(blog_id == null)
-          return false
-      
-      if(!Number.isInteger(blog_id))
-          return false
-
-      return true
   }
 
 
@@ -93,12 +81,6 @@ export default function() {
   }
   
 
-  // const onLoadCategoryies = (categoryies) =>{
-        
-  //   if(categoryies != null)
-  //     onClickCategory(categoryies[0])
-  // }
-
   const onClickPage = async(page) => {
         
     setIsOverlayLoading(true)
@@ -112,7 +94,7 @@ export default function() {
   }
 
   
-  return validBlogId(blog_id) ? (
+  return blog_id ? (
       <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%'}}>
         {isOverlayLoading && <OverlayLoading/>}
         <div style={{width:'100px'}}/>

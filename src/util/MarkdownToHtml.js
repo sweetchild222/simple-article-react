@@ -331,6 +331,8 @@ sdf
 
 sdf`
 
+    markdown = text
+
     const extension = [directive(), frontmatter(), gfm(), highlightMark(), math(), defList]
 
     const htmlExtension = [directiveFunc, frontmatterHtml(), gfmHtml(), highlightMarkHtml, mathHtml(), defListHtml]

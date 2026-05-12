@@ -16,7 +16,9 @@ import { BiSolidComment } from "react-icons/bi";
 
 export default function(props) {
     
-    const article = props.article    
+    const article = props.article
+
+    const navigate = useNavigate()
 
     if(article.id == 162)
         article.head = 'asdfasdfaskldfjsadklfjsdlkfjsdklfjwoiefweojfiwejfoiwejfoiwjfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfiosdjlkdsjsdflkasdjlksadjlkasdjlaksdjalksdfjlk;ldsfakjlsadkfjlaskdfjslakdfjsalkdfjasldkfjsalkdfjasldkfjsalkdfjaslsdfsdfsdfsdkfjsalkdfjasldsdfsdfkfjf'
@@ -78,11 +80,11 @@ export default function(props) {
 
     const onClickNavigateArticle = () =>{
 
-        console.log(article.id)
+        navigate('article/' + article.id)
     }
     
     return (
-        <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', marginTop:'10px', marginBottom:'10px'}}>
+        <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', padding:'10px', marginTop:'10px', marginBottom:'10px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5'}}>
             <div style={{display: 'flex', flexDirection: 'column', flex:'1', marginLeft:'5px', marginRight:'5px'}}>
                 <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title}</div>
                 <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : article.head}</div>
@@ -101,10 +103,9 @@ export default function(props) {
                         <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.comment_count)}</div>
                     </div>
                     <div style={{whiteSpace: 'nowrap'}} >{timestampToString(article.create_at)}</div>
-                </div>
-                <div style={{backgroundColor:'lightgray', height:'1px'}}></div>
+                </div>                
             </div>
-            <LoadingImage src={article.thumbnail + '?size=170x170'} width={170} height={170}/>
+            <LoadingImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>
         </div>
     )
 }

@@ -67,23 +67,12 @@ export async function getArticle(jwt, article_id) {
 export async function getBlogArticles(jwt, blog_id, query) {
 
   try{
-
-    if(jwt != null){
-      const authorization = 'Bearer '.concat(jwt);
-
+    
+      const authorization = jwt != null ? 'Bearer '.concat(jwt) : null
+      
       const response = await axios.get('/api/blog/' + blog_id + '/article?' + query, { headers: {Authorization: authorization}})
 
-      return response.data
-    }
-    else{
-
-      const response = await axios.get('/api/blog/' + blog_id + '/article?' + query)
-
-      return response.data
-    }
-
-    
-
+      return response.data    
   }
   catch(error){
 

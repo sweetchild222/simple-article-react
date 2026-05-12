@@ -105,7 +105,7 @@ export default function() {
                   <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px'}}>
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data}/>)}
                   </div>
-                  {selectedCategory && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
+                  {selectedCategory && selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
                 </div>) : 
                 (<div style={{display:'flex', alignItems:'center', flexDirection:'column', width:'100%', justifyContent:'center', height:'100%', marginTop:'20px'}}>
                   <img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>

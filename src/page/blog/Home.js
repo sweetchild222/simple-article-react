@@ -20,6 +20,7 @@ import ToInteger from "../../util/ToInteger.js";
 import './Home.css'
 import Categories  from "./Categories.js";
 import Recents  from "./Recents.js";
+import CreateArticle  from "./CreateArticle.js";
 import Pagination from "./Pagination.js";
 
 export default function() {
@@ -82,7 +83,7 @@ export default function() {
   
 
   const onClickPage = async(page) => {
-        
+
     setIsOverlayLoading(true)
         
     const articles = await getBlogArticles(page, selectedCategory.id != 0 ? selectedCategory.id : null, selectedCategory.id != 0 ? null : 0)
@@ -101,21 +102,30 @@ export default function() {
           <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
               {articles && (
                 articles.length > 0 ? 
-                (<div style={{display:'flex', flexDirection:'column'}}>
-                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px'}}>
+                (<div style={{display:'flex', flexDirection:'column', width:'100%'}}>
+                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px', marginBottom:'20px'}}>
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data}/>)}
                   </div>
-                  {selectedCategory && selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
+                  <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
+                    <div style={{flex:'1', display:'flex', flexDirection:'row', alignItems:'left'}}>
+                      <CreateArticle blogId={blog_id} isEdit={isEditable()}/>
+                    </div>
+                    {selectedCategory && selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
+                    <div style={{flex:'1'}}></div>
+                  </div>
                 </div>) : 
-                (<div style={{display:'flex', alignItems:'center', flexDirection:'column', width:'100%', justifyContent:'center', height:'100%', marginTop:'20px'}}>
+                (<div style={{display:'flex', alignItems:'center', flexDirection:'column', width:'100%', justifyContent:'center', height:'100%', marginTop:'20px'}}>                                    
                   <img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>
+                  <div style={{fontSize:'18px', marginTop:'20px'}}>{'카테고리에 글이 없습니다. 글을 작성해 보세요'}</div>
+                  <CreateArticle blogId={blog_id} isEdit={isEditable()}/>
                 </div>)
               )}
+              
           </div>
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{maxWidth:'230px', alignItems:'center', display: 'block'}}>
           <Categories blogId={blog_id} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
-          <div style={{height:'10px'}}></div>
+          <div style={{height:'30px'}}></div>
           <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
         </div>
         <div style={{width:'100px'}}/>

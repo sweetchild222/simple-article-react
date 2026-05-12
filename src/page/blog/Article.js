@@ -23,6 +23,7 @@ import Recents  from "./Recents.js";
 import Pagination from "./Pagination.js";
 import MarkdownToHtml from '../../util/MarkdownToHtml.js'
 
+
 export default function() {
 
     const { b_id, a_id } = useParams()
@@ -42,31 +43,26 @@ export default function() {
                 navigate('/pageNotFound')
                 return
             }
-                        
+
             if(blog_id != article.blog_id){
                 navigate('/pageNotFound')
                 return
             }
 
-
-            //const html = MarkdownToHtml(refMDX.current.getMarkdown())
-
             setArticle(article)
         })
 
-    }, [auth, b_id, a_id])
+    }, [auth, b_id, a_id])        
 
-
-
-
-
-
-
-
-
-    const navigate = useNavigate()
-
-    return (<div style={{width:'100%', backgroundColor:'red'}}>
-        {article && <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{margin:'10px', wordBreak:'break-all'}}/>}
-    </div>)
+    return article ? (<div style={{display:'flex', flexDirection: 'row', justifyContent:'center', marginTop:'20px'}}>        
+        <div style={{width:'2px', backgroundColor:'lightgray', marginRight:'20px'}}/>
+            <div style={{display:'flex', flexDirection: 'column', alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
+                <div className={'clamped-text'} style={{'--line-count':3, fontSize:'28px'}}>{article.title + 'asdfasdfklsdafjlasjdflsaidjiosjfioewjoiwejfieowjoiwejfwoiefjioaskldfjaslkdfjasdlkfjaskldfjaksldfklajdlfkjalsdkfjalkdsfasdfasdfklsdafjlasjdflsaidjiosjfioewjoiwejfieowjoiwejfwoiefjioaskldfjaslkdfjasdlkfjaskldfjaksldfklajdlfkjalsdkfjalkdsf'}</div>
+                <div style={{height:'30px'}}></div>
+                <LoadingImage src={article.thumbnail + '?size=170x170'} width={960} height={540} borderWidth={0}/>
+                <div style={{height:'30px'}}></div>
+                <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
+            </div>
+        <div style={{width:'2px', backgroundColor:'lightgray', marginLeft:'20px'}}/>
+        </div>) : <OverlayLoading/>
 }

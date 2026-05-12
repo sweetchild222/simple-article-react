@@ -24,6 +24,7 @@ import ImageCropModal from '../../common/ImageCropModal.js'
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker, useParams} from 'react-router-dom';
 import PageNotFound from '../entry/PageNotFound.js';
 import ProfileImage from "../../common/ProfileImage.js";
+import OverlayLoading from '../../common/OverlayLoading.js';
 
 export default function() {
 
@@ -83,12 +84,12 @@ export default function() {
     }
 
 
-    return user_id ? (
+    return user ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
-        <label style={{marginBottom:'10px'}}>{user ? user.nickname : '...'}</label>
-        <LoadingImage src={user ? user.image : null} width={256} height={256}/>
+        <label style={{marginBottom:'10px'}}>{user.nickname}</label>
+        <LoadingImage src={user.image} width={256} height={256}/>
         <BeautyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</BeautyButton>
         {isEditable() && <BeautyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</BeautyButton>}
-      </div>) : null
+      </div>) : <OverlayLoading/>
 }
 

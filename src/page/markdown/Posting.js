@@ -181,8 +181,8 @@ export default function() {
         if(!refImageCrop.current)
             return
         
-        const dWidth = 640
-        const dHeight = 640
+        const dWidth = 960
+        const dHeight = 960
 
         const canvas = await refImageCrop.current.export(dWidth, dHeight)
         

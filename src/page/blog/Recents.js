@@ -46,77 +46,6 @@ export default function({ref, blogId, isEdit}) {
     }
 
 
-    const isEditable = ()=> {
-
-        return (validAuth(auth) && isEdit)
-    }
-
-
-    const getDefaultCategory = async()=> {
-        
-        const res = await ArticleAPI.getCategories(blogId, 'is_default=1')        
-    
-        if(res == null)
-            return -1
-    
-        if(res.length == 0)
-            return -1
-    
-        return res[0].id
-    }
-
-    
-    const onClickNewArticle = async() =>{
-
-        if(!isEditable())
-            return
-
-        const query = 'posted=0'
-
-        const res = await ArticleAPI.getBlogArticles(auth.jwt, blogId, query)
-
-        if(res == null){
-            window.showToast('작성 중인 글을 가져 올 수 없습니다', 'error')
-            return
-        }
-
-        const maxWritingCount = 10
-
-        if(res.length > maxWritingCount){
-
-            window.showToast('작성 중인 글이 너무 많습니다 (' + maxWritingCount + ' 이하)', 'error')
-            return
-        }
-
-        const category_id = await getDefaultCategory()
-
-        if(category_id == -1){
-            window.showToast('카테고리를 가져 올 수 없습니다', 'error')
-            return
-        }
-
-        const payload = {
-            title:'',
-            content:'',
-            head:'',
-            posted:0,
-            thumbnail:'',
-            category_id:category_id
-        }
-                
-        const resArticle = await ArticleAPI.postArticle(auth.jwt, payload)
-                        
-        if(resArticle == null) {
-            window.showToast('새 글 생성에 실패 했습니다', 'error')
-            return
-        }
-
-        const state = {id:resArticle.id, ...payload}
-            
-        navigate('/write', {state:state})
-    }
-
-
     const onClickArticle = (id) =>{
 
         navigate('article/' + id)        
@@ -124,12 +53,11 @@ export default function({ref, blogId, isEdit}) {
 
 
     return (
-        <div style={{display:'flex', flexDirection:'column', marginTop:'20px'}}>
+        <div style={{display:'flex', flexDirection:'column'}}>
             <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'10px'}}>최근 글</label>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left', padding:'10px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
-                {articles && articles.map((data, index) => <div className={'clamped-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', fontWeight:'600'}} onClick={()=> onClickArticle(data.id)}>{data.title}</div>)}
-                {isEditable() && <label title='새글 작성' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}><FaPen size={30}/></label>}
+                {articles && articles.map((data, index) => <div className={'clamped-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', fontWeight:'600'}} onClick={()=> onClickArticle(data.id)}>{data.title}</div>)}                
             </div>
         </div>
-    )    
+    )
 }

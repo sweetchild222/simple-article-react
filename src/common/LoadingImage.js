@@ -53,7 +53,7 @@ export default function(props) {
     return props.src != null  ? (
             <div className={`${isLoading ? 'rotateLoading': ''}`} title={props.tooltip} onClick={props.onClick} style={{width: props.width + 'px', height: props.height + 'px', position: 'relative', border: '1px solid gray', borderRadius:(props.borderRadius + 1) + 'px', borderWidth:props.borderWidth + 'px', display: 'flex', justifyContent: 'center', alignItems:'center', ...combinedStyle}}>
                 {!isError && <img src={!(props.src == null || props.src == '') ? props.src : '/image/no-photo.png'} onLoad={onLoadInner} onError={onErrorInner} style={{borderRadius:(props.borderRadius) + 'px', width: props.width + 'px', height: props.height + 'px', objectFit: 'cover'}}/>}
-                {isError && <img src={'/image/broken-photo.png'} style={{borderRadius:(props.borderRadius) + 'px', width: props.width + 'px', height: props.height + 'px', objectFit: 'cover'}}/>}
+                {isError && <img src={'/image/broken-photo.png'} style={{borderRadius:(props.borderRadius) + 'px', width: props.width + 'px', height: props.height + 'px', objectFit: 'contain'}}/>}
             </div>
         ) : (<div onClick={props.onClick} style={{width: props.width + 'px', height: props.height + 'px', position: 'relative', border: '1px solid gray', borderRadius:(props.borderRadius + 1) + 'px', borderWidth:props.borderWidth + 'px', display: 'flex', justifyContent: 'center', alignItems:'center'}}></div>)
 }

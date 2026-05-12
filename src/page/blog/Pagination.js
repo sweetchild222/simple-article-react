@@ -84,7 +84,7 @@ export default function({totalPageCount, displayPageCount, onClickPage}) {
     }
 
     return (
-        <div style={{display:'flex', flexDirection:'row', justifyContent:'center', marginTop:'30px'}}>
+        <div style={{display:'flex', flexDirection:'row', justifyContent:'center'}}>
             <BeautyButton type={'transparent'} style={{color:'black', visibility:(curStartPage > 0 ? 'visible' : 'hidden')}} onClick={onClickForward}><FaBackward size={20}/></BeautyButton>
             <div style={{display:'flex', flexDirection:'column'}} >
                 <div style={{display:'flex', flexDirection:'row', justifyContent:'left', width:((displayPageCount * pageNumWidth) + 'px')}}>

@@ -84,7 +84,7 @@ export default function(props) {
     }
     
     return (
-        <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', padding:'10px', marginTop:'10px', marginBottom:'10px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5'}}>
+        <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', padding:'10px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5'}}>
             <div style={{display: 'flex', flexDirection: 'column', flex:'1', marginLeft:'5px', marginRight:'5px'}}>
                 <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title}</div>
                 <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : article.head}</div>

@@ -88,7 +88,7 @@ select:focus{
 .clamped-text {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: var(--line-count);
+  -webkit-line-clamp: var(--line-count, 1);
   overflow: hidden;
   word-break:break-all;
   text-overflow: ellipsis;

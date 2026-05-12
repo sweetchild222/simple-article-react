@@ -222,13 +222,15 @@ export default function({ref, blogId, onClickCategory, isEdit}) {
 
         setIsOpenCategoryModal(true)
     }
-
-
+    
     return (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
-                {categories && categories.map((data, index) => <label key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</label>)}
-                {isEditable() && <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={30}/></label>}
+        <div style={{display:'flex', flexDirection:'column', marginTop:'20px'}}>
+            <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'10px'}}>카테고리</label>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left', padding:'5px 10px 10px 10px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
+                {categories && categories.map((data, index) => <div key={data.id} className={'clamped-text'} style={{color:'', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</div>)}
+                {isEditable() && <div title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={30}/></div>}
                 {isEditable() && categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => item.id != 0)}></CategoryModal>}
             </div>
+        </div>
     )    
 }

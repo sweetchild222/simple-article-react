@@ -36,7 +36,7 @@ export default function() {
   const [isOverlayLoading, setIsOverlayLoading] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
 
-  const countPerPage = 6
+  const countPerPage = 8
 
   const isEditable = ()=> {
 
@@ -102,19 +102,20 @@ export default function() {
               {articles && (
                 articles.length > 0 ? 
                 (<div style={{display:'flex', flexDirection:'column'}}>
-                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'20px'}}>
+                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px'}}>
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data}/>)}
                   </div>
                   {selectedCategory && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
                 </div>) : 
-                (<div style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
-                  <img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'150px'}}/>
+                (<div style={{display:'flex', alignItems:'center', flexDirection:'column', width:'100%', justifyContent:'center', height:'100%', marginTop:'20px'}}>
+                  <img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>
                 </div>)
               )}
           </div>
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
-        <div style={{width:'200px', maxWidth:'200px', minWidth:'200px', alignItems:'center', display: 'block'}}>          
+        <div style={{maxWidth:'230px', alignItems:'center', display: 'block'}}>
           <Categories blogId={blog_id} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
+          <div style={{height:'10px'}}></div>
           <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
         </div>
         <div style={{width:'100px'}}/>

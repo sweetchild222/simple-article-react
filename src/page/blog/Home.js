@@ -93,11 +93,11 @@ export default function() {
   }
   
 
-  const onLoadCategoryies = (categoryies) =>{
+  // const onLoadCategoryies = (categoryies) =>{
         
-    if(categoryies != null)
-      onClickCategory(categoryies[0])
-  }
+  //   if(categoryies != null)
+  //     onClickCategory(categoryies[0])
+  // }
 
   const onClickPage = async(page) => {
         
@@ -117,8 +117,6 @@ export default function() {
         {isOverlayLoading && <OverlayLoading/>}
         <div style={{width:'100px'}}/>
           <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
-            <div style={{color:'gray'}}>{selectedCategory ? selectedCategory.name : '...'}</div>
-            <div style={{backgroundColor:'lightgray', width:'300px', height:'2px'}}></div>
               {articles && (
                 articles.length > 0 ? 
                 (<div style={{display:'flex', flexDirection:'column'}}>
@@ -131,10 +129,10 @@ export default function() {
                   <img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'150px'}}/>
                 </div>)
               )}
-          </div>        
+          </div>
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{width:'200px', maxWidth:'200px', minWidth:'200px', alignItems:'center', display: 'block'}}>          
-          <Categories blogId={blog_id} onLoadCategoryies={onLoadCategoryies} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
+          <Categories blogId={blog_id} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
           <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
         </div>
         <div style={{width:'100px'}}/>

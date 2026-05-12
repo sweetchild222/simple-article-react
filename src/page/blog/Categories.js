@@ -17,10 +17,11 @@ import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
 import { MdCategory } from "react-icons/md";
 
-export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit}) {
+export default function({ref, blogId, onClickCategory, isEdit}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [categories, setCategories] = useState(null)
+    const [selectIndex, setSelectIndex] = useState(0)
     const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
 
     useEffect(()=> {
@@ -36,11 +37,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
         
         if(categoryies == null || categoryies.length == 0) {
 
-            window.showToast('카테고리를 가져 올 수 없습니다', 'error')
-
-            if(onLoadCategoryies != null)
-                onLoadCategoryies(null)
-
+            window.showToast('카테고리를 가져 올 수 없습니다', 'error')            
             return
         }
 
@@ -56,8 +53,10 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
 
         setCategories(categoryies)
 
-        if(onLoadCategoryies != null)
-            onLoadCategoryies(categoryies)
+        if(onClickCategory != null){
+            setSelectIndex(0)
+            onClickCategory(categoryies[0])
+        }
     }
 
 
@@ -106,8 +105,10 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
         if(index == -1)
             return
 
-        if(onClickCategory != null)
+        if(onClickCategory != null){
+            setSelectIndex(index)
             onClickCategory(categories[index])
+        }
     }
 
 
@@ -225,7 +226,7 @@ export default function({ref, blogId, onLoadCategoryies, onClickCategory, isEdit
 
     return (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left'}}>
-                {categories && categories.map((data, index) => <label className={'underline-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</label>)}
+                {categories && categories.map((data, index) => <label key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</label>)}
                 {isEditable() && <label title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={30}/></label>}
                 {isEditable() && categories && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => item.id != 0)}></CategoryModal>}
             </div>

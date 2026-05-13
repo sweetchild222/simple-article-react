@@ -23,7 +23,6 @@ export default function({ref, blogId, isEdit}) {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
     const navigate = useNavigate()
-    
 
     const isEditable = ()=> {
 
@@ -91,8 +90,8 @@ export default function({ref, blogId, isEdit}) {
         }
 
         const state = {id:resArticle.id, ...payload}
-            
-        navigate('/write', {state:state})
+
+        navigate('/blog/' + blogId + '/write', {state:state})
     }
 
 

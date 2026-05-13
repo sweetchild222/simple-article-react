@@ -31,9 +31,11 @@ export default function() {
 
   const navigate = useNavigate()
         
+  const refCategories = useRef(null)
+  
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-  const [selectedCategory, setSelectedCategory] = useState(null)
-  const [articles, setArticles] = useState(null)    
+  const [selectedCategory, setSelectedCategory] = useState(null)  
+  const [articles, setArticles] = useState(null)
   const [isOverlayLoading, setIsOverlayLoading] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
 
@@ -62,31 +64,55 @@ export default function() {
     const res = await ArticleAPI.getBlogArticles(jwt, blog_id, query)
 
     return res
+
   }
 
 
   const onClickCategory = async(category) => {
 
     setIsOverlayLoading(true)
+
+    setSelectedCategory(category)
+
+
+    const category_id = category.id != 0 ? category.id : null
+    const posted = category.id != 0 ? null : 0
     
-    const articles = await getBlogArticles(0, category.id != 0 ? category.id : null, category.id != 0 ? null : 0)
+    const articles = await getBlogArticles(0, category_id, posted)
 
     if(articles != null)
       setArticles(articles)
 
-    setIsOverlayLoading(false)
-
-    setSelectedCategory(category)
+    setIsOverlayLoading(false)    
     
     setReloadKey(prev => prev + 1)
+  }
+
+  const getCategoryName = (id) =>{
+
+    if(refCategories.current == null)
+      return ''
+
+    const categories = refCategories.current.categories()
+
+    const found = categories.find((item) => item.id == id)
+
+    if(found == null)
+      return ''
+
+    return found.name
+
   }
   
 
   const onClickPage = async(page) => {
 
     setIsOverlayLoading(true)
+
+    const category_id = selectedCategory.id != 0 ? selectedCategory.id : null
+    const posted = selectedCategory.id != 0 ? null : 0
         
-    const articles = await getBlogArticles(page, selectedCategory.id != 0 ? selectedCategory.id : null, selectedCategory.id != 0 ? null : 0)
+    const articles = await getBlogArticles(page, category_id, posted)
 
     if(articles != null)
       setArticles(articles)
@@ -104,7 +130,7 @@ export default function() {
                 articles.length > 0 ? 
                 (<div style={{display:'flex', flexDirection:'column', width:'100%'}}>
                   <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px', marginBottom:'20px'}}>
-                    {articles.map((data, index) => <ArticleItem key={data.id} article={data}/>)}
+                    {articles.map((data, index) => <ArticleItem key={data.id} article={data} categoryName={getCategoryName(data.category_id)}/>)}
                   </div>
                   <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
                     <div style={{flex:'1', display:'flex', flexDirection:'row'}}>
@@ -123,7 +149,7 @@ export default function() {
           </div>
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{maxWidth:'230px', alignItems:'center', display: 'block'}}>
-          <Categories blogId={blog_id} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
+          <Categories ref={refCategories} blogId={blog_id} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
           <div style={{height:'30px'}}></div>
           <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
         </div>

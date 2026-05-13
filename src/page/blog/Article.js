@@ -35,6 +35,8 @@ export default function() {
     const [article, setArticle] = useState(null)
     const [blog, setBlog] = useState(null)
 
+    const navigate = useNavigate()
+
     useEffect(()=>{
 
         ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, a_id).then((article) =>{

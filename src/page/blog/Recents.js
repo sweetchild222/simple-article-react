@@ -41,8 +41,8 @@ export default function({ref, blogId, isEdit}) {
             window.showToast('최근 작성한 글을 가져 올 수 없습니다', 'error')
             return
         }
-
-        setArticles(articles)        
+        
+        setArticles(articles.length > 0 ? articles : null)
     }
 
 
@@ -52,12 +52,12 @@ export default function({ref, blogId, isEdit}) {
     }
 
 
-    return (
+    return articles ? (
         <div style={{display:'flex', flexDirection:'column'}}>
             <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'10px'}}>최근 글</label>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left', padding:'10px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
-                {articles && articles.map((data, index) => <div className={'clamped-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', fontWeight:'600'}} onClick={()=> onClickArticle(data.id)}>{data.title}</div>)}                
+                {articles.map((data, index) => <div className={'clamped-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', fontWeight:'600'}} onClick={()=> onClickArticle(data.id)}>{data.title}</div>)}
             </div>
         </div>
-    )
+    ) : null
 }

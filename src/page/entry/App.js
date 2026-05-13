@@ -14,8 +14,8 @@ import MainHome from '../main/Home.js'
 
 import Profile from '../user/Profile.js'
 import User from '../user/User.js'
-import Regist from '../account/Regist.js'
-import Login from '../account/Login.js'
+import Regist from '../user/Regist.js'
+import Login from '../user/Login.js'
 
 import Writer from '../markdown/Writer.js'
 import Posting from '../markdown/Posting.js'
@@ -32,7 +32,7 @@ export default function() {
 
     <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
       <MainHeader/>
-      <div style={{height:'30px'}}/>
+      <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
       <Outlet/>
     </div>
   )
@@ -42,7 +42,7 @@ export default function() {
     
     <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
       <BlogHeader/>
-      <div style={{height:'30px'}}/>
+      <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
       <Outlet/>
     </div>
   )
@@ -54,11 +54,6 @@ export default function() {
       element: <RootLayout />,
       children: [
         { index: true, element: <MainHome/>},
-        { path: 'write', children: [
-          { index: true, element: <Writer/>},
-          { path: 'posting', element: <Posting/>}
-        ]},
-
         { path: 'account', children: [
           { index: true, element: <Login/>},
           { path: 'regist', element: <Regist/>}]
@@ -77,8 +72,12 @@ export default function() {
       children: [
         { index: true, element: <BlogHome/>},
         { path: 'article/:a_id', children: [
-          { index: true, element: <Article/>}]
-        }
+          { index: true, element: <Article/>}        
+        ]},
+        { path: 'write', children: [
+          { index: true, element: <Writer/>},
+          { path: 'posting', element: <Posting/>}
+        ]}
       ]
     }
   ])

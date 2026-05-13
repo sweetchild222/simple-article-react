@@ -45,17 +45,15 @@ export default function() {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
 
-    
     const navigate = useNavigate()
     
     const blocker = useBlocker(({ currentLocation, nextLocation }) => {
         
-        if(nextLocation.pathname == '/write/posting')
+        if(nextLocation.pathname == '/blog/' + auth.blog_id + '/write/posting')
             return false
 
-        if (isTouched && currentLocation.pathname !== nextLocation.pathname){            
+        if (isTouched && currentLocation.pathname !== nextLocation.pathname)
             return true
-        }
         else
             return false
     })
@@ -123,7 +121,6 @@ export default function() {
             setIsOverlayLoading(false)
             setIsTempSaveLoading(false)
             
-
             if(res != null)
                 window.showToast('임시 저장됨', 'info')
             else{
@@ -193,8 +190,20 @@ export default function() {
             return null
 
         const markdown = refMDX.current.getMarkdown()
-    
-        return await tempSaveCore(markdown)
+
+        const article_id = state.id
+        const title = state.title
+        const content = markdown
+        const posted = 0
+        const category_id = state.category_id
+        const thumbnail = state.thumbnail
+
+        const res = await putArticle(article_id, title, content, thumbnail, posted, category_id)
+
+        if(res == null)
+            return null
+
+        return res
     }
 
     const onClickSave = async() => {
@@ -217,22 +226,6 @@ export default function() {
     }
 
 
-    const tempSaveCore = async(markdown) => {
-                
-        const article_id = state.id
-        const title = state.title
-        const content = markdown
-        const posted = 0
-        const category_id = state.category_id
-        const thumbnail = state.thumbnail
-
-        const res = await putArticle(article_id, title, content, thumbnail, posted, category_id)
-
-        if(res == null)
-            return null
-
-        return res
-    }
 
     const onChangeContent = (content, isInternalChange) => {
 
@@ -309,8 +302,8 @@ export default function() {
             }
 
             window.showToast('삭제 되었습니다', 'info')
-                        
-            navigate(-1)            
+
+            navigate(-1)
         }        
     }
 

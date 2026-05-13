@@ -8,7 +8,7 @@ import ImageCropper from './ImageCropper.js'
 import BeautyButton from "../common/BeautyButton.js"
 import ReactDOM from 'react-dom';
 
-export default function({ref, isOpen, onClose, file, onClickApply, containerWidth=512, containerHeight=512, selectMinWidth, keepRatio}) {
+export default function({ref, isOpen, onClose, file, onClickApply, containerWidth=768, containerHeight=768, selectMinWidth, keepRatio}) {
     
   const refCropper = useRef(null)
   const refDialog = useRef(null)

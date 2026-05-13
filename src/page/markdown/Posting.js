@@ -39,7 +39,7 @@ export default function() {
     const [isOverlayLoading, setIsOverlayLoading] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     
-    const [thumbnail, setThumbnail] = useState(state.thumbnail != '' ? state.thumbnail : null)
+    const [thumbnail, setThumbnail] = useState(state.thumbnail != '' ? state.thumbnail : '')
     const [title, setTitle] = useState(state.title)
     const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
@@ -49,10 +49,13 @@ export default function() {
     
     const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0)
 
+
+
     const onChangeCategory = (e) => {
 
         setSelectedCategoryIndex(e.target.options.selectedIndex)
     }
+
 
     
     const navigate = useNavigate()
@@ -124,7 +127,7 @@ export default function() {
     }
 
 
-    const putArticle = async(article_id, title, head, content, thumbUrl, posted, category_id) => {
+    const putArticleCore = async(article_id, title, head, content, thumbUrl, posted, category_id) => {
 
         const payload = {
             title:title,
@@ -136,20 +139,6 @@ export default function() {
         }
         
         return await ArticleAPI.putArticle(auth.jwt, article_id, payload)
-    }
-
-
-    const saveCore = async() => {
-        
-        const article_id = state.id
-        const title = 'test title'
-        const head = 'head'
-        const content = 'test cotent'
-        
-        const posted = 0
-        const category_id = state.category_id
-
-        return await putArticle(article_id, title, head, content, thumbnailUrl, posted, category_id)
     }
 
 
@@ -189,89 +178,47 @@ export default function() {
         const canvas = await refImageCrop.current.export(dWidth, dHeight)
         
         const blob = await blobFromCanvas(canvas)
-        setThumbnail(URL.createObjectURL(blob))
+
+        const formData = new FormData()
+        formData.append('image', blob)
+
+        const res = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
+
+        if(res == null){
+            window.showToast('대표 이미지 설정에 실패했습니다', 'error')
+            return
+        }
+
+        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + res.id
+
+        setThumbnail(url)
         setIsImageCropModalOpen(false)
     }
 
-
-    const postThumbnail = async(url) =>{
-
-        if(url.startsWith('blob:')){
-        
-            const response = await fetch(url)
-            
-            const blob = await response.blob()
-
-            const formData = new FormData()
-            formData.append('image', blob)
-
-            const res = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
-
-            if(res == null)
-                return null
-
-            return process.env.API_TARGET + '/api/blob/article/thumbnail/' + res.id            
-        }
-        else{
-
-            const isHttpHttps = /^(http|https):\/\//i.test(url)
-
-            if(!isHttpHttps)
-                return null
-
-            return url
-        }
-    }
 
 
     const onClickPost = async() => {
         
         if(refTitle.current == null)
             return null
-                
-        const article_id = state.id
-        const title = refTitle.current.value
-        const head = ExtractHead(MarkdownToHtml(state.content), 256)
-        const content = state.content
 
-        if(!title || title.trim().length === 0){
-            window.showToast('제목을 입력하세요', 'error')
-            return
-        }
-
-        if(thumbnail == null || thumbnail == '') {
-            window.showToast('대표 이미지를 설정하세요', 'error')
-            return
-        }
-
-        setIsOverlayLoading(true)
-        
-        const thumbnailUrl = await postThumbnail(thumbnail)
-
-        if(thumbnailUrl == null) {
-            setIsOverlayLoading(false)
-            window.showToast('대표 이미지 설정에 실패하였습니다', 'error')
-            return 
-        }
-        
-        
-        if(!categories) {
-            setIsOverlayLoading(false)
+        if(categories == null) {
             window.showToast('카테고리가 설정되지 않았습니다', 'error')
             return
         }
 
+        const article_id = state.id
+        const title = refTitle.current.value
+        const head = ExtractHead(MarkdownToHtml(state.content), 256)
+        const content = state.content
+        const category_id = categories[selectedCategoryIndex].id
         const posted = 1
-
-        const category_id = categories[selectedCategoryIndex].id        
-    
-        const res = await putArticle(article_id, title, head, content, thumbnailUrl, posted, category_id)
-
-        setIsOverlayLoading(false)
+            
+        const res = await putArticle(article_id, title, head, content, thumbnail, posted, category_id)
 
         if(res == null){
-            window.showToast('글 등록에 실패하였습니다', 'error')
-            return null
+            window.showToast('글 등록에 실패 하였습니다 ', 'error')
+            return
         }
 
         window.showToast('글이 등록 되었습니다 ', 'info')
@@ -283,6 +230,18 @@ export default function() {
     const onClickDelete = async() => {
 
         setIsConfirmDeleteModalOpen(true)
+    }
+
+
+    const putArticle = async(article_id, title, head, content, thumbnail, posted, category_id) => {
+
+        setIsOverlayLoading(true)                
+
+        const res = await putArticleCore(article_id, title, head, content, thumbnail, posted, category_id)
+
+        setIsOverlayLoading(false)
+
+        return res
 
     }
 
@@ -305,6 +264,34 @@ export default function() {
     }
 
 
+    const onClickSave = async() =>{
+
+        if(refTitle.current == null)
+            return null
+
+        if(categories == null) {
+            window.showToast('카테고리가 설정되지 않았습니다', 'error')
+            return
+        }
+
+        const article_id = state.id
+        const title = refTitle.current.value
+        const head = ExtractHead(MarkdownToHtml(state.content), 256)
+        const content = state.content
+        const category_id = categories[selectedCategoryIndex].id
+        const posted = 0
+            
+        const res = await putArticle(article_id, title, head, content, thumbnail, posted, category_id)
+
+        if(res == null){
+            window.showToast('글의 임시 저장에 실패 하였습니다 ', 'error')
+            return
+        }
+
+        window.showToast('글이 임시 저장 되었습니다 ', 'info')
+    }
+
+
     return validAuth(auth) ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {isOverlayLoading && <OverlayLoading/>}
@@ -315,10 +302,11 @@ export default function() {
                 {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}
             </select>
 
-            <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={170} height={170}/>
+            <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={512} height={512}/>
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}    
             <BeautyButton type='success' onClick={onClickPost}>올리기</BeautyButton>
             <BeautyButton type='danger' onClick={onClickDelete}>삭제하기</BeautyButton>
+            <BeautyButton type='success' onClick={onClickSave}>임시 저장</BeautyButton>
             <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
             <BeautyButton type='danger' onClick={onClickLeave}>뒤로가기</BeautyButton>
         </div>

@@ -5,6 +5,9 @@ import {useContext, useEffect, useRef } from "react";
 
 import * as UserAPI from '../../api/UserAPI.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
+import * as ArticleAPI from '../../api/ArticleAPI.js'
+
+
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 import { useState } from 'react';
 
@@ -29,19 +32,22 @@ export default function() {
     const {auth, updateAuth, validAuth, reloadAuth, removeAuth} = useContext(AuthContext)    
     const [isModalLogout, setIsModalLogout] = useState(false)
     const [isModalPassword, setIsModalPassword] = useState(false)
-    const [isModalWithdraw, setIsModalWithdraw] = useState(false)
-    const [isModalNickname, setIsModalNickname] = useState(false)
-    const [profileImage, setProfileImage] = useState(null)
+    const [isModalWithdraw, setIsModalWithdraw] = useState(false)    
+    const [isModalNickname, setIsModalNickname] = useState(false)    
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
 
-    const [nickname, setNickname] = useState(null)
+
+    const profileWidth = 256
+    const profileHeight = 256
+
+    //const [nickname, setNickname] = useState(null)
+
+    const [user, setUser] = useState(null)
 
     const refImageCrop = useRef(null)
 
-    const navigate = useNavigate()
-    
-    const isAuthUser = (validAuth(auth))
+    const navigate = useNavigate()    
 
     useEffect(()=> {
 
@@ -54,9 +60,10 @@ export default function() {
             
             if(resUser == null)
                 return
-        
-            setProfileImage(resUser.image ?  resUser.image : '/image/user.png')
-            setNickname(resUser.nickname)            
+
+            resUser.image = resUser.image != '' ?  (resUser.image + '?size=' + profileWidth + 'x' + profileHeight) : '/image/user.png'
+            setUser(resUser)                    
+            //setNickname(resUser.nickname)
         })
 
     }, [auth])
@@ -84,7 +91,7 @@ export default function() {
     }
 
 
-    const onClickUserWithdraw = async() =>{
+    const onClickUserWithdraw = async() => {
 
         setIsModalWithdraw(true)
     }
@@ -115,14 +122,14 @@ export default function() {
 
     const onClickApply = async() => {
 
-        if(!validAuth(auth))            
-            return        
+        if(!validAuth(auth))
+            return
 
         if(!refImageCrop.current)
             return
 
-        const dWidth = 256
-        const dHeight = 256
+        const dWidth = profileWidth
+        const dHeight = profileHeight
 
         const canvas = await refImageCrop.current.export(dWidth, dHeight)
         
@@ -148,8 +155,11 @@ export default function() {
             window.showToast('프로필 설정에 실패했습니다', 'error')
             return
         }        
+
         
-        setProfileImage(url + '?size=256x256')
+        user.image = url + '?size=' + profileWidth + 'x' + profileHeight
+
+        setUser(structuredClone(user))
         
         setIsModalImageCrop(false)
 
@@ -158,6 +168,9 @@ export default function() {
 
 
     const onInputPassword = async(input) => {
+
+        if(!validAuth(auth))
+            return
 
         if(input == ''){
             window.showToast('현재 비밀번호를 입력하세요', 'error')
@@ -178,12 +191,12 @@ export default function() {
 
         window.showToast('회원 탈퇴가 성공하였습니다', 'error')
 
-        removeAuth()        
+        removeAuth()
+
+        setUser(null)
 
         navigate('/')
     }
-
-
 
 
     const onInputNickname = async(input) => {
@@ -196,8 +209,7 @@ export default function() {
             return
         }
 
-
-        if(input == nickname)
+        if(input == user.nickname)
             return
         
         const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {nickname: input})
@@ -208,9 +220,10 @@ export default function() {
         }        
 
         window.showToast('닉네임 수정에 성공했습니다', 'info')
-                
-        setNickname(input)        
 
+        user.nickname = input
+        setUser(structuredClone(user))
+        
         reloadAuth(auth)
     }
 
@@ -235,9 +248,9 @@ export default function() {
     }
 
     
-    return isAuthUser ? (
+    return user ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
-        <LoadingImage src={profileImage} onClick={onClickProfile} width={256} height={256}/>
+        <LoadingImage src={user.image} onClick={onClickProfile} width={profileWidth} height={profileHeight}/>
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
         <Modal title={'로그아웃 하시겠습니까?'} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
@@ -245,9 +258,10 @@ export default function() {
         <Modal type={'custom'} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)}>
             <Password onClose={() => setIsModalPassword(false)}/>
         </Modal>
-        <Modal title={'패스워드를 입력하세요'} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPassword}/>
+        <Modal title={'패스워드를 입력하세요'} description={'회원을 탈퇴하더라도 게시된 글은 남습니다'}type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPassword}/>
         <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
-        <Modal title={'닉네임을 입력하세요'} type={'input'} isCloseOutsideClick={false} defaultValue={nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
+        
+        <Modal title={'닉네임을 입력하세요'} type={'input'} isCloseOutsideClick={false} defaultValue={user.nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
         <BeautyButton onClick={onClickUserNickname} type='success'>닉네임 설정</BeautyButton>
       </div>) : null
 }

@@ -72,9 +72,7 @@ export default function Home() {
 
   const goEditor=(state)=>{
 
-    console.log(state)
 
-    navigate('/write', {state:state})
   }
 
   const getCommonCategory = async()=>{

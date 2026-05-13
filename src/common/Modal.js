@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import BeautyButton from './BeautyButton';
 
 
-export default ({type, title, isCloseOutsideClick=true, defaultValue, maxLength, isOpen, onResult, onClose, onInput, children}) => {
+export default ({type, title, description, isCloseOutsideClick=true, defaultValue, maxLength, isOpen, onResult, onClose, onInput, children}) => {
     
     const refDialog = useRef(null)
     const refInput = useRef(null)
@@ -117,7 +117,8 @@ export default ({type, title, isCloseOutsideClick=true, defaultValue, maxLength,
     return ReactDOM.createPortal(
         <dialog ref={refDialog} onClick={onClickDialog} onKeyDown={onKeyDownDialog}>
             <div ref={refDiv}>
-            {title != null && <p>{title}</p>}
+            {title != null && <p style={{fontWeight:'bold', fontSize:'18px'}}>{title}</p>}
+            {description != null && <p style={{whiteSpace: 'pre', fontStyle:'italic', color:'darkgrey'}}>{description}</p>}
             {type == 'custom' && children}
             {type == 'input' && <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength}/>}
             {type == 'input' && <BeautyButton onClick={onClickInputYes} type='success'>확인</BeautyButton>}

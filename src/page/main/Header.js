@@ -11,24 +11,14 @@ import BeautyButton from "../../common/BeautyButton.js";
 
 export default function() {
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [user, setUser] = useState(null)
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const [reloadKey, setReloadKey] = useState(0)
     const navigate = useNavigate()
 
     useEffect(() => {
-                        
-        if(validAuth(auth)) {
 
-            UserAPI.getUser(auth.user_id).then((res)=>{
-        
-                if(res == null){
-                    navigate('/pageNotFound')
-                    return
-                }
-    
-                setUser(res)
-            })
-        }
+        if(validAuth(auth))
+            setReloadKey(prev => prev + 1)
 
     }, [auth])
 
@@ -75,7 +65,7 @@ export default function() {
                 <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown} ></input>
                 <div style={{margin:'0px 0px 0px 10px', width:'64px'}}>
                     {!validAuth(auth) && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
-                    {validAuth(auth) && user && <ProfileImage tooltip={user.nickname} userId={auth.user_id} onClick={onClickUser}/>}
+                    {validAuth(auth) && <ProfileImage key={reloadKey} userId={auth.user_id} onClick={onClickUser}/>}
                 </div>
             </div>
     )

@@ -44,7 +44,6 @@ export default function() {
             return
         }
 
-
         UserAPI.getUser(user_id).then((res)=>{
 
             if(res == null){

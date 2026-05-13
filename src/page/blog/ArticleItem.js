@@ -15,20 +15,12 @@ import { MdThumbUpAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 
 
-export default function(props) {
-    
-    const article = props.article
+export default function({article, categoryName}) {
+
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-
-    const navigate = useNavigate()
-
-    if(article.id == 162)
-        article.head = 'asdfasdfaskldfjsadklfjsdlkfjsdklfjwoiefweojfiwejfoiwejfoiwjfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfoiwejfiosdjlkdsjsdflkasdjlksadjlkasdjlaksdjalksdfjlk;ldsfakjlsadkfjlaskdfjslakdfjsalkdfjasldkfjsalkdfjasldkfjsalkdfjaslsdfsdfsdfsdkfjsalkdfjasldsdfsdfkfjf'
+            
+    const navigate = useNavigate()        
     
-    const combinedStyle = {
-        ...props.style
-    }
-
     const numberUnit = (count) => {
 
         if(count > 1000){
@@ -70,7 +62,6 @@ export default function(props) {
         else if(dayBefore == 2)
             return '그제'
         
-
         const year = date.getFullYear()
         const month = String(date.getMonth() + 1).padStart(2, '0')
         const day = String(date.getDate()).padStart(2, '0')
@@ -97,7 +88,7 @@ export default function(props) {
                     window.showToast('작성 중인 글을 가져 올 수 없습니다', 'error')
                     return
                 }
-                navigate('/write', {state:res})
+                navigate('/blog/' + article.blog_id + '/write', {state:res})
             }
         }
     }
@@ -105,26 +96,33 @@ export default function(props) {
     return (
         <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', padding:'10px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5'}}>
             <div style={{display: 'flex', flexDirection: 'column', flex:'1', marginLeft:'5px', marginRight:'5px'}}>
-                <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title != '' ? article.title : '...'}</div>
+                <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title}</div>
                 <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head : '......')}</div>
                 <div style={{flex:'1'}}></div>
                 <div style={{display: 'flex', flexDirection: 'row',  alignItems:'center', color:'#888888'}}>
-                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                    {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <TiEye size={22}/>
                         <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.showed)}</div>
-                    </div>
-                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                    </div>}
+                    {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <MdThumbUpAlt size={22}/>
                         <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.great_count)}</div>
                     </div>
-                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
+                    }
+                    {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
                         <BiSolidComment size={22}/>
                         <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.comment_count)}</div>
                     </div>
+                    }
+                    {article.posted == 0 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
+                        <div className={'clamped-text'} style={{width:'160px'}}>{categoryName}</div>
+                    </div>
+                    }
                     <div style={{whiteSpace: 'nowrap'}} >{timestampToString(article.create_at)}</div>
-                </div>                
+                </div>
+
             </div>
-            <LoadingImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>
+            {article.thumbnail != '' && <LoadingImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
         </div>
     )
 }

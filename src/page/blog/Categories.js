@@ -31,13 +31,25 @@ export default function({ref, blogId, onClickCategory, isEdit}) {
     }, [blogId])
 
 
+    useImperativeHandle(ref, () => {
+
+        return {
+            categories() {
+
+                return categories
+            }
+        }
+
+    }, [categories])
+
+
     const loadCategory = async() => {
 
         const categoryies = await getCategories(blogId)
         
         if(categoryies == null || categoryies.length == 0) {
 
-            window.showToast('카테고리를 가져 올 수 없습니다', 'error')            
+            window.showToast('카테고리를 가져 올 수 없습니다', 'error')
             return
         }
 
@@ -48,7 +60,7 @@ export default function({ref, blogId, onClickCategory, isEdit}) {
 
             const category = categoryies[0]
 
-            categoryies.push({blog_id:category.id, article_count:count, name:'작성 중인 글', id:0, is_default:1})
+            categoryies.push({blog_id:category.blog_id, article_count:count, name:'작성 중인 글', id:0, is_default:1})
         }
 
         setCategories(categoryies)
@@ -61,9 +73,9 @@ export default function({ref, blogId, onClickCategory, isEdit}) {
 
 
     const loadWrtingCount = async(blogId) => {
-                        
+        
         const query = 'posted=0'
-                
+        
         const res = await ArticleAPI.getBlogArticles(auth.jwt, blogId, query)
         
         if(res == null)

@@ -18,7 +18,7 @@ import CategoryModal from '../../common/CategoryModal.js'
 import { TfiWrite } from "react-icons/tfi";
 import { FaPen } from "react-icons/fa6"
 
-export default function({ref, blogId, isEdit}) {
+export default function({ref, blogId, categoryId, isEdit}) {    
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
@@ -60,16 +60,16 @@ export default function({ref, blogId, isEdit}) {
 
         const maxWritingCount = 10
 
-        if(res.length > maxWritingCount){
+        if(res.length >= maxWritingCount){
 
             window.showToast('작성 중인 글이 너무 많습니다 (' + maxWritingCount + ' 이하)', 'error')
             return
         }
 
-        const category_id = await getDefaultCategory()
+        const category_id = categoryId == 0 ? await getDefaultCategory() : categoryId
 
         if(category_id == -1){
-            window.showToast('카테고리를 가져 올 수 없습니다', 'error')
+            window.showToast('카테고리를 찾을 수 없습니다', 'error')
             return
         }
 

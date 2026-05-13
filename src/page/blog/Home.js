@@ -1,7 +1,7 @@
 
 import React, {useState, useContext, useEffect, useRef } from "react";
 
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams, useBlocker} from 'react-router-dom';
 
 
 import * as BlobAPI from '../../api/BlobAPI.js'
@@ -30,9 +30,12 @@ export default function() {
   const blog_id = ToInteger(b_id)
 
   const navigate = useNavigate()
-        
-  const refCategories = useRef(null)
   
+  const location = useLocation()
+
+  const defaultCategoryId = location.state != null ? location.state.category_id : null
+
+  const refCategories = useRef(null)  
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const [selectedCategory, setSelectedCategory] = useState(null)  
   const [articles, setArticles] = useState(null)
@@ -74,7 +77,6 @@ export default function() {
 
     setSelectedCategory(category)
 
-
     const category_id = category.id != 0 ? category.id : null
     const posted = category.id != 0 ? null : 0
     
@@ -83,10 +85,13 @@ export default function() {
     if(articles != null)
       setArticles(articles)
 
-    setIsOverlayLoading(false)    
+    setIsOverlayLoading(false)
     
     setReloadKey(prev => prev + 1)
+
+    navigate(location.pathname, {replace: true, state: {category_id:category.id}})
   }
+
 
   const getCategoryName = (id) =>{
 
@@ -101,13 +106,12 @@ export default function() {
       return ''
 
     return found.name
-
   }
   
 
   const onClickPage = async(page) => {
 
-    setIsOverlayLoading(true)
+    setIsOverlayLoading(true)    
 
     const category_id = selectedCategory.id != 0 ? selectedCategory.id : null
     const posted = selectedCategory.id != 0 ? null : 0
@@ -117,7 +121,7 @@ export default function() {
     if(articles != null)
       setArticles(articles)
 
-    setIsOverlayLoading(false)
+    setIsOverlayLoading(false)    
   }
 
   
@@ -126,7 +130,7 @@ export default function() {
         {isOverlayLoading && <OverlayLoading/>}
         <div style={{width:'100px'}}/>
           <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
-              {articles && (
+              {selectedCategory && articles && (
                 articles.length > 0 ? 
                 (<div style={{display:'flex', flexDirection:'column', width:'100%'}}>
                   <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px', marginBottom:'20px'}}>
@@ -134,22 +138,22 @@ export default function() {
                   </div>
                   <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
                     <div style={{flex:'1', display:'flex', flexDirection:'row'}}>
-                      <CreateArticle blogId={blog_id} isEdit={isEditable()}/>
+                      <CreateArticle blogId={blog_id} categoryId={selectedCategory.id} isEdit={isEditable()}/>
                     </div>
-                    {selectedCategory && selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
+                    {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
                     <div style={{flex:'1'}}></div>
                   </div>
                 </div>) : 
                 (<div style={{display:'flex', alignItems:'center', flexDirection:'column', width:'100%', justifyContent:'center', height:'100%', marginTop:'20px'}}>                                    
                   <img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>
                   <div style={{fontSize:'18px', marginTop:'20px'}}>{'카테고리에 글이 없습니다. 글을 작성해 보세요'}</div>
-                  <CreateArticle blogId={blog_id} isEdit={isEditable()}/>
+                  <CreateArticle blogId={blog_id} categoryId={selectedCategory.id} isEdit={isEditable()}/>
                 </div>)
-              )}              
+              )}
           </div>
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{maxWidth:'230px', alignItems:'center', display: 'block'}}>
-          <Categories ref={refCategories} blogId={blog_id} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
+          <Categories ref={refCategories} blogId={blog_id} defaultCategoryId={defaultCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
           <div style={{height:'30px'}}></div>
           <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
         </div>

@@ -196,7 +196,6 @@ export default function() {
     }
 
 
-
     const onClickPost = async() => {
         
         if(refTitle.current == null)
@@ -204,6 +203,11 @@ export default function() {
 
         if(categories == null) {
             window.showToast('카테고리가 설정되지 않았습니다', 'error')
+            return
+        }
+
+        if(refTitle.current.value.trim().length === 0){
+            window.showToast('제목을 입력하세요', 'error')
             return
         }
 

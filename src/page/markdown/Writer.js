@@ -79,7 +79,7 @@ export default function() {
     }, [blocker]);
 
 
-    const beforeUnload = useCallback((e) => {
+    const beforeUnload = useCallback((e) => {   // prevent when F5(reload)
 
         if(isTouched){
             e.preventDefault()

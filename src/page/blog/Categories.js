@@ -17,7 +17,7 @@ import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
 import { MdCategory } from "react-icons/md";
 
-export default function({ref, blogId, onClickCategory, isEdit}) {
+export default function({ref, blogId, onClickCategory, defaultCategoryId, isEdit}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [categories, setCategories] = useState(null)
@@ -45,9 +45,9 @@ export default function({ref, blogId, onClickCategory, isEdit}) {
 
     const loadCategory = async() => {
 
-        const categoryies = await getCategories(blogId)
+        const categories = await getCategories(blogId)
         
-        if(categoryies == null || categoryies.length == 0) {
+        if(categories == null || categories.length == 0) {
 
             window.showToast('카테고리를 가져 올 수 없습니다', 'error')
             return
@@ -55,19 +55,19 @@ export default function({ref, blogId, onClickCategory, isEdit}) {
 
 
         if(isEditable()){
-
             const count = await loadWrtingCount(blogId)
-
-            const category = categoryies[0]
-
-            categoryies.push({blog_id:category.blog_id, article_count:count, name:'작성 중인 글', id:0, is_default:1})
+            const category = categories[0]
+            categories.push({blog_id:category.blog_id, article_count:count, name:'작성 중인 글', id:0, is_default:1})
         }
 
-        setCategories(categoryies)
+        setCategories(categories)
 
         if(onClickCategory != null){
-            setSelectIndex(0)
-            onClickCategory(categoryies[0])
+            
+            const index = defaultCategoryId == null ? 0 : categories.findIndex(categorie => categorie.id === defaultCategoryId)
+
+            setSelectIndex(index)
+            onClickCategory(categories[index])
         }
     }
 

@@ -22,6 +22,45 @@ export async function getBlog(id) {
 }
 
 
+export async function postBlog(jwt, payload){
+
+  try{
+
+    const authorization = 'Bearer '.concat(jwt);
+
+    const response = await axios.post('/api/blog', payload, { headers: {Authorization: authorization} })
+    
+    return response.data
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null;
+  }
+}
+
+
+
+
+export async function deleteBlog(jwt, blog_id){
+
+  try{
+
+    const authorization = 'Bearer '.concat(jwt);
+
+    const response = await axios.delete('/api/blog/' + blog_id, { headers: {Authorization: authorization} })
+    
+    return response.data
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null;
+  }
+}
+
 
 export async function patchBlog(jwt, blog_id, payload){
 

@@ -214,11 +214,11 @@ export async function putArticle(jwt, article_id, payload){
 }
 
 
-export async function getCategories(blog_id, query = undefined) {
+export async function getCategories(blog_id) {
 
   try{
     
-      const url = '/api/blog/' + blog_id + '/category' + (query ? ('?' + query) : '')
+      const url = '/api/blog/' + blog_id + '/category'
 
       const response = await axios.get(url)
 
@@ -277,7 +277,6 @@ export async function patchCategory(jwt, category_id, payload){
 
 
 export async function postCategory(jwt, payload){
-
 
   try{
 

@@ -18,7 +18,7 @@ import CategoryModal from '../../common/CategoryModal.js'
 import { TfiWrite } from "react-icons/tfi";
 import { FaPen } from "react-icons/fa6"
 
-export default function({ref, blogId, categoryId, isEdit}) {    
+export default function({ref, blogId, categoryId}) {    
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
@@ -26,24 +26,28 @@ export default function({ref, blogId, categoryId, isEdit}) {
 
     const isEditable = ()=> {
 
-        return (validAuth(auth) && isEdit)
+        return (validAuth(auth) && auth.blog_id == blogId)
     }
 
 
-    const getDefaultCategory = async()=> {
-        
-        const res = await ArticleAPI.getCategories(blogId, 'is_default=1')        
+    const findCategoryId = async(blogId) => {
     
+        const res = await ArticleAPI.getCategories(blogId)
+        
         if(res == null)
             return -1
-    
+
+        res.sort((a, b)=> {
+            return a.id - b.id
+        })
+
         if(res.length == 0)
             return -1
-    
+
         return res[0].id
     }
 
-    
+
     const onClickNewArticle = async() =>{
 
         if(!isEditable())
@@ -66,12 +70,13 @@ export default function({ref, blogId, categoryId, isEdit}) {
             return
         }
 
-        const category_id = categoryId == 0 ? await getDefaultCategory() : categoryId
+        const category_id = categoryId == 0 ? await findCategoryId(blogId) : categoryId
 
         if(category_id == -1){
             window.showToast('카테고리를 찾을 수 없습니다', 'error')
             return
         }
+        
 
         const payload = {
             title:'',
@@ -94,11 +99,9 @@ export default function({ref, blogId, categoryId, isEdit}) {
         navigate('/blog/' + blogId + '/write', {state:state})
     }
 
-
-
     return (
         <div style={{display:'flex', flexDirection:'column'}}>
-            {isEditable() && <BeautyButton type={'transparent'} tooltip='새글 작성' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}><FaPen size={30}/></BeautyButton>}            
+            <BeautyButton type={'transparent'} tooltip='새글 작성' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}><FaPen size={30}/></BeautyButton>
         </div>
     )
 }

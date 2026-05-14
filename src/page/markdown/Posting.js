@@ -101,10 +101,7 @@ export default function() {
     
         res.sort((a, b)=> {
 
-            if(a.is_default != b.is_default)
-                return b.is_default - a.is_default
-            else
-                return a.id - b.id
+            return b.is_default - a.is_default
         })
 
         return res

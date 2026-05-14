@@ -214,7 +214,7 @@ export default function() {
             }
 
             article.great_count -= 1
-            setArticle(structuredClone(article))            
+            setArticle(structuredClone(article))
             setIsGreatLoading(false)
             window.showToast('좋아요 취소가 성공 하였습니다', 'info')                       
         }

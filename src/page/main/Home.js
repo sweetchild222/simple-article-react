@@ -77,7 +77,7 @@ export default function Home() {
 
   const getCommonCategory = async()=>{
 
-    const resCategories = await ArticleAPI.getCategories(auth.user_id, 'is_default=1')
+    const resCategories = await ArticleAPI.getCategories(auth.user_id)
 
     if(resCategories == null)
       return -1

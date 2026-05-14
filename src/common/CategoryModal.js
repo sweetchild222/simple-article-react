@@ -47,7 +47,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
     const upperDivNodes = refListDiv.current.childNodes
 
     if(upperDivNodes.length == 0)
-      return
+      return []
     
     for(const divNodes of upperDivNodes) {
 
@@ -108,7 +108,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
     const inputList = getInputList()
 
     if(inputList != null && inputList.length > 0)
-      inputList[inputList.length - 1].focus()      
+      inputList[inputList.length - 1].focus()
 
   }, [newCategories])
   
@@ -141,18 +141,18 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
      setNewCategories(newCategories.filter(categorie => {
       
       if(categorie.id === id) {
-        if(categorie.is_default == 1) {
-          window.showToast('기본 카테고리는 삭제 할 수 없습니다', 'error')
-          return true
-        }
-        else{
+        // if(categorie.is_default == 1) {
+        //   window.showToast('기본 카테고리는 삭제 할 수 없습니다', 'error')
+        //   return true
+        // }
+        //else{
 
           if(categorie.article_count > 0) {
             window.showToast('글이 있는 카테고리는 삭제 할 수 없습니다', 'error')
             return true
           }
           return false
-        }
+        //}
       }
       else
         return true
@@ -181,7 +181,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
                   {newCategories && newCategories.map((data, index) => 
                     <div key={data.id} style={{ display: 'flex', flexDirection: 'row'}}>
                       <input key={data.id} style={{color:'black', width:'150px'}} maxLength={16} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
-                      <BeautyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.is_default == 1 || data.article_count > 0) ? 'gray' : 'black')}}size={15}/></BeautyButton>
+                      <BeautyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.article_count > 0) ? 'gray' : 'black')}}size={15}/></BeautyButton>
                     </div>
                   )}
                 </div>

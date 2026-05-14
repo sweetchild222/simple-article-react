@@ -4,6 +4,8 @@ import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import * as validator from '../../util/Validator.js'
 import AuthContext from "../../util/AuthContext.js";
+import TimestampToString from "../../util/TimestampToString.js";
+import CountWithUnit from "../../util/CountWithUnit.js";
 import BeautyButton from '../../common/BeautyButton.js';
 import GoLogin from "../../common/GoLogin.js";
 import OverlayLoading from "../../common/OverlayLoading.js";
@@ -20,56 +22,6 @@ export default function({article, categoryName}) {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
             
     const navigate = useNavigate()        
-    
-    const numberUnit = (count) => {
-
-        if(count > 1000){
-            if(count > 1000000)
-                return (count / 1000000).toFixed(1) + 'M'
-
-            return (count / 1000).toFixed(1) + 'K'
-        }
-
-        return count
-    }
-
-
-    const calcDayBefore = (date)=> {
-
-        for(var i = 0; i < 3; i++){
-
-            const current = new Date()
-
-            const beforeDay = new Date((current.getTime() - i * (24 * 60 * 60 * 1000)))
-
-            if(beforeDay.getFullYear() == date.getFullYear() && beforeDay.getMonth() == date.getMonth() && beforeDay.getDate() == date.getDate())
-                return i
-        }
-        return -1        
-    }
-
-
-    const timestampToString = (timestamp) => {
-        
-        const date = new Date(timestamp)
-
-        const dayBefore = calcDayBefore(date)
-
-        if(dayBefore == 0)
-            return '오늘'        
-        else if(dayBefore == 1)
-            return '어제'
-        else if(dayBefore == 2)
-            return '그제'
-        
-        const year = date.getFullYear()
-        const month = String(date.getMonth() + 1).padStart(2, '0')
-        const day = String(date.getDate()).padStart(2, '0')
-
-        const formattedDate = `${year}.${month}.${day}`;
-
-        return formattedDate
-    }
 
     const onClickNavigateArticle = async() =>{
 
@@ -102,23 +54,23 @@ export default function({article, categoryName}) {
                 <div style={{display: 'flex', flexDirection: 'row',  alignItems:'center', color:'#888888'}}>
                     {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <TiEye size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.showed)}</div>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.showed)}</div>
                     </div>}
                     {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <MdThumbUpAlt size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.great_count)}</div>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.great_count)}</div>
                     </div>
                     }
                     {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
                         <BiSolidComment size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{numberUnit(article.comment_count)}</div>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.comment_count)}</div>
                     </div>
                     }
                     {article.posted == 0 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
                         <div className={'clamped-text'} style={{width:'160px'}}>{categoryName}</div>
                     </div>
                     }
-                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? timestampToString(article.post_at) : ''}</div>
+                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? TimestampToString(article.post_at) : ''}</div>
                 </div>
 
             </div>

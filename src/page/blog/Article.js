@@ -13,6 +13,9 @@ import LoadingImage from "../../common/LoadingImage.js";
 import Modal from "../../common/Modal.js";
 import BeautyButton from "../../common/BeautyButton.js";
 import ToInteger from "../../util/ToInteger.js";
+import TimestampToString from "../../util/TimestampToString.js";
+import CountWithUnit from "../../util/CountWithUnit.js";
+
 
 import ArticleItem from "./ArticleItem.js";
 import { FaCheck } from "react-icons/fa";
@@ -25,6 +28,10 @@ import Recents  from "./Recents.js";
 import Pagination from "./Pagination.js";
 import MarkdownToHtml from '../../util/MarkdownToHtml.js'
 
+import { FaEye } from "react-icons/fa";
+import { TiEye } from "react-icons/ti";
+import { MdThumbUpAlt } from "react-icons/md";
+import { BiSolidComment } from "react-icons/bi";
 
 export default function() {
 
@@ -48,12 +55,20 @@ export default function() {
                 return
             }
 
+            if(article.posted == 0){
+                navigate('/pageNotFound')
+                return
+            }
+
             if(blog_id != article.blog_id){
                 navigate('/pageNotFound')
                 return
             }
 
-            setArticle(article)            
+            setArticle(article)
+
+
+            console.log('asdfadsf')
         })
 
     }, [auth, blog_id, article_id])
@@ -119,6 +134,7 @@ export default function() {
         setIsConfirmDeleteModalOpen(true)
     }
 
+
     const onResultConfirmDelete = async(result) =>{
 
         if(!isEditable())
@@ -142,11 +158,21 @@ export default function() {
     return article ? (<div style={{display:'flex', flexDirection: 'row', justifyContent:'center', marginTop:'20px'}}>
         <div style={{width:'2px', marginRight:'20px'}}/>
             <div style={{display:'flex', flexDirection: 'column', alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
-                <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title + '대구 이현공원sjdflsaidjiosjfioewjoiwejfieowjoiwejfwoiefjioaskldfjaslkdfjasdlkfjaskldfjaksldfklajdlfkjalsdkfjalkdsfasdfasdfklsdafjlasjdflsaidjiosjfioewjoiwejfieowjoiwejfwoiefjioaskldfjaslkdfjasdlkfjaskldfjaksldfklajdlfkjalsdkfjalkdsf'}</div>
+                <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
                 <div style={{height:'30px', display:'flex', flexDirection: 'row', width:'100%'}}>
                     {isEditable() && <BeautyButton onClick={onCLickEdit}>{'수정'}</BeautyButton>}
                     {isEditable() && <BeautyButton onClick={onCLickDelete}>{'삭제'}</BeautyButton>}
                     {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
+                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? TimestampToString(article.post_at) : ''}</div>
+                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                        <TiEye size={22}/>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.showed)}</div>
+                    </div>
+
+                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                        <MdThumbUpAlt size={22}/>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.great_count)}</div>
+                    </div>
                     <div>{'adsfsd'}</div>
                     <div>{'adsfsd'}</div>
                     <div>{'adsfsd'}</div>
@@ -154,7 +180,7 @@ export default function() {
                 </div>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 <div style={{height:'30px'}}></div>
-                <LoadingImage src={article.thumbnail + '?size=170x170'} width={960} height={540} borderWidth={0}/>
+                <LoadingImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>
                 <div style={{height:'30px'}}></div>
                 <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
             </div>

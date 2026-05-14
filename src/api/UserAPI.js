@@ -21,7 +21,7 @@ export async function getUsers(query) {
 
   try{
 
-    const response = await axios.get('/api/user?' + query)
+    const response = await axios.get('/api/user' + (query ? ('?' + query) : ''))
     
     return response.data
   }

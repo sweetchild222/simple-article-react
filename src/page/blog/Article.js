@@ -42,13 +42,14 @@ export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [article, setArticle] = useState(null)
+    const [isGreatLoading, setIsGreatLoading] = useState(false)
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
     
     const navigate = useNavigate()
 
     useEffect(()=>{
 
-        ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, article_id).then((article) =>{
+        ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, article_id).then((article) => {
 
             if(article == null){
                 navigate('/pageNotFound')
@@ -64,11 +65,16 @@ export default function() {
                 navigate('/pageNotFound')
                 return
             }
-
+        
             setArticle(article)
 
-
-            console.log('asdfadsf')
+            ArticleAPI.postArticleShowed(article_id).then((showed) => {
+                
+                if(showed != null)
+                    article.showed += 1
+                
+                setArticle(structuredClone(article))
+            })            
         })
 
     }, [auth, blog_id, article_id])
@@ -155,6 +161,65 @@ export default function() {
         }
     }
 
+
+
+    const onClickGreat = async() =>{
+
+        if(!validAuth(auth)) {
+            navigate('/account', {state:{relogin:true}})
+            return
+        }
+
+        const query = 'user_id=' + auth.user_id + '&article_id=' + article_id
+
+        setIsGreatLoading(true)
+
+        const resGreat = await ArticleAPI.getArticleGreat(auth.jwt, query)
+
+        if(resGreat == null){
+            setIsGreatLoading(false)
+            window.showToast('좋아요 상태를 가져오기 실패 하였습니다', 'error')
+            return
+        }
+
+        if(resGreat.length == 0){
+
+            const payload = {
+                user_id:auth.user_id,
+                article_id:article_id
+            }
+
+            const res = await ArticleAPI.postArticleGreat(auth.jwt, payload)            
+
+            if(res == null){
+                setIsGreatLoading(false)
+                window.showToast('좋아요 실패 하였습니다', 'error')                
+                return
+            }
+
+
+            article.great_count += 1
+            setArticle(structuredClone(article))
+            setIsGreatLoading(false)
+            window.showToast('좋아요 성공 하였습니다', 'info')
+        }
+        else{
+
+            const res = await ArticleAPI.deleteArticleGreat(auth.jwt, resGreat[0].id)
+
+            if(res == null){
+                setIsGreatLoading(false)
+                window.showToast('좋아요 취소가 실패 하였습니다', 'error')                
+                return
+            }
+
+            article.great_count -= 1
+            setArticle(structuredClone(article))            
+            setIsGreatLoading(false)
+            window.showToast('좋아요 취소가 성공 하였습니다', 'info')                       
+        }
+    }
+
     return article ? (<div style={{display:'flex', flexDirection: 'row', justifyContent:'center', marginTop:'20px'}}>
         <div style={{width:'2px', marginRight:'20px'}}/>
             <div style={{display:'flex', flexDirection: 'column', alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
@@ -169,10 +234,10 @@ export default function() {
                         <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.showed)}</div>
                     </div>
 
-                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                    <BeautyButton isLoading={isGreatLoading} title={'좋아요'} style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickGreat}>
                         <MdThumbUpAlt size={22}/>
                         <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.great_count)}</div>
-                    </div>
+                    </BeautyButton>
                     <div>{'adsfsd'}</div>
                     <div>{'adsfsd'}</div>
                     <div>{'adsfsd'}</div>

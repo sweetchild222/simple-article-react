@@ -22,7 +22,7 @@ export default function() {
 
     const onClickNavigateLogin = () => {
         
-        navigate('/login', {state:{relogin:true}})
+        navigate('/account', {state:{relogin:true}})
     }
     
     return (

@@ -127,20 +127,6 @@ export default function() {
     }
 
 
-    const putArticleCore = async(article_id, title, head, content, thumbUrl, posted, category_id) => {
-
-        const payload = {
-            title:title,
-            content:content,
-            head:head,
-            posted:posted,
-            thumbnail:thumbUrl,
-            category_id:category_id
-        }
-        
-        return await ArticleAPI.putArticle(auth.jwt, article_id, payload)
-    }
-
 
     const onClickLeave=()=> {
         
@@ -209,9 +195,9 @@ export default function() {
         if(refTitle.current.value.trim().length === 0){
             window.showToast('제목을 입력하세요', 'error')
             return
-        }
+        }        
 
-        const article_id = state.id
+        const article_id = state.source_id != null ? state.source_id : state.id
         const title = refTitle.current.value
         const head = ExtractHead(MarkdownToHtml(state.content), 256)
         const content = state.content
@@ -221,13 +207,22 @@ export default function() {
         const res = await putArticle(article_id, title, head, content, thumbnail, posted, category_id)
 
         if(res == null){
-            window.showToast('글 등록에 실패 하였습니다 ', 'error')
+            window.showToast(state.source_id != null ?  '글 수정에 실패 하였습니다' : '글 등록에 실패 하였습니다', 'error')
             return
         }
 
-        window.showToast('글이 등록 되었습니다 ', 'info')
+        window.showToast(state.source_id != null ? '글이 수정 되었습니다' : '글이 등록 되었습니다', 'info')
 
+        if(state.source_id != null)
+            await deleteArticle(state.id)
+        
         navigate(-2)
+    }
+
+
+    const deleteArticle = async(id) => {
+
+        await ArticleAPI.deleteArticle(auth.jwt, id)
     }
 
 
@@ -238,10 +233,19 @@ export default function() {
 
 
     const putArticle = async(article_id, title, head, content, thumbnail, posted, category_id) => {
+        
+        const payload = {
+            title:title,
+            head:head,
+            content:content,            
+            posted:posted,
+            thumbnail:thumbnail,
+            category_id:category_id
+        }
 
-        setIsOverlayLoading(true)                
-
-        const res = await putArticleCore(article_id, title, head, content, thumbnail, posted, category_id)
+        setIsOverlayLoading(true)
+        
+        const res = await ArticleAPI.putArticle(auth.jwt, article_id, payload)
 
         setIsOverlayLoading(false)
 
@@ -308,7 +312,7 @@ export default function() {
 
             <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={512} height={512}/>
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}    
-            <BeautyButton type='success' onClick={onClickPost}>올리기</BeautyButton>
+            <BeautyButton type='success' onClick={onClickPost}>{state.source_id != null ? '수정하기': '올리기'}</BeautyButton>
             <BeautyButton type='danger' onClick={onClickDelete}>삭제하기</BeautyButton>
             <BeautyButton type='success' onClick={onClickSave}>임시 저장</BeautyButton>
             <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>

@@ -50,7 +50,7 @@ export default function({article, categoryName}) {
 
 
     const timestampToString = (timestamp) => {
-
+        
         const date = new Date(timestamp)
 
         const dayBefore = calcDayBefore(date)
@@ -96,7 +96,7 @@ export default function({article, categoryName}) {
     return (
         <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', padding:'10px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5'}}>
             <div style={{display: 'flex', flexDirection: 'column', flex:'1', marginLeft:'5px', marginRight:'5px'}}>
-                <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title != '' ? article.title : '제목 미정'}</div>
+                <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title != '' ? article.title : '...'}</div>
                 <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head : '내용 없음')}</div>
                 <div style={{flex:'1'}}></div>
                 <div style={{display: 'flex', flexDirection: 'row',  alignItems:'center', color:'#888888'}}>
@@ -118,7 +118,7 @@ export default function({article, categoryName}) {
                         <div className={'clamped-text'} style={{width:'160px'}}>{categoryName}</div>
                     </div>
                     }
-                    <div style={{whiteSpace: 'nowrap'}} >{timestampToString(article.create_at)}</div>
+                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? timestampToString(article.post_at) : ''}</div>
                 </div>
 
             </div>

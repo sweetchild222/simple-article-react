@@ -348,7 +348,7 @@ export default function() {
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickDelete}>삭제</BeautyButton>
                     <BeautyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</BeautyButton>
                     <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
-                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickPost}>올리기</BeautyButton>
+                    <BeautyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickPost}>{state.source_id != null ? '수정하기': '올리기'}</BeautyButton>
                     <BeautyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</BeautyButton>
                     <Modal title={'나가기 전에 임시 저장 하시겠습니까?'} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     <div style={{flex:'1', backgroundColor:'red'}}></div>

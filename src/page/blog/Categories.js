@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
 import * as ArticleAPI from '../../api/ArticleAPI.js'
+import * as CategoryAPI from '../../api/CategoryAPI.js'
 
 import AuthContext from "../../util/AuthContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
@@ -95,7 +96,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
     const getCategories = async(blogId) => {
     
-        const res = await ArticleAPI.getCategories(blogId)
+        const res = await CategoryAPI.getCategories(blogId)
         
         if(res == null)
             return null
@@ -135,7 +136,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
         for(const category of categories) {
 
-            const res = await ArticleAPI.deleteCategory(auth.jwt, category.id)
+            const res = await CategoryAPI.deleteCategory(auth.jwt, category.id)
 
             if(res != null){
                 window.showToast(category.name + ' 이 삭제 되었습니다', 'info')
@@ -160,7 +161,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
                 blog_id:blogId
             }
 
-            const res = await ArticleAPI.postCategory(auth.jwt, payload)
+            const res = await CategoryAPI.postCategory(auth.jwt, payload)
 
             if(res != null){
                 window.showToast(category.name + ' 이 추가 되었습니다', 'info')
@@ -182,7 +183,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
             const payload = { name:category.name }
             
-            const res = await ArticleAPI.patchCategory(auth.jwt, category.id, payload)
+            const res = await CategoryAPI.patchCategory(auth.jwt, category.id, payload)
 
             if(res != null){
                 window.showToast(category.name + ' 로 이름이 변경 되었습니다', 'info')
@@ -244,7 +245,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         <div style={{display:'flex', flexDirection:'column'}}>
             <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'10px'}}>카테고리</label>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'start', padding:'5px 10px 10px 10px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
-                {categories.map((data, index) => <div key={data.id} className={'clamped-text'} style={{color:'', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</div>)}
+                {categories.map((data, index) => <div key={data.id} className={'clamped-text'} style={{cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</div>)}
                 {isEditable() && <div title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={30}/></div>}
                 {isEditable() && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => item.id != 0)}></CategoryModal>}
             </div>

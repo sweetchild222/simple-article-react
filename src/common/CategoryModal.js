@@ -141,18 +141,12 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
      setNewCategories(newCategories.filter(categorie => {
       
       if(categorie.id === id) {
-        // if(categorie.is_default == 1) {
-        //   window.showToast('기본 카테고리는 삭제 할 수 없습니다', 'error')
-        //   return true
-        // }
-        //else{
 
           if(categorie.article_count > 0) {
             window.showToast('글이 있는 카테고리는 삭제 할 수 없습니다', 'error')
             return true
           }
           return false
-        //}
       }
       else
         return true

@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
 import * as ArticleAPI from '../../api/ArticleAPI.js'
+import * as CategoryAPI from '../../api/CategoryAPI.js'
 
 import AuthContext from "../../util/AuthContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
@@ -32,7 +33,7 @@ export default function({ref, blogId, categoryId}) {
 
     const findCategoryId = async(blogId) => {
     
-        const res = await ArticleAPI.getCategories(blogId)
+        const res = await CategoryAPI.getCategories(blogId)
         
         if(res == null)
             return -1
@@ -76,7 +77,6 @@ export default function({ref, blogId, categoryId}) {
             window.showToast('카테고리를 찾을 수 없습니다', 'error')
             return
         }
-        
 
         const payload = {
             title:'',

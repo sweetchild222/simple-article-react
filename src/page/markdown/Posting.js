@@ -11,6 +11,7 @@ import GoLogin from "../../common/GoLogin.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
+import * as CategoryAPI from '../../api/CategoryAPI.js'
 import { Prompt, useFetcher } from 'react-router'
 
 import ImageCropModal from '../../common/ImageCropModal.js'
@@ -91,7 +92,7 @@ export default function() {
 
     const getCategory = async() => {
 
-        const res = await ArticleAPI.getCategories(auth.blog_id)
+        const res = await CategoryAPI.getCategories(auth.blog_id)
         
         if(res == null)
             return null

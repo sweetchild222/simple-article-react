@@ -16,6 +16,8 @@ import ToInteger from "../../util/ToInteger.js";
 import TimestampToString from "../../util/TimestampToString.js";
 import CountWithUnit from "../../util/CountWithUnit.js";
 
+import Comments from "./Comments.js"
+
 
 import ArticleItem from "./ArticleItem.js";
 import { FaCheck } from "react-icons/fa";
@@ -241,13 +243,13 @@ export default function() {
                     <div>{'adsfsd'}</div>
                     <div>{'adsfsd'}</div>
                     <div>{'adsfsd'}</div>
-
                 </div>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 <div style={{height:'30px'}}></div>
-                <LoadingImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>
+                {article.thumbnail != '' && <LoadingImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>}
                 <div style={{height:'30px'}}></div>
-                <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
+                <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%', backgroundColor:'lightpink'}}/>
+                <Comments article_id={article_id}/>
             </div>
         <div style={{width:'2px', marginLeft:'20px'}}/>
         </div>) : <OverlayLoading/>

@@ -7,6 +7,7 @@ import * as UserAPI from '../../api/UserAPI.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
 import * as ArticleAPI from '../../api/ArticleAPI.js'
+import * as CategoryAPI from '../../api/CategoryAPI.js'
 
 
 import * as blobToBase64 from '../../util/BlobToBase64.js'
@@ -268,7 +269,7 @@ export default function() {
         if(auth.blog_id != user.blog_id)
             return null
 
-        const resCategories = await ArticleAPI.getCategories(user.blog_id)
+        const resCategories = await CategoryAPI.getCategories(user.blog_id)
 
         if(resCategories == null){
             window.showToast('카테고리 정보를 가져 올 수 없습니다', 'error')
@@ -326,7 +327,7 @@ export default function() {
         if(auth.blog_id != user.blog_id)
             return null
 
-        const resCategories = await ArticleAPI.getCategories(user.blog_id)
+        const resCategories = await CategoryAPI.getCategories(user.blog_id)
 
         if(resCategories == null){
             window.showToast('카테고리 정보를 가져 올 수 없습니다', 'error')

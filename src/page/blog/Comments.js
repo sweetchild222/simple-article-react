@@ -26,6 +26,7 @@ import ProfileImage from "../../common/ProfileImage.js";
 
 import './Comments.css'
 import Categories  from "./Categories.js";
+import Comment  from "./Comment.js";
 import Recents  from "./Recents.js";
 import Pagination from "./Pagination.js";
 import MarkdownToHtml from '../../util/MarkdownToHtml.js'
@@ -165,186 +166,6 @@ export default function({article_id}) {
     }
 
 
-    const onClickNavigateUser = async(userId) =>{
-        
-        navigate('/user/' + userId)
-    }
-
-
-    const onClickModifyCommentOpen = async(id)=> {
-        
-        const comment = comments.find(comment => (comment.id == id))
-
-        if(!comment)
-            return
-
-        setModifyComment(comment)
-    }
-
-
-    const onClickModifyCommentConfirm = async(id)=>{
-
-        if(modifyComment.id == id && validAuth(auth)){
-
-            if(!refModifyCommentText.current)
-                return
-
-            const comment = refModifyCommentText.current.value
-
-            if(comment.length == 0) {
-                window.showToast('입력된 글이 없습니다', 'error')
-                return
-            }
-
-            const findComment = comments.find(comment => (comment.id == id))
-
-            if(!findComment){
-                window.showToast('현재 댓글을 찾을 수 없습니다', 'error')
-                return
-            }
-
-
-            if(findComment.comment == comment){
-                window.showToast('수정된 글이 없습니다', 'error')
-                return
-            }
-
-
-            const payload = {
-                comment:comment
-            }
-
-
-            const res = await CommentAPI.putComment(auth.jwt, id, payload)
-
-            if(res == null){
-                window.showToast('댓글 수정에 실패하였습니다', 'error')
-                return
-            }
-
-            window.showToast('댓글 수정에 성공하였습니다', 'info')
-
-            findComment.comment = comment
-
-            setComments(structuredClone(comments))
-        }
-
-        setModifyComment(null)
-    }
-
-
-    const onClickModifyCommentDelete = async(id)=> {
-
-        if(!validAuth(auth))
-            return
-
-        const comment = comments.find(comment => (comment.id == id))
-
-        if(!comment)
-            return
-
-        const res = await CommentAPI.deleteComment(auth.jwt, id)
-
-        if(res == null){
-            window.showToast('댓글 삭제에 실패하였습니다', 'error')
-            return
-        }
-
-        window.showToast('댓글 삭제에 성공하였습니다', 'info')
-
-        setComments(comments.filter(comment => comment.id != id))
-
-        setModifyComment(null)
-    }
-
-
-    const onClickModifyCommentCancel = async(id)=>{
-
-        setModifyComment(null)
-    }
-
-
-    const onClickPostReplyOpen = async(id) =>{
-
-        setReplyAddCommentId(id)
-    }
-
-
-    const onClickPostReplyCancel = async(id) =>{
-
-        setReplyAddCommentId(-1)
-    }
-
-    const onClickReplyModifyOpen = async(id)=>{
-
-        const comment = comments.find(comment => (
-            comment.replies.find(reply => reply.id == id)
-        ))
-
-        if(!comment)
-            return
-
-        const reply = comment.replies.find(reply => reply.id == id)
-
-        if(!reply)
-            return
-
-        setModifyReply(reply)
-    }
-
-
-    const onClickModifyReplyConfirm = async(id)=>{
-
-        if(modifyReply.id == id && validAuth(auth)){
-
-            if(!refModifyReplyText.current)
-                return
-
-            const reply = refModifyReplyText.current.value
-
-            if(reply.length == 0) {
-                window.showToast('입력된 글이 없습니다', 'error')
-                return
-            }
-        
-            const currentReply = findReply(id)
-
-            if(currentReply == null){
-                window.showToast('현재 대댓글을 찾을 수 없습니다', 'error')
-                return
-            }
-
-            if(currentReply.comment == reply)                
-                return            
-
-            const payload = {
-                comment:reply
-            }
-
-            const res = await CommentAPI.putComment(auth.jwt, id, payload)
-
-            if(res == null){
-                window.showToast('대댓글 수정에 실패하였습니다', 'error')
-                return
-            }
-
-            window.showToast('대댓글 수정에 성공하였습니다', 'info')
-
-            currentReply.comment = reply
-
-            setComments(structuredClone(comments))
-        }
-
-        setModifyReply(null)
-    }
-
-
-
-    const onClickModifyReplyCancel = async(id)=>{
-        
-        setModifyReply(null)
-    }
-
 
     const findReply = (id)=>{
 
@@ -364,38 +185,7 @@ export default function({article_id}) {
     }
 
 
-    const onClickModifyReplyDelete = async(id)=> {
 
-        if(!validAuth(auth))
-            return
-
-        const comment = comments.find(comment => (
-            comment.replies.find(reply => reply.id == id)
-        ))
-
-        if(!comment)
-            return
-
-        const reply = comment.replies.find(reply => reply.id == id)
-
-        if(!reply)
-            return
-        
-        const res = await CommentAPI.deleteComment(auth.jwt, reply.id)
-
-        if(res == null){
-            window.showToast('대댓글 삭제에 실패하였습니다', 'error')
-            return
-        }
-
-        window.showToast('대댓글 삭제에 성공하였습니다', 'info')        
-
-        comment.replies = comment.replies.filter(reply => reply.id != id)
-        
-        setComments(structuredClone(comments))
-
-        setModifyReply(null)
-    }
 
     const onInputModifyComment = (event)=>{
 
@@ -416,6 +206,27 @@ export default function({article_id}) {
     }
 
 
+    const onRemoveReply = (id) => {
+        
+        const comment = comments.find(comment => (
+            comment.replies.find(reply => reply.id == id)
+        ))
+    
+        if(!comment)
+            return
+    
+        comment.replies = comment.replies.filter(reply => reply.id != id)                    
+
+        setComments(structuredClone(comments))        
+    }
+
+
+    const onRemoveComment = (id) => {
+
+        setComments(structuredClone(comments.filter(comment => comment.id != id)))
+    }
+
+
     return comments ? (
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'center', width:'100%'}}>
             <textarea ref={refCommentText} className={'commentEdit'}  placeholder={'댓글을 입력하세요'} suppressContentEditableWarning={true} maxLength={100} style={{width:'100%', resize:'none', maxHeight:'200px', minHeight:'100px', border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto'}} onInput={onInputComment}/>
@@ -423,7 +234,8 @@ export default function({article_id}) {
             <div style={{width:'100%'}}>
                 {comments.map((data, index) => 
                     <div key={data.id} style={{display:'flex', flexDirection: 'column', justifyContent:'left', border:'1px solid lightgray'}}>
-                        <div style={{display:'flex', flexDirection: 'row', alignItems:'center', border:'1px solid lightgray'}}>
+                        <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data.id)}/>                        
+                        {/* <div style={{display:'flex', flexDirection: 'row', alignItems:'center', border:'1px solid lightgray'}}>
                             <ProfileImage size={64} userId={data.user_id} onClick={()=> onClickNavigateUser(data.user_id)}/>
                             {!modifyComment && <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line'}}>{data.comment}</div>}
                             {!modifyComment && validAuth(auth) && auth.user_id == data.user_id && <BeautyButton type={'warning'} onClick={()=>onClickModifyCommentOpen(data.id)}>{'수정'}</BeautyButton>}
@@ -436,21 +248,9 @@ export default function({article_id}) {
                                 </div>
                             }
                             <div>{(data.update_at ? '수정됨' : '작성됨') + TimestampToString(data.update_at ? data.update_at : data.create_at)}</div>
-                        </div>
+                        </div> */}
                         {data.replies.map((data, index) =>
-                            <div key={data.id} style={{display:'flex', flexDirection: 'row', alignItems:'center', border:'1px solid lightgray', paddingLeft:'30px'}}>
-                                <ProfileImage size={64} userId={data.user_id} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                                <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line'}}>{data.comment}</div>
-                                {!modifyReply && validAuth(auth) && auth.user_id == data.user_id && <BeautyButton type={'success'} onClick={()=>onClickReplyModifyOpen(data.id)}>{'수정'}</BeautyButton>}
-                                {modifyReply && data.id == modifyReply.id && 
-                                <div>
-                                    <textarea ref={refModifyReplyText} className={'commentEdit'}  placeholder={'대댓글을 수정하세요'} defaultValue={modifyReply.comment} maxLength={100} style={{width:'100%', resize:'none', maxHeight:'200px', minHeight:'100px', border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto'}} onInput={onInputModifyReply} ></textarea>
-                                    <BeautyButton type={'warning'} onClick={()=>onClickModifyReplyConfirm(data.id)}>{'수정 입력'}</BeautyButton>
-                                    <BeautyButton type={'warning'} onClick={()=>onClickModifyReplyCancel(data.id)}>{'수정 취소'}</BeautyButton>
-                                    <BeautyButton type={'warning'} onClick={()=>onClickModifyReplyDelete(data.id)}>{'삭제'}</BeautyButton>
-                                </div>
-                            }
-                            </div>
+                            <Comment key={data.id} comment={data} style={{paddingLeft:'30px'}} onRemoved={()=>onRemoveReply(data.id)}/>
                         )}
 
                         {data.id == replyAddCommentId && <BeautyButton onClick={() => onClickPostReplyCancel(data.id)}>{'대댓글 취소'}</BeautyButton>}

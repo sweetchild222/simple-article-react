@@ -125,15 +125,11 @@ export async function postArticleShowed(article_id){
 
 
 
-export async function getArticleGreat(jwt, query) {
+export async function getArticleGreat(query) {
 
   try{
 
-    const authStr = 'Bearer '.concat(jwt);
-
-    const headers = {Authorization: authStr};
-  
-    const response = await axios.get('/api/article/great' + (query ? ('?' + query) : ''), { headers: headers})
+    const response = await axios.get('/api/article/great' + (query ? ('?' + query) : ''))
     
     return response.data
   }
@@ -167,6 +163,32 @@ export async function postArticleGreat(jwt, payload){
     return null
   }
 }
+
+
+
+
+export async function patchArticleGreat(jwt, great_id, payload){
+
+  try {
+
+      const authStr = 'Bearer '.concat(jwt);
+
+      const headers = {Authorization: authStr};
+      
+      const response = await axios.patch('/api/article/great/' + great_id, payload, { headers: headers})
+
+      return response.data
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null
+  }
+}
+
+
+
 
 
 

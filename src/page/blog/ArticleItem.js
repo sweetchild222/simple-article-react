@@ -14,6 +14,7 @@ import * as ArticleAPI from '../../api/ArticleAPI.js'
 import { FaEye } from "react-icons/fa";
 import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
+import { MdThumbDownAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 
 
@@ -58,9 +59,16 @@ export default function({article, categoryName}) {
                     </div>}
                     {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <MdThumbUpAlt size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.great_count)}</div>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.like_count)}</div>
                     </div>
                     }
+
+                    {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                        <MdThumbDownAlt size={22}/>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.dislike_count)}</div>
+                    </div>
+                    }
+                    
                     {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
                         <BiSolidComment size={22}/>
                         <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.comment_count)}</div>

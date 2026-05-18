@@ -33,6 +33,7 @@ import MarkdownToHtml from '../../util/MarkdownToHtml.js'
 import { FaEye } from "react-icons/fa";
 import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
+import { MdThumbDownAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 
 export default function() {
@@ -48,6 +49,8 @@ export default function() {
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
     
     const navigate = useNavigate()
+
+
 
     useEffect(()=>{
 
@@ -68,6 +71,7 @@ export default function() {
                 return
             }
         
+            
             setArticle(article)
 
             ArticleAPI.postArticleShowed(article_id).then((showed) => {
@@ -164,62 +168,175 @@ export default function() {
     }
 
 
+    const postGreat = async(user_id, article_id, like) =>{
 
-    const onClickGreat = async() =>{
-
-        if(!validAuth(auth)) {
-            navigate('/account', {state:{relogin:true}})
-            return
+        const payload = {
+            user_id:auth.user_id,
+            article_id:article_id,
+            great:like
         }
-
-        const query = 'user_id=' + auth.user_id + '&article_id=' + article_id
 
         setIsGreatLoading(true)
 
-        const resGreat = await ArticleAPI.getArticleGreat(auth.jwt, query)
+        const res = await ArticleAPI.postArticleGreat(auth.jwt, payload)
 
-        if(resGreat == null){
-            setIsGreatLoading(false)
-            window.showToast('좋아요 상태를 가져오기 실패 하였습니다', 'error')
-            return
+        setIsGreatLoading(false)
+
+        if(res == null)         
+            return null        
+
+        return res
+    }
+
+
+    const getGreat = async(user_id, article_id) =>{
+
+        setIsGreatLoading(true)
+
+        const query = 'user_id=' + user_id + '&article_id=' + article_id
+
+        const resGreat = await ArticleAPI.getArticleGreat(query)
+
+        setIsGreatLoading(false)
+
+        if(resGreat == null)
+            return null
+
+        return resGreat
+    }
+
+
+    const deleteGreat = async(id) =>{
+
+        setIsGreatLoading(true)
+
+        const res = await ArticleAPI.deleteArticleGreat(auth.jwt, id)
+
+        setIsGreatLoading(false)
+
+        return res
+    }
+
+
+    const patchGreat = async(id, great) =>{
+
+        const payload = {                    
+            great:great
         }
 
-        if(resGreat.length == 0){
+        setIsGreatLoading(true)
 
-            const payload = {
-                user_id:auth.user_id,
-                article_id:article_id
-            }
+        const res = await ArticleAPI.patchArticleGreat(auth.jwt, id, payload)
 
-            const res = await ArticleAPI.postArticleGreat(auth.jwt, payload)            
+        setIsGreatLoading(false)
 
-            if(res == null){
-                setIsGreatLoading(false)
-                window.showToast('좋아요 실패 하였습니다', 'error')                
-                return
-            }
+        return res
+
+    }
 
 
-            article.great_count += 1
-            setArticle(structuredClone(article))
-            setIsGreatLoading(false)
-            window.showToast('좋아요 성공 하였습니다', 'info')
+    const updateGreat = async(great) =>{
+
+        if(!validAuth(auth))
+            return false
+        
+        const resGreat = await getGreat(auth.user_id, article_id)
+
+        if(resGreat == null)
+            return false        
+
+        if(resGreat.length > 0){
+
+            console.log(resGreat[0].great,  great)
+
+            if(resGreat[0].great != great) {
+                
+                const res = await patchGreat(resGreat[0].id, great)
+
+                if(res == null){
+                    window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경에 실패 하였습니다', 'error')
+                    return false
+                }
+
+                if(great == 1){
+                    article.like_count += 1
+                    article.dislike_count -= 1
+                }
+                else if(great == -1){
+                    article.like_count -= 1
+                    article.dislike_count += 1
+                }
+                else 
+                    return false
+
+                window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경 하였습니다', 'info')
+                setArticle(structuredClone(article))
+
+                return true
+
+            }else {
+
+                console.log('ads')
+
+                const res = await deleteGreat(resGreat[0].id)
+
+                if(res == null){
+                    window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 실패 하였습니다', 'error')
+                    return false
+                }
+
+                if(great == 1)
+                    article.like_count -= 1
+                else if(great == -1)
+                    article.dislike_count -= 1
+                else 
+                    return false
+
+                window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 성공 하였습니다', 'info')
+                setArticle(structuredClone(article))
+
+                return true
+            }            
         }
         else{
+            
+            const res = await postGreat(auth.user_id, article_id, great)
 
-            const res = await ArticleAPI.deleteArticleGreat(auth.jwt, resGreat[0].id)
-
-            if(res == null){
-                setIsGreatLoading(false)
-                window.showToast('좋아요 취소가 실패 하였습니다', 'error')                
-                return
+            if(!res){
+                window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 실패 하였습니다', 'error')
+                return false
             }
+            
+            if(great == 1)
+                article.like_count += 1
+            else if(great == -1)
+                article.dislike_count += 1
+            else
+                return false
 
-            article.great_count -= 1
             setArticle(structuredClone(article))
-            setIsGreatLoading(false)
-            window.showToast('좋아요 취소가 성공 하였습니다', 'info')                       
+            window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 성공 하였습니다', 'info')
+            
+            return true
         }
+    }
+
+
+
+    const onClickLike = async() =>{
+
+        const success = await updateGreat(1)
+
+        console.log(success)
+        
+    }
+
+
+    const onClickDislike = async() =>{
+
+        const success = await updateGreat(-1)
+
+        console.log(success)
     }
 
     return article ? (<div style={{display:'flex', flexDirection: 'row', justifyContent:'center', marginTop:'20px'}}>
@@ -236,9 +353,14 @@ export default function() {
                         <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.showed)}</div>
                     </div>
 
-                    <BeautyButton isLoading={isGreatLoading} title={'좋아요'} style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickGreat}>
+                    <BeautyButton isLoading={isGreatLoading} title={'좋아요'} style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickLike}>
                         <MdThumbUpAlt size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.great_count)}</div>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.like_count)}</div>
+                    </BeautyButton>
+
+                    <BeautyButton isLoading={isGreatLoading} title={'좋아요'} style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickDislike}>
+                        <MdThumbDownAlt size={22}/>
+                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.dislike_count)}</div>
                     </BeautyButton>
                     <div>{'adsfsd'}</div>
                     <div>{'adsfsd'}</div>

@@ -168,7 +168,7 @@ export default function() {
     }
 
 
-    const postGreat = async(user_id, article_id, like) =>{
+    const postGreat = async(jwt, user_id, article_id, like) =>{
 
         const payload = {
             user_id:auth.user_id,
@@ -182,8 +182,8 @@ export default function() {
 
         setIsGreatLoading(false)
 
-        if(res == null)         
-            return null        
+        if(res == null)
+            return null
 
         return res
     }
@@ -206,7 +206,7 @@ export default function() {
     }
 
 
-    const deleteGreat = async(id) =>{
+    const deleteGreat = async(jwt, id) =>{
 
         setIsGreatLoading(true)
 
@@ -218,7 +218,7 @@ export default function() {
     }
 
 
-    const patchGreat = async(id, great) =>{
+    const patchGreat = async(jwt, id, great) =>{
 
         const payload = {                    
             great:great
@@ -245,13 +245,11 @@ export default function() {
         if(resGreat == null)
             return false        
 
-        if(resGreat.length > 0){
-
-            console.log(resGreat[0].great,  great)
+        if(resGreat.length > 0){            
 
             if(resGreat[0].great != great) {
                 
-                const res = await patchGreat(resGreat[0].id, great)
+                const res = await patchGreat(auth.jwt, resGreat[0].id, great)
 
                 if(res == null){
                     window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경에 실패 하였습니다', 'error')
@@ -276,9 +274,7 @@ export default function() {
 
             }else {
 
-                console.log('ads')
-
-                const res = await deleteGreat(resGreat[0].id)
+                const res = await deleteGreat(auth.jwt, resGreat[0].id)
 
                 if(res == null){
                     window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 실패 하였습니다', 'error')
@@ -296,11 +292,11 @@ export default function() {
                 setArticle(structuredClone(article))
 
                 return true
-            }            
+            }
         }
         else{
             
-            const res = await postGreat(auth.user_id, article_id, great)
+            const res = await postGreat(auth.jwt, auth.user_id, article_id, great)
 
             if(!res){
                 window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 실패 하였습니다', 'error')
@@ -350,21 +346,17 @@ export default function() {
                     <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? TimestampToString(article.post_at) : ''}</div>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <TiEye size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.showed)}</div>
+                        <div>{CountWithUnit(article.showed)}</div>
                     </div>
-
-                    <BeautyButton isLoading={isGreatLoading} title={'좋아요'} style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickLike}>
+                    <BeautyButton isLoading={isGreatLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickLike}>
                         <MdThumbUpAlt size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.like_count)}</div>
+                        <div>{CountWithUnit(article.like_count)}</div>
                     </BeautyButton>
 
-                    <BeautyButton isLoading={isGreatLoading} title={'좋아요'} style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickDislike}>
+                    <BeautyButton isLoading={isGreatLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickDislike}>
                         <MdThumbDownAlt size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.dislike_count)}</div>
+                        <div>{CountWithUnit(article.dislike_count)}</div>
                     </BeautyButton>
-                    <div>{'adsfsd'}</div>
-                    <div>{'adsfsd'}</div>
-                    <div>{'adsfsd'}</div>
                 </div>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 <div style={{height:'30px'}}></div>

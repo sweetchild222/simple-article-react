@@ -69,6 +69,9 @@ export default function({article_id}) {
 
             for(const upperComment of upperComments)
                 upperComment.replies = comments.filter(reply => reply.comment_id == upperComment.id)
+
+
+            console.log(upperComments)
             
             setComments(upperComments)
         })

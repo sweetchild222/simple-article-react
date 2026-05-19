@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
 import * as ArticleAPI from '../../api/ArticleAPI.js'
+import * as ArticleGreatAPI from '../../api/ArticleGreatAPI.js'
 
 import AuthContext from "../../util/AuthContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
@@ -178,7 +179,7 @@ export default function() {
 
         setIsGreatLoading(true)
 
-        const res = await ArticleAPI.postArticleGreat(auth.jwt, payload)
+        const res = await ArticleGreatAPI.postArticleGreat(auth.jwt, payload)
 
         setIsGreatLoading(false)
 
@@ -195,7 +196,7 @@ export default function() {
 
         const query = 'user_id=' + user_id + '&article_id=' + article_id
 
-        const resGreat = await ArticleAPI.getArticleGreat(query)
+        const resGreat = await ArticleGreatAPI.getArticleGreat(query)
 
         setIsGreatLoading(false)
 
@@ -210,7 +211,7 @@ export default function() {
 
         setIsGreatLoading(true)
 
-        const res = await ArticleAPI.deleteArticleGreat(auth.jwt, id)
+        const res = await ArticleGreatAPI.deleteArticleGreat(auth.jwt, id)
 
         setIsGreatLoading(false)
 
@@ -226,7 +227,7 @@ export default function() {
 
         setIsGreatLoading(true)
 
-        const res = await ArticleAPI.patchArticleGreat(auth.jwt, id, payload)
+        const res = await ArticleGreatAPI.patchArticleGreat(auth.jwt, id, payload)
 
         setIsGreatLoading(false)
 

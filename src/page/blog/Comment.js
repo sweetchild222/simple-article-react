@@ -23,7 +23,7 @@ import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
 import OverlayLoading from "../../common/OverlayLoading.js";
 import * as CommentAPI from '../../api/CommentAPI.js'
-import ProfileImage from "../../common/ProfileImage.js";
+import UserImage from "../../common/UserImage.js";
 
 import './Comments.css'
 import Categories  from "./Categories.js";
@@ -310,7 +310,7 @@ export default function(props) {
     return comment ? (
             <div style={{display:'flex', flexDirection: 'row', alignItems:'center', border:'1px solid lightgray', ...combinedStyle}}>
                 <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                    <ProfileImage size={64} user={comment.user} onClick={()=> onClickNavigateUser(comment.user_id)}/>
+                    <UserImage size={64} user={comment.user} onClick={()=> onClickNavigateUser(comment.user_id)}/>
                     <div>{(comment.update_at ? '수정됨' : '작성됨') + TimestampToString(comment.update_at ? comment.update_at : comment.create_at)}</div>
                 </div>                
                 <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line'}}>{comment.comment}</div>

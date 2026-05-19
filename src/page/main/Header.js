@@ -6,7 +6,7 @@ import * as UserAPI from '../../api/UserAPI.js'
 import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 import AuthContext from "../../util/AuthContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
-import ProfileImage from "../../common/ProfileImage.js";
+import UserImage from "../../common/UserImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
 
 export default function() {
@@ -65,7 +65,7 @@ export default function() {
                 <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown} ></input>
                 <div style={{margin:'0px 0px 0px 10px', width:'64px'}}>
                     {!validAuth(auth) && <BeautyButton type='confirm' onClick={onClickLogIn}>로그인</BeautyButton>}
-                    {validAuth(auth) && <ProfileImage key={reloadKey} userId={auth.user_id} onClick={onClickUser}/>}
+                    {validAuth(auth) && <UserImage key={reloadKey} userId={auth.user_id} onClick={onClickUser}/>}
                 </div>
             </div>
     )

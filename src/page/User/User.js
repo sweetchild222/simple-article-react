@@ -23,7 +23,7 @@ import ImageCropModal from '../../common/ImageCropModal.js'
 
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker, useParams} from 'react-router-dom';
 import PageNotFound from '../entry/PageNotFound.js';
-import ProfileImage from "../../common/ProfileImage.js";
+import UserImage from "../../common/UserImage.js";
 import OverlayLoading from '../../common/OverlayLoading.js';
 
 export default function() {
@@ -75,7 +75,7 @@ export default function() {
         if(!isEditable())
             return
 
-        navigate('profile')
+        navigate('setting')
     }
 
 

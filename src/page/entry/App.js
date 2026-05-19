@@ -12,7 +12,7 @@ import Article  from '../blog/Article.js'
 import MainHeader from '../main/Header.js'
 import MainHome from '../main/Home.js'
 
-import Profile from '../user/Profile.js'
+import SettingUser from '../user/SettingUser.js'
 import User from '../user/User.js'
 import Regist from '../user/Regist.js'
 import Login from '../user/Login.js'
@@ -60,7 +60,7 @@ export default function() {
         },
         { path: 'user/:id', children: [
           { index: true, element: <User/>},
-          { path: 'profile', element: <Profile/>}]
+          { path: 'setting', element: <SettingUser/>}]
         },
         { path: 'pageNotFound', element: <PageNotFound/>}
       ],

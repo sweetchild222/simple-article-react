@@ -38,12 +38,12 @@ export default function() {
   
     const onClickLogin = async() => {
 
-        //const username = input_username.value
-        //const password = input_password.value
+        const username = input_username.value
+        const password = input_password.value
         
-        const username = 'crazygun22@nate.com'
+        //const username = 'crazygun22@nate.com'
         //const username = 'sweetchild22.ik@gmail.com'
-        const password = 'Sweetchild@22'
+        //const password = 'Sweetchild@22'
 
         if(username === ''){
             input_username.focus()

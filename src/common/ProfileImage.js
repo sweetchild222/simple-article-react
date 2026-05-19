@@ -13,13 +13,16 @@ export default function(props) {
     const height = width
     const borderRadius = parseInt(width / 2)
         
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState(props.user)
 
     const combinedStyle = {
         ...props.style
     }
 
     useEffect(()=>{
+
+        if(props.userId == null)
+            return
 
         UserAPI.getUser(props.userId).then((res)=>{
             
@@ -33,7 +36,7 @@ export default function(props) {
 
             setUser(res)
         })
-
+        
     },  [props.userId])
 
     return user ? 

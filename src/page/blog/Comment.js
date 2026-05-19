@@ -40,26 +40,21 @@ import { MdThumbDownAlt } from "react-icons/md";
 
 export default function(props) {
 
-    //const comment = props.comment
     const onRemoved = props.onRemoved
 
-    const combinedStyle = {
-    
-    ...props.style // The passed style object
-    }
+    const combinedStyle = { ...props.style }
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isModifyLoading, setIsModifyLoading] = useState(false)
     const [isDeleteLoading, setIsDeleteLoading] = useState(false)
     const [isModify, setIsModify] = useState(false)
-
     const [comment, setComment] = useState(props.comment)
-
     const [isGreatLoading, setIsGreatLoading] = useState(false)
 
     const refText = useRef(null)
     
     const navigate = useNavigate()
+
 
     const onClickNavigateUser = async(userId) =>{
         
@@ -315,13 +310,10 @@ export default function(props) {
     return comment ? (
             <div style={{display:'flex', flexDirection: 'row', alignItems:'center', border:'1px solid lightgray', ...combinedStyle}}>
                 <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                    <ProfileImage size={64} userId={comment.user_id} onClick={()=> onClickNavigateUser(comment.user_id)}/>
+                    <ProfileImage size={64} user={comment.user} onClick={()=> onClickNavigateUser(comment.user_id)}/>
                     <div>{(comment.update_at ? '수정됨' : '작성됨') + TimestampToString(comment.update_at ? comment.update_at : comment.create_at)}</div>
-                </div>
-                
+                </div>                
                 <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line'}}>{comment.comment}</div>
-
-
                 <BeautyButton isLoading={isGreatLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickLike}>
                     <MdThumbUpAlt size={22}/>
                     <div>{CountWithUnit(comment.like_count)}</div>
@@ -331,7 +323,6 @@ export default function(props) {
                     <MdThumbDownAlt size={22}/>
                     <div>{CountWithUnit(comment.dislike_count)}</div>
                 </BeautyButton>
-
 
                 {!isModify && validAuth(auth) && auth.user_id == comment.user_id && <BeautyButton type={'success'} onClick={()=>onClickModifyOpen()}>{'수정'}</BeautyButton>}
                 {isModify &&

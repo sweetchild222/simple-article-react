@@ -119,6 +119,64 @@ export default function({article_id}) {
     }
 
 
+    const onClickPostReplyAdd = async(comment_id) =>{
+
+        if(!validAuth(auth))
+            return
+
+        const findComment = comments.find(comment => comment.id == comment_id)
+
+        if(findComment == null)
+            return
+
+        if(!refReplyText.current)
+            return
+
+        const reply = refReplyText.current.value
+
+        if(reply.length == 0){
+            window.showToast('입력된 글이 없습니다', 'error')
+            return
+        }
+
+        setIsReplyPostLoading(true)
+
+        const payload = {
+            comment:reply,
+            article_id:article_id,
+            user_id:auth.user_id,
+            comment_id:comment_id
+        }
+
+        const res = await CommentAPI.postComment(auth.jwt, payload)
+
+        setIsReplyPostLoading(false)
+
+        if(res == null){
+            window.showToast('대댓글 작성에 실패하였습니다', 'error')
+            return
+        }
+
+        window.showToast('대댓글이 작성 되었습니다', 'info')
+
+        let findUser = users.find((item) => item.id == auth.user_id)
+
+        if(findUser == null){
+            const users = await getUsers([auth.user_id])
+            if(users.length > 0){                
+                findUser = users[0]
+                setUsers([...users, findUser])
+            }
+        }
+        
+        findComment.replies.unshift({id:res.id, update_at:null, create_at:Date.now(), user:findUser, ...payload})
+
+        setComments(structuredClone(comments))
+        
+        setReplyAddCommentId(-1)
+    }
+
+
 
     const onInputModifyComment = (event)=>{
 
@@ -160,7 +218,7 @@ export default function({article_id}) {
     }
 
 
-    const onOpenCommentEdit = async() =>{
+    const onClickPostReplyOpen = async(id) =>{
 
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
@@ -168,8 +226,9 @@ export default function({article_id}) {
             return
         }
 
-        setIsOpenCommentEdit(true)
+        setReplyAddCommentId(id)
     }
+
 
 
     const onPostComment = async(text) =>{
@@ -213,11 +272,12 @@ export default function({article_id}) {
 
     const onCloseCommentEdit = async() => {
 
+
         setIsOpenCommentEdit(false)
     }
 
 
-    const onClickPostReplyOpen = async(id) =>{
+    const onOpenCommentEdit = async() =>{
 
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
@@ -225,10 +285,10 @@ export default function({article_id}) {
             return
         }
 
-        setReplyAddCommentId(id)
+        setIsOpenCommentEdit(true)
     }
 
-
+    
     const onPostReply = async(text)=>{
 
         if(!validAuth(auth))
@@ -243,7 +303,7 @@ export default function({article_id}) {
             comment:text,
             article_id:article_id,
             user_id:auth.user_id,
-            comment_id:replyAddCommentId
+            comment_id:comment_id
         }
 
         const res = await CommentAPI.postComment(auth.jwt, payload)
@@ -271,6 +331,7 @@ export default function({article_id}) {
         setReplyAddCommentId(-1)
 
         return true
+
     }
 
 
@@ -294,13 +355,10 @@ export default function({article_id}) {
                         {data.replies.map((data, index) =>
                             <Comment key={data.id} comment={data} style={{paddingLeft:'30px'}} onRemoved={()=>onRemoveReply(data.id)}/>
                         )}
-
-                        {data.id == replyAddCommentId && <CommentEdit onPostText={onPostReply} onClose={onCloseCommentReply}/>}
-                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
-                            <label>{'댓글 (' + comments.length + ')'}</label>
-                            {data.id != replyAddCommentId && <BeautyButton type={'success'} onClick={() => onClickPostReplyOpen(data.id)}>{'대댓글 작성'}</BeautyButton>}
-                        </div>                                                
                         
+                        {data.id != replyAddCommentId && <BeautyButton onClick={() => onClickPostReplyOpen(data.id)}>{'답글 작성'}</BeautyButton>}
+                        {data.id == replyAddCommentId && <CommentEdit onPostText={onPostReply} onClose={onCloseCommentReply}/>}
+                        {data.id == replyAddCommentId && <BeautyButton isLoading={isReplyPostLoading} onClick={()=> onClickPostReplyAdd(data.id)}>{'대댓글 추가'}</BeautyButton>}
                     </div>
                 )}
                 

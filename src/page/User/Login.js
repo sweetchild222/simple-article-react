@@ -93,9 +93,9 @@ export default function() {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <label htmlFor='input_username'>사용자 이름</label>
-            <input id='input_username' type='text' onKeyDown={onKeyDownUserName} maxLength={254}/>
+            <input id='input_username' type='text' defaultValue={'crazygun22@nate.com'} onKeyDown={onKeyDownUserName} maxLength={254}/>
             <label htmlFor='input_password'>비밀번호</label>
-            <input id='input_password' type='password' onKeyDown={onKeyDownPassword} maxLength={254}/>
+            <input id='input_password' type='password' defaultValue={'Sweetchild@22'} onKeyDown={onKeyDownPassword} maxLength={254}/>
             <BeautyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</BeautyButton>
             {!relogin && <BeautyButton onClick={() => {navigate('regist', {replace:true})}}>회원가입</BeautyButton>}
         </div>

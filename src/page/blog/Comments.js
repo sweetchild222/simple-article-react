@@ -67,12 +67,18 @@ export default function({article_id}) {
                 window.showToast('댓글을 가져 올 수 없습니다', 'error')
                 return
             }
+            
+            comments.sort((a, b) => {
+
+                return b.create_at - a.create_at
+
+            })
 
             const userIDList = []
 
             comments.forEach((item, index) => {
                 userIDList.push(item.user_id)
-            })                        
+            })
 
             getUsers([...new Set(userIDList)]).then((resUsers)=>{
                 
@@ -285,14 +291,14 @@ export default function({article_id}) {
     }
 
 
-    const onClickPostReplyCancel = async(id) =>{
+    const onClickPostReplyCancel = async(id) => {
 
         setReplyAddCommentId(-1)
     }
 
 
     return comments ? (
-        <div style={{display:'flex', flexDirection: 'column', justifyContent:'center', width:'100%'}}>
+        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
             <textarea ref={refCommentText} className={'commentEdit'}  placeholder={'댓글을 입력하세요'} suppressContentEditableWarning={true} maxLength={100} style={{width:'100%', resize:'none', maxHeight:'200px', minHeight:'100px', border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto'}} onInput={onInputComment}/>
             <BeautyButton isLoading={isPostLoading} onClick={()=>onClickPostComment(null)}>{'추가'}</BeautyButton>
             <div style={{width:'100%'}}>

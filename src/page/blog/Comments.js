@@ -28,6 +28,7 @@ import UserImage from "../../common/UserImage.js";
 import './Comments.css'
 import Categories  from "./Categories.js";
 import Comment  from "./Comment.js";
+import CommentEdit from "./CommentEdit.js";
 import Recents  from "./Recents.js";
 import Pagination from "./Pagination.js";
 import MarkdownToHtml from '../../util/MarkdownToHtml.js'
@@ -38,6 +39,8 @@ import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 
+
+
 export default function({article_id}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
@@ -46,12 +49,12 @@ export default function({article_id}) {
     const [replyAddCommentId, setReplyAddCommentId] = useState(-1)
     const [replyModifyCommentId, setReplyModifyCommentId] = useState(-1)
     const [isReplyPostLoading, setIsReplyPostLoading] = useState(false)
-    const [isPostLoading, setIsPostLoading] = useState(false)
+    const [isOpenCommentEdit, setIsOpenCommentEdit] = useState(false)
 
     const [modifyComment, setModifyComment] = useState(null)
     const [modifyReply, setModifyReply] = useState(null)
 
-    const [users, setUsers] = useState(null)
+    const [users, setUsers] = useState(null)    
 
     const refCommentText = useRef(null)
     const refReplyText = useRef(null)
@@ -102,63 +105,11 @@ export default function({article_id}) {
                 for(const upperComment of upperComments)
                     upperComment.replies = comments.filter(reply => reply.comment_id == upperComment.id)
             
-                setComments(upperComments)
+                setComments(upperComments)                
             })
         })
         
     }, [article_id])
-
-
-    const onClickPostComment = async(comment_id) =>{
-
-        if(!validAuth(auth))
-            return
-
-        if(!refCommentText.current)
-            return
-
-        const comment = refCommentText.current.value
-
-        if(comment.length == 0)
-            return
-
-        setIsPostLoading(true)
-
-        const payload = {
-
-            comment:comment,
-            article_id:article_id,
-            user_id:auth.user_id,
-            comment_id:null
-        }
-
-        const res = await CommentAPI.postComment(auth.jwt, payload)
-
-        setIsPostLoading(false)
-
-        if(res == null){
-            window.showToast('댓글 작성에 실패하였습니다', 'error')
-            return
-        }
-
-        window.showToast('댓글이 작성 되었습니다', 'info')
-
-        let findUser = users.find((item) => item.id == auth.user_id)
-
-        if(findUser == null) {
-            const users = await getUsers([auth.user_id])
-            if(users.length > 0){
-                findUser = users[0]
-                setUsers([...users, findUser])
-            }
-        }
-
-        comments.unshift({id:res.id, replies:[], update_at:null, create_at:Date.now(), user:findUser, ...payload})
-
-        setComments(structuredClone(comments))
-
-        refCommentText.current.value = ''                        
-    }
 
 
 
@@ -167,82 +118,6 @@ export default function({article_id}) {
         return await UserAPI.getUsers('id=' + userIDList)        
     }
 
-
-    const onClickPostReplyAdd = async(comment_id) =>{
-
-        if(!validAuth(auth))
-            return
-
-        const findComment = comments.find(comment => comment.id == comment_id)
-
-        if(findComment == null)
-            return
-
-        if(!refReplyText.current)
-            return
-
-        const reply = refReplyText.current.value
-
-        if(reply.length == 0){
-            window.showToast('입력된 글이 없습니다', 'error')
-            return
-        }
-
-        setIsReplyPostLoading(true)
-
-        const payload = {
-            comment:reply,
-            article_id:article_id,
-            user_id:auth.user_id,
-            comment_id:comment_id
-        }
-
-        const res = await CommentAPI.postComment(auth.jwt, payload)
-
-        setIsReplyPostLoading(false)
-
-        if(res == null){
-            window.showToast('대댓글 작성에 실패하였습니다', 'error')
-            return
-        }
-
-        window.showToast('대댓글이 작성 되었습니다', 'info')
-
-        let findUser = users.find((item) => item.id == auth.user_id)
-
-        if(findUser == null){
-            const users = await getUsers([auth.user_id])
-            if(users.length > 0){                
-                findUser = users[0]
-                setUsers([...users, findUser])
-            }
-        }
-        
-        findComment.replies.unshift({id:res.id, update_at:null, create_at:Date.now(), user:findUser, ...payload})
-
-        setComments(structuredClone(comments))
-        
-        setReplyAddCommentId(-1)
-    }
-
-
-
-    const findReply = (id)=>{
-
-        const comment = comments.find(comment => (
-            comment.replies.find(reply => reply.id == id)
-        ))
-
-        if(!comment)
-            return null
-
-        const reply = comment.replies.find(reply => reply.id == id)
-
-        if(!reply)
-            return null
-
-        return reply
-    }
 
 
     const onInputModifyComment = (event)=>{
@@ -285,22 +160,133 @@ export default function({article_id}) {
     }
 
 
+    const onOpenCommentEdit = async() =>{
+
+        if(!validAuth(auth)){
+            window.showToast('로그인 해주세요', 'info')
+            navigate('/account', {state:{relogin:true}})
+            return
+        }
+
+        setIsOpenCommentEdit(true)
+    }
+
+
+    const onPostComment = async(text) =>{
+
+        if(!validAuth(auth))
+            return false
+        
+        const payload = {
+
+            comment:text,
+            article_id:article_id,
+            user_id:auth.user_id,
+            comment_id:null
+        }
+
+        const res = await CommentAPI.postComment(auth.jwt, payload)        
+
+        if(res == null){
+            window.showToast('댓글 작성에 실패하였습니다', 'error')
+            return false
+        }
+
+        window.showToast('댓글이 작성 되었습니다', 'info')
+
+        let findUser = users.find((item) => item.id == auth.user_id)
+
+        if(findUser == null) {
+            const users = await getUsers([auth.user_id])
+            if(users.length > 0){
+                findUser = users[0]
+                setUsers([...users, findUser])
+            }
+        }
+
+        comments.unshift({id:res.id, replies:[], update_at:null, create_at:Date.now(), user:findUser, ...payload})
+        setComments(structuredClone(comments))
+
+        return true
+    }
+
+
+    const onCloseCommentEdit = async() => {
+
+        setIsOpenCommentEdit(false)
+    }
+
+
     const onClickPostReplyOpen = async(id) =>{
+
+        if(!validAuth(auth)){
+            window.showToast('로그인 해주세요', 'info')
+            navigate('/account', {state:{relogin:true}})
+            return
+        }
 
         setReplyAddCommentId(id)
     }
 
 
-    const onClickPostReplyCancel = async(id) => {
+    const onPostReply = async(text)=>{
+
+        if(!validAuth(auth))
+            return false
+
+        const findComment = comments.find(comment => comment.id == replyAddCommentId)
+
+        if(findComment == null)
+            return false
+
+        const payload = {
+            comment:text,
+            article_id:article_id,
+            user_id:auth.user_id,
+            comment_id:replyAddCommentId
+        }
+
+        const res = await CommentAPI.postComment(auth.jwt, payload)
+        
+        if(res == null){
+            window.showToast('대댓글 작성에 실패하였습니다', 'error')
+            return false
+        }
+
+        window.showToast('대댓글이 작성 되었습니다', 'info')
+
+        let findUser = users.find((item) => item.id == auth.user_id)
+
+        if(findUser == null){
+            const users = await getUsers([auth.user_id])
+            if(users.length > 0){                
+                findUser = users[0]
+                setUsers([...users, findUser])
+            }
+        }
+        
+        findComment.replies.unshift({id:res.id, update_at:null, create_at:Date.now(), user:findUser, ...payload})
+        setComments(structuredClone(comments))
+        
+        setReplyAddCommentId(-1)
+
+        return true
+    }
+
+
+    const onCloseCommentReply = async()=>{
 
         setReplyAddCommentId(-1)
     }
 
 
     return comments ? (
-        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
-            <textarea ref={refCommentText} className={'commentEdit'}  placeholder={'댓글을 입력하세요'} suppressContentEditableWarning={true} maxLength={100} style={{width:'100%', resize:'none', maxHeight:'200px', minHeight:'100px', border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto'}} onInput={onInputComment}/>
-            <BeautyButton isLoading={isPostLoading} onClick={()=>onClickPostComment(null)}>{'추가'}</BeautyButton>
+        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', marginTop:'20px', width:'100%'}}>
+            {isOpenCommentEdit && <CommentEdit onPostText={onPostComment} onClose={onCloseCommentEdit}/>}
+            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
+                <label>{'댓글 (' + comments.length + ')'}</label>
+                {!isOpenCommentEdit && <BeautyButton type={'success'} onClick={onOpenCommentEdit}>{'댓글 작성'}</BeautyButton>}
+            </div>
             <div style={{width:'100%'}}>
                 {comments.map((data, index) => 
                     <div key={data.id} style={{display:'flex', flexDirection: 'column', justifyContent:'left', border:'1px solid lightgray'}}>
@@ -309,10 +295,12 @@ export default function({article_id}) {
                             <Comment key={data.id} comment={data} style={{paddingLeft:'30px'}} onRemoved={()=>onRemoveReply(data.id)}/>
                         )}
 
-                        {data.id == replyAddCommentId && <BeautyButton onClick={() => onClickPostReplyCancel(data.id)}>{'대댓글 취소'}</BeautyButton>}
-                        {data.id != replyAddCommentId && <BeautyButton onClick={() => onClickPostReplyOpen(data.id)}>{'대댓글 추가'}</BeautyButton>}
-                        {data.id == replyAddCommentId && <textarea ref={refReplyText} className={'commentEdit'}  placeholder={'댓글을 입력하세요'} suppressContentEditableWarning={true} maxLength={100} style={{width:'100%', resize:'none', maxHeight:'200px', minHeight:'100px', border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto'}}/>}
-                        {data.id == replyAddCommentId && <BeautyButton isLoading={isReplyPostLoading} onClick={()=> onClickPostReplyAdd(data.id)}>{'대댓글 추가'}</BeautyButton>}
+                        {data.id == replyAddCommentId && <CommentEdit onPostText={onPostReply} onClose={onCloseCommentReply}/>}
+                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
+                            <label>{'댓글 (' + comments.length + ')'}</label>
+                            {data.id != replyAddCommentId && <BeautyButton type={'success'} onClick={() => onClickPostReplyOpen(data.id)}>{'대댓글 작성'}</BeautyButton>}
+                        </div>                                                
+                        
                     </div>
                 )}
                 

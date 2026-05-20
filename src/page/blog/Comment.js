@@ -17,7 +17,9 @@ import ToInteger from "../../util/ToInteger.js";
 import CountWithUnit from "../../util/CountWithUnit.js";
 
 
+
 import ArticleItem from "./ArticleItem.js";
+import CommentGreat from "./CommentGreat.js";
 import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
@@ -104,7 +106,7 @@ export default function(props) {
         setIsModify(false)
     }
 
-
+    
     const onClickModifyDelete = async()=>{
 
         if(!(validAuth(auth) && auth.user_id == comment.user_id))
@@ -141,188 +143,18 @@ export default function(props) {
         setIsModify(true)
     }
 
-    const onClickLike = async() =>{
 
-        const success = await updateGreat(1)
-
-        console.log(success)
-    }
-
-
-    const onClickDislike = async() =>{
-
-        const success = await updateGreat(-1)
-
-        console.log(success)        
-    }
-
-
-
-    const postGreat = async(jwt, user_id, comment_id, like) =>{
-
-        const payload = {
-            user_id:auth.user_id,
-            comment_id:comment_id,
-            great:like
-        }
-
-        setIsGreatLoading(true)
-
-        const res = await CommentGreatAPI.postCommentGreat(auth.jwt, payload)
-
-        setIsGreatLoading(false)
-
-        if(res == null)
-            return null
-
-        return res
-    }
-
-
-    const getGreat = async(user_id, comment_id) =>{
-
-        setIsGreatLoading(true)
-
-        const query = 'user_id=' + user_id + '&comment_id=' + comment_id
-
-        const resGreat = await CommentGreatAPI.getCommentGreat(query)
-
-        setIsGreatLoading(false)
-
-        if(resGreat == null)
-            return null
-
-        return resGreat
-    }
-
-
-    const deleteGreat = async(jwt, id) =>{
-
-        setIsGreatLoading(true)
-
-        const res = await CommentGreatAPI.deleteCommentGreat(auth.jwt, id)
-
-        setIsGreatLoading(false)
-
-        return res
-    }
-
-
-    const patchGreat = async(jwt, id, great) =>{
-
-        const payload = {
-            great:great
-        }
-
-        setIsGreatLoading(true)
-
-        const res = await CommentGreatAPI.patchCommentGreat(auth.jwt, id, payload)
-
-        setIsGreatLoading(false)
-
-        return res
-    }
-
-
-    const updateGreat = async(great) =>{
-
-        if(!validAuth(auth))
-            return false
-        
-        const resGreat = await getGreat(auth.user_id, comment.id)
-
-        if(resGreat == null)
-            return false
-
-        if(resGreat.length > 0){
-
-            if(resGreat[0].great != great) {
-                
-                const res = await patchGreat(auth.jwt, resGreat[0].id, great)
-
-                if(res == null){
-                    window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경에 실패 하였습니다', 'error')
-                    return false
-                }
-
-                if(great == 1){
-                    comment.like_count += 1
-                    comment.dislike_count -= 1
-                }
-                else if(great == -1){
-                    comment.like_count -= 1
-                    comment.dislike_count += 1
-                }
-                else 
-                    return false
-
-                window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경 하였습니다', 'info')                
-                setComment(structuredClone(comment))
-
-                return true
-
-            }else {
-
-                const res = await deleteGreat(auth.jwt, resGreat[0].id)
-
-                if(res == null){
-                    window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 실패 하였습니다', 'error')
-                    return false
-                }
-
-                if(great == 1)
-                    comment.like_count -= 1
-                else if(great == -1)
-                    comment.dislike_count -= 1
-                else 
-                    return false
-
-                window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 성공 하였습니다', 'info')
-                setComment(structuredClone(comment))                
-
-                return true
-            }
-        }
-        else{
-            
-            const res = await postGreat(auth.jwt, auth.user_id, comment.id, great)
-
-            if(!res){
-                window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 실패 하였습니다', 'error')
-                return false
-            }
-            
-            if(great == 1)
-                comment.like_count += 1
-            else if(great == -1)
-                comment.dislike_count += 1
-            else
-                return false
-                        
-            window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 성공 하였습니다', 'info')
-            setComment(structuredClone(comment))            
-            
-            return true
-        }
-    }
 
 
     return comment ? (
             <div style={{display:'flex', flexDirection: 'row', alignItems:'center', border:'1px solid lightgray', ...combinedStyle}}>
                 <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                    <UserImage size={64} user={comment.user} onClick={()=> onClickNavigateUser(comment.user_id)}/>
-                    <div>{(comment.update_at ? '수정됨' : '작성됨') + TimestampToString(comment.update_at ? comment.update_at : comment.create_at)}</div>
-                </div>                
+                    <UserImage size={48} user={comment.user} onClick={()=> onClickNavigateUser(comment.user_id)}/>
+                    <div style={{fontSize:'16px'}}>{comment.user.nickname}</div>
+                    <div style={{fontSize:'16px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(comment.create_at) + (comment.update_at ? '(수정됨)' : '')}</div>
+                </div>
                 <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line'}}>{comment.comment}</div>
-                <BeautyButton isLoading={isGreatLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickLike}>
-                    <MdThumbUpAlt size={22}/>
-                    <div>{CountWithUnit(comment.like_count)}</div>
-                </BeautyButton>
-
-                <BeautyButton isLoading={isGreatLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickDislike}>
-                    <MdThumbDownAlt size={22}/>
-                    <div>{CountWithUnit(comment.dislike_count)}</div>
-                </BeautyButton>
+                <CommentGreat comment={comment}></CommentGreat>
 
                 {!isModify && validAuth(auth) && auth.user_id == comment.user_id && <BeautyButton type={'success'} onClick={()=>onClickModifyOpen()}>{'수정'}</BeautyButton>}
                 {isModify &&

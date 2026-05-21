@@ -59,10 +59,7 @@ export default function(props) {
 
         if(props.onPostText){
             setIsPostLoading(true)
-            if(props.onPostText(comment)) {
-                refCommentText.current.value = ''
-                onClickCancel()
-            }            
+            props.onPostText(comment)                
             setIsPostLoading(false)
         }
     }
@@ -74,20 +71,19 @@ export default function(props) {
 
 
     const onClickCancel = async() => {
-
-        if(props.onClose){
-            props.onClose()
-        }
+        
+        if(props.onCancel)            
+            props.onCancel()        
     }
 
 
-    return  (<div style={{display:'flex', flexDirection: 'column', flex:1}}>
+    return  (<div style={{display:'flex', flexDirection: 'column', width:'100%', backgroundColor:'lightgreen'}}>
                 <textarea ref={refCommentText} className={'commentEdit'}  placeholder={'댓글을 입력하세요'} suppressContentEditableWarning={true} maxLength={1000} style={{width:'100%',  minHeight: '3lh', resize:'none', maxHeight:'6lh', border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto'}} onInput={onInput}/>
-                <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center', margin:'10px 0px 10px 0px'}}>
+                <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
-                    <div style={{width:'10px'}}/>                    
+                    <div style={{width:'10px'}}/>
                     <BeautyButton isLoading={isPostLoading} onClick={()=>onClickPost()}>{'올리기'}</BeautyButton>
-                    <div style={{width:'10px'}}/>                    
+                    <div style={{width:'10px'}}/>
                     <BeautyButton disabled={isPostLoading ? true : false} onClick={()=>onClickCancel()}>{'취소'}</BeautyButton>
                 </div>
             </div>

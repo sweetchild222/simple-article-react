@@ -27,6 +27,7 @@ import CategoryModal from '../../common/CategoryModal.js'
 import OverlayLoading from "../../common/OverlayLoading.js";
 import * as CommentAPI from '../../api/CommentAPI.js'
 import UserImage from "../../common/UserImage.js";
+import * as UserRepository from "./UserRepository.js";
 
 import './Comments.css'
 import Categories  from "./Categories.js";
@@ -58,9 +59,7 @@ export default function({article_id}) {
     const [modifyComment, setModifyComment] = useState(null)
     const [modifyReply, setModifyReply] = useState(null)
 
-    const [openReplies, setOpenReplies] = useState([])
-
-    const [users, setUsers] = useState(null)    
+    const [openReplies, setOpenReplies] = useState([])    
 
     const refCommentText = useRef(null)
     const refReplyText = useRef(null)
@@ -89,15 +88,15 @@ export default function({article_id}) {
                 userIDList.push(item.user_id)
             })
 
-            getUsers([...new Set(userIDList)]).then((resUsers)=>{
+
+            
+            UserRepository.getByIDList([...new Set(userIDList)]).then((resUsers)=>{
                 
                 if(resUsers == null){
                     window.showToast('사용자 목록을 가져 올 수 없습니다', 'error')
                     return
                 }
-
-                setUsers(resUsers)
-
+                
                 comments.forEach((item, index) =>{
 
                     const user = resUsers.find(user => (user.id == item.user_id))
@@ -117,12 +116,6 @@ export default function({article_id}) {
         
     }, [article_id])
 
-
-
-    const getUsers = async(userIDList) =>{
-
-        return await UserAPI.getUsers('id=' + userIDList)        
-    }
 
 
 
@@ -166,7 +159,8 @@ export default function({article_id}) {
     }
 
 
-    const onClickPostReplyOpen = async(id) =>{
+
+    const onOpenCommentEdit = async() =>{
 
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
@@ -174,10 +168,8 @@ export default function({article_id}) {
             return
         }
 
-        setReplyAddCommentId(id)
+        setIsOpenCommentEdit(true)
     }
-
-
 
     const onPostComment = async(text) =>{
 
@@ -199,27 +191,23 @@ export default function({article_id}) {
             return false
         }
 
-        window.showToast('댓글이 작성 되었습니다', 'info')
+        window.showToast('댓글이 작성 되었습니다', 'info')                
+        
+        const user = await UserRepository.getByID(auth.user_id)
 
-        let findUser = users.find((item) => item.id == auth.user_id)
-
-        if(findUser == null) {
-            const users = await getUsers([auth.user_id])
-            if(users.length > 0){
-                findUser = users[0]
-                setUsers([...users, findUser])
-            }
-        }
-
-        comments.unshift({id:res.id, replies:[], update_at:null, create_at:Date.now(), user:findUser, ...payload})
+        comments.unshift({id:res.id, replies:[], update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
         setComments(structuredClone(comments))
+        setIsOpenCommentEdit(false)
 
         return true
     }
 
 
 
-    const onOpenCommentEdit = async() =>{
+
+
+    
+    const onClickPostReplyOpen = async(id) =>{
 
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
@@ -227,8 +215,10 @@ export default function({article_id}) {
             return
         }
 
-        setIsOpenCommentEdit(true)
+        setReplyAddCommentId(id)
     }
+
+
 
     
     const onPostReply = async(text)=>{
@@ -257,24 +247,17 @@ export default function({article_id}) {
 
         window.showToast('대댓글이 작성 되었습니다', 'info')
 
-        let findUser = users.find((item) => item.id == auth.user_id)
-
-        if(findUser == null){
-            const users = await getUsers([auth.user_id])
-            if(users.length > 0){                
-                findUser = users[0]
-                setUsers([...users, findUser])
-            }            
-        }
+        const user = await UserRepository.getByID(auth.user_id)
         
-        findComment.replies.unshift({id:res.id, update_at:null, create_at:Date.now(), user:findUser, ...payload})
+        findComment.replies.unshift({id:res.id, update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
         setComments(structuredClone(comments))
         setReplyAddCommentId(-1)
 
         return true
-
     }
 
+
+    
 
 
     const onClickNavigateUser = async(userId) =>{
@@ -296,7 +279,6 @@ export default function({article_id}) {
         return openReplies.find(id => comment_id == id)
 
     }
-
 
 
 
@@ -323,7 +305,7 @@ export default function({article_id}) {
                                 </div>
                                 <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                     <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data.id)}/>
-                                    <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton>                                    
+                                    <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton>
                                 </div>
                                 <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <CommentGreat comment={data}></CommentGreat>

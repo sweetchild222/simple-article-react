@@ -41,13 +41,12 @@ import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 
-import aa from "./UserRepository.js"
 
 const repository = []
 
-export default async function(userIDList) {    
+export const getByIDList = async(userIDList) => {
 
-    const filterIDList = userIDList.filter(id => (repository.find(item => id == item.id) == null))
+    const filterIDList = userIDList.filter(id => (repository.find(item => item.id == id) == null))
     
     if(filterIDList.length > 0) {
         
@@ -58,3 +57,20 @@ export default async function(userIDList) {
 
     return repository.filter(item => userIDList.find(id => item.id == id))
 }
+
+
+export const getByID = async(userId) => {
+
+    const findUser = repository.find(item => item.id == userId)
+    
+    if(findUser == null) {
+        
+        const newUserList = await UserAPI.getUsers('id=' + [userId])
+
+        newUserList.forEach(item=>repository.push(item))
+    }
+
+    return repository.find(item => item.id == userId)
+}
+
+

@@ -76,23 +76,13 @@ export default function({article_id}) {
                 return
             }
             
-            comments.sort((a, b) => {
+            comments.sort((a, b) => { return b.create_at - a.create_at})
 
-                return b.create_at - a.create_at
-
-            })
-
-            const userIDList = []
-
-            comments.forEach((item, index) => {
-                userIDList.push(item.user_id)
-            })
-
-
-            
+            const userIDList = comments.map(item => item.user_id)
+        
             UserRepository.getByIDList([...new Set(userIDList)]).then((resUsers)=>{
                 
-                if(resUsers == null){
+                if(resUsers == null) {
                     window.showToast('사용자 목록을 가져 올 수 없습니다', 'error')
                     return
                 }
@@ -171,6 +161,7 @@ export default function({article_id}) {
         setIsOpenCommentEdit(true)
     }
 
+
     const onPostComment = async(text) =>{
 
         if(!validAuth(auth))
@@ -203,11 +194,7 @@ export default function({article_id}) {
     }
 
 
-
-
-
-    
-    const onClickPostReplyOpen = async(id) =>{
+    const onClickReplyEditOpen = async(id) =>{
 
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
@@ -219,8 +206,6 @@ export default function({article_id}) {
     }
 
 
-
-    
     const onPostReply = async(text)=>{
 
         if(!validAuth(auth))
@@ -257,9 +242,6 @@ export default function({article_id}) {
     }
 
 
-    
-
-
     const onClickNavigateUser = async(userId) =>{
         
         navigate('/user/' + userId)
@@ -289,67 +271,66 @@ export default function({article_id}) {
                 <label>{'댓글 (' + comments.length + ')'}</label>
                 {!isOpenCommentEdit && <BeautyButton type={'success'} onClick={onOpenCommentEdit}>{'댓글 작성'}</BeautyButton>}
             </div>
-            <div style={{width:'100%'}}>
-                {comments.map((data, index) => 
-                    <div key={data.id} style={{display:'flex', flexDirection: 'column', justifyContent:'left', border:'1px solid lightgray'}}>
+            
+            {comments.map((data, index) => 
+                <div key={data.id} style={{display:'flex', flexDirection: 'column', justifyContent:'left', border:'1px solid lightgray'}}>
 
-                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                            <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                                <UserImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                                <div style={{backgroundColor:'gray', flex:'1'}}/>
+                    <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
+                            <UserImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
+                            <div style={{backgroundColor:'gray', flex:'1'}}/>
+                        </div>
+                        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
+                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
+                                <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </div>
-                            <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
-                                <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                    <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
-                                    <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
-                                </div>
-                                <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                    <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data.id)}/>
-                                    <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton>
-                                </div>
-                                <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                    <CommentGreat comment={data}></CommentGreat>
-                                    <div style={{width:'20px'}}></div>
-                                    <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickPostReplyOpen(data.id)}>{<FaCommentMedical siz={22}/>}</BeautyButton>
-                                </div>
+                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                                <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data.id)}/>
+                                <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton>
+                            </div>
+                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                <CommentGreat comment={data}></CommentGreat>
+                                <div style={{width:'20px'}}></div>
+                                <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical siz={22}/>}</BeautyButton>
+                            </div>
 
-                                {data.id == replyAddCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                        <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
-                                        <CommentEdit onPostText={onPostReply} onCancel={() =>{setReplyAddCommentId(-1)}}/>
-                                    </div>                                            
-                                }
+                            {data.id == replyAddCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                    <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
+                                    <CommentEdit onPostText={onPostReply} onCancel={() =>{setReplyAddCommentId(-1)}}/>
+                                </div>                                            
+                            }
 
-                                {data.replies.length > 0 &&
-                                    <BeautyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickOpenReplies(data.id)}>{'답글 (' + data.replies.length + ') ' + (isOpenReplies(data.id) ? '∧' : '∨')}</BeautyButton>
-                                }
-                                
-                                {isOpenReplies(data.id) && data.replies.map((data, index) =>
-                                    <div key={data.id} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                                            <UserImage size={32} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                                            <div style={{backgroundColor:'lightgray', flex:'1'}}/>
+                            {data.replies.length > 0 &&
+                                <BeautyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickOpenReplies(data.id)}>{'답글 (' + data.replies.length + ') ' + (isOpenReplies(data.id) ? '∧' : '∨')}</BeautyButton>
+                            }
+                            
+                            {isOpenReplies(data.id) && data.replies.map((data, index) =>
+                                <div key={data.id} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                    <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
+                                        <UserImage size={32} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
+                                        <div style={{backgroundColor:'lightgray', flex:'1'}}/>
+                                    </div>
+                                    <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
+                                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                            <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
+                                            <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                                         </div>
-                                        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
-                                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                                <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
-                                                <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
-                                            </div>
-                                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                                <Comment key={data.id} comment={data} onRemoved={()=>onRemoveReply(data.id)}/>
-                                                <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton>
-                                            </div>
-                                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                                <CommentGreat comment={data}></CommentGreat>
-                                            </div>
+                                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                                            <Comment key={data.id} comment={data} onRemoved={()=>onRemoveReply(data.id)}/>
+                                            <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton>
+                                        </div>
+                                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                            <CommentGreat comment={data}></CommentGreat>
                                         </div>
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
-                )}
-                
+                </div>
+            )}                
             </div>
-        </div>
+        
         ) : null
 }

@@ -94,15 +94,12 @@ select:focus{
 }
 
 
-
 .none-clamped-text {
   display: -webkit-box;
   -webkit-box-orient: vertical;  
   overflow: hidden;
   word-break:break-all;  
 }
-
-
 
 
 .underline-text:hover {

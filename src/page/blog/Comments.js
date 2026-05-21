@@ -273,10 +273,8 @@ export default function({article_id}) {
                                 <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </div>
-                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data.id)}/>
-                                <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton>
-                            </div>
+                            
+                            <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data.id)}/>                                                            
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <CommentGreat comment={data}></CommentGreat>
                                 <div style={{width:'20px'}}></div>
@@ -310,11 +308,8 @@ export default function({article_id}) {
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
-                                        </div>
-                                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment key={data.id} comment={data} onRemoved={()=>onRemoveReply(data.id)}/>
-                                            <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton>
-                                        </div>
+                                        </div>                                        
+                                        <Comment key={data.id} comment={data} onRemoved={()=>onRemoveReply(data.id)}/>
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <CommentGreat comment={data}></CommentGreat>
                                         </div>

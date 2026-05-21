@@ -28,6 +28,7 @@ import * as CommentAPI from '../../api/CommentAPI.js'
 import UserImage from "../../common/UserImage.js";
 
 import './Comments.css'
+import './Comment.css'
 import Categories  from "./Categories.js";
 import Recents  from "./Recents.js";
 import Pagination from "./Pagination.js";
@@ -41,6 +42,9 @@ import { BiSolidComment } from "react-icons/bi";
 import { MdThumbDownAlt } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { RiArrowDownWideLine } from "react-icons/ri";
+import { HiDotsVertical } from "react-icons/hi";
+
+
 
 export default function(props) {
 
@@ -57,6 +61,11 @@ export default function(props) {
     const [isClamped, setIsClamped] = useState(false)
     const [isExpand, setIsExpand] = useState(false)
 
+    const refMenu = useRef(null)
+
+
+    const [isOpenMenu, setIsOpenMenu] = useState(false)
+
     const refComment = useRef(null)
     
     const navigate = useNavigate()
@@ -70,14 +79,44 @@ export default function(props) {
 
     useEffect(() =>{
 
-        if(!refComment.current)
-            return
-
-        const element = refComment.current
-        
-        setIsClamped(element.scrollHeight >  element.clientHeight)
+        if(refComment.current){
+            
+            const element = refComment.current
                 
-    }, [])
+            setIsClamped(element.scrollHeight >  element.clientHeight)
+        }
+                
+    }, [refComment])
+
+
+    useEffect(()=>{        
+        
+        if(!isOpenMenu)
+            return
+        
+        const handleClick = (event) => { 
+
+            if (!refMenu.current.contains(event.target))
+                setIsOpenMenu(false)        
+        }
+
+        document.addEventListener('mouseup', handleClick)
+
+        return () => {
+
+            document.removeEventListener('mouseup', handleClick)
+        }
+
+    }, [isOpenMenu])
+
+
+    const useClickOutside = (ref, callback) => {
+
+        useEffect(() => {
+
+
+        }, [ref, callback]);  
+    }
 
 
     const onClickModifyConfirm = async()=>{
@@ -166,12 +205,54 @@ export default function(props) {
     }
 
 
+    const onClickOpenMenu = () =>{
+
+        setIsOpenMenu(value => !value)
+    }
+
+
+    const onClickEdit = ()=>{
+
+        console.log('edit')
+
+    }
+
+    const onClickRemove = () =>{
+
+        console.log('remove')
+
+    }
+
+
+    
+
+
+
+    
+
+                                            // <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                                            //     <Comment key={data.id} comment={data} onRemoved={()=>onRemoveReply(data.id)}/>
+                                            //     {/* <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton> */}
+                                            // </div>
+
+
     return comment ? (
-        <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'end'}}>
-            <div ref={refComment} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{comment.comment}</div>
-            {isClamped && !isExpand && <div style={{position: 'absolute'}}>
-                <BeautyButton type='transparent' style={{color:'black'}} onClick={onClickExpand}><RiArrowDownWideLine size={12}/></BeautyButton>
-            </div>}
+        <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'end'}}>
+                <div ref={refComment} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{comment.comment}</div>
+                {isClamped && !isExpand && <div style={{position: 'absolute'}}>
+                    <BeautyButton type='transparent' style={{color:'black'}} onClick={onClickExpand}><RiArrowDownWideLine size={12}/></BeautyButton>
+                </div>}
+            </div>
+            <div style={{position:'relative', display:'inline-block', backgroundColor:'red'}}>
+                <BeautyButton type={'transparent'} style={{color:'black', marginLeft:'10px', marginRight:'10px'}} onClick={() => setIsOpenMenu(value => !value)}><HiDotsVertical siz={22}/></BeautyButton>
+
+                {isOpenMenu && <ul ref={refMenu} className={'popupList'}>
+                    <BeautyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black'}} onClick={onClickEdit}>수정</BeautyButton>
+                    <BeautyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black'}} onClick={onClickRemove}>삭제</BeautyButton>
+                </ul>
+                }
+            </div>
         </div>
         ) : null
         

@@ -43,8 +43,8 @@ import { FaEye } from "react-icons/fa";
 import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
-
-
+import { SlArrowDown } from "react-icons/sl";
+import { SlArrowUp } from "react-icons/sl";
 
 export default function({article_id}) {
     
@@ -286,11 +286,18 @@ export default function({article_id}) {
                             {data.id == openReplyEditCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
                                     <CommentEdit onPostText={onPostReply} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
-                                </div>                                            
+                                </div>
                             }
 
                             {data.replies.length > 0 &&
-                                <BeautyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>{'답글 (' + data.replies.length + ') ' + (isShowReplies(data.id) ? '∧' : '∨')}</BeautyButton>
+                                <BeautyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
+                                    <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                        {'답글 (' + data.replies.length + ')'}
+                                    </div>
+                                    <div style={{width:'10px'}}/>
+                                    {isShowReplies(data.id) && <SlArrowUp siz={22}/>}
+                                    {!isShowReplies(data.id) && <SlArrowDown siz={22}/>}
+                                </BeautyButton>
                             }
                             
                             {isShowReplies(data.id) && data.replies.map((data, index) =>

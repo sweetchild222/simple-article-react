@@ -59,7 +59,7 @@ export default function(props) {
 
         if(props.onPostText){
             setIsPostLoading(true)
-            props.onPostText(comment)                
+            props.onPostText(comment)
             setIsPostLoading(false)
         }
     }
@@ -72,8 +72,8 @@ export default function(props) {
 
     const onClickCancel = async() => {
         
-        if(props.onCancel)            
-            props.onCancel()        
+        if(props.onCancel)
+            props.onCancel()
     }
 
 

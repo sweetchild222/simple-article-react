@@ -39,6 +39,8 @@ import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 import { MdThumbDownAlt } from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { RiArrowDownWideLine } from "react-icons/ri";
 
 export default function(props) {
 
@@ -52,8 +54,10 @@ export default function(props) {
     const [isModify, setIsModify] = useState(false)
     const [comment, setComment] = useState(props.comment)
     const [isGreatLoading, setIsGreatLoading] = useState(false)
+    const [isClamped, setIsClamped] = useState(false)
+    const [isExpand, setIsExpand] = useState(false)
 
-    const refText = useRef(null)
+    const refComment = useRef(null)
     
     const navigate = useNavigate()
 
@@ -62,6 +66,18 @@ export default function(props) {
         
         navigate('/user/' + userId)
     }
+
+
+    useEffect(() =>{
+
+        if(!refComment.current)
+            return
+
+        const element = refComment.current
+        
+        setIsClamped(element.scrollHeight >  element.clientHeight)
+                
+    }, [])
 
 
     const onClickModifyConfirm = async()=>{
@@ -144,14 +160,26 @@ export default function(props) {
     }
 
 
-        return comment ? (
-            <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{comment.comment}</div>                                    
-            ) : null
+    const onClickExpand = ()=> {
+        
+        setIsExpand(true)
+    }
+
+
+    return comment ? (
+        <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'end'}}>
+            <div ref={refComment} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{comment.comment}</div>
+            {isClamped && !isExpand && <div style={{position: 'absolute'}}>
+                <BeautyButton type='transparent' style={{color:'black'}} onClick={onClickExpand}><RiArrowDownWideLine size={12}/></BeautyButton>
+            </div>}
+        </div>
+        ) : null
+        
 
 
 
     // return comment ? (
-    //         <div style={{display:'flex', flexDirection: 'row', alignItems:'start', justifyContent:'start', border:'0px', ...combinedStyle}}>                
+    //         <div style={{display:'flex', flexDirection: 'row', alignItems:'start', justifyContent:'start', border:'0px', ...combinedStyle}}>
     //             <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line', marginTop:'10px', marginBottom:'10px', backgroundColor:'lightblue'}}>{comment.comment}</div>
                     
                 
@@ -167,3 +195,5 @@ export default function(props) {
     //             </div>
     //         ) : null
 }
+
+

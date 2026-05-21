@@ -119,26 +119,45 @@ export default function({article_id}) {
     }
 
 
-    const onRemoveReply = (id) => {
+
+    const removeComment = async(comment) => {
+
+        if(!(validAuth(auth) && auth.user_id == comment.user_id))
+            return false
         
-        const comment = comments.find(comment => (
-            comment.replies.find(reply => reply.id == id)
+        const res = await CommentAPI.deleteComment(auth.jwt, comment.id)
+        
+        if(res == null){
+            window.showToast('댓글 삭제에 실패하였습니다', 'error')
+            return false
+        }
+
+        window.showToast('댓글 삭제에 성공하였습니다', 'info')
+
+        return true
+    }
+
+
+    const onRemoveComment = async(comment) => {
+
+        if(await removeComment(comment))
+            setComments(structuredClone(comments.filter(item => item.id != comment.id)))                        
+    }
+
+    const onRemoveReply = async(reply) => {
+            
+        const comment = comments.find(commentItem => (
+            commentItem.replies.find(replyItem => replyItem.id == reply.id)
         ))
     
         if(!comment)
             return
-    
-        comment.replies = comment.replies.filter(reply => reply.id != id)
 
-        setComments(structuredClone(comments))
+        if(await removeComment(reply)){
+            comment.replies = comment.replies.filter(replyItem => replyItem.id != reply.id)
+            setComments(structuredClone(comments))
+        }
     }
-
-
-    const onRemoveComment = (id) => {
-
-        setComments(structuredClone(comments.filter(comment => comment.id != id)))
-    }
-
 
 
     const onOpenCommentEdit = async() =>{
@@ -274,7 +293,7 @@ export default function({article_id}) {
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </div>
                             
-                            <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data.id)}/>                                                            
+                            <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data)}/>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <CommentGreat comment={data}></CommentGreat>
                                 <div style={{width:'20px'}}></div>
@@ -309,7 +328,7 @@ export default function({article_id}) {
                                             <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                                         </div>                                        
-                                        <Comment key={data.id} comment={data} onRemoved={()=>onRemoveReply(data.id)}/>
+                                        <Comment key={data.id} comment={data} onRemoved={()=>onRemoveReply(data)}/>
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <CommentGreat comment={data}></CommentGreat>
                                         </div>

@@ -54,18 +54,18 @@ export default function(props) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isModifyLoading, setIsModifyLoading] = useState(false)
-    const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+    
     const [isModify, setIsModify] = useState(false)
-    const [comment, setComment] = useState(props.comment)
-    const [isGreatLoading, setIsGreatLoading] = useState(false)
+
+
+    const [comment, setComment] = useState(props.comment)    
     const [isClamped, setIsClamped] = useState(false)
     const [isExpand, setIsExpand] = useState(false)
-
-    const refMenu = useRef(null)
-
-
     const [isOpenMenu, setIsOpenMenu] = useState(false)
 
+    const [isMenuLoading, setIsMenuLoading] = useState(false)
+
+    const refMenu = useRef(null)
     const refComment = useRef(null)
     
     const navigate = useNavigate()
@@ -110,15 +110,6 @@ export default function(props) {
     }, [isOpenMenu])
 
 
-    const useClickOutside = (ref, callback) => {
-
-        useEffect(() => {
-
-
-        }, [ref, callback]);  
-    }
-
-
     const onClickModifyConfirm = async()=>{
 
         if(!(validAuth(auth) && auth.user_id == comment.user_id))
@@ -159,32 +150,7 @@ export default function(props) {
         comment.comment = modifiedComment
         comment.update_at = Date.now()
         setIsModify(false)
-    }
-
-
-    const onClickModifyDelete = async()=>{
-
-        if(!(validAuth(auth) && auth.user_id == comment.user_id))
-            return
-
-        setIsDeleteLoading(true)
-
-        const res = await CommentAPI.deleteComment(auth.jwt, comment.id)
-
-        setIsDeleteLoading(false)
-
-        if(res == null){
-            window.showToast('댓글 삭제에 실패하였습니다', 'error')
-            return
-        }
-
-        window.showToast('댓글 삭제에 성공하였습니다', 'info')
-
-        if(onRemoved)
-            onRemoved()
-        
-        setIsModify(false)
-    }
+    }    
 
 
     const onClickModifyCancel = async(id)=>{
@@ -199,28 +165,20 @@ export default function(props) {
     }
 
 
-    const onClickExpand = ()=> {
-        
-        setIsExpand(true)
-    }
-
-
-    const onClickOpenMenu = () =>{
-
-        setIsOpenMenu(value => !value)
-    }
-
-
     const onClickEdit = ()=>{
 
         console.log('edit')
 
     }
 
-    const onClickRemove = () =>{
 
-        console.log('remove')
+    const onClickRemove = ()=>{
 
+        if(props.onRemoved){
+            setIsMenuLoading(true)
+            props.onRemoved()
+            setIsMenuLoading(false)
+        }
     }
 
 
@@ -235,18 +193,16 @@ export default function(props) {
                                             //     {/* <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton> */}
                                             // </div>
 
-
     return comment ? (
         <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
             <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'end'}}>
-                <div ref={refComment} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{comment.comment}</div>
+                <div ref={refComment} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{"sdfskljdfa;sldfkja;sldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwif"}</div>
                 {isClamped && !isExpand && <div style={{position: 'absolute'}}>
-                    <BeautyButton type='transparent' style={{color:'black'}} onClick={onClickExpand}><RiArrowDownWideLine size={12}/></BeautyButton>
+                    <BeautyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></BeautyButton>
                 </div>}
             </div>
             <div style={{position:'relative', display:'inline-block', backgroundColor:'red'}}>
-                <BeautyButton type={'transparent'} style={{color:'black', marginLeft:'10px', marginRight:'10px'}} onClick={() => setIsOpenMenu(value => !value)}><HiDotsVertical siz={22}/></BeautyButton>
-
+                <BeautyButton type={'transparent'} isLoading={isMenuLoading} style={{color:'black', margin: '0 auto', visibility:((validAuth(auth) && comment.user_id == auth.user_id) ? 'visible': 'hidden')}} onClick={() => setIsOpenMenu(value => !value)}><HiDotsVertical siz={22}/></BeautyButton>
                 {isOpenMenu && <ul ref={refMenu} className={'popupList'}>
                     <BeautyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black'}} onClick={onClickEdit}>수정</BeautyButton>
                     <BeautyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black'}} onClick={onClickRemove}>삭제</BeautyButton>

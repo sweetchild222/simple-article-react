@@ -144,28 +144,26 @@ export default function(props) {
     }
 
 
-    return comment ? (
-            <div style={{display:'flex', flexDirection: 'row', alignItems:'start', justifyContent:'start', border:'0px', ...combinedStyle}}>
-                <UserImage size={48} user={comment.user} onClick={()=> onClickNavigateUser(comment.user_id)}/>
-                <div style={{width:'20px'}}></div>
-                <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                    <div style={{display:'flex', flexDirection: 'row', justifyContent:'start', alignItems:'center'}}>
-                        <div style={{fontSize:'14px'}}>{comment.user.nickname}</div>
-                        <div style={{width:'10px'}}/>
-                        <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(comment.create_at) + (comment.update_at ? '(수정됨)' : '')}</div>
-                    </div>
-                    <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line', marginTop:'10px', marginBottom:'10px'}}>{comment.comment}</div>
-                    <CommentGreat comment={comment}></CommentGreat>
-                </div>
-                {/* {!isModify && validAuth(auth) && auth.user_id == comment.user_id && <BeautyButton type={'success'} onClick={()=>onClickModifyOpen()}>{'수정'}</BeautyButton>}
-                {isModify &&
-                <div>
-                    <textarea ref={refText} className={'commentEdit'}  placeholder={'댓글을 수정하세요'} defaultValue={comment.comment} maxLength={1000} style={{width:'100%', resize:'none', maxHeight:'200px', minHeight:'100px', border:'1px', fieldSizing: 'content', overflowY:'auto'}}></textarea>
-                    <BeautyButton type={'warning'} isLoading={isModifyLoading} onClick={()=>onClickModifyConfirm()}>{'수정 입력'}</BeautyButton>
-                    <BeautyButton type={'warning'} onClick={()=>onClickModifyCancel()}>{'수정 취소'}</BeautyButton>
-                    <BeautyButton type={'warning'} isLoading={isDeleteLoading} onClick={()=>onClickModifyDelete()}>{'삭제'}</BeautyButton>
-                </div>
-                } */}
-                </div>
+        return comment ? (
+            <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{comment.comment}</div>                                    
             ) : null
+
+
+
+    // return comment ? (
+    //         <div style={{display:'flex', flexDirection: 'row', alignItems:'start', justifyContent:'start', border:'0px', ...combinedStyle}}>                
+    //             <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line', marginTop:'10px', marginBottom:'10px', backgroundColor:'lightblue'}}>{comment.comment}</div>
+                    
+                
+    //             {/* {!isModify && validAuth(auth) && auth.user_id == comment.user_id && <BeautyButton type={'success'} onClick={()=>onClickModifyOpen()}>{'수정'}</BeautyButton>}
+    //             {isModify &&
+    //             <div>
+    //                 <textarea ref={refText} className={'commentEdit'}  placeholder={'댓글을 수정하세요'} defaultValue={comment.comment} maxLength={1000} style={{width:'100%', resize:'none', maxHeight:'200px', minHeight:'100px', border:'1px', fieldSizing: 'content', overflowY:'auto'}}></textarea>
+    //                 <BeautyButton type={'warning'} isLoading={isModifyLoading} onClick={()=>onClickModifyConfirm()}>{'수정 입력'}</BeautyButton>
+    //                 <BeautyButton type={'warning'} onClick={()=>onClickModifyCancel()}>{'수정 취소'}</BeautyButton>
+    //                 <BeautyButton type={'warning'} isLoading={isDeleteLoading} onClick={()=>onClickModifyDelete()}>{'삭제'}</BeautyButton>
+    //             </div>
+    //             } */}
+    //             </div>
+    //         ) : null
 }

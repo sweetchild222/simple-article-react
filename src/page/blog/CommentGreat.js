@@ -205,15 +205,15 @@ export default function(props) {
     }
 
     return (
-        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start', backgroundColor:'red'}}>
             <BeautyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
-                <MdThumbUpAlt size={16}/>
+                <MdThumbUpAlt size={22}/>
                 <div style={{width:'10px'}}/>
                 <div>{CountWithUnit(comment.like_count)}</div>
             </BeautyButton>
             <div style={{width:'20px'}}></div>
             <BeautyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>                
-                <MdThumbDownAlt size={16}/>
+                <MdThumbDownAlt size={22}/>
                 <div style={{width:'10px'}}/>
                 <div>{CountWithUnit(comment.dislike_count)}</div>
             </BeautyButton>

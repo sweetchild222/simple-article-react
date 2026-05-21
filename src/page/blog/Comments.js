@@ -33,6 +33,7 @@ import './Comments.css'
 import Categories  from "./Categories.js";
 import Comment  from "./Comment.js";
 import CommentEdit from "./CommentEdit.js";
+import CommentMenu from "./CommentMenu.js";
 import Recents  from "./Recents.js";
 import Pagination from "./Pagination.js";
 import MarkdownToHtml from '../../util/MarkdownToHtml.js'
@@ -271,6 +272,18 @@ export default function({article_id}) {
         return showReplies.find(id => comment_id == id)
     }
 
+
+    const onEditReply = async(comment) =>{
+
+        console.log('edit reply')
+    }
+
+
+    const onEditComment = async(comment) =>{
+
+        console.log('edit comment')
+    }
+
     return comments ? (
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', marginTop:'20px', width:'100%'}}>
             {isOpenCommentEdit && <CommentEdit onPostText={onPostComment} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
@@ -293,7 +306,10 @@ export default function({article_id}) {
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </div>
                             
-                            <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data)}/>
+                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                                <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data)} onEdit={()=> console.log('dsf')}/>
+                                <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data)} onEdit={()=>onEditComment(data)}/>
+                            </div>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <CommentGreat comment={data}></CommentGreat>
                                 <div style={{width:'20px'}}></div>
@@ -327,8 +343,12 @@ export default function({article_id}) {
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
-                                        </div>                                        
-                                        <Comment key={data.id} comment={data} onRemoved={()=>onRemoveReply(data)}/>
+                                        </div>
+
+                                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                                            <Comment key={data.id} comment={data}/>
+                                            <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(data)} onEdit={()=>onEditReply(data)}/>
+                                        </div>
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <CommentGreat comment={data}></CommentGreat>
                                         </div>

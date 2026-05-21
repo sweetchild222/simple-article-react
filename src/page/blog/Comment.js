@@ -89,26 +89,6 @@ export default function(props) {
     }, [refComment])
 
 
-    useEffect(()=>{        
-        
-        if(!isOpenMenu)
-            return
-        
-        const handleClick = (event) => { 
-
-            if (!refMenu.current.contains(event.target))
-                setIsOpenMenu(false)        
-        }
-
-        document.addEventListener('mouseup', handleClick)
-
-        return () => {
-
-            document.removeEventListener('mouseup', handleClick)
-        }
-
-    }, [isOpenMenu])
-
 
     const onClickModifyConfirm = async()=>{
 
@@ -152,85 +132,16 @@ export default function(props) {
         setIsModify(false)
     }    
 
-
-    const onClickModifyCancel = async(id)=>{
-        
-        setIsModify(false)
-    }
-
-
-    const onClickModifyOpen = () =>{
-        
-        setIsModify(true)
-    }
-
-
-    const onClickEdit = ()=>{
-
-        console.log('edit')
-
-    }
-
-
-    const onClickRemove = ()=>{
-
-        if(props.onRemoved){
-            setIsMenuLoading(true)
-            props.onRemoved()
-            setIsMenuLoading(false)
-        }
-    }
-
-
     
-
-
-
-    
-
-                                            // <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            //     <Comment key={data.id} comment={data} onRemoved={()=>onRemoveReply(data.id)}/>
-                                            //     {/* <BeautyButton type={'transparent'} style={{color:'black'}}><HiDotsVertical siz={22}/></BeautyButton> */}
-                                            // </div>
 
     return comment ? (
-        <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
             <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'end'}}>
-                <div ref={refComment} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{"sdfskljdfa;sldfkja;sldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwifsldjfaslkdfsidofjowfjwioefjwioefjwif"}</div>
+                <div ref={refComment} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{comment.comment}</div>
                 {isClamped && !isExpand && <div style={{position: 'absolute'}}>
                     <BeautyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></BeautyButton>
                 </div>}
             </div>
-            <div style={{position:'relative', display:'inline-block', backgroundColor:'red'}}>
-                <BeautyButton type={'transparent'} isLoading={isMenuLoading} style={{color:'black', margin: '0 auto', visibility:((validAuth(auth) && comment.user_id == auth.user_id) ? 'visible': 'hidden')}} onClick={() => setIsOpenMenu(value => !value)}><HiDotsVertical siz={22}/></BeautyButton>
-                {isOpenMenu && <ul ref={refMenu} className={'popupList'}>
-                    <BeautyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black'}} onClick={onClickEdit}>수정</BeautyButton>
-                    <BeautyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black'}} onClick={onClickRemove}>삭제</BeautyButton>
-                </ul>
-                }
-            </div>
-        </div>
-        ) : null
-        
-
-
-
-    // return comment ? (
-    //         <div style={{display:'flex', flexDirection: 'row', alignItems:'start', justifyContent:'start', border:'0px', ...combinedStyle}}>
-    //             <div className={'clamped-text'} style={{'--line-count':3, whiteSpace: 'pre-line', marginTop:'10px', marginBottom:'10px', backgroundColor:'lightblue'}}>{comment.comment}</div>
-                    
-                
-    //             {/* {!isModify && validAuth(auth) && auth.user_id == comment.user_id && <BeautyButton type={'success'} onClick={()=>onClickModifyOpen()}>{'수정'}</BeautyButton>}
-    //             {isModify &&
-    //             <div>
-    //                 <textarea ref={refText} className={'commentEdit'}  placeholder={'댓글을 수정하세요'} defaultValue={comment.comment} maxLength={1000} style={{width:'100%', resize:'none', maxHeight:'200px', minHeight:'100px', border:'1px', fieldSizing: 'content', overflowY:'auto'}}></textarea>
-    //                 <BeautyButton type={'warning'} isLoading={isModifyLoading} onClick={()=>onClickModifyConfirm()}>{'수정 입력'}</BeautyButton>
-    //                 <BeautyButton type={'warning'} onClick={()=>onClickModifyCancel()}>{'수정 취소'}</BeautyButton>
-    //                 <BeautyButton type={'warning'} isLoading={isDeleteLoading} onClick={()=>onClickModifyDelete()}>{'삭제'}</BeautyButton>
-    //             </div>
-    //             } */}
-    //             </div>
-    //         ) : null
+        ) : null        
 }
 
 

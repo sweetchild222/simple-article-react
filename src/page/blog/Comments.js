@@ -49,22 +49,13 @@ import { BiSolidComment } from "react-icons/bi";
 export default function({article_id}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [comments, setComments] = useState(null)
-    const [replies, setReplies] = useState(null)
-    const [replyAddCommentId, setReplyAddCommentId] = useState(-1)
-    const [replyModifyCommentId, setReplyModifyCommentId] = useState(-1)
-    const [isReplyPostLoading, setIsReplyPostLoading] = useState(false)
+
+    const [comments, setComments] = useState(null)    
+    const [openReplyEditCommentId, setOpenReplyEditCommentId] = useState(-1)
     const [isOpenCommentEdit, setIsOpenCommentEdit] = useState(false)
 
-    const [modifyComment, setModifyComment] = useState(null)
-    const [modifyReply, setModifyReply] = useState(null)
+    const [showReplies, setShowReplies] = useState([])
 
-    const [openReplies, setOpenReplies] = useState([])    
-
-    const refCommentText = useRef(null)
-    const refReplyText = useRef(null)
-    const refModifyCommentText = useRef(null)
-    const refModifyReplyText = useRef(null)
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -202,7 +193,7 @@ export default function({article_id}) {
             return
         }
 
-        setReplyAddCommentId(id)
+        setOpenReplyEditCommentId(id)
     }
 
 
@@ -211,7 +202,7 @@ export default function({article_id}) {
         if(!validAuth(auth))
             return false
 
-        const findComment = comments.find(comment => comment.id == replyAddCommentId)
+        const findComment = comments.find(comment => comment.id == openReplyEditCommentId)
 
         if(findComment == null)
             return false
@@ -220,7 +211,7 @@ export default function({article_id}) {
             comment:text,
             article_id:article_id,
             user_id:auth.user_id,
-            comment_id:replyAddCommentId
+            comment_id:openReplyEditCommentId
         }
 
         const res = await CommentAPI.postComment(auth.jwt, payload)
@@ -236,7 +227,7 @@ export default function({article_id}) {
         
         findComment.replies.unshift({id:res.id, update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
         setComments(structuredClone(comments))
-        setReplyAddCommentId(-1)
+        setOpenReplyEditCommentId(-1)
 
         return true
     }
@@ -248,21 +239,18 @@ export default function({article_id}) {
     }
 
 
-    const onClickOpenReplies = async(comment_id) => {
+    const onClickShowReplies = async(comment_id) => {
 
-        if(!openReplies.find(id => comment_id == id))
-            setOpenReplies([...openReplies, comment_id])
+        if(!showReplies.find(id => comment_id == id))
+            setShowReplies([...showReplies, comment_id])
         else
-            setOpenReplies(openReplies.filter(id => id !== comment_id))
+            setShowReplies(showReplies.filter(id => id !== comment_id))
     }
 
-    const isOpenReplies = (comment_id) => {
+    const isShowReplies = (comment_id) => {
 
-        return openReplies.find(id => comment_id == id)
-
+        return showReplies.find(id => comment_id == id)
     }
-
-
 
     return comments ? (
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', marginTop:'20px', width:'100%'}}>
@@ -295,17 +283,17 @@ export default function({article_id}) {
                                 <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical siz={22}/>}</BeautyButton>
                             </div>
 
-                            {data.id == replyAddCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                            {data.id == openReplyEditCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
-                                    <CommentEdit onPostText={onPostReply} onCancel={() =>{setReplyAddCommentId(-1)}}/>
+                                    <CommentEdit onPostText={onPostReply} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
                                 </div>                                            
                             }
 
                             {data.replies.length > 0 &&
-                                <BeautyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickOpenReplies(data.id)}>{'답글 (' + data.replies.length + ') ' + (isOpenReplies(data.id) ? '∧' : '∨')}</BeautyButton>
+                                <BeautyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>{'답글 (' + data.replies.length + ') ' + (isShowReplies(data.id) ? '∧' : '∨')}</BeautyButton>
                             }
                             
-                            {isOpenReplies(data.id) && data.replies.map((data, index) =>
+                            {isShowReplies(data.id) && data.replies.map((data, index) =>
                                 <div key={data.id} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
                                         <UserImage size={32} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>

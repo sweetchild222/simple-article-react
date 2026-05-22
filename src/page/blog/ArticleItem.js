@@ -75,7 +75,7 @@ export default function({article, categoryName}) {
                     </div>
                     }
                     {article.posted == 0 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
-                        <div className={'clamped-text'} style={{width:'160px'}}>{categoryName}</div>
+                        <div className={'clamped-text'} style={{'--line-count':1, width:'160px'}}>{categoryName}</div>
                     </div>
                     }
                     <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? TimestampToString(article.post_at) : ''}</div>

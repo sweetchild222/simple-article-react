@@ -142,7 +142,7 @@ export default function({article_id}) {
     const onRemoveComment = async(comment) => {
 
         if(await removeComment(comment))
-            setComments(structuredClone(comments.filter(item => item.id != comment.id)))                        
+            setComments(structuredClone(comments.filter(item => item.id != comment.id)))
     }
 
     const onRemoveReply = async(reply) => {
@@ -275,14 +275,30 @@ export default function({article_id}) {
 
     const onEditReply = async(comment) =>{
 
-        console.log('edit reply')
+        //console.log('edit reply')
     }
 
+
+    const divRefs = useRef({})
 
     const onEditComment = async(comment) =>{
 
-        console.log('edit comment')
+        //console.log('edit comment')
+
+        //divRefs.current[comment.id].style.backgroundColor = 'yellow';
+
+        if(divRefs.current[comment.id])
+            divRefs.current[comment.id].setEditable(true)
+        //divRefs.current[comment.id].focus()
+
+        //console.log(comment.id)
+
+        //const myDiv = document.getElementById(comment.id);
+
+        //console.log(myDiv)
     }
+
+    
 
     return comments ? (
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', marginTop:'20px', width:'100%'}}>
@@ -307,7 +323,12 @@ export default function({article_id}) {
                             </div>
                             
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                <Comment key={data.id} comment={data} onRemoved={()=>onRemoveComment(data)} onEdit={()=> console.log('dsf')}/>
+                                <Comment ref={(el) => (divRefs.current[data.id] = el)} key={data.id} comment={data} onRemoved={()=>onRemoveComment(data)} onEdit={()=> console.log('dsf')}/>
+
+                                    
+
+
+
                                 <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data)} onEdit={()=>onEditComment(data)}/>
                             </div>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>

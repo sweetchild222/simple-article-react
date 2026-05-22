@@ -56,7 +56,7 @@ export default function({ref, blogId, isEdit}) {
         <div style={{display:'flex', flexDirection:'column'}}>
             <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'10px'}}>최근 글</label>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left', padding:'10px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
-                {articles.map((data, index) => <div className={'clamped-text'} key={data.id} style={{color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', fontWeight:'600'}} onClick={()=> onClickArticle(data.id)}>{data.title}</div>)}
+                {articles.map((data, index) => <div className={'clamped-text'} key={data.id} style={{'--line-count':1, color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap', fontWeight:'600'}} onClick={()=> onClickArticle(data.id)}>{data.title}</div>)}
             </div>
         </div>
     ) : null

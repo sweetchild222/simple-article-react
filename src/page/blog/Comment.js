@@ -1,5 +1,5 @@
 
-import React, {useState, useContext, useEffect, useRef } from "react";
+import React, {useState, useContext, useEffect, useRef, useImperativeHandle } from "react";
 
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
 
@@ -46,11 +46,7 @@ import { HiDotsVertical } from "react-icons/hi";
 
 
 
-export default function(props) {
-
-    const onRemoved = props.onRemoved
-
-    const combinedStyle = { ...props.style }
+export default function({ref, comment}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isModifyLoading, setIsModifyLoading] = useState(false)
@@ -58,35 +54,45 @@ export default function(props) {
     const [isModify, setIsModify] = useState(false)
 
 
-    const [comment, setComment] = useState(props.comment)    
+    //const [comment, setComment] = useState(comment)
     const [isClamped, setIsClamped] = useState(false)
     const [isExpand, setIsExpand] = useState(false)
-    const [isOpenMenu, setIsOpenMenu] = useState(false)
-
-    const [isMenuLoading, setIsMenuLoading] = useState(false)
-
-    const refMenu = useRef(null)
+    
     const refComment = useRef(null)
     
-    const navigate = useNavigate()
+    const [contentEditable, setContentEditable] = useState(false);
 
+    useImperativeHandle(ref, () => ({
 
-    const onClickNavigateUser = async(userId) =>{
+            setEditable: (value) => {
+
+                setContentEditable(value)
+
+            }
+        }
+    ));
         
-        navigate('/user/' + userId)
-    }
-
-
+    
     useEffect(() =>{
 
         if(refComment.current){
             
             const element = refComment.current
-                
+            
             setIsClamped(element.scrollHeight >  element.clientHeight)
         }
-                
+
     }, [refComment])
+
+
+    useEffect(()=>{
+
+        if(contentEditable)
+
+            if(refComment.current)
+                refComment.current.focus()            
+
+    }, [contentEditable])
 
 
 
@@ -132,12 +138,16 @@ export default function(props) {
         setIsModify(false)
     }    
 
-    
 
+    console.log(contentEditable)
+
+    
     return comment ? (
-            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'end'}}>
-                <div ref={refComment} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>{comment.comment}</div>
-                {isClamped && !isExpand && <div style={{position: 'absolute'}}>
+            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:contentEditable ? '100%' : 'auto'}}>
+                <div ref={refComment} className={contentEditable ? 'edit-text' : (isExpand ? 'none-clamped-text' : 'clamped-text')} contentEditable={contentEditable} suppressContentEditableWarning={true} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>
+                    {comment.comment + "sdafasdflisdajf\nklsdfjkls\njdfsi\nfwoie\njfwoiejf\nwoiejfiwoejf\noiwejf\noiwejfoiwejf\noiwejf\noiwjfwoiejfoiwjwoi\nejfo\niwjoijwofijwoeijwojwoijwfoijo"}
+                </div>
+                {!contentEditable && isClamped && !isExpand && <div style={{position: 'absolute', alignSelf:'end'}}>
                     <BeautyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></BeautyButton>
                 </div>}
             </div>

@@ -144,8 +144,9 @@ export default function({ref, comment}) {
     
     return comment ? (
             <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:contentEditable ? '100%' : 'auto'}}>
-                <div ref={refComment} className={contentEditable ? 'edit-text' : (isExpand ? 'none-clamped-text' : 'clamped-text')} contentEditable={contentEditable} suppressContentEditableWarning={true} style={{'--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue'}}>
+                <div ref={refComment} className={contentEditable ? 'edit-text' : (isExpand ? 'none-clamped-text' : 'clamped-text')} contentEditable={contentEditable} suppressContentEditableWarning={true} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue', width:contentEditable ? '100%' : 'auto', padding:'5px'}}>
                     {comment.comment + "sdafasdflisdajf\nklsdfjkls\njdfsi\nfwoie\njfwoiejf\nwoiejfiwoejf\noiwejf\noiwejfoiwejf\noiwejf\noiwjfwoiejfoiwjwoi\nejfo\niwjoijwofijwoeijwojwoijwfoijo"}
+                    {/* {comment.comment} */}
                 </div>
                 {!contentEditable && isClamped && !isExpand && <div style={{position: 'absolute', alignSelf:'end'}}>
                     <BeautyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></BeautyButton>

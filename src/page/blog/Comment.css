@@ -15,3 +15,16 @@
     padding-right: 0px;
     
 }
+
+.none-clamped-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break:break-all;
+}
+
+
+.edit-text {
+  max-height: calc(5lh + 10px);
+  overflow-y: auto;
+}

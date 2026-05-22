@@ -57,11 +57,12 @@ export default function({article_id}) {
     const [comments, setComments] = useState(null)    
     const [openReplyEditCommentId, setOpenReplyEditCommentId] = useState(-1)
     const [isOpenCommentEdit, setIsOpenCommentEdit] = useState(false)
+    const [modifyModeCommentId, setModifyModeCommentId] = useState(-1)
 
     const [showReplies, setShowReplies] = useState([])
-    const [editModeCommentId, setEditModeCommentId] = useState(-1)
+    
 
-    const [isLoadingEditComplete, setIsLoadingEditComplete] = useState(false)
+    const [isLoadingModifyComplete, setIsLoadingModifyComplete] = useState(false)
 
 
     const refsComment = useRef({})
@@ -204,6 +205,8 @@ export default function({article_id}) {
         }
 
         setIsOpenCommentEdit(true)
+        setOpenReplyEditCommentId(-1)
+        setModifyModeCommentId(-1)
     }
 
 
@@ -248,6 +251,8 @@ export default function({article_id}) {
         }
 
         setOpenReplyEditCommentId(id)
+        setModifyModeCommentId(-1)
+        setIsOpenCommentEdit(false)
     }
 
 
@@ -305,21 +310,17 @@ export default function({article_id}) {
 
         return showReplies.find(id => comment_id == id)
     }
-
-
-    const onEditReply = async(comment) =>{
-
-        //console.log('edit reply')
-    }
     
 
-    const onEditComment = async(comment_id) => {
+    const onModifyComment = async(comment_id) => {
 
-        setEditModeCommentId(comment_id)
+        setModifyModeCommentId(comment_id)
+        setOpenReplyEditCommentId(-1)        
+        setIsOpenCommentEdit(false)
     }
 
 
-    const onClickEditComplete = async(comment_id) => {
+    const onClickModifyComplete = async(comment_id) => {
 
         const comment = findComment(comment_id)
 
@@ -348,11 +349,11 @@ export default function({article_id}) {
             comment:modifiedComment
         }
 
-        setIsLoadingEditComplete(true)
+        setIsLoadingModifyComplete(true)
 
         const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)
 
-        setIsLoadingEditComplete(false)
+        setIsLoadingModifyComplete(false)
                     
         if(res == null){
             window.showToast('수정에 실패하였습니다', 'error')
@@ -364,14 +365,13 @@ export default function({article_id}) {
         comment.comment = modifiedComment
         comment.update_at = Date.now()
         setComments(structuredClone(comments))
-        setEditModeCommentId(-1)
+        setModifyModeCommentId(-1)
     }
 
 
+    const onClickModifyCancel = async(comment_id) => {
 
-    const onClickEditCancel = async(comment_id) => {
-
-        setEditModeCommentId(-1)
+        setModifyModeCommentId(-1)
     }
     
 
@@ -398,21 +398,21 @@ export default function({article_id}) {
                             </div>
                             
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>                                
-                                <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={editModeCommentId == data.id}/>
-                                <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onEdit={()=>onEditComment(data.id)}/>
+                                <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={modifyModeCommentId == data.id}/>
+                                <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </div>
 
-                            {!(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                            {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <CommentGreat comment={data}></CommentGreat>
                                 <div style={{width:'20px'}}></div>
                                 <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical siz={22}/>}</BeautyButton>
                             </div>
                             }
 
-                            {(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                <BeautyButton type={'transparent'} tooltip={'적용'} isLoading={isLoadingEditComplete} style={{color:'black'}} onClick={() => onClickEditComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
+                            {(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                <BeautyButton type={'transparent'} tooltip={'적용'} isLoading={isLoadingModifyComplete} style={{color:'black'}} onClick={() => onClickModifyComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
                                 <div style={{width:'20px'}}></div>
-                                <BeautyButton type={'transparent'} tooltip={'취소'} disabled={isLoadingEditComplete} style={{color:'black'}} onClick={() => onClickEditCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
+                                <BeautyButton type={'transparent'} tooltip={'취소'} disabled={isLoadingModifyComplete} style={{color:'black'}} onClick={() => onClickModifyCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
                             </div>
                             }
 
@@ -446,18 +446,18 @@ export default function({article_id}) {
                                         </div>
 
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={editModeCommentId == data.id}/>
-                                            <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(data.id)} onEdit={()=>onEditComment(data.id)}/>
+                                            <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={modifyModeCommentId == data.id}/>
+                                            <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(data.id)} onModify={()=>onModifyComment(data.id)}/>
                                         </div>                                        
-                                        {!(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                        {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <CommentGreat comment={data}></CommentGreat>
                                         </div>
                                         }
 
-                                        {(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                            <BeautyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} onClick={() => onClickEditComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
+                                        {(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                            <BeautyButton type={'transparent'} tooltip={'적용'} isLoading={isLoadingModifyComplete} style={{color:'black'}} onClick={() => onClickModifyComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
                                             <div style={{width:'20px'}}></div>
-                                            <BeautyButton type={'transparent'} tooltip={'취소'} style={{color:'black'}} onClick={() => onClickEditCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
+                                            <BeautyButton type={'transparent'} tooltip={'취소'} disabled={isLoadingModifyComplete} style={{color:'black'}} onClick={() => onClickModifyCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
                                         </div>
                                         }
 

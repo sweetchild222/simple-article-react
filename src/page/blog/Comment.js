@@ -48,10 +48,7 @@ import { HiDotsVertical } from "react-icons/hi";
 
 export default function({ref, comment, editable}) {
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [isModifyLoading, setIsModifyLoading] = useState(false)
-    
-    const [isModify, setIsModify] = useState(false)
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
     const [isClamped, setIsClamped] = useState(false)
     const [isExpand, setIsExpand] = useState(false)
     
@@ -97,49 +94,6 @@ export default function({ref, comment, editable}) {
 
 
 
-    const onClickModifyConfirm = async()=>{
-
-        if(!(validAuth(auth) && auth.user_id == comment.user_id))
-            return
-
-        if(!refText.current)
-            return
-
-        const modifiedComment = refText.current.value
-
-        if(modifiedComment.length == 0) {
-            window.showToast('입력된 글이 없습니다', 'error')
-            return
-        }    
-
-        if(modifiedComment == comment.comment){
-            window.showToast('수정된 내용이 없습니다', 'error')
-            return
-        }
-
-        const payload = {
-            comment:modifiedComment
-        }
-
-        setIsModifyLoading(true)
-
-        const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)
-
-        setIsModifyLoading(false)
-
-        if(res == null){
-            window.showToast('댓글 수정에 실패하였습니다', 'error')
-            return
-        }
-
-        window.showToast('댓글 수정에 성공하였습니다', 'info')
-
-        comment.comment = modifiedComment
-        comment.update_at = Date.now()
-        setIsModify(false)
-    }
-
-
     return comment ? (
             <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:editable ? '100%' : 'auto'}}>
                 <div ref={refComment} className={editable ? 'edit-text' : (isExpand ? 'none-clamped-text' : 'clamped-text')} contentEditable={editable} suppressContentEditableWarning={true} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue', width:editable ? '100%' : 'auto', padding:'5px'}}>
@@ -150,7 +104,7 @@ export default function({ref, comment, editable}) {
                     <BeautyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></BeautyButton>
                 </div>}
             </div>
-        ) : null        
+        ) : null
 }
 
 

@@ -80,8 +80,8 @@ export default function(props) {
 
         setIsOpenMenu(false)
 
-        if(props.onEdit)
-            props.onEdit()
+        if(props.onModify)
+            props.onModify()
     }
 
     const onClickRemove = ()=>{

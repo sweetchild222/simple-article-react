@@ -46,28 +46,25 @@ import { HiDotsVertical } from "react-icons/hi";
 
 
 
-export default function({ref, comment}) {
+export default function({ref, comment, editable}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isModifyLoading, setIsModifyLoading] = useState(false)
     
     const [isModify, setIsModify] = useState(false)
-
-
-    //const [comment, setComment] = useState(comment)
     const [isClamped, setIsClamped] = useState(false)
     const [isExpand, setIsExpand] = useState(false)
     
-    const refComment = useRef(null)
-    
-    const [contentEditable, setContentEditable] = useState(false);
+    const refComment = useRef(null)    
 
     useImperativeHandle(ref, () => ({
 
-            setEditable: (value) => {
+            getText: () =>{
 
-                setContentEditable(value)
+                if(!refComment.current)
+                    return null
 
+                return refComment.current.value()
             }
         }
     ));
@@ -87,12 +84,12 @@ export default function({ref, comment}) {
 
     useEffect(()=>{
 
-        if(contentEditable)
+        if(editable)
 
             if(refComment.current)
                 refComment.current.focus()            
 
-    }, [contentEditable])
+    }, [editable])
 
 
 
@@ -139,16 +136,13 @@ export default function({ref, comment}) {
     }    
 
 
-    console.log(contentEditable)
-
-    
     return comment ? (
-            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:contentEditable ? '100%' : 'auto'}}>
-                <div ref={refComment} className={contentEditable ? 'edit-text' : (isExpand ? 'none-clamped-text' : 'clamped-text')} contentEditable={contentEditable} suppressContentEditableWarning={true} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue', width:contentEditable ? '100%' : 'auto', padding:'5px'}}>
+            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:editable ? '100%' : 'auto'}}>
+                <div ref={refComment} className={editable ? 'edit-text' : (isExpand ? 'none-clamped-text' : 'clamped-text')} contentEditable={editable} suppressContentEditableWarning={true} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue', width:editable ? '100%' : 'auto', padding:'5px'}}>
                     {comment.comment + "sdafasdflisdajf\nklsdfjkls\njdfsi\nfwoie\njfwoiejf\nwoiejfiwoejf\noiwejf\noiwejfoiwejf\noiwejf\noiwjfwoiejfoiwjwoi\nejfo\niwjoijwofijwoeijwojwoijwfoijo"}
                     {/* {comment.comment} */}
                 </div>
-                {!contentEditable && isClamped && !isExpand && <div style={{position: 'absolute', alignSelf:'end'}}>
+                {!editable && isClamped && !isExpand && <div style={{position: 'absolute', alignSelf:'end'}}>
                     <BeautyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></BeautyButton>
                 </div>}
             </div>

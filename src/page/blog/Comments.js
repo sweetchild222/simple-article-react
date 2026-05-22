@@ -46,6 +46,9 @@ import { MdThumbUpAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 import { SlArrowDown } from "react-icons/sl";
 import { SlArrowUp } from "react-icons/sl";
+import { MdDownloadDone } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
+import { MdOutlineDoneOutline } from "react-icons/md";
 
 export default function({article_id}) {
     
@@ -56,7 +59,8 @@ export default function({article_id}) {
     const [isOpenCommentEdit, setIsOpenCommentEdit] = useState(false)
 
     const [showReplies, setShowReplies] = useState([])
-
+    const [editModeCommentId, setEditModeCommentId] = useState(-1)
+    
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -121,12 +125,17 @@ export default function({article_id}) {
 
 
 
-    const removeComment = async(comment) => {
+    const removeComment = async(comment_id) => {
+
+        const comment = findComment(comment_id)
+
+        if(comment == null)
+            return
 
         if(!(validAuth(auth) && auth.user_id == comment.user_id))
             return false
         
-        const res = await CommentAPI.deleteComment(auth.jwt, comment.id)
+        const res = await CommentAPI.deleteComment(auth.jwt, comment_id)
         
         if(res == null){
             window.showToast('댓글 삭제에 실패하였습니다', 'error')
@@ -139,23 +148,38 @@ export default function({article_id}) {
     }
 
 
-    const onRemoveComment = async(comment) => {
+    const findComment = (comment_id) =>{
 
-        if(await removeComment(comment))
-            setComments(structuredClone(comments.filter(item => item.id != comment.id)))
+        const comment = comments.find(item => item.id == comment_id)
+
+        if(comment)
+            return comment
+            
+        return comments.find(commentItem => (
+            commentItem.replies.find(replyItem => replyItem.id == comment_id)
+        ))
     }
 
-    const onRemoveReply = async(reply) => {
+
+    const onRemoveComment = async(comment_id) => {
+
+        console.log(comment_id)
+
+        if(await removeComment(comment_id))
+            setComments(structuredClone(comments.filter(item => item.id != comment_id)))
+    }
+
+    const onRemoveReply = async(comment_id) => {
             
         const comment = comments.find(commentItem => (
-            commentItem.replies.find(replyItem => replyItem.id == reply.id)
+            commentItem.replies.find(replyItem => replyItem.id == comment_id)
         ))
     
         if(!comment)
             return
 
-        if(await removeComment(reply)){
-            comment.replies = comment.replies.filter(replyItem => replyItem.id != reply.id)
+        if(await removeComment(comment_id)){
+            comment.replies = comment.replies.filter(replyItem => replyItem.id != comment_id)
             setComments(structuredClone(comments))
         }
     }
@@ -277,27 +301,83 @@ export default function({article_id}) {
 
         //console.log('edit reply')
     }
+    
 
+    const onEditComment = async(comment_id) => {
 
-    const divRefs = useRef({})
-
-    const onEditComment = async(comment) =>{
-
-        //console.log('edit comment')
-
-        //divRefs.current[comment.id].style.backgroundColor = 'yellow';
-
-        if(divRefs.current[comment.id])
-            divRefs.current[comment.id].setEditable(true)
-        //divRefs.current[comment.id].focus()
-
-        //console.log(comment.id)
-
-        //const myDiv = document.getElementById(comment.id);
-
-        //console.log(myDiv)
+        setEditModeCommentId(comment_id)
     }
 
+
+    const onClickEditComplete = async(comment_id) => {
+
+        const comment = findComment(comment_id)
+
+        if(comment == null)
+            return
+
+        if(!(validAuth(auth) && auth.user_id == comment.user_id))
+            return false
+
+
+
+
+
+    }
+    
+
+
+
+        const onClickModifyConfirm = async()=>{
+    
+            if(!(validAuth(auth) && auth.user_id == comment.user_id))
+                return
+    
+            if(!refText.current)
+                return
+    
+            const modifiedComment = refText.current.value
+    
+            if(modifiedComment.length == 0) {
+                window.showToast('입력된 글이 없습니다', 'error')
+                return
+            }    
+    
+            if(modifiedComment == comment.comment){
+                window.showToast('수정된 내용이 없습니다', 'error')
+                return
+            }
+    
+            const payload = {
+                comment:modifiedComment
+            }
+    
+            setIsModifyLoading(true)
+    
+            const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)
+    
+            setIsModifyLoading(false)
+    
+            if(res == null){
+                window.showToast('댓글 수정에 실패하였습니다', 'error')
+                return
+            }
+    
+            window.showToast('댓글 수정에 성공하였습니다', 'info')
+    
+            comment.comment = modifiedComment
+            comment.update_at = Date.now()
+            setIsModify(false)
+        }    
+
+
+
+
+
+    const onClickEditCancel = async(comment_id) => {
+
+        setEditModeCommentId(-1)
+    }
     
 
     return comments ? (
@@ -322,20 +402,24 @@ export default function({article_id}) {
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </div>
                             
-                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                <Comment ref={(el) => (divRefs.current[data.id] = el)} key={data.id} comment={data} onRemoved={()=>onRemoveComment(data)} onEdit={()=> console.log('dsf')}/>
-
-                                    
-
-
-
-                                <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data)} onEdit={()=>onEditComment(data)}/>
+                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>                                
+                                <Comment key={data.id} comment={data} editable={editModeCommentId == data.id}/>
+                                <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onEdit={()=>onEditComment(data.id)}/>
                             </div>
-                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+
+                            {!(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <CommentGreat comment={data}></CommentGreat>
                                 <div style={{width:'20px'}}></div>
                                 <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical siz={22}/>}</BeautyButton>
                             </div>
+                            }
+
+                            {(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                <BeautyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} onClick={() => onClickEditComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
+                                <div style={{width:'20px'}}></div>
+                                <BeautyButton type={'transparent'} tooltip={'취소'} style={{color:'black'}} onClick={() => onClickEditCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
+                            </div>
+                            }
 
                             {data.id == openReplyEditCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
@@ -367,12 +451,23 @@ export default function({article_id}) {
                                         </div>
 
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment key={data.id} comment={data}/>
-                                            <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(data)} onEdit={()=>onEditReply(data)}/>
-                                        </div>
-                                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                            <Comment key={data.id} comment={data} editable={editModeCommentId == data.id}/>
+                                            <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(data.id)} onEdit={()=>onEditComment(data.id)}/>
+                                        </div>                                        
+                                        {!(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <CommentGreat comment={data}></CommentGreat>
                                         </div>
+                                        }
+
+                                        {(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                            <BeautyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} onClick={() => onClickEditComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
+                                            <div style={{width:'20px'}}></div>
+                                            <BeautyButton type={'transparent'} tooltip={'취소'} style={{color:'black'}} onClick={() => onClickEditCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
+                                        </div>
+                                        }
+
+
+
                                     </div>
                                 </div>
                             )}

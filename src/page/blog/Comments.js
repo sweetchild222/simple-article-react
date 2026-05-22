@@ -60,6 +60,11 @@ export default function({article_id}) {
 
     const [showReplies, setShowReplies] = useState([])
     const [editModeCommentId, setEditModeCommentId] = useState(-1)
+
+    const [isLoadingEditComplete, setIsLoadingEditComplete] = useState(false)
+
+
+    const refsComment = useRef({})
     
     const navigate = useNavigate()
 
@@ -151,13 +156,18 @@ export default function({article_id}) {
     const findComment = (comment_id) =>{
 
         const comment = comments.find(item => item.id == comment_id)
-
+        
         if(comment)
-            return comment
-            
-        return comments.find(commentItem => (
-            commentItem.replies.find(replyItem => replyItem.id == comment_id)
-        ))
+            return comment            
+        
+        for(
+            const comment of comments){
+            const reply = comment.replies.find(replyItem => replyItem.id == comment_id)
+
+            if(reply)
+                return reply
+        }
+        
     }
 
 
@@ -319,58 +329,43 @@ export default function({article_id}) {
         if(!(validAuth(auth) && auth.user_id == comment.user_id))
             return false
 
+        if(!refsComment.current[comment_id])
+            return
 
+        const modifiedComment = refsComment.current[comment_id].getComment()        
 
+        if(modifiedComment.length == 0) {
+            window.showToast('입력된 글이 없습니다', 'error')
+            return
+        }
 
+        if(modifiedComment == comment.comment){
+            window.showToast('수정된 내용이 없습니다', 'error')
+            return
+        }
 
+        const payload = {
+            comment:modifiedComment
+        }
+
+        setIsLoadingEditComplete(true)
+
+        const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)
+
+        setIsLoadingEditComplete(false)
+                    
+        if(res == null){
+            window.showToast('수정에 실패하였습니다', 'error')
+            return
+        }
+    
+        window.showToast('수정에 성공하였습니다', 'info')
+    
+        comment.comment = modifiedComment
+        comment.update_at = Date.now()
+        setComments(structuredClone(comments))
+        setEditModeCommentId(-1)
     }
-    
-
-
-
-        const onClickModifyConfirm = async()=>{
-    
-            if(!(validAuth(auth) && auth.user_id == comment.user_id))
-                return
-    
-            if(!refText.current)
-                return
-    
-            const modifiedComment = refText.current.value
-    
-            if(modifiedComment.length == 0) {
-                window.showToast('입력된 글이 없습니다', 'error')
-                return
-            }    
-    
-            if(modifiedComment == comment.comment){
-                window.showToast('수정된 내용이 없습니다', 'error')
-                return
-            }
-    
-            const payload = {
-                comment:modifiedComment
-            }
-    
-            setIsModifyLoading(true)
-    
-            const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)
-    
-            setIsModifyLoading(false)
-    
-            if(res == null){
-                window.showToast('댓글 수정에 실패하였습니다', 'error')
-                return
-            }
-    
-            window.showToast('댓글 수정에 성공하였습니다', 'info')
-    
-            comment.comment = modifiedComment
-            comment.update_at = Date.now()
-            setIsModify(false)
-        }    
-
-
 
 
 
@@ -403,7 +398,7 @@ export default function({article_id}) {
                             </div>
                             
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>                                
-                                <Comment key={data.id} comment={data} editable={editModeCommentId == data.id}/>
+                                <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={editModeCommentId == data.id}/>
                                 <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onEdit={()=>onEditComment(data.id)}/>
                             </div>
 
@@ -415,9 +410,9 @@ export default function({article_id}) {
                             }
 
                             {(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                <BeautyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} onClick={() => onClickEditComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
+                                <BeautyButton type={'transparent'} tooltip={'적용'} isLoading={isLoadingEditComplete} style={{color:'black'}} onClick={() => onClickEditComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
                                 <div style={{width:'20px'}}></div>
-                                <BeautyButton type={'transparent'} tooltip={'취소'} style={{color:'black'}} onClick={() => onClickEditCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
+                                <BeautyButton type={'transparent'} tooltip={'취소'} disabled={isLoadingEditComplete} style={{color:'black'}} onClick={() => onClickEditCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
                             </div>
                             }
 
@@ -451,7 +446,7 @@ export default function({article_id}) {
                                         </div>
 
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment key={data.id} comment={data} editable={editModeCommentId == data.id}/>
+                                            <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={editModeCommentId == data.id}/>
                                             <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(data.id)} onEdit={()=>onEditComment(data.id)}/>
                                         </div>                                        
                                         {!(editModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>

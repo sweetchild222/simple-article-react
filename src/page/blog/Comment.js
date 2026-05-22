@@ -59,12 +59,12 @@ export default function({ref, comment, editable}) {
 
     useImperativeHandle(ref, () => ({
 
-            getText: () =>{
+            getComment: () =>{
 
                 if(!refComment.current)
                     return null
-
-                return refComment.current.value()
+                
+                return refComment.current.innerText
             }
         }
     ));
@@ -84,10 +84,14 @@ export default function({ref, comment, editable}) {
 
     useEffect(()=>{
 
-        if(editable)
-
+        if(editable){
             if(refComment.current)
-                refComment.current.focus()            
+                refComment.current.focus()
+        }
+        else{
+            if(refComment.current)
+                refComment.current.innerText = comment.comment
+        }
 
     }, [editable])
 
@@ -133,13 +137,13 @@ export default function({ref, comment, editable}) {
         comment.comment = modifiedComment
         comment.update_at = Date.now()
         setIsModify(false)
-    }    
+    }
 
 
     return comment ? (
             <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:editable ? '100%' : 'auto'}}>
                 <div ref={refComment} className={editable ? 'edit-text' : (isExpand ? 'none-clamped-text' : 'clamped-text')} contentEditable={editable} suppressContentEditableWarning={true} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue', width:editable ? '100%' : 'auto', padding:'5px'}}>
-                    {comment.comment + "sdafasdflisdajf\nklsdfjkls\njdfsi\nfwoie\njfwoiejf\nwoiejfiwoejf\noiwejf\noiwejfoiwejf\noiwejf\noiwjfwoiejfoiwjwoi\nejfo\niwjoijwofijwoeijwojwoijwfoijo"}
+                    {/* {comment.comment + "sdafasdflisdajf\nklsdfjkls\njdfsi\nfwoie\njfwoiejf\nwoiejfiwoejf\noiwejf\noiwejfoiwejf\noiwejf\noiwjfwoiejfoiwjwoi\nejfo\niwjoijwofijwoeijwojwoijwfoijo"} */}
                     {/* {comment.comment} */}
                 </div>
                 {!editable && isClamped && !isExpand && <div style={{position: 'absolute', alignSelf:'end'}}>

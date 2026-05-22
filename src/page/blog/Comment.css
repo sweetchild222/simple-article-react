@@ -9,4 +9,6 @@
 .edit-text {
   max-height: calc(5lh + 10px);
   overflow-y: auto;
+  white-space: pre-line;
+  word-break: break-all;
 }

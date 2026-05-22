@@ -398,7 +398,7 @@ export default function({article_id}) {
                             </div>
                             
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>                                
-                                <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={modifyModeCommentId == data.id}/>
+                                <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={()=> onClickModifyComplete(data.id)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
                                 <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </div>
 
@@ -406,13 +406,6 @@ export default function({article_id}) {
                                 <CommentGreat comment={data}></CommentGreat>
                                 <div style={{width:'20px'}}></div>
                                 <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical siz={22}/>}</BeautyButton>
-                            </div>
-                            }
-
-                            {(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                <BeautyButton type={'transparent'} tooltip={'적용'} isLoading={isLoadingModifyComplete} style={{color:'black'}} onClick={() => onClickModifyComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
-                                <div style={{width:'20px'}}></div>
-                                <BeautyButton type={'transparent'} tooltip={'취소'} disabled={isLoadingModifyComplete} style={{color:'black'}} onClick={() => onClickModifyCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
                             </div>
                             }
 
@@ -446,22 +439,13 @@ export default function({article_id}) {
                                         </div>
 
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={modifyModeCommentId == data.id}/>
+                                            <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={()=> onClickModifyComplete(data.id)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
                                             <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(data.id)} onModify={()=>onModifyComment(data.id)}/>
                                         </div>                                        
                                         {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <CommentGreat comment={data}></CommentGreat>
                                         </div>
-                                        }
-
-                                        {(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                            <BeautyButton type={'transparent'} tooltip={'적용'} isLoading={isLoadingModifyComplete} style={{color:'black'}} onClick={() => onClickModifyComplete(data.id)}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
-                                            <div style={{width:'20px'}}></div>
-                                            <BeautyButton type={'transparent'} tooltip={'취소'} disabled={isLoadingModifyComplete} style={{color:'black'}} onClick={() => onClickModifyCancel(data.id)}>{<MdCancel size={22}/>}</BeautyButton>
-                                        </div>
-                                        }
-
-
+                                        }                                        
 
                                     </div>
                                 </div>

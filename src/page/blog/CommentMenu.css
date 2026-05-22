@@ -1,0 +1,16 @@
+.popupList {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50%;
+    background: lightgray;
+    border: 1px solid #ccc;
+    list-style: none;
+    color:black;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 3px;
+    z-index: 100;
+    list-style-type: none;
+    padding-left: 0px;
+    padding-right: 0px;
+}

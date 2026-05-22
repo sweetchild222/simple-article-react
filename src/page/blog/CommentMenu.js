@@ -28,7 +28,7 @@ import * as CommentAPI from '../../api/CommentAPI.js'
 import UserImage from "../../common/UserImage.js";
 
 import './Comments.css'
-import './Comment.css'
+import './CommentMenu.css'
 import Categories  from "./Categories.js";
 import Recents  from "./Recents.js";
 import Pagination from "./Pagination.js";

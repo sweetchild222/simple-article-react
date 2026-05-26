@@ -62,8 +62,7 @@ export default function({article_id}) {
 
     const [showReplies, setShowReplies] = useState([])
         
-    const refsComment = useRef({})
-    
+    const refsComment = useRef({})    
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -104,14 +103,6 @@ export default function({article_id}) {
         })
         
     }, [article_id])
-
-
-
-
-
-
-
-
 
 
     const removeComment = async(comment_id) => {
@@ -268,13 +259,11 @@ export default function({article_id}) {
         findComment.replies.unshift({id:res.id, update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
         setComments(structuredClone(comments))
 
-
         if(!showReplies.find(id => openReplyEditCommentId == id))
             setShowReplies([...showReplies, openReplyEditCommentId])                    
             
         setOpenReplyEditCommentId(-1)
 
-        
         return true
     }
 
@@ -293,12 +282,15 @@ export default function({article_id}) {
             setShowReplies(showReplies.filter(id => id !== comment_id))
     }
 
+
     const isShowReplies = (comment_id) => {
 
-        return showReplies.find(id => comment_id == id)
-    }
-    
+        const find = showReplies.find(id => comment_id == id)
 
+        return find != null            
+    }
+
+    
     const onModifyComment = async(comment_id) => {
 
         setModifyModeCommentId(comment_id)
@@ -358,20 +350,6 @@ export default function({article_id}) {
     }
 
 
-    const onClick = async(comment_id) =>{
-
-
-
-        console.log(comment_id)
-
-
-        if(!refsDiv.current)
-            return
-
-        console.log(refsDiv.current[comment_id])
-
-    }
-    
 
     return comments ? (
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', marginTop:'20px', width:'100%'}}>
@@ -383,11 +361,10 @@ export default function({article_id}) {
             
             {comments.map((data, index) => 
                 <div key={data.id} style={{display:'flex', flexDirection: 'column', justifyContent:'left', border:'1px solid lightgray'}}>
-
                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
                             <UserImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                            <CommentLeftDiv/>
+                            <CommentLeftDiv isShowReplies={isShowReplies(data.id)}/>
                         </div>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
@@ -414,7 +391,7 @@ export default function({article_id}) {
                             }
 
                             {data.replies.length > 0 &&
-                                <BeautyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
+                                <BeautyButton id={'replyButton'} type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
                                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                         {'답글 (' + data.replies.length + ')'}
                                     </div>
@@ -423,24 +400,24 @@ export default function({article_id}) {
                                 </BeautyButton>
                             }
                             
-                            {isShowReplies(data.id) && data.replies.map((data, index) =>
-                                <div key={data.id} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                            {isShowReplies(data.id) && data.replies.map((reply, index) =>
+                                <div key={reply.id} id={'replyDiv'} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                                        <UserImage size={32} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
+                                        <UserImage id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
                                         <div style={{backgroundColor:'yellow', flex:'1'}}/>
                                     </div>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                            <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
-                                            <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
+                                            <div style={{fontSize:'14px', marginRight:'10px'}}>{reply.user.nickname}</div>
+                                            <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
                                         </div>
 
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={()=> onClickModifyComplete(data.id)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
-                                            <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(data.id)} onModify={()=>onModifyComment(data.id)}/>
+                                            <Comment ref={(el) => (refsComment.current[reply.id] = el)} key={reply.id} comment={reply} editable={modifyModeCommentId == reply.id} onClickModifyComplete={()=> onClickModifyComplete(reply.id)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)}/>
+                                            <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
                                         </div>                                        
-                                        {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                            <CommentGreat comment={data}></CommentGreat>
+                                        {!(modifyModeCommentId == reply.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                            <CommentGreat comment={reply}></CommentGreat>
                                         </div>
                                         }
                                     </div>

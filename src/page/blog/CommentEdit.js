@@ -80,7 +80,7 @@ export default function(props) {
 
 
     return  (<div style={{display:'flex', flexDirection: 'column', width:'100%', backgroundColor:'lightgreen'}}>
-                <textarea ref={refCommentText} className={'commentEdit'}  placeholder={'글을 입력하세요'} suppressContentEditableWarning={true} maxLength={maxCharLength} style={{width:'100%',  minHeight: '3lh', resize:'none', maxHeight:'6lh', border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto'}} onInput={onInput}/>
+                <textarea ref={refCommentText} className={'commentEdit'}  placeholder={'글을 입력하세요'} suppressContentEditableWarning={true} maxLength={maxCharLength} style={{width:'100%',  minHeight: '4lh', resize:'none', maxHeight:'6lh', border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto'}} onInput={onInput}/>
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'10px'}}/>

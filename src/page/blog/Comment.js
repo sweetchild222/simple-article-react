@@ -71,19 +71,19 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 return refCommentEdit.current.value
             }
         }
-    ));
+    ))
         
     
-    useEffect(() =>{
+    // useEffect(() =>{
 
-        if(refComment.current){
+    //     if(refComment.current){
             
-            const element = refComment.current
+    //         const element = refComment.current
             
-            setIsClamped(element.scrollHeight >  element.clientHeight)
-        }
+    //         setIsClamped(element.scrollHeight >  element.clientHeight)
+    //     }
 
-    }, [refComment])
+    // }, [refComment])
 
     
 
@@ -104,6 +104,15 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 const length = comment.comment.length
                 refCommentEdit.current.setSelectionRange(length, length)
                 setInputLength(length + '/' + maxCharLength)
+            }
+        }
+        else{
+
+            if(refComment.current){
+            
+                const element = refComment.current
+            
+                setIsClamped(element.scrollHeight >  element.clientHeight)
             }
         }
 
@@ -131,7 +140,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
 
     return comment ? (
-            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:'100%'}}>
+            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:editable ? '100%' : 'auto'}}>
 
                 {editable && <div style={{display:'grid', gridTemplateColumns:'1fr', width:'100%'}}>
                     <textarea ref={refCommentEdit} className={'commentEdit'}  placeholder={'글을 입력하세요'} defaultValue={comment.comment} suppressContentEditableWarning={true} maxLength={maxCharLength} style={{boxSizing: 'border-box', width:'100%',  minHeight: '4lh', resize:'none', maxHeight:'6lh', border:'0px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'5px', backgroundColor:'green'}} onInput={onInput}/>
@@ -147,12 +156,11 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                     <BeautyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></BeautyButton>
                 </div>}
 
-
                 {editable && <div style={{display:'flex', flexDirection: 'row', justifyContent:'end', width:'100%', alignItems:'center'}}>
                                 <label>{inputLength}</label>
                                 <div style={{width:'10px'}}/>
                                 <BeautyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
-                                <div style={{width:'20px'}}></div>
+                                <div style={{width:'10px'}}></div>
                                 <BeautyButton type={'transparent'} tooltip={'취소'} style={{color:'black'}} disabled={isModifyLoading} onClick={onClickModifyCancelInner} >{<MdCancel size={22}/>}</BeautyButton>
                             </div>
                 }

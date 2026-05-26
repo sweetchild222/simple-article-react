@@ -261,8 +261,14 @@ export default function({article_id}) {
         
         findComment.replies.unshift({id:res.id, update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
         setComments(structuredClone(comments))
+
+
+        if(!showReplies.find(id => openReplyEditCommentId == id))
+            setShowReplies([...showReplies, openReplyEditCommentId])                    
+            
         setOpenReplyEditCommentId(-1)
 
+        
         return true
     }
 
@@ -360,7 +366,7 @@ export default function({article_id}) {
                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
                             <UserImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                            <div style={{backgroundColor:'gray', flex:'1'}}/>
+                            <div style={{backgroundColor:'yellow', flex:'1'}}/>
                         </div>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
@@ -381,9 +387,9 @@ export default function({article_id}) {
                             }
 
                             {data.id == openReplyEditCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                    <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
-                                    <CommentEdit onPostText={onPostReply} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
-                                </div>
+                                <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
+                                <CommentEdit onPostText={onPostReply} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
+                            </div>
                             }
 
                             {data.replies.length > 0 &&
@@ -392,8 +398,7 @@ export default function({article_id}) {
                                         {'답글 (' + data.replies.length + ')'}
                                     </div>
                                     <div style={{width:'10px'}}/>
-                                    {isShowReplies(data.id) && <SlArrowUp siz={22}/>}
-                                    {!isShowReplies(data.id) && <SlArrowDown siz={22}/>}
+                                    {isShowReplies(data.id) ? <SlArrowUp siz={22}/> : <SlArrowDown siz={22}/>}
                                 </BeautyButton>
                             }
                             
@@ -401,7 +406,7 @@ export default function({article_id}) {
                                 <div key={data.id} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
                                         <UserImage size={32} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                                        <div style={{backgroundColor:'lightgray', flex:'1'}}/>
+                                        <div style={{backgroundColor:'yellow', flex:'1'}}/>
                                     </div>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
@@ -416,8 +421,7 @@ export default function({article_id}) {
                                         {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <CommentGreat comment={data}></CommentGreat>
                                         </div>
-                                        }                                        
-
+                                        }
                                     </div>
                                 </div>
                             )}

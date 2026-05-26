@@ -60,9 +60,7 @@ export default function({article_id}) {
     const [modifyModeCommentId, setModifyModeCommentId] = useState(-1)
 
     const [showReplies, setShowReplies] = useState([])
-    
-
-    const [isLoadingModifyComplete, setIsLoadingModifyComplete] = useState(false)
+        
 
 
     const refsComment = useRef({})
@@ -110,27 +108,6 @@ export default function({article_id}) {
 
 
 
-
-    const onInputModifyComment = (event)=>{
-
-        console.log(event)
-
-    }
-
-    const onInputComment = (event) =>{
-
-        console.log(event)
-        
-    }
-
-
-    const onInputModifyReply = (event) =>{
-        
-        console.log(event)
-    }
-
-
-
     const removeComment = async(comment_id) => {
 
         const comment = findComment(comment_id)
@@ -172,9 +149,7 @@ export default function({article_id}) {
     }
 
 
-    const onRemoveComment = async(comment_id) => {
-
-        console.log(comment_id)
+    const onRemoveComment = async(comment_id) => {        
 
         if(await removeComment(comment_id))
             setComments(structuredClone(comments.filter(item => item.id != comment_id)))
@@ -347,14 +322,10 @@ export default function({article_id}) {
 
         const payload = {
             comment:modifiedComment
-        }
+        }        
 
-        setIsLoadingModifyComplete(true)
+        const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)        
 
-        const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)
-
-        setIsLoadingModifyComplete(false)
-                    
         if(res == null){
             window.showToast('수정에 실패하였습니다', 'error')
             return
@@ -397,7 +368,7 @@ export default function({article_id}) {
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </div>
                             
-                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>                                
+                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                 <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={()=> onClickModifyComplete(data.id)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
                                 <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </div>

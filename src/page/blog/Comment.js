@@ -50,24 +50,25 @@ import { MdOutlineDoneOutline } from "react-icons/md";
 
 export default function({ref, comment, editable, onClickModifyComplete, onClickModifyCancel}) {
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isClamped, setIsClamped] = useState(false)
     const [isExpand, setIsExpand] = useState(false)
     const [isModifyLoading, setIsModifyLoading] = useState(false)
     const [inputLength, setInputLength] = useState('0/1000')
     
     const refComment = useRef(null)
-    const maxCharLength = 1000
+    const refCommentEdit = useRef(null)
+    const maxCharLength = 1000    
     
 
     useImperativeHandle(ref, () => ({
 
             getComment: () =>{
 
-                if(!refComment.current)
+                if(!refCommentEdit.current)
                     return null
                 
-                return refComment.current.innerText
+                return refCommentEdit.current.value
             }
         }
     ));
@@ -87,55 +88,26 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
     
 
     const onInput = (e) => {
-                          
-        setInputLength(e.target.innerText.length + '/' + maxCharLength)
+                                  
+        setInputLength(e.nativeEvent.target.value.length + '/' + maxCharLength)
     }
 
-    const onKeydown = (e) => {        
-
-        if(['Backspace', 'Delete', 'Control', 'Insert', 'Home', 'End', 'PageUp', 'PageDown','ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key))
-            return
-
-        if(e.target.innerText.length >= maxCharLength)
-            e.preventDefault()
-    }
-
-
-    const onPaste = (e) => {
-
-        e.preventDefault()
-        const text = e.clipboardData.getData('text/plain')
-        const currentLen = e.target.innerText.length
-        const remaining = maxCharLength - currentLen
-  
-        if (remaining > 0)    
-            document.execCommand('insertText', false, text.substring(0, remaining))        
-    }
 
 
     useEffect(()=>{
 
         if(editable){
-            if(refComment.current){
-                refComment.current.addEventListener('input', onInput)
-                refComment.current.addEventListener('keydown', onKeydown)
-                refComment.current.addEventListener('paste', onPaste)
-                setInputLength(comment.comment.length + '/1000')
-                refComment.current.focus()
-            }
-        }
-        else{
-            if(refComment.current){
-                refComment.current.removeEventListener('input', onInput)
-                refComment.current.removeEventListener('keydown', onKeydown)
-                refComment.current.removeEventListener('paste', onPaste)
-                refComment.current.innerText = comment.comment
+
+            if(refCommentEdit.current){
                 
+                refCommentEdit.current.focus()
+                const length = comment.comment.length
+                refCommentEdit.current.setSelectionRange(length, length)
+                setInputLength(length + '/' + maxCharLength)
             }
         }
 
     }, [editable])
-
 
 
 
@@ -158,14 +130,18 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
 
 
-
-
     return comment ? (
-            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:editable ? '100%' : 'auto'}}>
-                <div ref={refComment} className={editable ? 'edit-text' : (isExpand ? 'none-clamped-text' : 'clamped-text')} contentEditable={editable} suppressContentEditableWarning={true} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue', width:editable ? '100%' : 'auto', padding:'5px'}}>
-                    {/* {comment.comment + "sdafasdflisdajf\nklsdfjkls\njdfsi\nfwoie\njfwoiejf\nwoiejfiwoejf\noiwejf\noiwejfoiwejf\noiwejf\noiwjfwoiejfoiwjwoi\nejfo\niwjoijwofijwoeijwojwoijwfoijo"} */}
-                    {/* {comment.comment} */}
+            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:'100%'}}>
+
+                {editable && <div style={{display:'grid', gridTemplateColumns:'1fr', width:'100%'}}>
+                    <textarea ref={refCommentEdit} className={'commentEdit'}  placeholder={'글을 입력하세요'} defaultValue={comment.comment} suppressContentEditableWarning={true} maxLength={maxCharLength} style={{boxSizing: 'border-box', width:'100%',  minHeight: '4lh', resize:'none', maxHeight:'6lh', border:'0px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'5px', backgroundColor:'green'}} onInput={onInput}/>
                 </div>
+                }
+                {!editable && <div ref={refComment} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue', width:'auto', padding:'5px'}}>
+                    {/* {comment.comment + "sdafasdflisdajf\nklsdfjkls\njdfsi\nfwoie\njfwoiejf\nwoiejfiwoejf\noiwejf\noiwejfoiwejf\noiwejf\noiwjfwoiejfoiwjwoi\nejfo\niwjoijwofijwoeijwojwoijwfoijo"} */}
+                    {comment.comment}
+                </div>
+                }
                 
                 {!editable && isClamped && !isExpand && <div style={{position: 'absolute', alignSelf:'end'}}>
                     <BeautyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></BeautyButton>

@@ -49,6 +49,7 @@ import { SlArrowUp } from "react-icons/sl";
 import { MdDownloadDone } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import { MdOutlineDoneOutline } from "react-icons/md";
+import CommentLeftDiv from "./CommentLeftDiv.js";
 
 export default function({article_id}) {
     
@@ -61,8 +62,6 @@ export default function({article_id}) {
 
     const [showReplies, setShowReplies] = useState([])
         
-
-
     const refsComment = useRef({})
     
     const navigate = useNavigate()
@@ -100,11 +99,18 @@ export default function({article_id}) {
                 for(const upperComment of upperComments)
                     upperComment.replies = comments.filter(reply => reply.comment_id == upperComment.id)
             
-                setComments(upperComments)                
+                setComments(upperComments)
             })
         })
         
     }, [article_id])
+
+
+
+
+
+
+
 
 
 
@@ -350,6 +356,21 @@ export default function({article_id}) {
 
         setModifyModeCommentId(-1)
     }
+
+
+    const onClick = async(comment_id) =>{
+
+
+
+        console.log(comment_id)
+
+
+        if(!refsDiv.current)
+            return
+
+        console.log(refsDiv.current[comment_id])
+
+    }
     
 
     return comments ? (
@@ -366,7 +387,7 @@ export default function({article_id}) {
                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
                             <UserImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                            <div style={{backgroundColor:'yellow', flex:'1'}}/>
+                            <CommentLeftDiv/>
                         </div>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>

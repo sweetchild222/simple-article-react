@@ -159,7 +159,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 {editable && <div style={{display:'flex', flexDirection: 'row', justifyContent:'end', width:'100%', alignItems:'center'}}>
                                 <label>{inputLength}</label>
                                 <div style={{width:'10px'}}/>
-                                <BeautyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner}>{<MdOutlineDoneOutline siz={22}/>}</BeautyButton>
+                                <BeautyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} disabled={isModifyLoading} onClick={onClickModifyCompleteInner} >{<MdOutlineDoneOutline size={22}/>}</BeautyButton>                                
                                 <div style={{width:'10px'}}></div>
                                 <BeautyButton type={'transparent'} tooltip={'취소'} style={{color:'black'}} disabled={isModifyLoading} onClick={onClickModifyCancelInner} >{<MdCancel size={22}/>}</BeautyButton>
                             </div>

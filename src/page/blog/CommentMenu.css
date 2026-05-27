@@ -2,7 +2,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 50%;
+    top: calc(100% + 2px);
     background: lightgray;
     border: 1px solid #ccc;
     list-style: none;
@@ -11,6 +11,6 @@
     border-radius: 3px;
     z-index: 100;
     list-style-type: none;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding: 0px;
+    margin:0;
 }

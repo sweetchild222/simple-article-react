@@ -1,5 +1,5 @@
 
-import React, {useState, useContext, useEffect, useRef, useImperativeHandle } from "react";
+import React, {useState, useContext, useEffect, useRef, useImperativeHandle, useCallback } from "react";
 
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
 
@@ -62,10 +62,16 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
     const [seenComment, setSeenComment] = useState(null)
     const [editingComment, setEditingComment] = useState(null)
     const [modifiedComment, setModifiedComment] = useState(null)
+    const [isOpenCandidate, setIsOpenCandiate] = useState(false)
+    const [menuPosition, setMenuPosition] = useState(null)
+
+    const [focusItemIndex, setFocusItemIndex] = useState(null)
         
     const refComment = useRef(null)
+    const refUl = useRef(null)
+
     const refCommentEdit = useRef(null)
-    const maxCharLength = 1000    
+    const maxCharLength = 1000
     
     const onInput = (e) => {
                                   
@@ -98,25 +104,66 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
             return
 
         if(refCommentEdit.current){
-            
+                        
             refCommentEdit.current.focus()
             const length = comment.comment.length
             refCommentEdit.current.setSelectionRange(length, length)
             setInputLength(length + '/' + maxCharLength)
 
-
             refCommentEdit.current.addEventListener('input', (e) => {
+
                 if (e.data === '@') {
 
                     const { top, left } = getCaretCoordinates(refCommentEdit.current, refCommentEdit.current.selectionStart)
                     const rect = refCommentEdit.current.getBoundingClientRect()
-                    console.log(top, left, rect)
+                                    
+                    setMenuPosition({x:left, y:top + 30})
+                    setFocusItemIndex(0)
                 }
             })
-
         }
         
     }, [editable])
+
+
+
+    useEffect(()=>{
+        
+        
+
+        if(focusItemIndex == null)
+            return
+        
+        if(!refUl.current)
+            return        
+        
+        const childNodes = refUl.current.childNodes
+
+        if(focusItemIndex >= childNodes.length)
+            return
+
+        for(let i = 0; childNodes.length > i; ++i){
+
+            if(i == focusItemIndex)
+                childNodes[i].style.backgroundColor='red'
+            else
+                childNodes[i].style.backgroundColor='gray'
+        }
+
+        // console.log(childNodes.length)
+
+        // for(const i in childNodes){
+
+        //     console.log(i)
+            
+            
+        // }
+        
+        
+    }, [focusItemIndex])
+
+
+    
 
 
     useEffect(()=>{
@@ -214,24 +261,86 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
             await onClickModifyComplete(value)
             setIsModifyLoading(false)
         }
-            
     }
-
 
     const onClickModifyCancelInner = async() => {
 
         if(onClickModifyCancel)
             onClickModifyCancel()
     }
+    
+
+    const onClickUser = async(user) =>{
+
+        console.log(user.nickname)
+        setMenuPosition(null)
+    }
+
+
+    const eventKeyDown = useCallback((event) => {
+
+        if(!refUl.current)
+            return
+        
+        const maxLength = refUl.current.childNodes.length
+
+        if(event.code == 'ArrowDown'){
+            event.preventDefault()
+            setFocusItemIndex(index => (maxLength - 1) > index ? index + 1 : index)            
+        }
+        else if(event.code == 'ArrowUp'){
+            event.preventDefault()
+            setFocusItemIndex(index => index > 0 ? index - 1 : index)
+        }
+        else if(event.code == 'Escape'){
+            event.preventDefault()
+            setMenuPosition(null)
+            setFocusItemIndex(null)
+        }
+        else if(event.code == 'Enter'){
+            event.preventDefault()
+            setMenuPosition(null)
+            setFocusItemIndex(null)
+
+            if(focusItemIndex == null)
+                return
+
+            if(maxLength > focusItemIndex){
+                onClickUser(atCandidateList[focusItemIndex])
+                refCommentEdit.current.focus()
+            }
+        }
+    })
+
+
+    useEffect(() => {
+
+        window.addEventListener('keydown', eventKeyDown)
+        
+        return () => {
+            window.removeEventListener('keydown', eventKeyDown)    
+        }
+
+    }, [eventKeyDown])
+
 
 
     return seenComment ? (
-            <div style={{display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:editable ? '100%' : 'auto'}}>
+            <div style={{position:'relative', display:'flex', flexDirection: 'column', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:editable ? '100%' : 'auto'}}>
 
                 {editable && <div style={{display:'grid', gridTemplateColumns:'1fr', width:'100%'}}>
                     <textarea ref={refCommentEdit} className={'commentEdit'}  placeholder={'글을 입력하세요'} defaultValue={editingComment} suppressContentEditableWarning={true} maxLength={maxCharLength} style={{boxSizing: 'border-box', width:'100%',  minHeight: '4lh', resize:'none', maxHeight:'6lh', border:'0px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'5px', backgroundColor:'green'}} onInput={onInput}/>
-                </div>
+                </div>          
                 }
+
+                {editable && menuPosition &&
+                    <ul ref={refUl} className={'candidate'} style={{left:menuPosition.x, top:menuPosition.y}}>
+                        {atCandidateList.map((user, index) => user.nickname != '' ? 
+                            <BeautyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</BeautyButton>                                                    
+                        :null)}
+                    </ul>
+                }
+
                 {!editable && <div ref={refComment} dangerouslySetInnerHTML={{ __html: seenComment}} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue', width:'auto', padding:'5px'}}>
                     {/* {comment.comment + "sdafasdflisdajf\nklsdfjkls\njdfsi\nfwoie\njfwoiejf\nwoiejfiwoejf\noiwejf\noiwejfoiwejf\noiwejf\noiwjfwoiejfoiwjwoi\nejfo\niwjoijwofijwoeijwojwoijwfoijo"} */}
                     {/* {comment.comment} */}

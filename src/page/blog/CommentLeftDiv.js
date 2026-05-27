@@ -57,13 +57,10 @@ const useResize = (ref) => {
     
     useLayoutEffect(() => {
         
-        if (!ref.current)            
+        if (!ref.current)
             return
         
         const observer = new ResizeObserver((entries) => {
-
-
-            console.log(Date.now())
 
             for (let entry of entries) {
                 setSize({width: entry.contentRect.width, height: entry.contentRect.height})

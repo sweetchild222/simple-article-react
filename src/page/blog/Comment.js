@@ -90,20 +90,6 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
 
 
-    function getCaretCoordinates() {
-  const selection = window.getSelection();
-  if (selection.rangeCount === 0) return null;
-
-  const range = selection.getRangeAt(0).cloneRange();
-  // Ensure we get the point even if no text is selected
-  range.collapse(true); 
-  
-  const rect = range.getClientRects()[0];
-  if (rect) {
-    return { x: rect.left, y: rect.top };
-  }
-  return null;
-}
 
 
     useEffect(()=>{
@@ -121,15 +107,10 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
             refCommentEdit.current.addEventListener('input', (e) => {
                 if (e.data === '@') {
-                    const { top, left } = getCaretCoordinates(refCommentEdit.current, refCommentEdit.current.selectionStart);
-        
-                    // Position menu relative to textarea
-                    const rect = textarea.getBoundingClientRect();
 
+                    const { top, left } = getCaretCoordinates(refCommentEdit.current, refCommentEdit.current.selectionStart)
+                    const rect = refCommentEdit.current.getBoundingClientRect()
                     console.log(top, left, rect)
-                    //menu.style.display = 'block';
-                    //menu.style.top = `${rect.top + window.scrollY + top}px`;
-                    //menu.style.left = `${rect.left + window.scrollX + left}px`;
                 }
             })
 

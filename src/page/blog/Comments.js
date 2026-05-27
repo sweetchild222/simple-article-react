@@ -62,8 +62,10 @@ export default function({article_id}) {
 
     const [showReplies, setShowReplies] = useState([])
         
-    const refsComment = useRef({})    
+    const refsComment = useRef({})
     const navigate = useNavigate()
+
+    const [atCandidateList, setAtCandidateList] = useState([])
 
     useEffect(()=>{
 
@@ -84,6 +86,8 @@ export default function({article_id}) {
                     window.showToast('사용자 목록을 가져 올 수 없습니다', 'error')
                     return
                 }
+                
+                setAtCandidateList(resUsers)
                 
                 comments.forEach((item, index) =>{
 
@@ -182,14 +186,14 @@ export default function({article_id}) {
     }
 
 
-    const onPostComment = async(text) =>{
+    const onPostComment = async(comment) =>{
 
         if(!validAuth(auth))
             return false
         
         const payload = {
 
-            comment:text,
+            comment:comment,
             article_id:article_id,
             user_id:auth.user_id,
             comment_id:null
@@ -207,8 +211,11 @@ export default function({article_id}) {
         const user = await UserRepository.getByID(auth.user_id)
 
         comments.unshift({id:res.id, replies:[], update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
-        setComments(structuredClone(comments))
+        setComments(structuredClone(comments))        
         setIsOpenCommentEdit(false)
+
+        if(user && !atCandidateList.find(item => item.id == user.id))
+            setAtCandidateList([...atCandidateList, user])
 
         return true
     }
@@ -228,7 +235,7 @@ export default function({article_id}) {
     }
 
 
-    const onPostReply = async(text)=>{
+    const onPostReply = async(comment)=>{
 
         if(!validAuth(auth))
             return false
@@ -239,7 +246,7 @@ export default function({article_id}) {
             return false
 
         const payload = {
-            comment:text,
+            comment:comment,
             article_id:article_id,
             user_id:auth.user_id,
             comment_id:openReplyEditCommentId
@@ -263,6 +270,9 @@ export default function({article_id}) {
             setShowReplies([...showReplies, openReplyEditCommentId])                    
             
         setOpenReplyEditCommentId(-1)
+
+        if(user && !atCandidateList.find(item => item.id == user.id))
+            setAtCandidateList([...atCandidateList, user])
 
         return true
     }
@@ -301,7 +311,7 @@ export default function({article_id}) {
     }
 
 
-    const onClickModifyComplete = async(comment_id) => {
+    const onClickModifyComplete = async(comment_id, modifiedComment) => {
 
         const comment = findComment(comment_id)
 
@@ -310,12 +320,7 @@ export default function({article_id}) {
 
         if(!(validAuth(auth) && auth.user_id == comment.user_id))
             return false
-
-        if(!refsComment.current[comment_id])
-            return
-
-        const modifiedComment = refsComment.current[comment_id].getComment()        
-
+        
         if(modifiedComment.length == 0) {
             window.showToast('입력된 글이 없습니다', 'error')
             return
@@ -374,7 +379,7 @@ export default function({article_id}) {
                             </div>
                             
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                <Comment ref={(el) => (refsComment.current[data.id] = el)} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={()=> onClickModifyComplete(data.id)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
+                                <Comment ref={(el) => (refsComment.current[data.id] = el)} atCandidateList={atCandidateList} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
                                 <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </div>
 

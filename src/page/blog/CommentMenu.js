@@ -44,8 +44,6 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { RiArrowDownWideLine } from "react-icons/ri";
 import { HiDotsVertical } from "react-icons/hi";
 
-
-
 export default function(props) {
 
     const combinedStyle = { ...props.style }

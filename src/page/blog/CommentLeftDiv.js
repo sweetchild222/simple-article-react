@@ -58,7 +58,7 @@ const useResize = (ref) => {
     useLayoutEffect(() => {
         
         if (!ref.current)            
-            return        
+            return
         
         const observer = new ResizeObserver((entries) => {
 
@@ -147,7 +147,7 @@ export default function(props) {
 
         setContainerCanvasUrl(canvas.toDataURL())
         
-    }, [width, height])
+    }, [width, height, props.editableId])
 
 
 
@@ -176,6 +176,6 @@ export default function(props) {
 
     
     return (
-            <div ref={refDiv} style={{backgroundColor:'yellow', flex:'1', backgroundImage: `url(${containerCanvasUrl})`}}></div>
+            <div ref={refDiv} style={{backgroundColor:'yellow', flex:'1', backgroundImage: `url(${containerCanvasUrl})`}} onChange={()=>{console.log('change')}}></div>
         )
 }

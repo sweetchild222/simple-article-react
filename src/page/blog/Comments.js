@@ -280,6 +280,8 @@ export default function({article_id}) {
             setShowReplies([...showReplies, comment_id])
         else
             setShowReplies(showReplies.filter(id => id !== comment_id))
+
+        setModifyModeCommentId(-1)
     }
 
 
@@ -287,14 +289,14 @@ export default function({article_id}) {
 
         const find = showReplies.find(id => comment_id == id)
 
-        return find != null            
+        return find != null
     }
 
     
     const onModifyComment = async(comment_id) => {
 
         setModifyModeCommentId(comment_id)
-        setOpenReplyEditCommentId(-1)        
+        setOpenReplyEditCommentId(-1)   
         setIsOpenCommentEdit(false)
     }
 
@@ -349,8 +351,7 @@ export default function({article_id}) {
         setModifyModeCommentId(-1)
     }
 
-
-
+    
     return comments ? (
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', marginTop:'20px', width:'100%'}}>
             {isOpenCommentEdit && <CommentEdit onPostText={onPostComment} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
@@ -364,7 +365,7 @@ export default function({article_id}) {
                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
                             <UserImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                            <CommentLeftDiv isShowReplies={isShowReplies(data.id)}/>
+                            <CommentLeftDiv isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
                         </div>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
@@ -380,7 +381,7 @@ export default function({article_id}) {
                             {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <CommentGreat comment={data}></CommentGreat>
                                 <div style={{width:'20px'}}></div>
-                                <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical siz={22}/>}</BeautyButton>
+                                <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical size={22}/>}</BeautyButton>
                             </div>
                             }
 
@@ -396,7 +397,7 @@ export default function({article_id}) {
                                         {'답글 (' + data.replies.length + ')'}
                                     </div>
                                     <div style={{width:'10px'}}/>
-                                    {isShowReplies(data.id) ? <SlArrowUp siz={22}/> : <SlArrowDown siz={22}/>}
+                                    {isShowReplies(data.id) ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
                                 </BeautyButton>
                             }
                             

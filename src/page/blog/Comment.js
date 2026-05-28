@@ -61,10 +61,8 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
     const [inputLength, setInputLength] = useState('0/1000')
     const [seenComment, setSeenComment] = useState(null)
     const [editingComment, setEditingComment] = useState(null)
-    const [modifiedComment, setModifiedComment] = useState(null)
-    const [isOpenCandidate, setIsOpenCandiate] = useState(false)
+    const [modifiedComment, setModifiedComment] = useState(null)    
     const [menuPosition, setMenuPosition] = useState(null)
-
     const [focusItemIndex, setFocusItemIndex] = useState(null)
         
     const refComment = useRef(null)
@@ -95,9 +93,6 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
     }, [comment])
 
 
-
-
-
     useEffect(()=>{
 
         if(!editable)
@@ -125,12 +120,8 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         
     }, [editable])
 
-
-
     useEffect(()=>{
         
-        
-
         if(focusItemIndex == null)
             return
         
@@ -145,26 +136,14 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         for(let i = 0; childNodes.length > i; ++i){
 
             if(i == focusItemIndex)
-                childNodes[i].style.backgroundColor='red'
+                childNodes[i].style.backgroundColor= '#696969'
             else
-                childNodes[i].style.backgroundColor='gray'
+                childNodes[i].style.backgroundColor= '#D3D3D3'
         }
 
-        // console.log(childNodes.length)
-
-        // for(const i in childNodes){
-
-        //     console.log(i)
-            
-            
-        // }
-        
-        
     }, [focusItemIndex])
 
-
     
-
 
     useEffect(()=>{
 
@@ -271,9 +250,36 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
     
 
     const onClickUser = async(user) =>{
-
-        console.log(user.nickname)
+        
         setMenuPosition(null)
+        setFocusItemIndex(null)
+        putNickName(user.nickname)
+    }
+
+    const putNickName = (nickname)=> {
+
+        if(!refCommentEdit.current)
+            return
+
+        const value = refCommentEdit.current.value
+                
+        const lastIndex = value.lastIndexOf('@')
+
+        if(lastIndex == -1)
+            return            
+
+        const lastWord = value.substring(lastIndex + 1)
+        
+        const nickHead = nickname.substring(0, lastWord.length)
+
+        if(lastWord != nickHead)
+            return
+
+        const nickFoot = nickname.substring(lastWord.length, nickname.length)
+
+        refCommentEdit.current.value += (nickFoot + ' ')
+
+        refCommentEdit.current.focus()
     }
 
 
@@ -282,11 +288,11 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         if(!refUl.current)
             return
         
-        const maxLength = refUl.current.childNodes.length
+        const maxIndex = refUl.current.childNodes.length
 
         if(event.code == 'ArrowDown'){
             event.preventDefault()
-            setFocusItemIndex(index => (maxLength - 1) > index ? index + 1 : index)            
+            setFocusItemIndex(index => (maxIndex - 1) > index ? index + 1 : index)
         }
         else if(event.code == 'ArrowUp'){
             event.preventDefault()
@@ -298,17 +304,16 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
             setFocusItemIndex(null)
         }
         else if(event.code == 'Enter'){
-            event.preventDefault()
-            setMenuPosition(null)
-            setFocusItemIndex(null)
 
             if(focusItemIndex == null)
                 return
 
-            if(maxLength > focusItemIndex){
-                onClickUser(atCandidateList[focusItemIndex])
-                refCommentEdit.current.focus()
-            }
+            event.preventDefault()
+            setMenuPosition(null)
+            setFocusItemIndex(null)
+
+            if(maxIndex > focusItemIndex)
+                putNickName(atCandidateList[focusItemIndex].nickname)
         }
     })
 

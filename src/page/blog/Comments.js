@@ -86,8 +86,11 @@ export default function({article_id}) {
                     window.showToast('사용자 목록을 가져 올 수 없습니다', 'error')
                     return
                 }
+
+                for(let i = 0; 10 > i; i++ )
+                    resUsers.push({image:i, nickname:String(i), id:i})
                 
-                setAtCandidateList(resUsers)
+                setAtCandidateList(resUsers.filter(item=> item.nickname != ''))
                 
                 comments.forEach((item, index) =>{
 
@@ -206,15 +209,15 @@ export default function({article_id}) {
             return false
         }
 
-        window.showToast('댓글이 작성 되었습니다', 'info')                
+        window.showToast('댓글이 작성 되었습니다', 'info')
         
         const user = await UserRepository.getByID(auth.user_id)
 
         comments.unshift({id:res.id, replies:[], update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
-        setComments(structuredClone(comments))        
+        setComments(structuredClone(comments))     
         setIsOpenCommentEdit(false)
 
-        if(user && !atCandidateList.find(item => item.id == user.id))
+        if(user && user.nickname != '' && !atCandidateList.find(item => item.id == user.id))
             setAtCandidateList([...atCandidateList, user])
 
         return true
@@ -344,10 +347,10 @@ export default function({article_id}) {
     
         window.showToast('수정에 성공하였습니다', 'info')
     
-        comment.comment = modifiedComment
-        comment.update_at = Date.now()
-        setComments(structuredClone(comments))
         setModifyModeCommentId(-1)
+        comment.comment = modifiedComment
+        comment.update_at = Date.now()        
+        setComments(structuredClone(comments))
     }
 
 

@@ -66,23 +66,64 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
     const [focusItemIndex, setFocusItemIndex] = useState(null)
         
     const refComment = useRef(null)
-    const refUl = useRef(null)
+    const refMenu = useRef(null)
 
     const refCommentEdit = useRef(null)
     const maxCharLength = 1000
     
     const onInput = (e) => {
-                                  
-        setInputLength(e.nativeEvent.target.value.length + '/' + maxCharLength)
-    }
 
+        const element = e.nativeEvent.target
+
+        const value = element.value
+
+        setInputLength(value.length + '/' + maxCharLength)
+
+        if(!refMenu.current)
+            return
+        
+        const atIndex = value.lastIndexOf('@', element.selectionStart - 1)
+
+        if(atIndex == -1){
+            setFocusItemIndex(null)
+            return
+        }
+
+        const input = value.substring(atIndex + 1, element.selectionStart)
+        
+        const hasWhitespace = /\s/.test(input)
+
+        if(hasWhitespace){
+            setFocusItemIndex(null)
+            return 
+        }
+        
+        if(input == '')
+            setFocusItemIndex(null)    
+            return        
+
+        const childNodes = refMenu.current.childNodes
+
+        for(let i = 0; childNodes.length > i; ++i){
+
+            const nickName = childNodes[i].innerText
+
+            if(nickName.indexOf('@' + input) != -1){
+                setFocusItemIndex(i)
+                return
+            }
+        }
+
+        setFocusItemIndex(null)
+        setMenuPosition(null)
+    }
 
     useEffect(()=>{
 
         const rawComment = comment.comment
         const regex = /\<user\>(.*?)\<\/user\>/g
 
-        replaceAsync(rawComment, regex, toUserLink).then(replaceString =>            
+        replaceAsync(rawComment, regex, toUserLink).then(replaceString =>
             setSeenComment(DOMPurify.sanitize(replaceString))
         )
 
@@ -98,39 +139,50 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         if(!editable)
             return
 
-        if(refCommentEdit.current){
-                        
-            refCommentEdit.current.focus()
-            const length = comment.comment.length
-            refCommentEdit.current.setSelectionRange(length, length)
-            setInputLength(length + '/' + maxCharLength)
+        const element = refCommentEdit.current
 
-            refCommentEdit.current.addEventListener('input', (e) => {
+        if(!element)
+            return
+            
+        element.focus()
+        const length = comment.comment.length
+        element.setSelectionRange(length, length)
+        setInputLength(length + '/' + maxCharLength)
 
-                if (e.data === '@') {
+        element.addEventListener('input', (e) => {
+            
+            const lastChar = element.selectionStart > 1 ? element.value[element.selectionStart - 2] : ' '        
 
-                    const { top, left } = getCaretCoordinates(refCommentEdit.current, refCommentEdit.current.selectionStart)
-                    const rect = refCommentEdit.current.getBoundingClientRect()
-                                    
-                    setMenuPosition({x:left, y:top + 30})
-                    setFocusItemIndex(0)
-                }
-            })
-        }
-        
+            if (e.data === '@' && (lastChar == ' ' || lastChar == '\n' || lastChar == '\t')) {
+
+                const { top, left } = getCaretCoordinates(element, element.selectionStart)
+
+                const rect = element.getBoundingClientRect()
+
+                const menuHeight = 30 * atCandidateList.length
+
+                const topMargin = 30
+            
+                const menuBottom = rect.y + top - element.scrollTop + menuHeight + topMargin
+
+                const y = top - element.scrollTop + (menuBottom < window.innerHeight ? topMargin : -menuHeight)
+                
+                setMenuPosition({x:left, y:y})
+                setFocusItemIndex(null)
+            }
+        })
+            
     }, [editable])
 
+
     useEffect(()=>{
-        
-        if(focusItemIndex == null)
+
+        if(!refMenu.current)
             return
         
-        if(!refUl.current)
-            return        
-        
-        const childNodes = refUl.current.childNodes
+        const childNodes = refMenu.current.childNodes
 
-        if(focusItemIndex >= childNodes.length)
+        if(focusItemIndex != null && focusItemIndex >= childNodes.length)
             return
 
         for(let i = 0; childNodes.length > i; ++i){
@@ -185,10 +237,10 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
             const user = await UserRepository.getByID(id)
 
-            const host = 'http://' + window.location.host;
+            const host = 'http://' + window.location.host
 
             if(user == null)
-                return '<a href=\"' + host + '/pageNotFound' + '\">'+ '@알수없음' +'</a>'
+                return '@알수없음'
                         
             const link = '<a href=\"' + host + '/user/' + id + '\">'+ '@' + user.nickname +'</a>'
         
@@ -230,11 +282,14 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 return
                 
             let value = refCommentEdit.current.value + ' '
-
-            for(const candidate of atCandidateList)
-                value = value.replaceAll('@' + candidate.nickname + ' ', ('<user>' + candidate.id + '</user> '))
             
-            value = value.substring(0, value.length-1)
+            for(const candidate of atCandidateList){
+
+                if(candidate.nickname != '')
+                    value = value.replaceAll('@' + candidate.nickname + ' ', ('<user>' + candidate.id + '</user> '))
+            }
+            
+            value = value.substring(0, value.length - 1)
 
             setIsModifyLoading(true)
             await onClickModifyComplete(value)
@@ -252,65 +307,95 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
     const onClickUser = async(user) =>{
         
         setMenuPosition(null)
-        setFocusItemIndex(null)
+        setFocusItemIndex(null)        
         putNickName(user.nickname)
     }
 
     const putNickName = (nickname)=> {
 
-        if(!refCommentEdit.current)
+        const element = refCommentEdit.current
+
+        if(!element)
             return
 
-        const value = refCommentEdit.current.value
-                
-        const lastIndex = value.lastIndexOf('@')
+        const value = element.value
 
-        if(lastIndex == -1)
-            return            
+        const atIndex = value.lastIndexOf('@', element.selectionStart - 1)
 
-        const lastWord = value.substring(lastIndex + 1)
+        if(atIndex == -1)
+            return
+
+        const input = value.substring(atIndex + 1, element.selectionStart)
         
-        const nickHead = nickname.substring(0, lastWord.length)
+        const hasWhitespace = /\s/.test(input)
 
-        if(lastWord != nickHead)
+        if(hasWhitespace)
             return
+        
+        const nickHead = nickname.substring(0, input.length)
 
-        const nickFoot = nickname.substring(lastWord.length, nickname.length)
+        if(input == nickHead) {
+            const nickFoot = nickname.substring(input.length, nickname.length) + ' '
+            element.value = value.slice(0, element.selectionStart) + nickFoot + value.slice(element.selectionStart)            
+        }
+        else{            
+            element.value = value.slice(0, atIndex) + '@' + nickname + ' '
+        }
 
-        refCommentEdit.current.value += (nickFoot + ' ')
-
-        refCommentEdit.current.focus()
+        element.focus()
     }
 
 
     const eventKeyDown = useCallback((event) => {
 
-        if(!refUl.current)
+        if(!refMenu.current)
             return
         
-        const maxIndex = refUl.current.childNodes.length
+        const maxIndex = refMenu.current.childNodes.length
 
         if(event.code == 'ArrowDown'){
             event.preventDefault()
-            setFocusItemIndex(index => (maxIndex - 1) > index ? index + 1 : index)
+            setFocusItemIndex(index => index == null ? 0 : ((maxIndex - 1) > index ? index + 1 : index))
         }
         else if(event.code == 'ArrowUp'){
             event.preventDefault()
-            setFocusItemIndex(index => index > 0 ? index - 1 : index)
+            setFocusItemIndex(index => index == null ? (maxIndex - 1) : (index > 0 ? index - 1 : index))
         }
         else if(event.code == 'Escape'){
             event.preventDefault()
             setMenuPosition(null)
             setFocusItemIndex(null)
         }
+        else if(event.code == 'Backspace'){
+
+            const element = refCommentEdit.current
+            
+            if(!refCommentEdit.current)
+                return
+
+            const lastChar = element.value[element.selectionStart - 1]
+            
+            if(lastChar == '@'){
+                setMenuPosition(null)
+                setFocusItemIndex(null)
+            }
+        }
+        else if(event.code == 'Space' || event.code == 'Home' || event.code == 'End' || event.code == 'ArrowLeft' || event.code == 'ArrowRight'){
+
+            setMenuPosition(null)
+            setFocusItemIndex(null)
+        }
         else if(event.code == 'Enter'){
 
+            setMenuPosition(null)
+            setFocusItemIndex(null)
+            
             if(focusItemIndex == null)
                 return
 
+            console.log(focusItemIndex)
+
             event.preventDefault()
-            setMenuPosition(null)
-            setFocusItemIndex(null)
 
             if(maxIndex > focusItemIndex)
                 putNickName(atCandidateList[focusItemIndex].nickname)
@@ -335,13 +420,13 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
                 {editable && <div style={{display:'grid', gridTemplateColumns:'1fr', width:'100%'}}>
                     <textarea ref={refCommentEdit} className={'commentEdit'}  placeholder={'글을 입력하세요'} defaultValue={editingComment} suppressContentEditableWarning={true} maxLength={maxCharLength} style={{boxSizing: 'border-box', width:'100%',  minHeight: '4lh', resize:'none', maxHeight:'6lh', border:'0px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'5px', backgroundColor:'green'}} onInput={onInput}/>
-                </div>          
+                </div>
                 }
 
                 {editable && menuPosition &&
-                    <ul ref={refUl} className={'candidate'} style={{left:menuPosition.x, top:menuPosition.y}}>
+                    <ul ref={refMenu} className={'candidate'} style={{left:menuPosition.x, top:menuPosition.y}}>
                         {atCandidateList.map((user, index) => user.nickname != '' ? 
-                            <BeautyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</BeautyButton>                                                    
+                            <BeautyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%', height:'30px'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</BeautyButton>
                         :null)}
                     </ul>
                 }

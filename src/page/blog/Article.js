@@ -51,8 +51,6 @@ export default function() {
     
     const navigate = useNavigate()
 
-
-
     useEffect(()=>{
 
         ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, article_id).then((article) => {
@@ -72,15 +70,11 @@ export default function() {
                 return
             }
         
-            
+            article.showed += 1
             setArticle(article)
 
             ArticleAPI.postArticleShowed(article_id).then((showed) => {
-                
-                if(showed != null)
-                    article.showed += 1
-                
-                setArticle(structuredClone(article))
+
             })            
         })
 

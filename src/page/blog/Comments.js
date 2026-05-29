@@ -65,7 +65,7 @@ export default function({article_id}) {
     const refsComment = useRef({})
     const navigate = useNavigate()
 
-    const [atCandidateList, setAtCandidateList] = useState([])
+    const [atCandidates, setAtCandidates] = useState([])
 
     useEffect(()=>{
 
@@ -78,7 +78,7 @@ export default function({article_id}) {
             
             comments.sort((a, b) => { return b.create_at - a.create_at})
 
-            const userIDList = comments.map(item => item.user_id)
+            const userIDList = comments.map(item => item.user_id)            
         
             UserRepository.getByIDList([...new Set(userIDList)]).then((resUsers)=>{
                 
@@ -90,7 +90,7 @@ export default function({article_id}) {
                 for(let i = 0; 10 > i; i++ )
                     resUsers.push({image:i, nickname:String(i), id:i})
                 
-                setAtCandidateList(resUsers.filter(item=> item.nickname != ''))
+                setAtCandidates(resUsers.filter(item=> item.nickname != ''))
                 
                 comments.forEach((item, index) =>{
 
@@ -217,8 +217,8 @@ export default function({article_id}) {
         setComments(structuredClone(comments))     
         setIsOpenCommentEdit(false)
 
-        if(user && user.nickname != '' && !atCandidateList.find(item => item.id == user.id))
-            setAtCandidateList([...atCandidateList, user])
+        if(user && user.nickname != '' && !atCandidates.find(item => item.id == user.id))
+            setAtCandidates([...atCandidates, user])
 
         return true
     }
@@ -274,8 +274,8 @@ export default function({article_id}) {
             
         setOpenReplyEditCommentId(-1)
 
-        if(user && !atCandidateList.find(item => item.id == user.id))
-            setAtCandidateList([...atCandidateList, user])
+        if(user && !atCandidates.find(item => item.id == user.id))
+            setAtCandidates([...atCandidates, user])
 
         return true
     }
@@ -382,7 +382,7 @@ export default function({article_id}) {
                             </div>
                             
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                <Comment ref={(el) => (refsComment.current[data.id] = el)} atCandidateList={atCandidateList} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
+                                <Comment ref={(el) => (refsComment.current[data.id] = el)} atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
                                 <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </div>
 

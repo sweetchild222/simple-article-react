@@ -21,8 +21,8 @@ import { BiSolidComment } from "react-icons/bi";
 export default function({article, categoryName}) {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-            
-    const navigate = useNavigate()        
+    
+    const navigate = useNavigate()
 
     const onClickNavigateArticle = async() =>{
 

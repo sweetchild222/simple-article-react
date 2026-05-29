@@ -161,7 +161,7 @@ export default function() {
             return
         }
                             
-        const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {title:title})        
+        const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {title:title})
         
         if(res == null){
             window.showToast('블로그 제목 수정에 실패하였습니다', 'error')

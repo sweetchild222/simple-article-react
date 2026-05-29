@@ -52,7 +52,7 @@ import { MdCancel } from "react-icons/md";
 import { MdOutlineDoneOutline } from "react-icons/md";
 
 
-export default function({ref, comment, editable, onClickModifyComplete, onClickModifyCancel, atCandidateList}) {
+export default function({ref, comment, editable, onClickModifyComplete, onClickModifyCancel, atCandidates}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isClamped, setIsClamped] = useState(false)
@@ -160,7 +160,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
                 const rect = element.getBoundingClientRect()
 
-                const menuHeight = 30 * atCandidateList.length
+                const menuHeight = 30 * atCandidates.length
 
                 const topMargin = 30
             
@@ -284,7 +284,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 
             let value = refCommentEdit.current.value + ' '
             
-            for(const candidate of atCandidateList){
+            for(const candidate of atCandidates){
 
                 if(candidate.nickname != '')
                     value = value.replaceAll('@' + candidate.nickname + ' ', ('<user>' + candidate.id + '</user> '))
@@ -397,7 +397,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
             event.preventDefault()
 
             if(maxIndex > focusItemIndex)
-                putNickName(atCandidateList[focusItemIndex].nickname)
+                putNickName(atCandidates[focusItemIndex].nickname)
         }
     })
 
@@ -424,7 +424,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
                 {editable && menuPosition &&
                     <ul ref={refMenu} className={'candidate'} style={{left:menuPosition.x, top:menuPosition.y}}>
-                        {atCandidateList.map((user, index) => user.nickname != '' ? 
+                        {atCandidates.map((user, index) => user.nickname != '' ? 
                             <BeautyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%', height:'30px'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</BeautyButton>
                         :null)}
                     </ul>

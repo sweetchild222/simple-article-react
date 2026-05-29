@@ -27,7 +27,7 @@ export default function() {
 
   const { b_id } = useParams()
   
-  const blog_id = ToInteger(b_id)  
+  const blog_id = ToInteger(b_id)
 
   const navigate = useNavigate()
   
@@ -121,7 +121,7 @@ export default function() {
     if(articles != null)
       setArticles(articles)
 
-    setIsOverlayLoading(false)    
+    setIsOverlayLoading(false)
   }
 
   

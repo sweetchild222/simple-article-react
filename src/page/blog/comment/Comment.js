@@ -2,12 +2,14 @@ import {useState, useEffect, useRef} from "react";
 
 import BeautyButton from "../../../common/BeautyButton.js";
 
-import * as UserRepository from "./UserRepository.js";
+import * as AtCandidateRepository from "./AtCandidateRepository.js";
 import getCaretCoordinates from 'textarea-caret';
 import DOMPurify from 'dompurify';
 import TextArea from "./TextArea.js";
 
 import { RiArrowDownWideLine } from "react-icons/ri";
+import { MdOutlineDoneOutline } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
 import './Comment.css'
 
 
@@ -97,7 +99,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
             const id = match[1]
 
-            const user = await UserRepository.getByID(id)
+            const user = await AtCandidateRepository.getByID(id)
 
             const host = 'http://' + window.location.host
 
@@ -124,7 +126,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
             const id = match[1]
 
-            const user = await UserRepository.getByID(id)
+            const user = await AtCandidateRepository.getByID(id)
 
             if(user == null)
                 return '@알수없음 '

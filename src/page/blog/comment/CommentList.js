@@ -13,7 +13,7 @@ import ReplyLine from "./ReplyLine.js";
 import Comment  from "./Comment.js";
 import Writer from "./Writer.js";
 import ControlMenu from "./ControlMenu.js";
-import * as UserRepository from "./UserRepository.js";
+import * as UserRepository from "./AtCandidateRepository.js";
 
 import { FaCommentMedical } from "react-icons/fa6";
 import { SlArrowDown } from "react-icons/sl";

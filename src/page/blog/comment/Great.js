@@ -177,7 +177,7 @@ export default function(props) {
     }
 
     return (
-        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start', backgroundColor:'red'}}>
+        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
             <BeautyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                 <MdThumbUpAlt size={22}/>
                 <div style={{width:'10px'}}/>

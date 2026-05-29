@@ -386,7 +386,7 @@ export default function({article_id}) {
                                 <div key={reply.id} id={'replyDiv'} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
                                         <UserImage id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
-                                        <div style={{backgroundColor:'yellow', flex:'1'}}/>
+                                        <div style={{flex:'1'}}/>
                                     </div>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>

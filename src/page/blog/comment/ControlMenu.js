@@ -56,7 +56,7 @@ export default function(props) {
     }
     
         
-    return (<div style={{position:'relative', display:'inline-block', backgroundColor:'red', ...combinedStyle}}>
+    return (<div style={{position:'relative', display:'inline-block', ...combinedStyle}}>
                 <BeautyButton ref={refButton} type={'transparent'} isLoading={props.isLoading} style={{color:'black', margin: '0 auto'}} onClick={()=> setIsOpenMenu(value => !value)}><HiDotsVertical size={22}/></BeautyButton>
                 {isOpenMenu && <ul ref={refMenu} className={'popupList'} style={{width:'60px'}}>
                     <BeautyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black', width:'100%', height:'50px'}} onClick={onClickEdit}>수정</BeautyButton>

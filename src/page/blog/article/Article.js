@@ -14,6 +14,8 @@ import ToInteger from "../../../util/ToInteger.js";
 import TimestampToString from "../../../util/TimestampToString.js";
 import CountWithUnit from "../../../util/CountWithUnit.js";
 
+import Great from "./Great.js"
+
 import CommentList from "./comment/CommentList.js"
 import OverlayLoading from "../../../common/OverlayLoading.js";
 import MarkdownToHtml from '../../../util/MarkdownToHtml.js'
@@ -32,8 +34,7 @@ export default function() {
     const article_id = ToInteger(a_id)
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [article, setArticle] = useState(null)
-    const [isGreatLoading, setIsGreatLoading] = useState(false)
+    const [article, setArticle] = useState(null)    
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
     
     const navigate = useNavigate()
@@ -60,13 +61,10 @@ export default function() {
             article.showed += 1
             setArticle(article)
 
-            ArticleAPI.postArticleShowed(article_id).then((showed) => {
-
-            })            
+            ArticleAPI.postArticleShowed(article_id)
         })
 
     }, [auth, blog_id, article_id])
-
 
     const isEditable = ()=> {
     
@@ -74,7 +72,7 @@ export default function() {
     }
 
 
-    const onCLickEdit = async() => {
+    const onClickEdit = async() => {
         
         if(!isEditable())
             return 
@@ -123,7 +121,7 @@ export default function() {
         }    
     }
 
-    const onCLickDelete = async() => {
+    const onClickDelete = async() => {
 
         setIsConfirmDeleteModalOpen(true)
     }
@@ -150,195 +148,21 @@ export default function() {
     }
 
 
-    const postGreat = async(jwt, user_id, article_id, like) =>{
-
-        const payload = {
-            user_id:auth.user_id,
-            article_id:article_id,
-            great:like
-        }
-
-        setIsGreatLoading(true)
-
-        const res = await ArticleGreatAPI.postArticleGreat(auth.jwt, payload)
-
-        setIsGreatLoading(false)
-
-        if(res == null)
-            return null
-
-        return res
-    }
-
-
-    const getGreat = async(user_id, article_id) =>{
-
-        setIsGreatLoading(true)
-
-        const query = 'user_id=' + user_id + '&article_id=' + article_id
-
-        const resGreat = await ArticleGreatAPI.getArticleGreat(query)
-
-        setIsGreatLoading(false)
-
-        if(resGreat == null)
-            return null
-
-        return resGreat
-    }
-
-
-    const deleteGreat = async(jwt, id) =>{
-
-        setIsGreatLoading(true)
-
-        const res = await ArticleGreatAPI.deleteArticleGreat(auth.jwt, id)
-
-        setIsGreatLoading(false)
-
-        return res
-    }
-
-
-    const patchGreat = async(jwt, id, great) =>{
-
-        const payload = {
-            great:great
-        }
-
-        setIsGreatLoading(true)
-
-        const res = await ArticleGreatAPI.patchArticleGreat(auth.jwt, id, payload)
-
-        setIsGreatLoading(false)
-
-        return res
-
-    }
-
-
-    const updateGreat = async(great) =>{
-
-        if(!validAuth(auth))
-            return false
-        
-        const resGreat = await getGreat(auth.user_id, article_id)
-
-        if(resGreat == null)
-            return false        
-
-        if(resGreat.length > 0){            
-
-            if(resGreat[0].great != great) {
-                
-                const res = await patchGreat(auth.jwt, resGreat[0].id, great)
-
-                if(res == null){
-                    window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경에 실패 하였습니다', 'error')
-                    return false
-                }
-
-                if(great == 1){
-                    article.like_count += 1
-                    article.dislike_count -= 1
-                }
-                else if(great == -1){
-                    article.like_count -= 1
-                    article.dislike_count += 1
-                }
-                else 
-                    return false
-
-                window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경 하였습니다', 'info')
-                setArticle(structuredClone(article))
-
-                return true
-
-            }else {
-
-                const res = await deleteGreat(auth.jwt, resGreat[0].id)
-
-                if(res == null){
-                    window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 실패 하였습니다', 'error')
-                    return false
-                }
-
-                if(great == 1)
-                    article.like_count -= 1
-                else if(great == -1)
-                    article.dislike_count -= 1
-                else 
-                    return false
-
-                window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 성공 하였습니다', 'info')
-                setArticle(structuredClone(article))
-
-                return true
-            }
-        }
-        else{
-            
-            const res = await postGreat(auth.jwt, auth.user_id, article_id, great)
-
-            if(!res){
-                window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 실패 하였습니다', 'error')
-                return false
-            }
-            
-            if(great == 1)
-                article.like_count += 1
-            else if(great == -1)
-                article.dislike_count += 1
-            else
-                return false
-
-            setArticle(structuredClone(article))
-            window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 성공 하였습니다', 'info')
-            
-            return true
-        }
-    }
-
-
-
-    const onClickLike = async() =>{
-
-        const success = await updateGreat(1)
-
-        console.log(success)
-        
-    }
-
-
-    const onClickDislike = async() =>{
-
-        const success = await updateGreat(-1)
-
-        console.log(success)
-    }
 
     return article ? (<div style={{display:'flex', flexDirection: 'row', justifyContent:'center', marginTop:'20px'}}>
         <div style={{width:'2px', marginRight:'20px'}}/>
             <div style={{display:'flex', flexDirection: 'column', alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
                 <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
                 <div style={{height:'30px', display:'flex', flexDirection: 'row', width:'100%'}}>
-                    {isEditable() && <BeautyButton onClick={onCLickEdit}>{'수정'}</BeautyButton>}
-                    {isEditable() && <BeautyButton onClick={onCLickDelete}>{'삭제'}</BeautyButton>}
+                    {isEditable() && <BeautyButton onClick={onClickEdit}>{'수정'}</BeautyButton>}
+                    {isEditable() && <BeautyButton onClick={onClickDelete}>{'삭제'}</BeautyButton>}
                     {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
                     <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? TimestampToString(article.post_at) : ''}</div>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <TiEye size={22}/>
                         <div>{CountWithUnit(article.showed)}</div>
                     </div>
-                    <BeautyButton isLoading={isGreatLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickLike}>
-                        <MdThumbUpAlt size={22}/>
-                        <div>{CountWithUnit(article.like_count)}</div>
-                    </BeautyButton>
-
-                    <BeautyButton isLoading={isGreatLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickDislike}>
-                        <MdThumbDownAlt size={22}/>
-                        <div>{CountWithUnit(article.dislike_count)}</div>
-                    </BeautyButton>
+                    <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
                 </div>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 <div style={{height:'30px'}}></div>

@@ -360,7 +360,7 @@ export default function({article_id}) {
                             </div>
 
                             {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                <Great comment={data}></Great>
+                                <Great comment_id={data.id} like_count={data.like_count} dislike_count={data.dislike_count}></Great>                                
                                 <div style={{width:'20px'}}></div>
                                 <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical size={22}/>}</BeautyButton>
                             </div>
@@ -399,7 +399,7 @@ export default function({article_id}) {
                                             <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
                                         </div>                                        
                                         {!(modifyModeCommentId == reply.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                            <Great comment={reply}></Great>
+                                            <Great comment_id={reply.id} like_count={reply.like_count} dislike_count={reply.dislike_count}></Great>
                                         </div>
                                         }
                                     </div>

@@ -30,7 +30,6 @@ import * as CommentAPI from '../../../api/CommentAPI.js'
 import UserImage from "../../../common/UserImage.js";
 import * as UserRepository from "./UserRepository.js";
 
-import './Comments.css'
 
 import Comment  from "./Comment.js";
 import CommentEdit from "./CommentEdit.js";
@@ -146,7 +145,6 @@ export default function({article_id}) {
             if(reply)
                 return reply
         }
-        
     }
 
 

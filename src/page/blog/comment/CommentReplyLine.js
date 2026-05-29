@@ -22,7 +22,6 @@ import { FaCommentMedical } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 
-import './Comments.css'
 
 import Comment  from "./Comment.js";
 import CommentEdit from "./CommentEdit.js";

@@ -11,7 +11,7 @@ import { MdEdit } from "react-icons/md";
 import CommentArea from "./CommentArea.js";
 import BeautyButton from "../../../common/BeautyButton.js";
 
-import './Comments.css'
+
 import './Comment.css'
 import { FaEye } from "react-icons/fa";
 import { TiEye } from "react-icons/ti";

@@ -24,7 +24,7 @@ import OverlayLoading from "../../../common/OverlayLoading.js";
 import * as CommentAPI from '../../../api/CommentAPI.js'
 import UserImage from "../../../common/UserImage.js";
 
-import './Comments.css'
+
 import './CommentMenu.css'
 
 

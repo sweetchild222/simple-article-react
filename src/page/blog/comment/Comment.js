@@ -24,7 +24,7 @@ import { MdEdit } from "react-icons/md";
 import * as CommentAPI from '../../../api/CommentAPI.js'
 
 
-import './Comments.css'
+
 import './Comment.css'
 
 import getCaretCoordinates from 'textarea-caret';

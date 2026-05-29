@@ -37,5 +37,3 @@ export const getByID = async(userId) => {
 
     return repository.find(item => item.id == userId)
 }
-
-

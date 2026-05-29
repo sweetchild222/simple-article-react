@@ -289,7 +289,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
     return (
             <div style={{width:'100%'}}>
                 {<div style={{display:'grid', gridTemplateColumns:'1fr', width:'100%'}}>
-                    <textarea ref={refCommentEdit} className={'commentEdit'}  placeholder={'글을 입력하세요'} defaultValue={comment} suppressContentEditableWarning={true} maxLength={maxCharLength}
+                    <textarea ref={refCommentEdit} className={'area'}  placeholder={'글을 입력하세요'} defaultValue={comment} suppressContentEditableWarning={true} maxLength={maxCharLength}
                     style={{width:'100%',  minHeight: '4lh', maxHeight:'6lh', resize:'none',  border:'0px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'5px', backgroundColor:'green'}} onInput={onInputInner}/>
                 </div>
                 }

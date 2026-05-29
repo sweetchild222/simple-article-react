@@ -188,6 +188,11 @@ export default function({article_id}) {
 
         if(!validAuth(auth))
             return false
+
+        if(comment.length == 0) {
+            window.showToast('입력된 글이 없습니다', 'error')
+            return false
+        }
         
         const payload = {
 
@@ -237,6 +242,11 @@ export default function({article_id}) {
 
         if(!validAuth(auth))
             return false
+
+        if(comment.length == 0) {
+            window.showToast('입력된 글이 없습니다', 'error')
+            return false
+        }
 
         const findComment = comments.find(comment => comment.id == openReplyEditCommentId)
 

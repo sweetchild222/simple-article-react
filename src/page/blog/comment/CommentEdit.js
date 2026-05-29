@@ -20,6 +20,9 @@ import { BiSolidComment } from "react-icons/bi";
 
 export default function(props) {    
 
+
+    const atCandidates = props.atCandidates
+
     const combinedStyle = { ...props.style }
 
     const [isPostLoading, setIsPostLoading] = useState(false)
@@ -34,17 +37,21 @@ export default function(props) {
         if(!refArea.current)
             return
 
-        const comment = refArea.current.value()
+        let value = refArea.current.value()
 
-        if(comment.length == 0)
-            return
+        for(const candidate of atCandidates){
+
+            if(candidate.nickname != '')
+                value = value.replaceAll('@' + candidate.nickname + ' ', ('<user>' + candidate.id + '</user>'))
+        }
 
         if(props.onPostText){
             setIsPostLoading(true)
-            props.onPostText(comment)
+            props.onPostText(value)
             setIsPostLoading(false)
         }
     }
+
 
     const onInput = async(value) =>{
 
@@ -59,7 +66,7 @@ export default function(props) {
     }
 
     return  (<div style={{position:'relative', display:'flex', flexDirection: 'column', justifyContent:'end', width:'100%', backgroundColor:'lightgreen'}}>
-                <CommentArea ref={refArea} atCandidates={props.atCandidates} onInput={onInput} maxCharLength={maxCharLength}></CommentArea>
+                <CommentArea ref={refArea} atCandidates={atCandidates} onInput={onInput} maxCharLength={maxCharLength}></CommentArea>
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'10px'}}/>

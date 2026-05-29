@@ -119,7 +119,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
         
         element.addEventListener('input', (e) => {
             
-            const lastChar = element.selectionStart > 1 ? element.value[element.selectionStart - 2] : ' '            
+            const lastChar = element.selectionStart > 1 ? element.value[element.selectionStart - 2] : ' '
 
             if (e.data === '@' && (lastChar == ' ' || lastChar == '\n' || lastChar == '\t')) {
 
@@ -134,8 +134,6 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
                 const menuBottom = rect.y + top - element.scrollTop + menuHeight + topMargin
 
                 const y = top - element.scrollTop + (menuBottom < window.innerHeight ? topMargin : -menuHeight)
-
-                console.log(left, y)
                 
                 setMenuPosition({x:left, y:y})
                 setFocusItemIndex(null)
@@ -158,7 +156,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
             return
 
         for(let i = 0; childNodes.length > i; ++i)
-            childNodes[i].style.backgroundColor = i == focusItemIndex ? '#696969' : '#D3D3D3'                
+            childNodes[i].style.backgroundColor = i == focusItemIndex ? '#696969' : '#D3D3D3'
 
     }, [focusItemIndex])
     

@@ -17,8 +17,7 @@ import ToInteger from "../../util/ToInteger.js";
 import TimestampToString from "../../util/TimestampToString.js";
 import CountWithUnit from "../../util/CountWithUnit.js";
 
-import Comments from "./Comments.js"
-
+import Comments from "./comment/Comments.js"
 
 import ArticleItem from "./ArticleItem.js";
 import { FaCheck } from "react-icons/fa";

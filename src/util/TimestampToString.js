@@ -25,7 +25,7 @@ export default function(timestamp){
     const dayBefore = calcDayBefore(date, current)
 
     if(dayBefore == 0)
-        return '오늘'        
+        return '오늘'
     else if(dayBefore == 1)
         return '어제'
         

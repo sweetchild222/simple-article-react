@@ -1,28 +1,14 @@
+import {useState, useContext} from "react";
+import {useNavigate} from 'react-router-dom';
 
-import {useState, useContext, useEffect, useRef} from "react";
-
-import {useNavigate, useParams} from 'react-router-dom';
-
-import * as ArticleAPI from '../../../api/ArticleAPI.js'
 import * as ArticleGreatAPI from '../../../api/ArticleGreatAPI.js'
 
 import AuthContext from "../../../util/AuthContext.js";
-import LoadingImage from "../../../common/LoadingImage.js";
-import Modal from "../../../common/Modal.js";
 import BeautyButton from "../../../common/BeautyButton.js";
-import ToInteger from "../../../util/ToInteger.js";
-import TimestampToString from "../../../util/TimestampToString.js";
 import CountWithUnit from "../../../util/CountWithUnit.js";
 
-import CommentList from "./comment/CommentList.js"
-import OverlayLoading from "../../../common/OverlayLoading.js";
-import MarkdownToHtml from '../../../util/MarkdownToHtml.js'
-
-import { FaEye } from "react-icons/fa";
-import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { MdThumbDownAlt } from "react-icons/md";
-import { BiSolidComment } from "react-icons/bi";
 
 export default function({article_id, like_count, dislike_count}) {
 
@@ -31,7 +17,7 @@ export default function({article_id, like_count, dislike_count}) {
     
     const [likeCount, setLikeCount] = useState(like_count)
     const [dislikeCount, setDislikeCount] = useState(dislike_count)
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     
     const navigate = useNavigate()
 

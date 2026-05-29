@@ -17,7 +17,6 @@ export default function(props) {
     const refMenu = useRef(null)
     const refButton = useRef(null)
 
-
     useEffect(()=>{
 
         if(!isOpenMenu)

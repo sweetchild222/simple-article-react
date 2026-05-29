@@ -1,30 +1,9 @@
-
-import React, {useState, useContext, useEffect, useRef, useImperativeHandle, useCallback } from "react";
-
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
-
-
-
-import DOMPurify from 'dompurify';
-
-import './CommentArea.css'
+import {useState, useContext, useEffect, useRef, useImperativeHandle, useCallback} from "react";
 
 import getCaretCoordinates from 'textarea-caret';
-
 import BeautyButton from "../../../common/BeautyButton.js";
 
-import { FaEye } from "react-icons/fa";
-import { TiEye } from "react-icons/ti";
-import { MdThumbUpAlt } from "react-icons/md";
-import { BiSolidComment } from "react-icons/bi";
-import { MdThumbDownAlt } from "react-icons/md";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import { RiArrowDownWideLine } from "react-icons/ri";
-import { HiDotsVertical } from "react-icons/hi";
-import { MdDownloadDone } from "react-icons/md";
-import { MdCancel } from "react-icons/md";
-import { MdOutlineDoneOutline } from "react-icons/md";
-
+import './TextArea.css'
 
 export default function({ref, comment, atCandidates, onInput, maxCharLength = 1000}) {
         
@@ -32,7 +11,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
     const [focusItemIndex, setFocusItemIndex] = useState(null)
     
     const refMenu = useRef(null)
-    const refCommentEdit = useRef(null)    
+    const refTextArea = useRef(null)    
     
     const onInputInner = (e) => {
 
@@ -108,7 +87,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
 
     useEffect(()=>{
 
-        const element = refCommentEdit.current
+        const element = refTextArea.current
 
         if(!element)
             return
@@ -166,13 +145,13 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
         return {
             value() {
 
-                if(!refCommentEdit.current)
+                if(!refTextArea.current)
                     return null
 
-                return refCommentEdit.current.value
+                return refTextArea.current.value
             }
         }
-    }, [refCommentEdit])
+    }, [refTextArea])
         
 
     const onClickUser = async(user) =>{
@@ -185,7 +164,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
 
     const putNickName = (nickname)=> {
 
-        const element = refCommentEdit.current
+        const element = refTextArea.current
 
         if(!element)
             return
@@ -240,9 +219,9 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
         }
         else if(event.code == 'Backspace'){
 
-            const element = refCommentEdit.current
+            const element = refTextArea.current
             
-            if(!refCommentEdit.current)
+            if(!refTextArea.current)
                 return
 
             const lastChar = element.value[element.selectionStart - 1]
@@ -287,13 +266,13 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
     return (
             <div style={{width:'100%'}}>
                 {<div style={{display:'grid', gridTemplateColumns:'1fr', width:'100%'}}>
-                    <textarea ref={refCommentEdit} className={'area'}  placeholder={'글을 입력하세요'} defaultValue={comment} suppressContentEditableWarning={true} maxLength={maxCharLength}
+                    <textarea ref={refTextArea} className={'area'}  placeholder={'글을 입력하세요'} defaultValue={comment} suppressContentEditableWarning={true} maxLength={maxCharLength}
                     style={{width:'100%',  minHeight: '4lh', maxHeight:'6lh', resize:'none',  border:'0px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'5px', backgroundColor:'green'}} onInput={onInputInner}/>
                 </div>
                 }
 
                 {menuPosition &&
-                    <ul ref={refMenu} className={'candidate'} style={{left:menuPosition.x, top:menuPosition.y}}>
+                    <ul ref={refMenu} className={'atCandidates'} style={{left:menuPosition.x, top:menuPosition.y}}>
                         {atCandidates.map((user, index) =>
 
                             user.nickname != '' ? 

@@ -1,67 +1,36 @@
-
-import React, {useState, useContext, useEffect, useRef } from "react";
-
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
-
-
-import * as BlobAPI from '../../../api/BlobAPI.js'
-import * as BlogAPI from '../../../api/BlogAPI.js'
-import * as UserAPI from '../../../api/UserAPI.js'
-import * as ArticleAPI from '../../../api/ArticleAPI.js'
+import {useState, useContext, useEffect, } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import AuthContext from "../../../util/AuthContext.js";
 import TimestampToString from "../../../util/TimestampToString.js";
-
-import LoadingImage from "../../../common/LoadingImage.js";
-import Modal from "../../../common/Modal.js";
 import BeautyButton from "../../../common/BeautyButton.js";
-import ToInteger from "../../../util/ToInteger.js";
-import CountWithUnit from "../../../util/CountWithUnit.js";
-import CommentGreat from "./CommentGreat.js";
-import { HiDotsVertical } from "react-icons/hi";
-import { FaCommentMedical } from "react-icons/fa6";
-
-import CommentArea from "./CommentArea.js";
-import { FaCheck } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
-
+import UserImage from "../../../common/UserImage.js";
 
 import * as CommentAPI from '../../../api/CommentAPI.js'
-import UserImage from "../../../common/UserImage.js";
+
+import Great from "./Great.js";
+import ReplyLine from "./ReplyLine.js";
+import Comment  from "./Comment.js";
+import Writer from "./Writer.js";
+import ControlMenu from "./ControlMenu.js";
 import * as UserRepository from "./UserRepository.js";
 
-
-import Comment  from "./Comment.js";
-import CommentEdit from "./CommentEdit.js";
-import CommentMenu from "./CommentMenu.js";
-
-
-import { FaEye } from "react-icons/fa";
-import { TiEye } from "react-icons/ti";
-import { MdThumbUpAlt } from "react-icons/md";
-import { BiSolidComment } from "react-icons/bi";
+import { FaCommentMedical } from "react-icons/fa6";
 import { SlArrowDown } from "react-icons/sl";
 import { SlArrowUp } from "react-icons/sl";
-import { MdDownloadDone } from "react-icons/md";
-import { MdCancel } from "react-icons/md";
-import { MdOutlineDoneOutline } from "react-icons/md";
-import CommentReplyLine from "./CommentReplyLine.js";
+
 
 export default function({article_id}) {
-    
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
-    const [comments, setComments] = useState(null)    
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const [comments, setComments] = useState(null)
     const [openReplyEditCommentId, setOpenReplyEditCommentId] = useState(-1)
     const [isOpenCommentEdit, setIsOpenCommentEdit] = useState(false)
     const [modifyModeCommentId, setModifyModeCommentId] = useState(-1)
-
-    const [showReplies, setShowReplies] = useState([])
-        
-    const refsComment = useRef({})
-    const navigate = useNavigate()
-
     const [atCandidates, setAtCandidates] = useState([])
+    const [showReplies, setShowReplies] = useState([])
+            
+    const navigate = useNavigate()
 
     useEffect(()=>{
 
@@ -136,19 +105,20 @@ export default function({article_id}) {
         const comment = comments.find(item => item.id == comment_id)
         
         if(comment)
-            return comment            
+            return comment
         
-        for(
-            const comment of comments){
+        for(const comment of comments){
             const reply = comment.replies.find(replyItem => replyItem.id == comment_id)
 
             if(reply)
                 return reply
         }
+
+        return null
     }
 
 
-    const onRemoveComment = async(comment_id) => {        
+    const onRemoveComment = async(comment_id) => {
 
         if(await removeComment(comment_id))
             setComments(structuredClone(comments.filter(item => item.id != comment_id)))
@@ -367,7 +337,7 @@ export default function({article_id}) {
     
     return comments ? (
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', marginTop:'20px', width:'100%'}}>
-            {isOpenCommentEdit && <CommentEdit onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
+            {isOpenCommentEdit && <Writer onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
                 <label>{'댓글 (' + comments.length + ')'}</label>
                 {!isOpenCommentEdit && <BeautyButton type={'success'} onClick={onOpenCommentEdit}>{'댓글 작성'}</BeautyButton>}
@@ -378,7 +348,7 @@ export default function({article_id}) {
                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
                             <UserImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                            <CommentReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
+                            <ReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
                         </div>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
@@ -387,12 +357,12 @@ export default function({article_id}) {
                             </div>
                             
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                <Comment ref={(el) => (refsComment.current[data.id] = el)} atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
-                                <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
+                                <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
+                                <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </div>
 
                             {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                <CommentGreat comment={data}></CommentGreat>
+                                <Great comment={data}></Great>
                                 <div style={{width:'20px'}}></div>
                                 <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical size={22}/>}</BeautyButton>
                             </div>
@@ -400,7 +370,7 @@ export default function({article_id}) {
 
                             {data.id == openReplyEditCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
-                                <CommentEdit onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
+                                <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
                             </div>
                             }
 
@@ -427,11 +397,11 @@ export default function({article_id}) {
                                         </div>
 
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment ref={(el) => (refsComment.current[reply.id] = el)} key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)}/>
-                                            <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
+                                            <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)}/>
+                                            <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
                                         </div>                                        
                                         {!(modifyModeCommentId == reply.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                            <CommentGreat comment={reply}></CommentGreat>
+                                            <Great comment={reply}></Great>
                                         </div>
                                         }
                                     </div>
@@ -440,7 +410,7 @@ export default function({article_id}) {
                         </div>
                     </div>
                 </div>
-            )}                
+            )}
             </div>
         
         ) : null

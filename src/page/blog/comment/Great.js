@@ -1,46 +1,24 @@
-
-import React, {useState, useContext, useEffect, useRef } from "react";
-
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
-
-
-import * as BlobAPI from '../../../api/BlobAPI.js'
-import * as BlogAPI from '../../../api/BlogAPI.js'
-import * as ArticleAPI from '../../../api/ArticleAPI.js'
-import * as CommentGreatAPI from '../../../api/CommentGreatAPI.js'
+import {useState, useContext} from "react";
+import {useNavigate} from 'react-router-dom';
 
 import AuthContext from "../../../util/AuthContext.js";
-import LoadingImage from "../../../common/LoadingImage.js";
-import Modal from "../../../common/Modal.js";
 import BeautyButton from "../../../common/BeautyButton.js";
-import ToInteger from "../../../util/ToInteger.js";
 import CountWithUnit from "../../../util/CountWithUnit.js";
 
-
-import { FaCheck } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
-import CategoryModal from '../../../common/CategoryModal.js'
-import OverlayLoading from "../../../common/OverlayLoading.js";
-import * as CommentAPI from '../../../api/CommentAPI.js'
-import UserImage from "../../../common/UserImage.js";
-
-
-
-import { FaEye } from "react-icons/fa";
-import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
-import { BiSolidComment } from "react-icons/bi";
 import { MdThumbDownAlt } from "react-icons/md";
 
-export default function(props) {
+import * as CommentGreatAPI from '../../../api/CommentGreatAPI.js'
 
-    const navigate = useNavigate()
+export default function(props) {
+    
     const [isLikeLoading, setIsLikeLoading] = useState(false)
     const [isDislikeLoading, setIsDislikeLoading] = useState(false)
 
     const [comment, setComment] = useState(props.comment)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
 
+    const navigate = useNavigate()
     
     const postGreat = async(jwt, user_id, comment_id, like) =>{
 
@@ -50,7 +28,7 @@ export default function(props) {
             great:like
         }
         
-        const res = await CommentGreatAPI.postCommentGreat(auth.jwt, payload)        
+        const res = await CommentGreatAPI.postCommentGreat(auth.jwt, payload)
 
         if(res == null)
             return null
@@ -63,7 +41,7 @@ export default function(props) {
 
         const query = 'user_id=' + user_id + '&comment_id=' + comment_id
 
-        const resGreat = await CommentGreatAPI.getCommentGreat(query)        
+        const resGreat = await CommentGreatAPI.getCommentGreat(query)
 
         if(resGreat == null)
             return null
@@ -72,7 +50,7 @@ export default function(props) {
     }
 
 
-    const deleteGreat = async(jwt, id) =>{        
+    const deleteGreat = async(jwt, id) =>{
 
         const res = await CommentGreatAPI.deleteCommentGreat(auth.jwt, id)
 
@@ -206,7 +184,7 @@ export default function(props) {
                 <div>{CountWithUnit(comment.like_count)}</div>
             </BeautyButton>
             <div style={{width:'20px'}}></div>
-            <BeautyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>                
+            <BeautyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
                 <MdThumbDownAlt size={22}/>
                 <div style={{width:'10px'}}/>
                 <div>{CountWithUnit(comment.dislike_count)}</div>

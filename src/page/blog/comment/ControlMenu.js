@@ -1,41 +1,13 @@
 
-import React, {useState, useContext, useEffect, useRef } from "react";
+import {useState, useEffect, useRef } from "react";
 
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
-
-
-import * as BlobAPI from '../../../api/BlobAPI.js'
-import * as BlogAPI from '../../../api/BlogAPI.js'
-import * as ArticleAPI from '../../../api/ArticleAPI.js'
-import * as CommentGreatAPI from '../../../api/CommentGreatAPI.js'
-
-import AuthContext from "../../../util/AuthContext.js";
-import LoadingImage from "../../../common/LoadingImage.js";
-import Modal from "../../../common/Modal.js";
 import BeautyButton from "../../../common/BeautyButton.js";
-import ToInteger from "../../../util/ToInteger.js";
-import CountWithUnit from "../../../util/CountWithUnit.js";
-
-import CommentGreat from "./CommentGreat.js";
-import { FaCheck } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
-import CategoryModal from '../../../common/CategoryModal.js'
-import OverlayLoading from "../../../common/OverlayLoading.js";
-import * as CommentAPI from '../../../api/CommentAPI.js'
-import UserImage from "../../../common/UserImage.js";
-
-
-import './CommentMenu.css'
-
-
-import { FaEye } from "react-icons/fa";
-import { TiEye } from "react-icons/ti";
-import { MdThumbUpAlt } from "react-icons/md";
-import { BiSolidComment } from "react-icons/bi";
-import { MdThumbDownAlt } from "react-icons/md";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import { RiArrowDownWideLine } from "react-icons/ri";
 import { HiDotsVertical } from "react-icons/hi";
+
+import './ControlMenu.css'
+
+
+
 
 export default function(props) {
 

@@ -215,7 +215,7 @@ export default function() {
 
     const patchGreat = async(jwt, id, great) =>{
 
-        const payload = {                    
+        const payload = {
             great:great
         }
 

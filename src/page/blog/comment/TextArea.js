@@ -116,8 +116,6 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
                 
                 setMenuPosition({x:left, y:y})
                 setFocusItemIndex(null)
-
-
             }
         })
             

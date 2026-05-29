@@ -20,6 +20,8 @@ export default function(props) {
         if(!refArea.current)
             return
 
+        setIsPostLoading(true)
+
         let value = refArea.current.value()
 
         for(const candidate of atCandidates){
@@ -28,11 +30,10 @@ export default function(props) {
                 value = value.replaceAll('@' + candidate.nickname + ' ', ('<user>' + candidate.id + '</user>'))
         }
 
-        if(props.onPostText){
-            setIsPostLoading(true)
-            props.onPostText(value)
-            setIsPostLoading(false)
-        }
+        if(props.onPostText)
+            props.onPostText(value)        
+
+        setIsPostLoading(false)
     }
 
 

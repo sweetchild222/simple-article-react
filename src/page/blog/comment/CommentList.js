@@ -13,7 +13,7 @@ import ReplyLine from "./ReplyLine.js";
 import Comment  from "./Comment.js";
 import Writer from "./Writer.js";
 import ControlMenu from "./ControlMenu.js";
-import * as UserRepository from "./AtCandidateRepository.js";
+import * as UserRepository from "./UserRepository.js";
 
 import { FaCommentMedical } from "react-icons/fa6";
 import { SlArrowDown } from "react-icons/sl";
@@ -51,9 +51,6 @@ export default function({article_id}) {
                     window.showToast('사용자 목록을 가져 올 수 없습니다', 'error')
                     return
                 }
-
-                for(let i = 0; 10 > i; i++ )
-                    resUsers.push({image:i, nickname:String(i), id:i})
                 
                 setAtCandidates(resUsers.filter(item=> item.nickname != ''))
                 
@@ -108,6 +105,7 @@ export default function({article_id}) {
             return comment
         
         for(const comment of comments){
+
             const reply = comment.replies.find(replyItem => replyItem.id == comment_id)
 
             if(reply)
@@ -324,7 +322,7 @@ export default function({article_id}) {
     
         setModifyModeCommentId(-1)
         comment.comment = modifiedComment
-        comment.update_at = Date.now()        
+        comment.update_at = Date.now()
         setComments(structuredClone(comments))
     }
 

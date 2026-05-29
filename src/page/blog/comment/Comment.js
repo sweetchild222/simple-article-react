@@ -2,7 +2,7 @@ import {useState, useEffect, useRef} from "react";
 
 import BeautyButton from "../../../common/BeautyButton.js";
 
-import * as AtCandidateRepository from "./AtCandidateRepository.js";
+import * as UserRepository from "./UserRepository.js";
 import getCaretCoordinates from 'textarea-caret';
 import DOMPurify from 'dompurify';
 import TextArea from "./TextArea.js";
@@ -99,7 +99,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
             const id = match[1]
 
-            const user = await AtCandidateRepository.getByID(id)
+            const user = await UserRepository.getByID(id)
 
             const host = 'http://' + window.location.host
 
@@ -126,7 +126,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
             const id = match[1]
 
-            const user = await AtCandidateRepository.getByID(id)
+            const user = await UserRepository.getByID(id)
 
             if(user == null)
                 return '@알수없음 '
@@ -143,7 +143,9 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         if(onClickModifyComplete){
 
             if(!refArea.current)
-                return
+                return            
+
+            setIsModifyLoading(true)
                 
             let value = refArea.current.value()
             
@@ -152,8 +154,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 if(candidate.nickname != '')
                     value = value.replaceAll('@' + candidate.nickname + ' ', ('<user>' + candidate.id + '</user>'))
             }
-                        
-            setIsModifyLoading(true)
+                                    
             await onClickModifyComplete(value)
             setIsModifyLoading(false)
         }
@@ -179,7 +180,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 {editable && <div style={{display:'flex', flexDirection: 'row', justifyContent:'end', width:'100%', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'10px'}}/>
-                    <BeautyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} disabled={isModifyLoading} onClick={onClickModifyCompleteInner} >{<MdOutlineDoneOutline size={22}/>}</BeautyButton>
+                    <BeautyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner} >{<MdOutlineDoneOutline size={22}/>}</BeautyButton>
                     <div style={{width:'10px'}}></div>
                     <BeautyButton type={'transparent'} tooltip={'취소'} style={{color:'black'}} disabled={isModifyLoading} onClick={onClickModifyCancelInner} >{<MdCancel size={22}/>}</BeautyButton>
                 </div>

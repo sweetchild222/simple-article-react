@@ -1,0 +1,27 @@
+.candidate {
+  display: block;
+  position: absolute;
+  background-color: #D3D3D3;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);  
+  z-index: 1;
+  list-style: none;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin:0;
+  border-radius: 3px;
+}
+
+
+.candidate li a {
+  color: black;
+  padding: 10px 10px;
+  text-decoration: none;
+  display: block;
+}
+
+
+.candidate li a:hover {
+  background-color: #696969;
+}
+
+

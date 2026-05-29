@@ -24,8 +24,10 @@ import CategoryModal from '../../common/CategoryModal.js'
 import OverlayLoading from "../../common/OverlayLoading.js";
 import * as CommentAPI from '../../api/CommentAPI.js'
 import UserImage from "../../common/UserImage.js";
+import CommentArea from "./CommentArea.js";
 
 import './Comments.css'
+import './Comment.css'
 import Categories  from "./Categories.js";
 import Comment  from "./Comment.js";
 import Recents  from "./Recents.js";
@@ -38,23 +40,23 @@ import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 
-export default function(props) {
+export default function(props) {    
 
     const combinedStyle = { ...props.style }
 
     const [isPostLoading, setIsPostLoading] = useState(false)
     const [inputLength, setInputLength] = useState('0/1000')
-
-    const refCommentText = useRef(null)
+    
+    const refArea = useRef(null)
 
     const maxCharLength = 1000
 
     const onClickPost = async()=> {
 
-        if(!refCommentText.current)
+        if(!refArea.current)
             return
 
-        const comment = refCommentText.current.value
+        const comment = refArea.current.value()
 
         if(comment.length == 0)
             return
@@ -66,21 +68,20 @@ export default function(props) {
         }
     }
 
-    const onInput = async(e) =>{
+    const onInput = async(value) =>{
 
-        setInputLength(e.nativeEvent.target.value.length + '/' + maxCharLength)
+        setInputLength(value.length + '/' + maxCharLength)
     }
 
-
+    
     const onClickCancel = async() => {
         
         if(props.onCancel)
             props.onCancel()
     }
 
-
-    return  (<div style={{display:'flex', flexDirection: 'column', width:'100%', backgroundColor:'lightgreen'}}>
-                <textarea ref={refCommentText} className={'commentEdit'}  placeholder={'글을 입력하세요'} suppressContentEditableWarning={true} maxLength={maxCharLength} style={{width:'100%',  minHeight: '4lh', resize:'none', maxHeight:'6lh', border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto'}} onInput={onInput}/>
+    return  (<div style={{position:'relative', display:'flex', flexDirection: 'column', justifyContent:'end', width:'100%', backgroundColor:'lightgreen'}}>
+                <CommentArea ref={refArea} atCandidates={props.atCandidates} onInput={onInput} maxCharLength={maxCharLength}></CommentArea>
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'10px'}}/>

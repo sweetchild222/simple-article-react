@@ -30,6 +30,7 @@ import UserImage from "../../common/UserImage.js";
 
 import './Comments.css'
 import './Comment.css'
+import './CommentArea.css'
 
 import getCaretCoordinates from 'textarea-caret';
 import Categories  from "./Categories.js";
@@ -56,7 +57,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
         
     const [menuPosition, setMenuPosition] = useState(null)
     const [focusItemIndex, setFocusItemIndex] = useState(null)
-            
+    
     const refMenu = useRef(null)
     const refCommentEdit = useRef(null)    
     
@@ -117,12 +118,12 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
             return
             
         element.focus()
-        const length = comment.length
+        const length = comment ? comment.length : 0
         element.setSelectionRange(length, length)
         
         element.addEventListener('input', (e) => {
             
-            const lastChar = element.selectionStart > 1 ? element.value[element.selectionStart - 2] : ' '
+            const lastChar = element.selectionStart > 1 ? element.value[element.selectionStart - 2] : ' '            
 
             if (e.data === '@' && (lastChar == ' ' || lastChar == '\n' || lastChar == '\t')) {
 
@@ -137,9 +138,13 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
                 const menuBottom = rect.y + top - element.scrollTop + menuHeight + topMargin
 
                 const y = top - element.scrollTop + (menuBottom < window.innerHeight ? topMargin : -menuHeight)
+
+                console.log(left, y)
                 
                 setMenuPosition({x:left, y:y})
                 setFocusItemIndex(null)
+
+
             }
         })
             
@@ -182,6 +187,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
         setFocusItemIndex(null)
         putNickName(user.nickname)
     }
+
 
     const putNickName = (nickname)=> {
 
@@ -284,21 +290,24 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
     }, [eventKeyDown])
 
 
-
-    return comment ? (
+    return (
             <div style={{width:'100%'}}>
                 {<div style={{display:'grid', gridTemplateColumns:'1fr', width:'100%'}}>
-                    <textarea ref={refCommentEdit} className={'commentEdit'}  placeholder={'글을 입력하세요'} defaultValue={comment} suppressContentEditableWarning={true} maxLength={maxCharLength} style={{boxSizing: 'border-box', width:'100%',  minHeight: '4lh', resize:'none', maxHeight:'6lh', border:'0px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'5px', backgroundColor:'green'}} onInput={onInputInner}/>
+                    <textarea ref={refCommentEdit} className={'commentEdit'}  placeholder={'글을 입력하세요'} defaultValue={comment} suppressContentEditableWarning={true} maxLength={maxCharLength}
+                    style={{width:'100%',  minHeight: '4lh', maxHeight:'6lh', resize:'none',  border:'0px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'5px', backgroundColor:'green'}} onInput={onInputInner}/>
                 </div>
                 }
 
                 {menuPosition &&
                     <ul ref={refMenu} className={'candidate'} style={{left:menuPosition.x, top:menuPosition.y}}>
-                        {atCandidates.map((user, index) => user.nickname != '' ? 
-                            <BeautyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%', height:'30px'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</BeautyButton>
-                        :null)}
+                        {atCandidates.map((user, index) =>
+
+                            user.nickname != '' ? 
+                                <BeautyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%', height:'30px'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</BeautyButton>
+                            :null)
+                        }
                     </ul>
                 }
             </div>
-        ) : null
+        )
 }

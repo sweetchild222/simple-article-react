@@ -21,6 +21,7 @@ import { FaCommentMedical } from "react-icons/fa6";
 
 
 import ArticleItem from "./ArticleItem.js";
+import CommentArea from "./CommentArea.js";
 import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
@@ -49,7 +50,7 @@ import { SlArrowUp } from "react-icons/sl";
 import { MdDownloadDone } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import { MdOutlineDoneOutline } from "react-icons/md";
-import CommentLeftDiv from "./CommentLeftDiv.js";
+import CommentReplyLine from "./CommentReplyLine.js";
 
 export default function({article_id}) {
     
@@ -362,7 +363,7 @@ export default function({article_id}) {
     
     return comments ? (
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', marginTop:'20px', width:'100%'}}>
-            {isOpenCommentEdit && <CommentEdit onPostText={onPostComment} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
+            {isOpenCommentEdit && <CommentEdit onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
                 <label>{'댓글 (' + comments.length + ')'}</label>
                 {!isOpenCommentEdit && <BeautyButton type={'success'} onClick={onOpenCommentEdit}>{'댓글 작성'}</BeautyButton>}
@@ -373,7 +374,7 @@ export default function({article_id}) {
                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
                             <UserImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
-                            <CommentLeftDiv isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
+                            <CommentReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
                         </div>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
@@ -395,7 +396,7 @@ export default function({article_id}) {
 
                             {data.id == openReplyEditCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
-                                <CommentEdit onPostText={onPostReply} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
+                                <CommentEdit onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
                             </div>
                             }
 
@@ -422,7 +423,7 @@ export default function({article_id}) {
                                         </div>
 
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment ref={(el) => (refsComment.current[reply.id] = el)} key={reply.id} comment={reply} editable={modifyModeCommentId == reply.id} onClickModifyComplete={()=> onClickModifyComplete(reply.id)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)}/>
+                                            <Comment ref={(el) => (refsComment.current[reply.id] = el)} key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)}/>
                                             <CommentMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
                                         </div>                                        
                                         {!(modifyModeCommentId == reply.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>

@@ -1,7 +1,7 @@
 
 import {useState, useEffect, useRef } from "react";
 
-import BeautyButton from "../../../common/BeautyButton.js";
+import BeautyButton from "../../../../common/BeautyButton.js";
 import { HiDotsVertical } from "react-icons/hi";
 
 import './ControlMenu.css'

@@ -8,7 +8,7 @@ import {Routes, Route, useNavigate, BrowserRouter, createBrowserRouter, RouterPr
 
 import BlogHeader from '../blog/Header.js'
 import BlogHome  from '../blog/Home.js'
-import Article  from '../blog/Article.js'
+import Article  from '../blog/article/Article.js'
 import MainHeader from '../main/Header.js'
 import MainHome from '../main/Home.js'
 

@@ -1,7 +1,7 @@
 import React, {useState, useContext, useRef} from "react";
 
 import TextArea from "./TextArea.js";
-import BeautyButton from "../../../common/BeautyButton.js";
+import BeautyButton from "../../../../common/BeautyButton.js";
 
 export default function(props) {
 

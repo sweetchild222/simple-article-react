@@ -1,4 +1,4 @@
-import * as UserAPI from '../../../api/UserAPI.js'
+import * as UserAPI from '../../../../api/UserAPI.js'
 
 const repository = []
 

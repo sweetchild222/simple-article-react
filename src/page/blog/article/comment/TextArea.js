@@ -1,7 +1,7 @@
 import {useState, useContext, useEffect, useRef, useImperativeHandle, useCallback} from "react";
 
 import getCaretCoordinates from 'textarea-caret';
-import BeautyButton from "../../../common/BeautyButton.js";
+import BeautyButton from "../../../../common/BeautyButton.js";
 
 import './TextArea.css'
 

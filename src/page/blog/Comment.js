@@ -82,33 +82,34 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         if(!refMenu.current)
             return
         
-        const atIndex = value.lastIndexOf('@', element.selectionStart - 1)
+        const atIndex = value.lastIndexOf('@', element.selectionStart - 1)        
 
         if(atIndex == -1){
             setFocusItemIndex(null)
             return
-        }
+        }        
 
-        const input = value.substring(atIndex + 1, element.selectionStart)
+        const input = value.substring(atIndex + 1, element.selectionStart)        
         
         const hasWhitespace = /\s/.test(input)
 
         if(hasWhitespace){
             setFocusItemIndex(null)
-            return 
+            return
+        }
+                
+        if(input == ''){
+            setFocusItemIndex(null)
+            return
         }
         
-        if(input == '')
-            setFocusItemIndex(null)    
-            return        
-
-        const childNodes = refMenu.current.childNodes
+        const childNodes = refMenu.current.childNodes        
 
         for(let i = 0; childNodes.length > i; ++i){
 
-            const nickName = childNodes[i].innerText
+            const nickName = childNodes[i].innerText            
 
-            if(nickName.indexOf('@' + input) != -1){
+            if(nickName.indexOf('@' + input) != -1){                
                 setFocusItemIndex(i)
                 return
             }
@@ -145,7 +146,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
             return
             
         element.focus()
-        const length = comment.comment.length
+        const length = editingComment.length
         element.setSelectionRange(length, length)
         setInputLength(length + '/' + maxCharLength)
 
@@ -188,9 +189,9 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         for(let i = 0; childNodes.length > i; ++i){
 
             if(i == focusItemIndex)
-                childNodes[i].style.backgroundColor= '#696969'
+                childNodes[i].style.backgroundColor = '#696969'
             else
-                childNodes[i].style.backgroundColor= '#D3D3D3'
+                childNodes[i].style.backgroundColor = '#D3D3D3'
         }
 
     }, [focusItemIndex])
@@ -391,9 +392,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
             setFocusItemIndex(null)
             
             if(focusItemIndex == null)
-                return
-
-            console.log(focusItemIndex)
+                return            
 
             event.preventDefault()
 

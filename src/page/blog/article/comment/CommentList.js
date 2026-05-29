@@ -40,7 +40,7 @@ export default function({article_id}) {
                 window.showToast('댓글을 가져 올 수 없습니다', 'error')
                 return
             }
-            
+                        
             comments.sort((a, b) => { return b.create_at - a.create_at})
 
             const userIDList = comments.map(item => item.user_id)            

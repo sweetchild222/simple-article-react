@@ -6,7 +6,6 @@ export default function(id) {
             return null
     }
     
-
     const int_id = parseInt(id)
 
     if(int_id == null)

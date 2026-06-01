@@ -1,17 +1,7 @@
-import {useContext, useEffect, useRef } from "react";
-import * as UserAPI from '../../api/UserAPI.js'
-import { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
-import * as validator from '../../util/Validator.js'
-import AuthContext from "../../util/AuthContext.js";
+import { useState } from "react";
+
+
 import BeautyButton from '../../common/BeautyButton.js';
-import GoLogin from "../../common/GoLogin.js";
-import OverlayLoading from "../../common/OverlayLoading.js";
-import LoadingImage from "../../common/LoadingImage.js";
-import { FaEye } from "react-icons/fa";
-import { TiEye } from "react-icons/ti";
-import { MdThumbUpAlt } from "react-icons/md";
-import { BiSolidComment } from "react-icons/bi";
 import './Pagination.css'
 import { FaForward } from "react-icons/fa";
 import { FaBackward } from "react-icons/fa6";

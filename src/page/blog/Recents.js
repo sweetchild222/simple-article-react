@@ -1,21 +1,11 @@
 
-import React, {useState, useContext, useEffect, useRef, useImperativeHandle} from "react";
+import {useState, useContext, useEffect} from "react";
+import { useNavigate} from 'react-router-dom';
 
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
-
-
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as BlogAPI from '../../api/BlogAPI.js'
 import * as ArticleAPI from '../../api/ArticleAPI.js'
 
 import AuthContext from "../../util/AuthContext.js";
-import LoadingImage from "../../common/LoadingImage.js";
-import BeautyButton from "../../common/BeautyButton.js";
-import ArticleItem from "./ArticleItem.js";
-import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
-import CategoryModal from '../../common/CategoryModal.js'
-import { TfiWrite } from "react-icons/tfi";
 import { FaPen } from "react-icons/fa6"
 
 export default function({ref, blogId, isEdit}) {

@@ -3,8 +3,8 @@
 import './App.css'
 
 
-import React, { useContext, useEffect, useState} from 'react';
-import {Routes, Route, useNavigate, BrowserRouter, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
+
+import {createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
 
 import BlogHeader from '../blog/Header.js'
 import BlogHome  from '../blog/Home.js'

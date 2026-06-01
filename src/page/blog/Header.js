@@ -1,29 +1,19 @@
-import React, {useState, useContext, useEffect, useRef, useCallback } from "react";
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
-import axios from 'axios';
+import {useState, useContext, useEffect, useRef} from "react";
+import {useNavigate, useParams} from 'react-router-dom';
 
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
 
 import AuthContext from "../../util/AuthContext.js";
-import LoadingImage from "../../common/LoadingImage.js";
 import UserImage from "../../common/UserImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
-import ToInteger from "../../util/Integer.js";
-import Modal from "../../common/Modal.js"
-import * as UserAPI from '../../api/UserAPI.js'
+import Integer from "../../util/Integer.js";
 
-import { PiTrash } from "react-icons/pi";
-import { CiYoutube } from "react-icons/ci";
+
 import { MdEdit } from "react-icons/md";
-import { FaCheck } from "react-icons/fa";
 import { RiImageAiFill } from "react-icons/ri";
-import { CgImage } from "react-icons/cg";
-
-import { FiUpload } from "react-icons/fi";
-
-import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
-import {scale, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
+import {pickImageFile} from "../../util/ImagePicker.js";
+import {blobFromCanvas} from "../../util/ImageUtil.js";
 import ImageCropModal from '../../common/ImageCropModal.js'
 
 
@@ -31,7 +21,7 @@ export default function() {
 
     const { b_id } = useParams()
     
-    const blog_id = ToInteger(b_id)
+    const blog_id = Integer(b_id)
 
     const navigate = useNavigate()
             

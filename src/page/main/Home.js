@@ -1,4 +1,4 @@
-import BeautyButton from '../../common/BeautyButton.js'
+
 import {useContext, useState, useRef} from 'react';
 import { useNavigate} from 'react-router-dom';
 
@@ -7,9 +7,9 @@ import * as ArticleAPI from '../../api/ArticleAPI.js'
 import * as CommentAPI from '../../api/CommentAPI.js'
 import * as UserAPI from '../../api/UserAPI.js'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
+import BeautyButton from '../../common/BeautyButton.js'
 
 import AuthContext from "../../util/AuthContext.js";
-import Modal from "../../common/Modal.js"
 
 export default function Home() {
 

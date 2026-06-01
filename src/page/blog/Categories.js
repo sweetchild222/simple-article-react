@@ -1,8 +1,5 @@
 
-import React, {useState, useContext, useEffect, useRef, useImperativeHandle} from "react";
-
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams} from 'react-router-dom';
-
+import {useState, useContext, useEffect, useImperativeHandle} from "react";
 
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
@@ -10,13 +7,9 @@ import * as ArticleAPI from '../../api/ArticleAPI.js'
 import * as CategoryAPI from '../../api/CategoryAPI.js'
 
 import AuthContext from "../../util/AuthContext.js";
-import LoadingImage from "../../common/LoadingImage.js";
-import BeautyButton from "../../common/BeautyButton.js";
-import ArticleItem from "./ArticleItem.js";
-import { FaCheck } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
 import { MdCategory } from "react-icons/md";
+
 
 export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) {
     

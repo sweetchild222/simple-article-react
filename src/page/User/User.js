@@ -14,10 +14,10 @@ import AuthContext from "../../util/AuthContext.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import Modal from "../../common/Modal.js"
 import GoLogin from "../../common/GoLogin.js";
-import ToInteger from "../../util/ToInteger.js";
+import Integer from "../../util/Integer.js";
 
 import BeautyButton from '../../common/BeautyButton.js';
-import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
+import {scale, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 
@@ -30,7 +30,7 @@ export default function() {
 
     const { id } = useParams()
 
-    const user_id = ToInteger(id)
+    const user_id = Integer(id)
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
     const [user, setUser] = useState(null)

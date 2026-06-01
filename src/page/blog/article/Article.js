@@ -10,8 +10,8 @@ import AuthContext from "../../../util/AuthContext.js";
 import LoadingImage from "../../../common/LoadingImage.js";
 import Modal from "../../../common/Modal.js";
 import BeautyButton from "../../../common/BeautyButton.js";
-import ToInteger from "../../../util/ToInteger.js";
-import TimestampToString from "../../../util/TimestampToString.js";
+import Integer from "../../../util/Integer.js";
+import ElapsedTime from "../../../util/ElapsedTime.js";
 import CountWithUnit from "../../../util/CountWithUnit.js";
 
 import Great from "./Great.js"
@@ -30,8 +30,8 @@ export default function() {
 
     const { b_id, a_id } = useParams()
 
-    const blog_id = ToInteger(b_id)
-    const article_id = ToInteger(a_id)
+    const blog_id = Integer(b_id)
+    const article_id = Integer(a_id)
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [article, setArticle] = useState(null)    
@@ -157,7 +157,7 @@ export default function() {
                     {isEditable() && <BeautyButton onClick={onClickEdit}>{'수정'}</BeautyButton>}
                     {isEditable() && <BeautyButton onClick={onClickDelete}>{'삭제'}</BeautyButton>}
                     {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
-                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? TimestampToString(article.post_at) : ''}</div>
+                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</div>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
                         <TiEye size={22}/>
                         <div>{CountWithUnit(article.showed)}</div>

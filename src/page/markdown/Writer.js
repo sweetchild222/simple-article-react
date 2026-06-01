@@ -16,7 +16,7 @@ import { Prompt } from 'react-router'
 
 import ImageCropModal from '../../common/ImageCropModal.js'
 
-import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
+import {scale, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import '../../common/RotateLoading.css'
 

@@ -16,7 +16,7 @@ import { FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import CategoryModal from '../../common/CategoryModal.js'
 import OverlayLoading from "../../common/OverlayLoading.js";
-import ToInteger from "../../util/ToInteger.js";
+import ToInteger from "../../util/Integer.js";
 import './Home.css'
 import Categories  from "./Categories.js";
 import Recents  from "./Recents.js";

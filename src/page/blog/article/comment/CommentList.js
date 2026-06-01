@@ -2,7 +2,7 @@ import {useState, useContext, useEffect, } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import AuthContext from "../../../../util/AuthContext.js";
-import TimestampToString from "../../../../util/TimestampToString.js";
+import ElapsedTime from "../../../../util/ElapsedTime.js";
 import BeautyButton from "../../../../common/BeautyButton.js";
 import UserImage from "../../../../common/UserImage.js";
 
@@ -351,7 +351,7 @@ export default function({article_id}) {
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
-                                <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
+                                <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </div>
                             
                             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
@@ -391,7 +391,7 @@ export default function({article_id}) {
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                             <div style={{fontSize:'14px', marginRight:'10px'}}>{reply.user.nickname}</div>
-                                            <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{TimestampToString(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
+                                            <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
                                         </div>
 
                                         <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>

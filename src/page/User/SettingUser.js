@@ -21,7 +21,7 @@ import GoLogin from "../../common/GoLogin.js";
 
 import BeautyButton from '../../common/BeautyButton.js';
 import Password from './Password.js';
-import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
+import {scale, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
 import { Outlet, Link } from 'react-router-dom';
 import ImageCropModal from '../../common/ImageCropModal.js'
 import * as validator from '../../util/Validator.js'

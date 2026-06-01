@@ -14,7 +14,7 @@ import AuthContext from "../../util/AuthContext.js";
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import ImageCropModal from '../../common/ImageCropModal.js'
 import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
-import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
+import {scale, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
 import { BsTrash } from "react-icons/bs";
 import { PiTrash } from "react-icons/pi";
 import { FiYoutube } from "react-icons/fi";

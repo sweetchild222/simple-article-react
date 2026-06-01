@@ -9,7 +9,7 @@ import AuthContext from "../../util/AuthContext.js";
 import LoadingImage from "../../common/LoadingImage.js";
 import UserImage from "../../common/UserImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
-import ToInteger from "../../util/ToInteger.js";
+import ToInteger from "../../util/Integer.js";
 import Modal from "../../common/Modal.js"
 import * as UserAPI from '../../api/UserAPI.js'
 
@@ -23,7 +23,7 @@ import { CgImage } from "react-icons/cg";
 import { FiUpload } from "react-icons/fi";
 
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
-import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
+import {scale, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
 import ImageCropModal from '../../common/ImageCropModal.js'
 
 
@@ -31,7 +31,7 @@ export default function() {
 
     const { b_id } = useParams()
     
-    const blog_id = ToInteger(b_id)    
+    const blog_id = ToInteger(b_id)
 
     const navigate = useNavigate()
             

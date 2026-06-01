@@ -67,7 +67,7 @@ export const drawImage = async(image, x, y, width, height, dx, dy, dWidth, dHeig
 
 
 
-export default function(file, maxWidth, maxHeight, minWidth, minHeight){
+export const scale = async (file, maxWidth, maxHeight, minWidth, minHeight) => {
 
     return new Promise((resolve) => {
 

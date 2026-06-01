@@ -18,7 +18,7 @@ import ImageCropModal from '../../common/ImageCropModal.js'
 import LoadingImage from "../../common/LoadingImage.js";
 import OverlayLoading from "../../common/OverlayLoading.js";
 
-import ImageScale, {blobFromCanvas, drawImage} from "../../util/ImageScale.js";
+import {sacle, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
 import '../../common/RotateLoading.css'
 
 import MarkdownToHtml from '../../util/MarkdownToHtml.js'

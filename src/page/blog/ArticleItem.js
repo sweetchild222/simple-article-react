@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import * as validator from '../../util/Validator.js'
 import AuthContext from "../../util/AuthContext.js";
-import TimestampToString from "../../util/TimestampToString.js";
+import ElapsedTime from "../../util/ElapsedTime.js";
 import CountWithUnit from "../../util/CountWithUnit.js";
 import BeautyButton from '../../common/BeautyButton.js';
 import GoLogin from "../../common/GoLogin.js";
@@ -78,7 +78,7 @@ export default function({article, categoryName}) {
                         <div className={'clamped-text'} style={{'--line-count':1, width:'160px'}}>{categoryName}</div>
                     </div>
                     }
-                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? TimestampToString(article.post_at) : ''}</div>
+                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</div>
                 </div>
 
             </div>

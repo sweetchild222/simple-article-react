@@ -1,4 +1,3 @@
-import './Modal.css'
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import BeautyButton from './BeautyButton';
@@ -115,7 +114,7 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
     const randomId = random(0, 100000) // avoid warning Duplicate form field id in the same form 
           
     return ReactDOM.createPortal(
-        <dialog className={'modal'} ref={refDialog} onClick={onClickDialog} onKeyDown={onKeyDownDialog}>
+        <dialog className={'modal'} ref={refDialog} onClick={onClickDialog} onKeyDown={onKeyDownDialog} style={{padding:'5px'}}>
             <div ref={refDiv}>
             {title != null && <p style={{fontWeight:'bold', fontSize:'18px'}}>{title}</p>}
             {description != null && <p style={{whiteSpace: 'pre', fontStyle:'italic', color:'darkgrey'}}>{description}</p>}

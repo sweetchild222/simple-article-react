@@ -1,8 +1,8 @@
-#imgCropDialog {
+.imgCropDialog {
   background-color: #CECECE;
   outline: none;
 }
 
-#imgCropDialog:focus {  
+.imgCropDialog:focus {
   outline: none;
 }

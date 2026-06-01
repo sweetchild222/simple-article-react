@@ -78,7 +78,7 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
   }, [refCropper])
 
   return ReactDOM.createPortal(
-          <dialog ref={refDialog} id='imgCropDialog' onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
+          <dialog ref={refDialog} className={'imgCropDialog'} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
                 {isOpen && file && <ImageCropper ref={refCropper} file={file} containerWidth={containerWidth} containerHeight={containerHeight} selectMinWidth={selectMinWidth} keepRatio={keepRatio}/>}
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>

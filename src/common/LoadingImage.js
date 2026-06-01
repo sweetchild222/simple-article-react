@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './RotateLoading.css';
-import { CiImageOff } from "react-icons/ci";
+
 
 export default function(props) {
 
@@ -14,18 +14,7 @@ export default function(props) {
     })
 
     const [isLoading, setIsLoading] = useState(true)
-    const [isError, setIsError] = useState(false)
-
-
-    // useEffect(()=>{
-
-    //     if(props.src == null || props.src == '')
-    //         setIsError(true)
-
-    // }, [props.src])
-
-
-    
+    const [isError, setIsError] = useState(false)    
 
     const combinedStyle = {
         ...props.style

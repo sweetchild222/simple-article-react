@@ -8,6 +8,7 @@ import * as ArticleGreatAPI from '../../../api/ArticleGreatAPI.js'
 import AuthContext from "../../../util/AuthContext.js";
 import LoadingImage from "../../../common/LoadingImage.js";
 import BeautyButton from "../../../common/BeautyButton.js";
+import Modal from "../../../common/Modal.js";
 import Integer from "../../../util/Integer.js";
 import ElapsedTime from "../../../util/ElapsedTime.js";
 import CountWithUnit from "../../../util/CountWithUnit.js";

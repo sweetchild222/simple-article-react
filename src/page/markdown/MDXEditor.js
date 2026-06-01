@@ -4,6 +4,7 @@ import { usePublisher } from '@mdxeditor/gurx'
 import i18next from 'i18next'
 import ko from './ko.json'
 import BeautyButton from '../../common/BeautyButton.js'
+import Modal from '../../common/Modal.js'
 import '@mdxeditor/editor/style.css'
 import { CiYoutube } from "react-icons/ci";
 import { LuImagePlus } from "react-icons/lu";

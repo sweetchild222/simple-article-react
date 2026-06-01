@@ -15,6 +15,7 @@ import { RiImageAiFill } from "react-icons/ri";
 import {pickImageFile} from "../../util/ImagePicker.js";
 import {blobFromCanvas} from "../../util/ImageUtil.js";
 import ImageCropModal from '../../common/ImageCropModal.js'
+import Modal from '../../common/Modal.js'
 
 
 export default function() {

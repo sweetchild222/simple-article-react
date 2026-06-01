@@ -11,6 +11,7 @@ import * as CategoryAPI from '../../api/CategoryAPI.js'
 
 import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import BeautyButton from '../../common/BeautyButton.js';
+import Modal from '../../common/Modal.js';
 import Password from './Password.js';
 import {blobFromCanvas} from "../../util/ImageUtil.js";
 import ImageCropModal from '../../common/ImageCropModal.js'

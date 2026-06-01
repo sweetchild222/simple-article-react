@@ -1,9 +1,6 @@
-import {useContext, useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react'
-import { useLocation } from 'react-router-dom'
+import {useState, useRef, useEffect, useImperativeHandle} from 'react'
+
 import './ImageCropModal.css'
-
-import Modal from '../common/Modal.js'
-
 import ImageCropper from './ImageCropper.js'
 import BeautyButton from "../common/BeautyButton.js"
 import ReactDOM from 'react-dom';
@@ -81,7 +78,7 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
   }, [refCropper])
 
   return ReactDOM.createPortal(
-          <dialog id='imgCropDialog' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
+          <dialog ref={refDialog} id='imgCropDialog' onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
                 {isOpen && file && <ImageCropper ref={refCropper} file={file} containerWidth={containerWidth} containerHeight={containerHeight} selectMinWidth={selectMinWidth} keepRatio={keepRatio}/>}
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>

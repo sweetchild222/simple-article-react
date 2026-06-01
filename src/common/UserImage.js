@@ -1,8 +1,5 @@
 
-import React, {useState, useContext, useEffect, useRef } from "react";
-import axios from 'axios';
-
-import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
+import {useState, useEffect} from "react";
 import LoadingImage from "./LoadingImage.js";
 import * as UserAPI from '../api/UserAPI.js'
 

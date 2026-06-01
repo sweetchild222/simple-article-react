@@ -1,4 +1,4 @@
-import React, { useState, useCallback, createElement } from 'react';
+import { useState, useCallback, createElement } from 'react';
 import Toast from './Toast';
 import './ToastContainer.css';
 

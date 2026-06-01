@@ -1,7 +1,6 @@
 
 import BeautyButton from './BeautyButton';
-import { useNavigate, useLocation} from 'react-router-dom';
-import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function({value}) {
 

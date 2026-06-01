@@ -6,6 +6,7 @@ import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import ExtractHead from "../../util/ExtractHead.js";
 import GoLogin from "../../common/GoLogin.js";
+import Modal from "../../common/Modal.js";
 import {pickImageFile} from "../../util/ImagePicker.js";
 import {useNavigate, useLocation} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'

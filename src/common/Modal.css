@@ -1,4 +1,4 @@
-dialog {
+.modal {
   padding: 5px;
   border: none;
   border-radius: 3px;
@@ -7,6 +7,6 @@ dialog {
 }
 
 /* Styles the background overlay */
-dialog::backdrop {
+.modal::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
 }

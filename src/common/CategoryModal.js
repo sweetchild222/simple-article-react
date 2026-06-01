@@ -1,13 +1,7 @@
-import {useContext, useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react'
-import { useLocation } from 'react-router-dom'
-import './CategoryModal.css'
+import { useState, useRef, useEffect } from 'react'
 
-import Modal from './Modal.js'
-
-import ImageCropper from './ImageCropper.js'
 import BeautyButton from "./BeautyButton.js"
 import ReactDOM from 'react-dom';
-import { MdEdit } from "react-icons/md";
 import { VscTrash } from "react-icons/vsc";
 
 export default function({ref, isOpen, onClose, onClickApply, categories}) {
@@ -169,7 +163,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
   }
 
   return ReactDOM.createPortal(
-          <dialog id='CategoryDialog' ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
+          <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
                 <div ref={refListDiv} style={{ display: 'flex', flexDirection: 'column'}}>
                   {newCategories && newCategories.map((data, index) => 

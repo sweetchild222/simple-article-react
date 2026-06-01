@@ -2,14 +2,14 @@
 import {useContext, useState, useRef} from 'react';
 import { useNavigate} from 'react-router-dom';
 
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as ArticleAPI from '../../api/ArticleAPI.js'
-import * as CommentAPI from '../../api/CommentAPI.js'
-import * as UserAPI from '../../api/UserAPI.js'
-import * as blobToBase64 from '../../util/BlobToBase64.js'
-import BeautyButton from '../../common/BeautyButton.js'
+import * as BlobAPI from '@rest/BlobAPI.js'
+import * as ArticleAPI from '@rest/ArticleAPI.js'
+import * as CommentAPI from '@rest/CommentAPI.js'
+import * as UserAPI from '@rest/UserAPI.js'
+import * as blobToBase64 from '@util/BlobToBase64.js'
+import BeautyButton from '@gui/BeautyButton.js'
 
-import AuthContext from "../../util/AuthContext.js";
+import AuthContext from "@util/AuthContext.js";
 
 export default function Home() {
 

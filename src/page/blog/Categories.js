@@ -1,13 +1,13 @@
 
 import {useState, useContext, useEffect, useImperativeHandle} from "react";
 
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as BlogAPI from '../../api/BlogAPI.js'
-import * as ArticleAPI from '../../api/ArticleAPI.js'
-import * as CategoryAPI from '../../api/CategoryAPI.js'
+import * as BlobAPI from '@rest/BlobAPI.js'
+import * as BlogAPI from '@rest/BlogAPI.js'
+import * as ArticleAPI from '@rest/ArticleAPI.js'
+import * as CategoryAPI from '@rest/CategoryAPI.js'
 
-import AuthContext from "../../util/AuthContext.js";
-import CategoryModal from '../../common/CategoryModal.js'
+import AuthContext from "@util/AuthContext.js";
+import CategoryModal from '@gui/CategoryModal.js'
 import { MdCategory } from "react-icons/md";
 
 

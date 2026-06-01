@@ -1,21 +1,21 @@
 import {useState, useContext, useEffect, useRef} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as BlogAPI from '../../api/BlogAPI.js'
+import * as BlobAPI from '@rest/BlobAPI.js'
+import * as BlogAPI from '@rest/BlogAPI.js'
 
-import AuthContext from "../../util/AuthContext.js";
-import UserImage from "../../common/UserImage.js";
-import BeautyButton from "../../common/BeautyButton.js";
-import Integer from "../../util/Integer.js";
+import AuthContext from "@util/AuthContext.js";
+import UserImage from "@gui/UserImage.js";
+import BeautyButton from "@gui/BeautyButton.js";
+import Integer from "@util/Integer.js";
 
 
 import { MdEdit } from "react-icons/md";
 import { RiImageAiFill } from "react-icons/ri";
-import {pickImageFile} from "../../util/ImagePicker.js";
-import {blobFromCanvas} from "../../util/ImageUtil.js";
-import ImageCropModal from '../../common/ImageCropModal.js'
-import Modal from '../../common/Modal.js'
+import {pickImageFile} from "@util/ImagePicker.js";
+import {blobFromCanvas} from "@util/ImageUtil.js";
+import ImageCropModal from '@gui/ImageCropModal.js'
+import Modal from '@gui/Modal.js'
 
 
 export default function() {

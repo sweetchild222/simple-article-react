@@ -1,11 +1,11 @@
 import {useState, useContext} from "react";
 import {useNavigate} from 'react-router-dom';
 
-import * as ArticleGreatAPI from '../../../api/ArticleGreatAPI.js'
+import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
 
-import AuthContext from "../../../util/AuthContext.js";
-import BeautyButton from "../../../common/BeautyButton.js";
-import CountWithUnit from "../../../util/CountWithUnit.js";
+import AuthContext from "@util/AuthContext.js";
+import BeautyButton from "@gui/BeautyButton.js";
+import CountWithUnit from "@util/CountWithUnit.js";
 
 import { MdThumbUpAlt } from "react-icons/md";
 import { MdThumbDownAlt } from "react-icons/md";

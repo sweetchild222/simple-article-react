@@ -1,8 +1,8 @@
 import {useState, useContext, useEffect} from "react";
 import {useNavigate} from 'react-router-dom';
-import AuthContext from "../../util/AuthContext.js";
-import UserImage from "../../common/UserImage.js";
-import BeautyButton from "../../common/BeautyButton.js";
+import AuthContext from "@util/AuthContext.js";
+import UserImage from "@gui/UserImage.js";
+import BeautyButton from "@gui/BeautyButton.js";
 
 export default function() {
 

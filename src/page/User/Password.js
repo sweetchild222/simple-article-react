@@ -1,10 +1,10 @@
 import {useState, useContext, useRef} from "react";
 
-import * as UserAPI from '../../api/UserAPI.js'
-import * as validator from '../../util/Validator.js'
-import AuthContext from "../../util/AuthContext.js";
-import BeautyButton from '../../common/BeautyButton.js';
-import OverlayLoading from "../../common/OverlayLoading.js";
+import * as UserAPI from '@rest/UserAPI.js'
+import * as validator from './Validator.js'
+import AuthContext from "@util/AuthContext.js";
+import BeautyButton from '@gui/BeautyButton.js';
+import OverlayLoading from "@gui/OverlayLoading.js";
 
 
 export default function({onClose}) {

@@ -1,23 +1,23 @@
 
 import { useContext, useState, useRef, useEffect} from 'react'
 
-import BeautyButton from '../../common/BeautyButton.js'
-import * as BlobAPI from '../../api/BlobAPI.js'
-import AuthContext from "../../util/AuthContext.js";
-import ExtractHead from "../../util/ExtractHead.js";
-import GoLogin from "../../common/GoLogin.js";
-import Modal from "../../common/Modal.js";
-import {pickImageFile} from "../../util/ImagePicker.js";
+import BeautyButton from '@gui/BeautyButton.js'
+import * as BlobAPI from '@rest/BlobAPI.js'
+import AuthContext from "@util/AuthContext.js";
+import ExtractHead from "@util/ExtractHead.js";
+import GoLogin from "@gui/GoLogin.js";
+import Modal from "@gui/Modal.js";
+import {pickImageFile} from "@util/ImagePicker.js";
 import {useNavigate, useLocation} from 'react-router-dom';
-import * as ArticleAPI from '../../api/ArticleAPI.js'
-import * as CategoryAPI from '../../api/CategoryAPI.js'
+import * as ArticleAPI from '@rest/ArticleAPI.js'
+import * as CategoryAPI from '@rest/CategoryAPI.js'
 
-import ImageCropModal from '../../common/ImageCropModal.js'
-import LoadingImage from "../../common/LoadingImage.js";
-import OverlayLoading from "../../common/OverlayLoading.js";
+import ImageCropModal from '@gui/ImageCropModal.js'
+import LoadingImage from "@gui/LoadingImage.js";
+import OverlayLoading from "@gui/OverlayLoading.js";
 
-import {blobFromCanvas} from "../../util/ImageUtil.js";
-import MarkdownToHtml from '../../util/MarkdownToHtml.js'
+import {blobFromCanvas} from "@util/ImageUtil.js";
+import MarkdownToHtml from '@util/MarkdownToHtml.js'
 
 
 export default function() {

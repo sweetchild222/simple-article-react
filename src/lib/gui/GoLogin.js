@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react'
-import AuthContext from "@lib/util/AuthContext.js";
+import AuthContext from "@util/AuthContext.js";
 import BeautyButton from '@gui/BeautyButton';
 
 

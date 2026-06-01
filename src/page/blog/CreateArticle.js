@@ -3,13 +3,13 @@ import { useContext } from "react";
 
 import { useNavigate } from 'react-router-dom';
 
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as BlogAPI from '../../api/BlogAPI.js'
-import * as ArticleAPI from '../../api/ArticleAPI.js'
-import * as CategoryAPI from '../../api/CategoryAPI.js'
+import * as BlobAPI from '@rest/BlobAPI.js'
+import * as BlogAPI from '@rest/BlogAPI.js'
+import * as ArticleAPI from '@rest/ArticleAPI.js'
+import * as CategoryAPI from '@rest/CategoryAPI.js'
 
-import AuthContext from "../../util/AuthContext.js";
-import BeautyButton from "../../common/BeautyButton.js";
+import AuthContext from "@util/AuthContext.js";
+import BeautyButton from "@gui/BeautyButton.js";
 import { FaPen } from "react-icons/fa6"
 
 

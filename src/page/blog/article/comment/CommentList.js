@@ -1,12 +1,12 @@
 import {useState, useContext, useEffect, } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import AuthContext from "../../../../util/AuthContext.js";
-import ElapsedTime from "../../../../util/ElapsedTime.js";
-import BeautyButton from "../../../../common/BeautyButton.js";
-import UserImage from "../../../../common/UserImage.js";
+import AuthContext from "@util/AuthContext.js";
+import ElapsedTime from "@util/ElapsedTime.js";
+import BeautyButton from "@gui/BeautyButton.js";
+import UserImage from "@gui/UserImage.js";
 
-import * as CommentAPI from '../../../../api/CommentAPI.js'
+import * as CommentAPI from '@rest/CommentAPI.js'
 
 import Great from "./Great.js";
 import ReplyLine from "./ReplyLine.js";

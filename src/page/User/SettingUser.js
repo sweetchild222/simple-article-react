@@ -1,21 +1,21 @@
 import {useState, useContext, useEffect, useRef} from "react";
 
-import LoadingImage from "../../common/LoadingImage.js";
-import AuthContext from "../../util/AuthContext.js";
+import LoadingImage from "@gui/LoadingImage.js";
+import AuthContext from "@util/AuthContext.js";
 
-import * as UserAPI from '../../api/UserAPI.js'
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as BlogAPI from '../../api/BlogAPI.js'
-import * as CategoryAPI from '../../api/CategoryAPI.js'
+import * as UserAPI from '@rest/UserAPI.js'
+import * as BlobAPI from '@rest/BlobAPI.js'
+import * as BlogAPI from '@rest/BlogAPI.js'
+import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 
-import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
-import BeautyButton from '../../common/BeautyButton.js';
-import Modal from '../../common/Modal.js';
+import {pickImageFile, getImageFormat} from "@util/ImagePicker.js";
+import BeautyButton from '@gui/BeautyButton.js';
+import Modal from '@gui/Modal.js';
 import Password from './Password.js';
-import {blobFromCanvas} from "../../util/ImageUtil.js";
-import ImageCropModal from '../../common/ImageCropModal.js'
-import * as validator from '../../util/Validator.js'
+import {blobFromCanvas} from "@util/ImageUtil.js";
+import ImageCropModal from '@gui/ImageCropModal.js'
+import * as validator from './Validator.js'
 import {useNavigate} from 'react-router-dom';
 
 export default function() {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-import BeautyButton from '../../common/BeautyButton.js';
+import BeautyButton from '@gui/BeautyButton.js';
 import './Pagination.css'
 import { FaForward } from "react-icons/fa";
 import { FaBackward } from "react-icons/fa6";

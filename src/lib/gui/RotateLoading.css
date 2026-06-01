@@ -1,0 +1,26 @@
+.rotateLoading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 4px solid transparent;
+  border-top-color: green;
+  border-radius: 50%;
+  animation: spin_animation 1s ease infinite;
+}
+
+
+@keyframes spin_animation {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}

@@ -1,11 +1,11 @@
 
-import AuthContext from "../../util/AuthContext.js";
+import AuthContext from "@util/AuthContext.js";
 
 import {useContext, useEffect, useState} from 'react';
 
-import * as UserAPI from '../../api/UserAPI.js'
+import * as UserAPI from '@rest/UserAPI.js'
 import { useNavigate, useLocation} from 'react-router-dom';
-import BeautyButton from '../../common/BeautyButton.js';
+import BeautyButton from '@gui/BeautyButton.js';
 
 
 export default function() {

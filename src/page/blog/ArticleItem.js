@@ -1,10 +1,10 @@
 import {useContext} from "react";
 import {useNavigate} from 'react-router-dom';
-import AuthContext from "../../util/AuthContext.js";
-import ElapsedTime from "../../util/ElapsedTime.js";
-import CountWithUnit from "../../util/CountWithUnit.js";
-import LoadingImage from "../../common/LoadingImage.js";
-import * as ArticleAPI from '../../api/ArticleAPI.js'
+import AuthContext from "@util/AuthContext.js";
+import ElapsedTime from "@util/ElapsedTime.js";
+import CountWithUnit from "@util/CountWithUnit.js";
+import LoadingImage from "@gui/LoadingImage.js";
+import * as ArticleAPI from '@rest/ArticleAPI.js'
 import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { MdThumbDownAlt } from "react-icons/md";

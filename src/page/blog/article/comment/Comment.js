@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from "react";
 
-import BeautyButton from "../../../../common/BeautyButton.js";
+import BeautyButton from "@gui/BeautyButton.js";
 
 import * as UserRepository from "./UserRepository.js";
 import getCaretCoordinates from 'textarea-caret';

@@ -1,12 +1,12 @@
 import {useContext, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import * as RegistAPI from '../../api/RegistAPI.js'
-import * as UserAPI from '../../api/UserAPI.js'
-import * as validator from '../../util/Validator.js'
-import AuthContext from "../../util/AuthContext.js";
-import BeautyButton from "../../common/BeautyButton.js";
-import GoBack from "../../common/GoBack.js";
+import * as RegistAPI from '@rest/RegistAPI.js'
+import * as UserAPI from '@rest/UserAPI.js'
+import * as validator from './Validator.js'
+import AuthContext from "@util/AuthContext.js";
+import BeautyButton from "@gui/BeautyButton.js";
+import GoBack from "@gui/GoBack.js";
 
 
 export default function() {

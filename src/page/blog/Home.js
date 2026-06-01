@@ -1,13 +1,13 @@
 import {useState, useContext, useRef } from "react";
 import {useNavigate, useLocation, useParams} from 'react-router-dom';
 
-import * as ArticleAPI from '../../api/ArticleAPI.js'
+import * as ArticleAPI from '@rest/ArticleAPI.js'
 
-import AuthContext from "../../util/AuthContext.js";
+import AuthContext from "@util/AuthContext.js";
 import ArticleItem from "./ArticleItem.js";
 
-import OverlayLoading from "../../common/OverlayLoading.js";
-import ToInteger from "../../util/Integer.js";
+import OverlayLoading from "@gui/OverlayLoading.js";
+import ToInteger from "@util/Integer.js";
 import './Home.css'
 import Categories  from "./Categories.js";
 import Recents  from "./Recents.js";

@@ -22,8 +22,8 @@ import Posting from '../markdown/Posting.js'
 import ErrorBoundary from './ErrorBoundary.js'
 import PageNotFound from './PageNotFound.js'
 
-import AuthProvider from '../../util/AuthProvider.js'
-import ToastContainer from '../../common/ToastContainer.js'
+import AuthProvider from '@util/AuthProvider.js'
+import ToastContainer from '@gui/ToastContainer.js'
 
 
 export default function() {

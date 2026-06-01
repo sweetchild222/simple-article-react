@@ -3,15 +3,15 @@ import { useState, useRef, useEffect, useImperativeHandle } from 'react'
 import { usePublisher } from '@mdxeditor/gurx'
 import i18next from 'i18next'
 import ko from './ko.json'
-import BeautyButton from '../../common/BeautyButton.js'
-import Modal from '../../common/Modal.js'
+import BeautyButton from '@gui/BeautyButton.js'
+import Modal from '@gui/Modal.js'
 import '@mdxeditor/editor/style.css'
 import { CiYoutube } from "react-icons/ci";
 import { LuImagePlus } from "react-icons/lu";
 
-import {pickImageFile} from "../../util/ImagePicker.js";
-import ImageCropModal from '../../common/ImageCropModal.js'
-import {blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
+import {pickImageFile} from "@util/ImagePicker.js";
+import ImageCropModal from '@gui/ImageCropModal.js'
+import {blobFromCanvas, drawImage} from "@util/ImageUtil.js";
 
 
 import { PiTrash } from "react-icons/pi";

@@ -2,17 +2,17 @@
 import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
 
 import Split from '@uiw/react-split';
-import OverlayLoading from '../../common/OverlayLoading.js'
+import OverlayLoading from '@gui/OverlayLoading.js'
 import MDXEditor from './MDXEditor.js'
-import BeautyButton from '../../common/BeautyButton.js'
-import Modal from '../../common/Modal.js'
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as ArticleAPI from '../../api/ArticleAPI.js'
-import AuthContext from "../../util/AuthContext.js";
-import GoLogin from "../../common/GoLogin.js";
-import ExtractHead from "../../util/ExtractHead.js";
+import BeautyButton from '@gui/BeautyButton.js'
+import Modal from '@gui/Modal.js'
+import * as BlobAPI from '@rest/BlobAPI.js'
+import * as ArticleAPI from '@rest/ArticleAPI.js'
+import AuthContext from "@util/AuthContext.js";
+import GoLogin from "@gui/GoLogin.js";
+import ExtractHead from "@util/ExtractHead.js";
 import { useNavigate, useLocation, useBlocker} from 'react-router-dom';
-import MarkdownToHtml from '../../util/MarkdownToHtml.js'
+import MarkdownToHtml from '@util/MarkdownToHtml.js'
 
 
 export default function() {

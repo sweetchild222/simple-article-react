@@ -1,16 +1,16 @@
 import {useContext, useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 
-import * as UserAPI from '../../api/UserAPI.js'
-import * as BlogAPI from '../../api/BlogAPI.js'
+import * as UserAPI from '@rest/UserAPI.js'
+import * as BlogAPI from '@rest/BlogAPI.js'
 
-import Modal from "../../common/Modal.js"
-import LoadingImage from "../../common/LoadingImage.js";
-import BeautyButton from '../../common/BeautyButton.js';
-import OverlayLoading from '../../common/OverlayLoading.js';
+import Modal from "@gui/Modal.js"
+import LoadingImage from "@gui/LoadingImage.js";
+import BeautyButton from '@gui/BeautyButton.js';
+import OverlayLoading from '@gui/OverlayLoading.js';
 
-import Integer from "../../util/Integer.js";
-import AuthContext from "../../util/AuthContext.js";
+import Integer from "@util/Integer.js";
+import AuthContext from "@util/AuthContext.js";
 import PageNotFound from '../entry/PageNotFound.js';
 
 

@@ -1,7 +1,7 @@
 
 import {useState, useEffect} from "react";
 import LoadingImage from "./LoadingImage.js";
-import * as UserAPI from '@lib/rest/UserAPI.js'
+import * as UserAPI from '@rest/UserAPI.js'
 
 
 export default function(props) {

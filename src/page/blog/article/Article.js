@@ -2,21 +2,21 @@
 import {useState, useContext, useEffect} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 
-import * as ArticleAPI from '../../../api/ArticleAPI.js'
-import * as ArticleGreatAPI from '../../../api/ArticleGreatAPI.js'
+import * as ArticleAPI from '@rest/ArticleAPI.js'
+import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
 
-import AuthContext from "../../../util/AuthContext.js";
-import LoadingImage from "../../../common/LoadingImage.js";
-import BeautyButton from "../../../common/BeautyButton.js";
-import Modal from "../../../common/Modal.js";
-import Integer from "../../../util/Integer.js";
-import ElapsedTime from "../../../util/ElapsedTime.js";
-import CountWithUnit from "../../../util/CountWithUnit.js";
+import AuthContext from "@util/AuthContext.js";
+import LoadingImage from "@gui/LoadingImage.js";
+import BeautyButton from "@gui/BeautyButton.js";
+import Modal from "@gui/Modal.js";
+import Integer from "@util/Integer.js";
+import ElapsedTime from "@util/ElapsedTime.js";
+import CountWithUnit from "@util/CountWithUnit.js";
 import Great from "./Great.js"
 
 import CommentList from "./comment/CommentList.js"
-import OverlayLoading from "../../../common/OverlayLoading.js";
-import MarkdownToHtml from '../../../util/MarkdownToHtml.js'
+import OverlayLoading from "@gui/OverlayLoading.js";
+import MarkdownToHtml from '@util/MarkdownToHtml.js'
 
 import { TiEye } from "react-icons/ti";
 

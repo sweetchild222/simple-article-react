@@ -38,6 +38,9 @@ export default {
   resolve: {
     alias: {
       'react-native$': 'react-native-web',
+      '@util': path.resolve(__dirname, 'src/lib/util'),
+      '@rest': path.resolve(__dirname, 'src/lib/rest'),
+      '@gui': path.resolve(__dirname, 'src/lib/gui'),
     },
   },
 

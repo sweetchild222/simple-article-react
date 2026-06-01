@@ -1,12 +1,11 @@
-import {useContext, useEffect, useRef } from "react";
+import {useState, useContext, useRef} from "react";
+
 import * as UserAPI from '../../api/UserAPI.js'
-import { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
 import * as validator from '../../util/Validator.js'
 import AuthContext from "../../util/AuthContext.js";
 import BeautyButton from '../../common/BeautyButton.js';
-import GoLogin from "../../common/GoLogin.js";
 import OverlayLoading from "../../common/OverlayLoading.js";
+
 
 export default function({onClose}) {
     

@@ -1,11 +1,6 @@
-import React, {useState, useContext, useEffect, useRef } from "react";
-import axios from 'axios';
-
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as UserAPI from '../../api/UserAPI.js'
-import { BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom';
+import {useState, useContext, useEffect} from "react";
+import {useNavigate} from 'react-router-dom';
 import AuthContext from "../../util/AuthContext.js";
-import LoadingImage from "../../common/LoadingImage.js";
 import UserImage from "../../common/UserImage.js";
 import BeautyButton from "../../common/BeautyButton.js";
 

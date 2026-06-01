@@ -1,6 +1,6 @@
-import { useContext, useState, useRef, useEffect, useImperativeHandle } from 'react'
+import { useState, useRef, useEffect, useImperativeHandle } from 'react'
+
 import { usePublisher } from '@mdxeditor/gurx'
-import Modal from '../../common/Modal.js'
 import i18next from 'i18next'
 import ko from './ko.json'
 import BeautyButton from '../../common/BeautyButton.js'
@@ -8,19 +8,15 @@ import '@mdxeditor/editor/style.css'
 import { CiYoutube } from "react-icons/ci";
 import { LuImagePlus } from "react-icons/lu";
 
-
-
-import AuthContext from "../../util/AuthContext.js";
-import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
+import {pickImageFile} from "../../util/ImagePicker.js";
 import ImageCropModal from '../../common/ImageCropModal.js'
-import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
-import {scale, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
-import { BsTrash } from "react-icons/bs";
+import {blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
+
+
 import { PiTrash } from "react-icons/pi";
 import { FiYoutube } from "react-icons/fi";
 import { LuImageUp } from "react-icons/lu";
-
-import {dracula} from 'thememirror';
+import { dracula } from 'thememirror';
 import { EditorView } from '@codemirror/view'
 import './MDXEditor.css'
 

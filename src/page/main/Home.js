@@ -1,8 +1,6 @@
-import React from "react";
-import axios from 'axios';
 import BeautyButton from '../../common/BeautyButton.js'
-import {useContext, useState, useRef, useEffect, useCallback} from 'react';
-import { BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
+import {useContext, useState, useRef} from 'react';
+import { useNavigate} from 'react-router-dom';
 
 import * as BlobAPI from '../../api/BlobAPI.js'
 import * as ArticleAPI from '../../api/ArticleAPI.js'
@@ -10,10 +8,8 @@ import * as CommentAPI from '../../api/CommentAPI.js'
 import * as UserAPI from '../../api/UserAPI.js'
 import * as blobToBase64 from '../../util/BlobToBase64.js'
 
-
 import AuthContext from "../../util/AuthContext.js";
 import Modal from "../../common/Modal.js"
-
 
 export default function Home() {
 

@@ -1,26 +1,21 @@
 
-import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
+import { useContext, useState, useRef, useEffect} from 'react'
 
-import Modal from '../../common/Modal.js'
-import MDXEditor from './MDXEditor.js'
 import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import ExtractHead from "../../util/ExtractHead.js";
 import GoLogin from "../../common/GoLogin.js";
-import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
+import {pickImageFile} from "../../util/ImagePicker.js";
+import {useNavigate, useLocation} from 'react-router-dom';
 import * as ArticleAPI from '../../api/ArticleAPI.js'
 import * as CategoryAPI from '../../api/CategoryAPI.js'
-import { Prompt, useFetcher } from 'react-router'
 
 import ImageCropModal from '../../common/ImageCropModal.js'
 import LoadingImage from "../../common/LoadingImage.js";
 import OverlayLoading from "../../common/OverlayLoading.js";
 
-import {sacle, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
-import '../../common/RotateLoading.css'
-
+import {blobFromCanvas} from "../../util/ImageUtil.js";
 import MarkdownToHtml from '../../util/MarkdownToHtml.js'
 
 

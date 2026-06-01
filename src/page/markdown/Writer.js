@@ -1,28 +1,18 @@
 
 import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
 
-import Modal from '../../common/Modal.js'
+import Split from '@uiw/react-split';
 import OverlayLoading from '../../common/OverlayLoading.js'
 import MDXEditor from './MDXEditor.js'
 import BeautyButton from '../../common/BeautyButton.js'
 import * as BlobAPI from '../../api/BlobAPI.js'
+import * as ArticleAPI from '../../api/ArticleAPI.js'
 import AuthContext from "../../util/AuthContext.js";
 import GoLogin from "../../common/GoLogin.js";
 import ExtractHead from "../../util/ExtractHead.js";
-import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker} from 'react-router-dom';
-import * as ArticleAPI from '../../api/ArticleAPI.js'
-import { Prompt } from 'react-router'
-
-import ImageCropModal from '../../common/ImageCropModal.js'
-
-import {scale, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
-import LoadingImage from "../../common/LoadingImage.js";
-import '../../common/RotateLoading.css'
-
+import { useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import MarkdownToHtml from '../../util/MarkdownToHtml.js'
 
-import Split from '@uiw/react-split';
 
 export default function() {
     

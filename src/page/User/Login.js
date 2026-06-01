@@ -1,18 +1,12 @@
 
-import axios from 'axios';
-
 import AuthContext from "../../util/AuthContext.js";
-import React, { useContext, useEffect, useState} from 'react';
 
+import {useContext, useEffect, useState} from 'react';
 
 import * as UserAPI from '../../api/UserAPI.js'
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as blobToBase64 from '../../util/BlobToBase64.js'
 import { useNavigate, useLocation} from 'react-router-dom';
-import * as validator from '../../util/Validator.js'
-
 import BeautyButton from '../../common/BeautyButton.js';
-import GoBack from '../../common/GoBack.js';
+
 
 export default function() {
 

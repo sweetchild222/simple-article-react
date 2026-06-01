@@ -1,30 +1,18 @@
-import '../../common/RotateLoading.css'
-import LoadingImage from "../../common/LoadingImage.js";
-
-import {useContext, useEffect, useRef } from "react";
+import {useContext, useEffect, useRef, useState} from "react";
+import {useNavigate, useParams} from 'react-router-dom';
 
 import * as UserAPI from '../../api/UserAPI.js'
-import * as BlobAPI from '../../api/BlobAPI.js'
-import * as blobToBase64 from '../../util/BlobToBase64.js'
-import { useState } from 'react';
-import * as ArticleAPI from '../../api/ArticleAPI.js'
 import * as BlogAPI from '../../api/BlogAPI.js'
 
-import AuthContext from "../../util/AuthContext.js";
-import {pickImageFile, getImageFormat} from "../../util/ImagePicker.js";
 import Modal from "../../common/Modal.js"
-import GoLogin from "../../common/GoLogin.js";
-import Integer from "../../util/Integer.js";
-
+import LoadingImage from "../../common/LoadingImage.js";
 import BeautyButton from '../../common/BeautyButton.js';
-import {scale, blobFromCanvas, drawImage} from "../../util/ImageUtil.js";
-import { Outlet, Link } from 'react-router-dom';
-import ImageCropModal from '../../common/ImageCropModal.js'
-
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useBlocker, useParams} from 'react-router-dom';
-import PageNotFound from '../entry/PageNotFound.js';
-import UserImage from "../../common/UserImage.js";
 import OverlayLoading from '../../common/OverlayLoading.js';
+
+import Integer from "../../util/Integer.js";
+import AuthContext from "../../util/AuthContext.js";
+import PageNotFound from '../entry/PageNotFound.js';
+
 
 export default function() {
 
@@ -77,7 +65,6 @@ export default function() {
 
         navigate('setting')
     }
-
 
 
     const onClickNavigateBlog = async() => {

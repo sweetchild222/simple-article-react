@@ -1,7 +1,7 @@
 import {useContext, useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react'
 import { useLocation } from 'react-router-dom'
 import './ImageCropModal.css'
-import './RotateLoading.css'
+
 import Modal from '../common/Modal.js'
 
 import ImageCropper from './ImageCropper.js'

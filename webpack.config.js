@@ -26,7 +26,7 @@ const ProcessEnvPlug = new webpack.DefinePlugin({'process.env':JSON.stringify(pr
 
 export default {
 
-  entry: path.join(__dirname, 'src/page/entry/index.js'),
+  entry: path.join(__dirname, 'src/page/entry/Entry.js'),
 
   output: {
     filename: 'bundle.js',

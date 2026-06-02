@@ -19,7 +19,6 @@ import OverlayLoading from "@gui/OverlayLoading.js";
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
 
-
 export default function() {
     
     const location = useLocation()
@@ -251,7 +250,7 @@ export default function() {
     const onResultConfirmDelete = async(result) =>{
 
         if(result == true){
-                        
+
             const res = await ArticleAPI.deleteArticle(auth.jwt, state.id)
             
             if(res == null){
@@ -262,7 +261,7 @@ export default function() {
             window.showToast('삭제 되었습니다', 'info')
 
             navigate(-2)
-        }        
+        }
     }
 
 

@@ -8,7 +8,6 @@ import * as BlobAPI from '@rest/BlobAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
 
-
 import ImagePicker from "@util/ImagePicker.js";
 import BeautyButton from '@gui/BeautyButton.js';
 import Modal from '@gui/Modal.js';
@@ -25,7 +24,6 @@ export default function() {
     const [isModalPassword, setIsModalPassword] = useState(false)
     const [isModalWithdraw, setIsModalWithdraw] = useState(false)
     const [isModalDeleteBlog, setIsModalDeleteBlog] = useState(false)
-    
     
     const [isModalNickname, setIsModalNickname] = useState(false)    
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)

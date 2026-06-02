@@ -63,7 +63,7 @@ export default function() {
         if(!isEditable())
             return
 
-        navigate('setting')
+        navigate('configuration')
     }
 
 

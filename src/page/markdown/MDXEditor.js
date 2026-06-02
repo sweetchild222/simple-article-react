@@ -245,8 +245,6 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
 
     const insertImage = usePublisher(insertImage$)
 
-    
-
 
     useEffect(()=>{
 

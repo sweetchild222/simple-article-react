@@ -3,6 +3,7 @@ import {useState, useContext, useEffect} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
+import * as CategoryAPI from '@rest/CategoryAPI.js'
 import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
@@ -30,6 +31,9 @@ export default function() {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [article, setArticle] = useState(null)    
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
+    const [isEditLoading, setIsEditLoading] = useState(false)
+    const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+    const [category, setCategory] = useState(null)
     
     const navigate = useNavigate()
 
@@ -51,11 +55,26 @@ export default function() {
                 navigate('/notFound')
                 return
             }
-        
-            article.showed += 1
-            setArticle(article)
 
-            ArticleAPI.postArticleShowed(article_id)
+            CategoryAPI.getCategory(article.category_id).then(category => {
+
+                if(!category){
+                    navigate('/notFound')
+                    return
+                }
+
+                setArticle(article)
+                setCategory(category)                
+
+                ArticleAPI.postArticleShowed(article_id).then(showed => {
+                    
+                    if(showed == ''){
+                        console.log('asdf')
+                        article.showed += 1
+                        setArticle(structuredClone(article))
+                    }
+                })
+            })
         })
 
     }, [auth, blog_id, article_id])
@@ -69,11 +88,14 @@ export default function() {
     const onClickEdit = async() => {
         
         if(!isEditable())
-            return 
+            return
+
+        setIsEditLoading(true)
         
         const res = await ArticleAPI.getBlogArticles(auth.jwt, auth.blog_id, 'source_id=' + article.id + '&posted=0')
 
         if(res == null) {
+            setIsEditLoading(false)
             window.showToast('수정 본을 찾는데 실패했습니다', 'error')
             return
         }
@@ -88,29 +110,28 @@ export default function() {
             thumbnail:article.thumbnail,
             category_id:article.category_id,
             source_id:copiedArticle ? copiedArticle.source_id : article.id
-        }        
+        }
 
         if(!copiedArticle){
                         
             const resPost = await ArticleAPI.postArticle(auth.jwt, payload)
 
-            if(resPost == null){                
+            if(resPost == null){         
+                setIsEditLoading(false)
                 window.showToast('수정 본 생성에 실패 했습니다', 'error')
                 return
             }
 
+            setIsEditLoading(false)
             window.showToast('수정 본 생성에 성공하였습니다', 'info')
-
             const state = {id:resPost.id, ...payload}
 
             navigate('/blog/' + auth.blog_id + '/write', {state:state})
         }
         else{
-
+            setIsEditLoading(false)
             window.showToast('이미 수정 중인 글로 이동합니다', 'info')
-
-            const state = {id:copiedArticle.id, ...payload}            
-
+            const state = {id:copiedArticle.id, ...payload}
             navigate('/blog/' + auth.blog_id + '/write', {state:state})
         }    
     }
@@ -127,29 +148,37 @@ export default function() {
             return
 
         if(result == true){
+
+            setIsDeleteLoading(true)
             
             const res = await ArticleAPI.deleteArticle(auth.jwt, article_id)
+
+            setIsDeleteLoading(false)
             
-            if(res == null){
+            if(res == null){                
                 window.showToast('삭제가 실패 하였습니다', 'error')
                 return
             }
 
             window.showToast('삭제 되었습니다', 'info')
-
             navigate(-1)
         }
     }
 
+
+    const onClickNavigateCategory = async() =>{
+
+        navigate('/blog/' + b_id, {state:{category_id:category.id}})
+    }
 
 
     return article ? (<div style={{display:'flex', flexDirection: 'row', justifyContent:'center', marginTop:'20px'}}>
         <div style={{width:'2px', marginRight:'20px'}}/>
             <div style={{display:'flex', flexDirection: 'column', alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
                 <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
-                <div style={{height:'30px', display:'flex', flexDirection: 'row', width:'100%'}}>
-                    {isEditable() && <PrettyButton onClick={onClickEdit}>{'수정'}</PrettyButton>}
-                    {isEditable() && <PrettyButton onClick={onClickDelete}>{'삭제'}</PrettyButton>}
+                <div style={{height:'30px', display:'flex', flexDirection: 'row', width:'100%', alignItems:'center'}}>
+                    {isEditable() && <PrettyButton isLoading={isEditLoading} onClick={onClickEdit}>{'수정'}</PrettyButton>}
+                    {isEditable() && <PrettyButton isLoading={isDeleteLoading} onClick={onClickDelete}>{'삭제'}</PrettyButton>}
                     {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
                     <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</div>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
@@ -157,12 +186,13 @@ export default function() {
                         <div>{CountWithUnit(article.showed)}</div>
                     </div>
                     <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
+                    {category && <PrettyButton type={'transparent'} style={{color:'black'}} onClick={onClickNavigateCategory}>{category.name}</PrettyButton>}
                 </div>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
+                {/* <div style={{height:'30px'}}></div> */}
+                {/* {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>} */}
                 <div style={{height:'30px'}}></div>
-                {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>}
-                <div style={{height:'30px'}}></div>
-                <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%', backgroundColor:'lightpink'}}/>
+                <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
                 <CommentList article_id={article_id}/>
             </div>
         <div style={{width:'2px', marginLeft:'20px'}}/>

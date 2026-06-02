@@ -1,6 +1,25 @@
 import axios from 'axios'
 
 
+export async function getCategory(category_id){
+
+  try{
+    
+      const url = '/api/category/' + category_id
+
+      const response = await axios.get(url)
+
+      return response.data
+
+  }
+  catch(error){
+
+    console.log(error)
+
+    return null;
+  }
+}
+
 
 export async function getCategories(blog_id) {
 

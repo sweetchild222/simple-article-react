@@ -39,17 +39,17 @@ export default function() {
         ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, article_id).then((article) => {
 
             if(article == null){
-                navigate('/pageNotFound')
+                navigate('/notFound')
                 return
             }
 
             if(article.posted == 0){
-                navigate('/pageNotFound')
+                navigate('/notFound')
                 return
             }
 
             if(blog_id != article.blog_id){
-                navigate('/pageNotFound')
+                navigate('/notFound')
                 return
             }
         

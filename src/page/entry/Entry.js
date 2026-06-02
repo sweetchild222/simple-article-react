@@ -18,7 +18,7 @@ import Login from '../user/Login.js'
 import Writer from '../editor/Writer.js'
 import Posting from '../editor/Posting.js'
 import ErrorCatch from './ErrorCatch.js'
-import PageNotFound from './PageNotFound.js'
+import NotFound from '../common/NotFound.js'
 
 import AuthProvider from '@util/AuthProvider.js'
 import ToastContainer from '@gui/ToastContainer.js'
@@ -60,9 +60,9 @@ const Aplication = function() {
           { index: true, element: <User/>},
           { path: 'configuration', element: <Configuration/>}]
         },
-        { path: 'pageNotFound', element: <PageNotFound/>}
+        { path: 'notFound', element: <NotFound/>}
       ],
-      errorElement: <PageNotFound />
+      errorElement: <NotFound />
     },
     {
       path: "/blog/:b_id",

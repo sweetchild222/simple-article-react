@@ -11,7 +11,7 @@ import ProfileImage from '@gui/ProfileImage.js';
 
 import Integer from "@util/Integer.js";
 import AuthContext from "@util/AuthContext.js";
-import PageNotFound from '../entry/PageNotFound.js';
+import NotFound from '../common/NotFound.js';
 
 
 export default function() {
@@ -30,14 +30,14 @@ export default function() {
     useEffect(()=> {
 
         if(!user_id){
-            navigate('/pageNotFound')
+            navigate('/notFound')
             return
         }
 
         UserAPI.getUser(user_id).then((resUser)=>{
 
             if(resUser == null){
-                navigate('/pageNotFound')
+                navigate('/notFound')
                 return
             }
 

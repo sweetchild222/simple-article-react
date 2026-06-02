@@ -1,5 +1,5 @@
 
-import PrettyButton from './PrettyButton';
+import PrettyButton from '@gui/PrettyButton';
 import { useNavigate } from 'react-router-dom';
 
 export default function({value}) {

@@ -42,7 +42,7 @@ export default function() {
     useEffect(()=>{
 
         if(!blog_id){
-            navigate('/pageNotFound')
+            navigate('/notFound')
             return
         }
 
@@ -50,7 +50,7 @@ export default function() {
         BlogAPI.getBlog(blog_id).then((blog)=> {
 
             if(blog == null){
-                navigate('/pageNotFound')
+                navigate('/notFound')
                 return
             }
 

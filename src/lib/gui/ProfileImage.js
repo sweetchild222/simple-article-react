@@ -1,6 +1,6 @@
 
 import {useState, useEffect} from "react";
-import ProgressionImage from "./ProgressionImage.js";
+import StateProgsImage from "./StateProgsImage.js";
 import * as UserAPI from '@rest/UserAPI.js'
 
 
@@ -37,7 +37,7 @@ export default function(props) {
     },  [props.userId])
 
     return user ? 
-        (<ProgressionImage src={user.image} tooltip={user.nickname} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{...combinedStyle}}/>)
+        (<StateProgsImage src={user.image} tooltip={user.nickname} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{...combinedStyle}}/>)
         : <div style={{backgroundColor:'transparent', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width}}></div>
 }
 

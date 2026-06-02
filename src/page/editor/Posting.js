@@ -13,7 +13,7 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 import ImageCropModal from '@gui/ImageCropModal.js'
-import ProgressionImage from "@gui/ProgressionImage.js";
+import StateProgsImage from "@gui/StateProgsImage.js";
 import OverlayProgress from "@gui/OverlayProgress.js";
 
 import {blobFromCanvas} from "@util/ImageUtil.js";
@@ -303,7 +303,7 @@ export default function() {
                 {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}
             </select>
 
-            <ProgressionImage src={thumbnail} onClick={onClickThumbnail} width={512} height={512}/>
+            <StateProgsImage src={thumbnail} onClick={onClickThumbnail} width={512} height={512}/>
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}    
             <PrettyButton type='success' onClick={onClickPost}>{state.source_id != null ? '수정하기': '올리기'}</PrettyButton>
             <PrettyButton type='danger' onClick={onClickDelete}>삭제하기</PrettyButton>

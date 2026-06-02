@@ -1,6 +1,6 @@
 import {useState, useContext, useEffect, useRef} from "react";
 
-import ProgressionImage from "@gui/ProgressionImage.js";
+import StateProgsImage from "@gui/StateProgsImage.js";
 import AuthContext from "@util/AuthContext.js";
 
 import * as UserAPI from '@rest/UserAPI.js'
@@ -333,7 +333,7 @@ export default function() {
     
     return user ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
-        <ProgressionImage src={user.image} onClick={onClickProfile} width={profileWidth} height={profileHeight}/>
+        <StateProgsImage src={user.image} onClick={onClickProfile} width={profileWidth} height={profileHeight}/>
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <PrettyButton onClick={onClickLogout} type='warning'>로그아웃</PrettyButton>
         <Modal title={'로그아웃 하시겠습니까?'} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>

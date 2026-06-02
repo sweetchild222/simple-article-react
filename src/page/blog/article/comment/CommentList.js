@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import PrettyButton from "@gui/PrettyButton.js";
-import UserImage from "@gui/UserImage.js";
+import ProfileImage from "@gui/ProfileImage.js";
 
 import * as CommentAPI from '@rest/CommentAPI.js'
 
@@ -345,7 +345,7 @@ export default function({article_id}) {
                 <div key={data.id} style={{display:'flex', flexDirection: 'column', justifyContent:'left', border:'1px solid lightgray'}}>
                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                            <UserImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
+                            <ProfileImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
                             <ReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
                         </div>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
@@ -367,7 +367,7 @@ export default function({article_id}) {
                             }
 
                             {data.id == openReplyEditCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                <UserImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
+                                <ProfileImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
                                 <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
                             </div>
                             }
@@ -385,7 +385,7 @@ export default function({article_id}) {
                             {isShowReplies(data.id) && data.replies.map((reply, index) =>
                                 <div key={reply.id} id={'replyDiv'} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                                        <UserImage id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
+                                        <ProfileImage id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
                                         <div style={{flex:'1'}}/>
                                     </div>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>

@@ -1,15 +1,15 @@
 
 import {useState, useEffect} from "react";
-import LoadingImage from "./LoadingImage.js";
+import ProgressionImage from "./ProgressionImage.js";
 import * as UserAPI from '@rest/UserAPI.js'
 
 
 export default function(props) {
-        
+    
     const width = props.size == null ? 64 : props.size
     const height = width
     const borderRadius = parseInt(width / 2)
-        
+    
     const [user, setUser] = useState(props.user)
 
     const combinedStyle = {
@@ -24,7 +24,7 @@ export default function(props) {
         UserAPI.getUser(props.userId).then((res)=>{
             
             if(res == null)
-                return            
+                return
 
             if(res.image == '')
                 res.image = '/image/user.png'
@@ -37,7 +37,7 @@ export default function(props) {
     },  [props.userId])
 
     return user ? 
-        (<LoadingImage src={user.image} tooltip={user.nickname} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{...combinedStyle}}/>)
-        : null
+        (<ProgressionImage src={user.image} tooltip={user.nickname} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{...combinedStyle}}/>)
+        : <div style={{backgroundColor:'transparent', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width}}></div>
 }
 

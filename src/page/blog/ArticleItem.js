@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import CountWithUnit from "@util/CountWithUnit.js";
-import LoadingImage from "@gui/LoadingImage.js";
+import ProgressionImage from "@gui/ProgressionImage.js";
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
@@ -75,7 +75,7 @@ export default function({article, categoryName}) {
                 </div>
 
             </div>
-            {article.thumbnail != '' && <LoadingImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
+            {article.thumbnail != '' && <ProgressionImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
         </div>
     )
 }

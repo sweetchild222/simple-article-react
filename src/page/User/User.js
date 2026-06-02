@@ -5,7 +5,7 @@ import * as UserAPI from '@rest/UserAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
 
 import Modal from "@gui/Modal.js"
-import LoadingImage from "@gui/LoadingImage.js";
+import ProgressionImage from "@gui/ProgressionImage.js";
 import PrettyButton from '@gui/PrettyButton.js';
 import OverlayProgress from '@gui/OverlayProgress.js';
 
@@ -116,7 +116,7 @@ export default function() {
     return user ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <label style={{marginBottom:'10px'}}>{user.nickname}</label>
-        <LoadingImage src={user.image} width={profileWidth} height={profileHeight}/>
+        <ProgressionImage src={user.image} width={profileWidth} height={profileHeight}/>
         {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</PrettyButton>}
         {!user.blog_id && validAuth(auth) && auth.user_id == user_id && <PrettyButton onClick={onClickCreateBlog} type='success'>블로그 개설하기</PrettyButton>}
         <Modal title={'블로그를 개설하시겠습니까?'} type={'yesno'} isOpen={isCreateBlogModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateBlogModalOpen(false)}></Modal>

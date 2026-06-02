@@ -6,7 +6,7 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
-import LoadingImage from "@gui/LoadingImage.js";
+import ProgressionImage from "@gui/ProgressionImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import Modal from "@gui/Modal.js";
 import Integer from "@util/Integer.js";
@@ -161,7 +161,7 @@ export default function() {
                 </div>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 <div style={{height:'30px'}}></div>
-                {article.thumbnail != '' && <LoadingImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>}
+                {article.thumbnail != '' && <ProgressionImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>}
                 <div style={{height:'30px'}}></div>
                 <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%', backgroundColor:'lightpink'}}/>
                 <CommentList article_id={article_id}/>

@@ -5,7 +5,6 @@ import * as UserAPI from '@rest/UserAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
 
 import Modal from "@gui/Modal.js"
-import StateProgsImage from "@gui/StateProgsImage.js";
 import PrettyButton from '@gui/PrettyButton.js';
 import OverlayProgress from '@gui/OverlayProgress.js';
 import ProfileImage from '@gui/ProfileImage.js';

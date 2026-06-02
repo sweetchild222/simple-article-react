@@ -1,6 +1,5 @@
 import {useState, useContext, useEffect, useRef} from "react";
 
-import StateProgsImage from "@gui/StateProgsImage.js";
 import AuthContext from "@util/AuthContext.js";
 
 import * as UserAPI from '@rest/UserAPI.js'
@@ -20,7 +19,7 @@ import {useNavigate} from 'react-router-dom';
 
 export default function() {
     
-    const {auth, updateAuth, validAuth, reloadAuth, removeAuth} = useContext(AuthContext)    
+    const {auth, updateAuth, validAuth, reloadAuth, removeAuth} = useContext(AuthContext)
     const [isModalLogout, setIsModalLogout] = useState(false)
     const [isModalPassword, setIsModalPassword] = useState(false)
     const [isModalWithdraw, setIsModalWithdraw] = useState(false)

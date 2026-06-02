@@ -68,8 +68,7 @@ export default function() {
 
                 ArticleAPI.postArticleShowed(article_id).then(showed => {
                     
-                    if(showed == ''){
-                        console.log('asdf')
+                    if(showed != null){
                         article.showed += 1
                         setArticle(structuredClone(article))
                     }

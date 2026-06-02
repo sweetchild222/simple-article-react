@@ -3,7 +3,6 @@ import {useState, useEffect, useRef} from "react";
 import PrettyButton from "@gui/PrettyButton.js";
 
 import * as UserRepository from "./UserRepository.js";
-import getCaretCoordinates from 'textarea-caret';
 import DOMPurify from 'dompurify';
 import TextArea from "./TextArea.js";
 

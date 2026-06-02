@@ -1,5 +1,5 @@
+import {useState, useLayoutEffect, useEffect, useRef } from "react";
 
-import React, {useState, useContext, useLayoutEffect, useEffect, useRef } from "react";
 
 const useResize = (ref) => {
 

@@ -41,6 +41,7 @@ export default {
       '@util': path.resolve(__dirname, 'src/lib/util'),
       '@rest': path.resolve(__dirname, 'src/lib/rest'),
       '@gui': path.resolve(__dirname, 'src/lib/gui'),
+      '@page': path.resolve(__dirname, 'src/page'),
     },
   },
 
@@ -66,7 +67,7 @@ export default {
   devServer: {    
     port:3001,
     open: true,
-    hot: true,    
+    hot: true,
     historyApiFallback:true,
     // historyApiFallback: {
     //   index: '/index.html',

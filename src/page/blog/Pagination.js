@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 import PrettyButton from '@gui/PrettyButton.js';
 import './Pagination.css'
 import { FaForward } from "react-icons/fa";

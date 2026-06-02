@@ -5,7 +5,6 @@ import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import ProfileImage from "@gui/ProfileImage.js";
-
 import * as CommentAPI from '@rest/CommentAPI.js'
 
 import Great from "./Great.js";

@@ -11,7 +11,7 @@ import ProfileImage from '@gui/ProfileImage.js';
 
 import Integer from "@util/Integer.js";
 import AuthContext from "@util/AuthContext.js";
-import NotFound from '../common/NotFound.js';
+import NotFound from '@page/common/NotFound.js';
 
 
 export default function() {

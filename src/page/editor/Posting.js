@@ -5,7 +5,7 @@ import PrettyButton from '@gui/PrettyButton.js'
 import * as BlobAPI from '@rest/BlobAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import ExtractHead from "./ExtractHead.js";
-import GoLogin from "../common/GoLogin.js";
+import GoLogin from "@page/common/GoLogin.js";
 import Modal from "@gui/Modal.js";
 import ImagePicker from "@util/ImagePicker.js";
 import {useNavigate, useLocation} from 'react-router-dom';

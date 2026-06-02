@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ErrorBoundary extends React.Component {
+class ErrorCatch extends React.Component {
   
   constructor(props) {
     
@@ -38,4 +38,4 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export default ErrorBoundary
+export default ErrorCatch

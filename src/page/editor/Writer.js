@@ -9,7 +9,7 @@ import Modal from '@gui/Modal.js'
 import * as BlobAPI from '@rest/BlobAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import AuthContext from "@util/AuthContext.js";
-import GoLogin from "../common/GoLogin.js";
+import GoLogin from "@page/common/GoLogin.js";
 import ExtractHead from "./ExtractHead.js";
 import { useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import MarkdownToHtml from '@util/MarkdownToHtml.js'

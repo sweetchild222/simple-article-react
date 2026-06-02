@@ -6,7 +6,7 @@ import * as UserAPI from '@rest/UserAPI.js'
 import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from "@gui/PrettyButton.js";
-import GoBack from "../common/GoBack.js";
+import GoBack from "@page/common/GoBack.js";
 
 
 export default function() {

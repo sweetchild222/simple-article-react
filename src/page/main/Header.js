@@ -6,7 +6,7 @@ import PrettyButton from "@gui/PrettyButton.js";
 
 export default function() {
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [reloadKey, setReloadKey] = useState(0)
     const navigate = useNavigate()
 

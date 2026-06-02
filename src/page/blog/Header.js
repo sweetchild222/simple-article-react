@@ -25,7 +25,7 @@ export default function() {
     const blog_id = Integer(b_id)
 
     const navigate = useNavigate()
-            
+
     const refLabelTitle = useRef(null)
     const refImageCrop  = useRef(null)
 
@@ -34,10 +34,7 @@ export default function() {
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    
-    const blogImageWidth = 1920
-    const blogImageHeight = 168
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
 
     useEffect(()=>{
 
@@ -110,7 +107,10 @@ export default function() {
         if(refImageCrop.current == null)
             return
 
-        const canvas = await refImageCrop.current.export(blogImageWidth, blogImageHeight)
+        const imageWidth = 1920
+        const imageHeight = 1080
+
+        const canvas = await refImageCrop.current.export(imageWidth, imageHeight)
         
         const blob = await blobFromCanvas(canvas)
 
@@ -172,7 +172,7 @@ export default function() {
     }
 
     return blog ? (
-            <div style={{backgroundColor:' #494D5F', height:'168px', minHeight:'168px', backgroundImage:`url(` + blog.image + '?size=' + blogImageWidth + 'x' + blogImageHeight + `)`, backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black', display:'block'}}>
+            <div style={{backgroundColor:' #494D5F', height:'168px', minHeight:'168px', backgroundImage:`url(` + blog.image + '?size=1920x168', backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black', display:'block'}}>
                 <div style={{backgroundColor:'#00000080', display: 'flex', alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
                     <ProfileImage size={96} shape={'circle'} userId={blog.user_id} onClick={onClickNavigateUser}/>
                     <div style={{display: 'flex', alignItems: 'center', marginLeft:'32px', marginRight:'32px'}}>
@@ -180,7 +180,7 @@ export default function() {
                         {isEditable() && <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>}
                         <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
                         {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}
-                        {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={blogImageWidth / blogImageHeight} selectMinWidth={blogImageHeight * 3}></ImageCropModal>}                        
+                        {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
                     </div>
                     <div style={{flex:1}}/>
                     <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>

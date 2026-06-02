@@ -120,5 +120,5 @@ export default function(props) {
         return {x:x, y:y}
     }
     
-    return (<div ref={refDiv} style={{flex:'1', backgroundImage: `url(${containerCanvasUrl})`}}></div>)
+    return containerCanvasUrl ? (<div ref={refDiv} style={{flex:'1', backgroundImage: `url(${containerCanvasUrl})`}}></div>) : (null)
 }

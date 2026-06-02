@@ -7,7 +7,7 @@ import AuthContext from "@util/AuthContext.js";
 import ExtractHead from "@util/ExtractHead.js";
 import GoLogin from "@gui/GoLogin.js";
 import Modal from "@gui/Modal.js";
-import {pickImageFile} from "@util/ImagePicker.js";
+import ImagePicker from "@util/ImagePicker.js";
 import {useNavigate, useLocation} from 'react-router-dom';
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
@@ -131,7 +131,7 @@ export default function() {
 
     const onClickThumbnail = async() => {
 
-        const imageFile = await pickImageFile()
+        const imageFile = await ImagePicker()
 
         if(imageFile == null)
             return

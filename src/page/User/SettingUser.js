@@ -9,7 +9,7 @@ import * as BlogAPI from '@rest/BlogAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 
-import {pickImageFile, getImageFormat} from "@util/ImagePicker.js";
+import ImagePicker from "@util/ImagePicker.js";
 import BeautyButton from '@gui/BeautyButton.js';
 import Modal from '@gui/Modal.js';
 import Password from './Password.js';
@@ -96,7 +96,7 @@ export default function() {
 
     const onClickProfile = async() =>{
 
-        const imageFile = await pickImageFile()
+        const imageFile = await ImagePicker()
 
         if(imageFile == null)
             return

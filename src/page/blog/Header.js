@@ -12,7 +12,7 @@ import Integer from "@util/Integer.js";
 
 import { MdEdit } from "react-icons/md";
 import { RiImageAiFill } from "react-icons/ri";
-import {pickImageFile} from "@util/ImagePicker.js";
+import ImagePicker from "@util/ImagePicker.js";
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import ImageCropModal from '@gui/ImageCropModal.js'
 import Modal from '@gui/Modal.js'
@@ -86,7 +86,7 @@ export default function() {
 
     const onClickEditImage = async() =>{
 
-        const imageFile = await pickImageFile()
+        const imageFile = await ImagePicker()
 
         if(imageFile == null)
             return

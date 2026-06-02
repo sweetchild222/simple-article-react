@@ -1,49 +1,5 @@
 
-const pickFile = async() => {
-
-    try{
-        
-        const options = {
-            types: [{
-                description: 'Images',
-                accept: {'image/png': ['.png'], 'image/jpeg': ['.jpeg', '.jpg'], 'image/gif': ['.gif'], 'image/webp': ['.webp']}}
-            ],
-            excludeAcceptAllOption: false,
-            multiple: false
-        }
-
-        const [fileHandle] = await window.showOpenFilePicker(options)
-        return await fileHandle.getFile()
-    }
-    catch(error) {
-        
-        return null
-    }
-}
-
-
-export const pickImageFile = async() => {
-
-    const file = await pickFile()
-
-    if(file == null)
-        return null
-
-    try{
-        
-        const format = await getImageFormat(file)
-        
-        return {file:file, format:format}
-    }
-    catch(error) {
-
-        return null
-    }
-
-}
-
-
-export const getImageFormat = (file) => {
+const getImageFormat = (file) => {
 
     return new Promise((resolve, reject) => {
 
@@ -79,4 +35,51 @@ export const getImageFormat = (file) => {
         reader.readAsArrayBuffer(file.slice(0, 12))
     })
 }
+
+
+
+
+const pickFile = async() => {
+
+    try{
+        
+        const options = {
+            types: [{
+                description: 'Images',
+                accept: {'image/png': ['.png'], 'image/jpeg': ['.jpeg', '.jpg'], 'image/gif': ['.gif'], 'image/webp': ['.webp']}}
+            ],
+            excludeAcceptAllOption: false,
+            multiple: false
+        }
+
+        const [fileHandle] = await window.showOpenFilePicker(options)
+        return await fileHandle.getFile()
+    }
+    catch(error) {
+        
+        return null
+    }
+}
+
+
+export default async function(){
+
+    const file = await pickFile()
+
+    if(file == null)
+        return null
+
+    try{
+        
+        const format = await getImageFormat(file)
+        
+        return {file:file, format:format}
+    }
+    catch(error) {
+
+        return null
+    }
+
+}
+
 

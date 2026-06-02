@@ -9,7 +9,7 @@ import '@mdxeditor/editor/style.css'
 import { CiYoutube } from "react-icons/ci";
 import { LuImagePlus } from "react-icons/lu";
 
-import {pickImageFile} from "@util/ImagePicker.js";
+import ImagePicker from "@util/ImagePicker.js";
 import ImageCropModal from '@gui/ImageCropModal.js'
 import {blobFromCanvas, drawImage} from "@util/ImageUtil.js";
 
@@ -174,7 +174,7 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
 
     const onClickPickFile = async() => {
 
-      const imageFile = await pickImageFile()
+      const imageFile = await ImagePicker()
 
       if(imageFile == null)
             return

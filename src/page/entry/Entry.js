@@ -15,8 +15,8 @@ import User from '../user/User.js'
 import Regist from '../user/Regist.js'
 import Login from '../user/Login.js'
 
-import Writer from '../markdown/Writer.js'
-import Posting from '../markdown/Posting.js'
+import Writer from '../editor/Writer.js'
+import Posting from '../editor/Posting.js'
 import ErrorCatch from './ErrorCatch.js'
 import PageNotFound from './PageNotFound.js'
 

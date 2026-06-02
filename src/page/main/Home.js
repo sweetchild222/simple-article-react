@@ -7,7 +7,7 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CommentAPI from '@rest/CommentAPI.js'
 import * as UserAPI from '@rest/UserAPI.js'
 import * as blobToBase64 from '@util/BlobToBase64.js'
-import BeautyButton from '@gui/BeautyButton.js'
+import PrettyButton from '@gui/PrettyButton.js'
 
 import AuthContext from "@util/AuthContext.js";
 
@@ -60,9 +60,9 @@ export default function Home() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%', marginTop:'40px'}}>            
       
-      <BeautyButton disabled={false} isLoading={isLoading} type='success' onClick={deleteComment}>댓글 삭제</BeautyButton>      
+      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={deleteComment}>댓글 삭제</PrettyButton>      
     
-      <BeautyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUser}>유저 목록</BeautyButton>
+      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUser}>유저 목록</PrettyButton>
       
 
       {/* <button onClick={test}>imageRegion</button>

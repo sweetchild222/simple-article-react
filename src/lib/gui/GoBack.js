@@ -1,5 +1,5 @@
 
-import BeautyButton from './BeautyButton';
+import PrettyButton from './PrettyButton';
 import { useNavigate } from 'react-router-dom';
 
 export default function({value}) {
@@ -15,7 +15,7 @@ export default function({value}) {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <label>{value}</label>
             <div style={{height:'10px'}}></div>
-            <BeautyButton type='success' onClick={onClickGoBack}>뒤로 가기</BeautyButton>
+            <PrettyButton type='success' onClick={onClickGoBack}>뒤로 가기</PrettyButton>
         </div>
     )
 }

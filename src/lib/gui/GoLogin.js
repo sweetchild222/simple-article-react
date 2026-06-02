@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react'
 import AuthContext from "@util/AuthContext.js";
-import BeautyButton from '@gui/BeautyButton';
+import PrettyButton from '@gui/PrettyButton';
 
 
 
@@ -29,7 +29,7 @@ export default function() {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <label>세션이 만료 되었습니다. 다시 로그인 해주세요</label>
             <div style={{height:'10px'}}></div>
-            <BeautyButton type='success' onClick={onClickNavigateLogin}>로그인 다시 하기</BeautyButton>
+            <PrettyButton type='success' onClick={onClickNavigateLogin}>로그인 다시 하기</PrettyButton>
         </div>
     )
 }

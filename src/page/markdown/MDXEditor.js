@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useImperativeHandle } from 'react'
 import { usePublisher } from '@mdxeditor/gurx'
 import i18next from 'i18next'
 import ko from './ko.json'
-import BeautyButton from '@gui/BeautyButton.js'
+import PrettyButton from '@gui/PrettyButton.js'
 import Modal from '@gui/Modal.js'
 import '@mdxeditor/editor/style.css'
 import { CiYoutube } from "react-icons/ci";
@@ -325,8 +325,8 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
           <input ref={refInputUrl} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
           <input ref={refInputTitle} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
           <input ref={refInputAlt} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>
-          <BeautyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm}>확인</BeautyButton>
-          <BeautyButton type='cancel' onClick={()=>setIsImageModalOpen(false)}>취소</BeautyButton>
+          <PrettyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm}>확인</PrettyButton>
+          <PrettyButton type='cancel' onClick={()=>setIsImageModalOpen(false)}>취소</PrettyButton>
         </div>
         </Modal>
       </div>

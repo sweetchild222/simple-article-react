@@ -2,7 +2,7 @@ import {useState, useRef, useEffect, useImperativeHandle} from 'react'
 
 import './ImageCropModal.css'
 import ImageCropper from './ImageCropper.js'
-import BeautyButton from "@gui/BeautyButton.js"
+import PrettyButton from "@gui/PrettyButton.js"
 import ReactDOM from 'react-dom';
 
 export default function({ref, isOpen, onClose, file, onClickApply, containerWidth=768, containerHeight=768, selectMinWidth, keepRatio}) {
@@ -82,8 +82,8 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
               <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
                 {isOpen && file && <ImageCropper ref={refCropper} file={file} containerWidth={containerWidth} containerHeight={containerHeight} selectMinWidth={selectMinWidth} keepRatio={keepRatio}/>}
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                  <BeautyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</BeautyButton>
-                  <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>
+                  <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</PrettyButton>
+                  <PrettyButton type='cancel' onClick={onClose}>취소</PrettyButton>
                 </div>
               </div>
           </dialog>,

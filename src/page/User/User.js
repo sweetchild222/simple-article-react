@@ -6,7 +6,7 @@ import * as BlogAPI from '@rest/BlogAPI.js'
 
 import Modal from "@gui/Modal.js"
 import LoadingImage from "@gui/LoadingImage.js";
-import BeautyButton from '@gui/BeautyButton.js';
+import PrettyButton from '@gui/PrettyButton.js';
 import OverlayLoading from '@gui/OverlayLoading.js';
 
 import Integer from "@util/Integer.js";
@@ -117,11 +117,11 @@ export default function() {
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <label style={{marginBottom:'10px'}}>{user.nickname}</label>
         <LoadingImage src={user.image} width={profileWidth} height={profileHeight}/>
-        {user.blog_id && <BeautyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</BeautyButton>}
-        {!user.blog_id && validAuth(auth) && auth.user_id == user_id && <BeautyButton onClick={onClickCreateBlog} type='success'>블로그 개설하기</BeautyButton>}
+        {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</PrettyButton>}
+        {!user.blog_id && validAuth(auth) && auth.user_id == user_id && <PrettyButton onClick={onClickCreateBlog} type='success'>블로그 개설하기</PrettyButton>}
         <Modal title={'블로그를 개설하시겠습니까?'} type={'yesno'} isOpen={isCreateBlogModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateBlogModalOpen(false)}></Modal>
 
-        {isEditable() && <BeautyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</BeautyButton>}
+        {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</PrettyButton>}
       </div>) : <OverlayLoading/>
 }
 

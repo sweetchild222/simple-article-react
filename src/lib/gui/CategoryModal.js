@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 
-import BeautyButton from "./BeautyButton.js"
+import PrettyButton from "./PrettyButton.js"
 import ReactDOM from 'react-dom';
 import { VscTrash } from "react-icons/vsc";
 
@@ -169,14 +169,14 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
                   {newCategories && newCategories.map((data, index) => 
                     <div key={data.id} style={{ display: 'flex', flexDirection: 'row'}}>
                       <input key={data.id} style={{color:'black', width:'150px'}} maxLength={16} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
-                      <BeautyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.article_count > 0) ? 'gray' : 'black')}}size={15}/></BeautyButton>
+                      <PrettyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.article_count > 0) ? 'gray' : 'black')}}size={15}/></PrettyButton>
                     </div>
                   )}
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                  <BeautyButton type='confirm' onClick={onCliCkAdd}>추가</BeautyButton>
-                  <BeautyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</BeautyButton>
-                  <BeautyButton type='cancel' onClick={onClose}>취소</BeautyButton>
+                  <PrettyButton type='confirm' onClick={onCliCkAdd}>추가</PrettyButton>
+                  <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</PrettyButton>
+                  <PrettyButton type='cancel' onClick={onClose}>취소</PrettyButton>
                 </div>
               </div>
           </dialog>,

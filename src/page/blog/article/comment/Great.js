@@ -2,7 +2,7 @@ import {useState, useContext} from "react";
 import {useNavigate} from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
-import BeautyButton from "@gui/BeautyButton.js";
+import PrettyButton from "@gui/PrettyButton.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 
 import { MdThumbUpAlt } from "react-icons/md";
@@ -173,17 +173,17 @@ export default function({comment_id, like_count, dislike_count}) {
 
     return (
         <div style={{display:'flex', flexDirection: 'row', justifyContent:'start', alignItems:'center'}}>
-            <BeautyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
+            <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                 <MdThumbUpAlt size={22}/>
                 <div style={{width:'10px'}}/>
                 <div>{CountWithUnit(likeCount)}</div>
-            </BeautyButton>
+            </PrettyButton>
             <div style={{width:'20px'}}></div>
-            <BeautyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
+            <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
                 <MdThumbDownAlt size={22}/>
                 <div style={{width:'10px'}}/>
                 <div>{CountWithUnit(dislikeCount)}</div>
-            </BeautyButton>
+            </PrettyButton>
         </div>
     )
 }

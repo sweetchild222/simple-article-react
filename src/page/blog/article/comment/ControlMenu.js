@@ -1,7 +1,7 @@
 
 import {useState, useEffect, useRef } from "react";
 
-import BeautyButton from "@gui/BeautyButton.js";
+import PrettyButton from "@gui/PrettyButton.js";
 import { HiDotsVertical } from "react-icons/hi";
 
 import './ControlMenu.css'
@@ -56,10 +56,10 @@ export default function(props) {
     
         
     return (<div style={{position:'relative', display:'inline-block', ...combinedStyle}}>
-                <BeautyButton ref={refButton} type={'transparent'} isLoading={props.isLoading} style={{color:'black', margin: '0 auto'}} onClick={()=> setIsOpenMenu(value => !value)}><HiDotsVertical size={22}/></BeautyButton>
+                <PrettyButton ref={refButton} type={'transparent'} isLoading={props.isLoading} style={{color:'black', margin: '0 auto'}} onClick={()=> setIsOpenMenu(value => !value)}><HiDotsVertical size={22}/></PrettyButton>
                 {isOpenMenu && <ul ref={refMenu} className={'popupList'} style={{width:'60px'}}>
-                    <BeautyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black', width:'100%', height:'50px'}} onClick={onClickEdit}>수정</BeautyButton>
-                    <BeautyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black', width:'100%', height:'50px'}} onClick={onClickRemove}>삭제</BeautyButton>
+                    <PrettyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black', width:'100%', height:'50px'}} onClick={onClickEdit}>수정</PrettyButton>
+                    <PrettyButton type={'transparent'} style={{whiteSpace: 'nowrap', color:'black', width:'100%', height:'50px'}} onClick={onClickRemove}>삭제</PrettyButton>
                 </ul>}
             </div>)
 

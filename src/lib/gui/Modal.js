@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import BeautyButton from './BeautyButton';
+import PrettyButton from './PrettyButton';
 
 
 export default ({type, title, description, isCloseOutsideClick=true, defaultValue, maxLength, isOpen, onResult, onClose, onInput, children}) => {
@@ -120,11 +120,11 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
             {description != null && <p style={{whiteSpace: 'pre', fontStyle:'italic', color:'darkgrey'}}>{description}</p>}
             {type == 'custom' && children}
             {type == 'input' && <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength}/>}
-            {type == 'input' && <BeautyButton onClick={onClickInputYes} type='success'>확인</BeautyButton>}
-            {type == 'input' && < BeautyButton onClick={onClickNo} type='warning'>아니오</BeautyButton>}
-            {type == 'confirm' && <BeautyButton onClick={onClickConfirm} type='confirm'>확인</BeautyButton>}
-            {type == 'yesno' && < BeautyButton onClick={onClickYes} type='success'>예</BeautyButton>}
-            {type == 'yesno' && < BeautyButton onClick={onClickNo} type='warning'>아니오</BeautyButton>}
+            {type == 'input' && <PrettyButton onClick={onClickInputYes} type='success'>확인</PrettyButton>}
+            {type == 'input' && < PrettyButton onClick={onClickNo} type='warning'>아니오</PrettyButton>}
+            {type == 'confirm' && <PrettyButton onClick={onClickConfirm} type='confirm'>확인</PrettyButton>}
+            {type == 'yesno' && < PrettyButton onClick={onClickYes} type='success'>예</PrettyButton>}
+            {type == 'yesno' && < PrettyButton onClick={onClickNo} type='warning'>아니오</PrettyButton>}
             </div>
         </dialog>,
         document.getElementById('modal-root')

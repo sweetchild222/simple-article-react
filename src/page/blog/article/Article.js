@@ -7,7 +7,7 @@ import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
 import LoadingImage from "@gui/LoadingImage.js";
-import BeautyButton from "@gui/BeautyButton.js";
+import PrettyButton from "@gui/PrettyButton.js";
 import Modal from "@gui/Modal.js";
 import Integer from "@util/Integer.js";
 import ElapsedTime from "@util/ElapsedTime.js";
@@ -149,8 +149,8 @@ export default function() {
             <div style={{display:'flex', flexDirection: 'column', alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
                 <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
                 <div style={{height:'30px', display:'flex', flexDirection: 'row', width:'100%'}}>
-                    {isEditable() && <BeautyButton onClick={onClickEdit}>{'수정'}</BeautyButton>}
-                    {isEditable() && <BeautyButton onClick={onClickDelete}>{'삭제'}</BeautyButton>}
+                    {isEditable() && <PrettyButton onClick={onClickEdit}>{'수정'}</PrettyButton>}
+                    {isEditable() && <PrettyButton onClick={onClickDelete}>{'삭제'}</PrettyButton>}
                     {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
                     <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</div>
                     <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>

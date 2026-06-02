@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
-import BeautyButton from "@gui/BeautyButton.js";
+import PrettyButton from "@gui/PrettyButton.js";
 import UserImage from "@gui/UserImage.js";
 
 import * as CommentAPI from '@rest/CommentAPI.js'
@@ -338,7 +338,7 @@ export default function({article_id}) {
             {isOpenCommentEdit && <Writer onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
             <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
                 <label>{'댓글 (' + comments.length + ')'}</label>
-                {!isOpenCommentEdit && <BeautyButton type={'success'} onClick={onOpenCommentEdit}>{'댓글 작성'}</BeautyButton>}
+                {!isOpenCommentEdit && <PrettyButton type={'success'} onClick={onOpenCommentEdit}>{'댓글 작성'}</PrettyButton>}
             </div>
             
             {comments.map((data, index) => 
@@ -362,7 +362,7 @@ export default function({article_id}) {
                             {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                 <Great comment_id={data.id} like_count={data.like_count} dislike_count={data.dislike_count}></Great>                                
                                 <div style={{width:'20px'}}></div>
-                                <BeautyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical size={22}/>}</BeautyButton>
+                                <PrettyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical size={22}/>}</PrettyButton>
                             </div>
                             }
 
@@ -373,13 +373,13 @@ export default function({article_id}) {
                             }
 
                             {data.replies.length > 0 &&
-                                <BeautyButton id={'replyButton'} type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
+                                <PrettyButton id={'replyButton'} type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
                                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                         {'답글 (' + data.replies.length + ')'}
                                     </div>
                                     <div style={{width:'10px'}}/>
                                     {isShowReplies(data.id) ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
-                                </BeautyButton>
+                                </PrettyButton>
                             }
                             
                             {isShowReplies(data.id) && data.replies.map((reply, index) =>

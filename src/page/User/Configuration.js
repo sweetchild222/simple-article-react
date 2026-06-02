@@ -9,7 +9,7 @@ import * as BlogAPI from '@rest/BlogAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 import ImagePicker from "@util/ImagePicker.js";
-import BeautyButton from '@gui/BeautyButton.js';
+import PrettyButton from '@gui/PrettyButton.js';
 import Modal from '@gui/Modal.js';
 import Password from './Password.js';
 import {blobFromCanvas} from "@util/ImageUtil.js";
@@ -335,19 +335,19 @@ export default function() {
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
         <LoadingImage src={user.image} onClick={onClickProfile} width={profileWidth} height={profileHeight}/>
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
-        <BeautyButton onClick={onClickLogout} type='warning'>로그아웃</BeautyButton>
+        <PrettyButton onClick={onClickLogout} type='warning'>로그아웃</PrettyButton>
         <Modal title={'로그아웃 하시겠습니까?'} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
-        <BeautyButton onClick={onClickPassword} type='default'>비밀번호 변경</BeautyButton>
+        <PrettyButton onClick={onClickPassword} type='default'>비밀번호 변경</PrettyButton>
         <Modal type={'custom'} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)}>
             <Password onClose={() => setIsModalPassword(false)}/>
         </Modal>
         <Modal title={'패스워드를 입력하세요'} description={user.blog_id ? '회원을 탈퇴하더라도 블로그는 남습니다' : null} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPasswordForUser}/>
-        <BeautyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</BeautyButton>
+        <PrettyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</PrettyButton>
         
         <Modal title={'닉네임을 입력하세요'} type={'input'} isCloseOutsideClick={false} defaultValue={user.nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
-        <BeautyButton onClick={onClickUserNickname} type='success'>닉네임 설정</BeautyButton>
+        <PrettyButton onClick={onClickUserNickname} type='success'>닉네임 설정</PrettyButton>
 
-        {user.blog_id && <BeautyButton onClick={onClickDeleteBlog} type='success'>블로그 삭제</BeautyButton>}
+        {user.blog_id && <PrettyButton onClick={onClickDeleteBlog} type='success'>블로그 삭제</PrettyButton>}
         <Modal title={'패스워드를 입력하세요'} description={'블로그에 카테고리가 남아 있으면 먼저 삭제해주세요'} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalDeleteBlog} onClose={()=>setIsModalDeleteBlog(false)} onInput={onInputPasswordForBlog}/>
       </div>) : null
 }

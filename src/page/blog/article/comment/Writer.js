@@ -1,7 +1,7 @@
 import React, {useState, useContext, useRef} from "react";
 
 import TextArea from "./TextArea.js";
-import BeautyButton from "@gui/BeautyButton.js";
+import PrettyButton from "@gui/PrettyButton.js";
 
 export default function(props) {
 
@@ -54,9 +54,9 @@ export default function(props) {
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'10px'}}/>
-                    <BeautyButton isLoading={isPostLoading} onClick={()=>onClickPost()}>{'올리기'}</BeautyButton>
+                    <PrettyButton isLoading={isPostLoading} onClick={()=>onClickPost()}>{'올리기'}</PrettyButton>
                     <div style={{width:'10px'}}/>
-                    <BeautyButton disabled={isPostLoading ? true : false} onClick={()=>onClickCancel()}>{'취소'}</BeautyButton>
+                    <PrettyButton disabled={isPostLoading ? true : false} onClick={()=>onClickCancel()}>{'취소'}</PrettyButton>
                 </div>
             </div>
         )

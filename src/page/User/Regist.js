@@ -5,7 +5,7 @@ import * as RegistAPI from '@rest/RegistAPI.js'
 import * as UserAPI from '@rest/UserAPI.js'
 import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
-import BeautyButton from "@gui/BeautyButton.js";
+import PrettyButton from "@gui/PrettyButton.js";
 import GoBack from "@gui/GoBack.js";
 
 
@@ -238,11 +238,11 @@ export default function() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <input id='input_email' type="text" maxLength="254" onChange={onChangeEmail} placeholder="이메일" maxLength={254}/>
-        <BeautyButton isLoading={isLoadingSendCode} disabled={isDisabledSendCode} onClick={onClickSendVerifyCode}>인증 번호 발송</BeautyButton>
+        <PrettyButton isLoading={isLoadingSendCode} disabled={isDisabledSendCode} onClick={onClickSendVerifyCode}>인증 번호 발송</PrettyButton>
       </div>
 
       <input id='input_verifyCode' type="number" maxLength="6" onChange={onChangeVerifyCode} placeholder="인증 코드"/>
-      <BeautyButton isLoading={isLoadingVerify} disabled={isDisabledVerify} onClick={onClickRequestVerify}>인증 번호 확인</BeautyButton>
+      <PrettyButton isLoading={isLoadingVerify} disabled={isDisabledVerify} onClick={onClickRequestVerify}>인증 번호 확인</PrettyButton>
       <label>{isVerified ? '인증 완료' : '미 인증'}</label>
 
       <div style={{height:100}}></div>
@@ -252,7 +252,7 @@ export default function() {
       <input id='input_confirm_password' type="text" onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20}/>
       <label>비밀번호 조건: 소문자, 대문자, 숫자, 특수문자 각 1개 이상 포함</label>
       <label>{passwordValid ? '유효한 패스워드' : '무효한 패스워드'}</label>
-      <BeautyButton isLoading={isLoadingRegist} disabled={isDisabledRegist} onClick={onClickRegist} type='confirm'>회원 가입</BeautyButton>
+      <PrettyButton isLoading={isLoadingRegist} disabled={isDisabledRegist} onClick={onClickRegist} type='confirm'>회원 가입</PrettyButton>
     </div>
   ) : (<GoBack value={'로그인된 사용자는 접근 할 수 없습니다'}/>)
 }

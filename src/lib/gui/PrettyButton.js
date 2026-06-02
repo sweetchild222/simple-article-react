@@ -1,4 +1,4 @@
-import './BeautyButton.css';
+import './PrettyButton.css';
 
 export default function(props) {    
 

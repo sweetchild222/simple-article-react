@@ -9,7 +9,7 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
-import BeautyButton from "@gui/BeautyButton.js";
+import PrettyButton from "@gui/PrettyButton.js";
 import { FaPen } from "react-icons/fa6"
 
 
@@ -95,7 +95,7 @@ export default function({ref, blogId, categoryId}) {
 
     return (
         <div style={{display:'flex', flexDirection:'column'}}>
-            <BeautyButton type={'transparent'} tooltip='새글 작성' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}><FaPen size={30}/></BeautyButton>
+            <PrettyButton type={'transparent'} tooltip='새글 작성' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}><FaPen size={30}/></PrettyButton>
         </div>
     )
 }

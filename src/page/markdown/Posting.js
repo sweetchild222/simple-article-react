@@ -1,7 +1,7 @@
 
 import { useContext, useState, useRef, useEffect} from 'react'
 
-import BeautyButton from '@gui/BeautyButton.js'
+import PrettyButton from '@gui/PrettyButton.js'
 import * as BlobAPI from '@rest/BlobAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import ExtractHead from "./ExtractHead.js";
@@ -305,11 +305,11 @@ export default function() {
 
             <LoadingImage src={thumbnail} onClick={onClickThumbnail} width={512} height={512}/>
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}    
-            <BeautyButton type='success' onClick={onClickPost}>{state.source_id != null ? '수정하기': '올리기'}</BeautyButton>
-            <BeautyButton type='danger' onClick={onClickDelete}>삭제하기</BeautyButton>
-            <BeautyButton type='success' onClick={onClickSave}>임시 저장</BeautyButton>
+            <PrettyButton type='success' onClick={onClickPost}>{state.source_id != null ? '수정하기': '올리기'}</PrettyButton>
+            <PrettyButton type='danger' onClick={onClickDelete}>삭제하기</PrettyButton>
+            <PrettyButton type='success' onClick={onClickSave}>임시 저장</PrettyButton>
             <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
-            <BeautyButton type='danger' onClick={onClickLeave}>뒤로가기</BeautyButton>
+            <PrettyButton type='danger' onClick={onClickLeave}>뒤로가기</PrettyButton>
         </div>
         ) : (<GoLogin/>)
 }

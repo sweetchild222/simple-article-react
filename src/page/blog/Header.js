@@ -6,7 +6,7 @@ import * as BlogAPI from '@rest/BlogAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
 import UserImage from "@gui/UserImage.js";
-import BeautyButton from "@gui/BeautyButton.js";
+import PrettyButton from "@gui/PrettyButton.js";
 import Integer from "@util/Integer.js";
 
 
@@ -177,9 +177,9 @@ export default function() {
                     <UserImage size={96} userId={blog.user_id} onClick={onClickNavigateUser}/>
                     <div style={{display: 'flex', alignItems: 'center', marginLeft:'32px', marginRight:'32px'}}>
                         <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':2,  backgroundColor:'#00000000', color:'white', fontSize:'36px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', alignItems:'center', textOverflow:'ellipsis'}}>{blog.title}</label>
-                        {isEditable() && <BeautyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></BeautyButton>}
+                        {isEditable() && <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>}
                         <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
-                        {isEditable() && <BeautyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></BeautyButton>}
+                        {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}
                         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={blogImageWidth / blogImageHeight} selectMinWidth={blogImageHeight * 3}></ImageCropModal>}                        
                     </div>
                     <div style={{flex:1}}/>

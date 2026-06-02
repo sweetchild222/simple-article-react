@@ -1,7 +1,7 @@
 import {useState, useContext, useEffect, useRef, useImperativeHandle, useCallback} from "react";
 
 import getCaretCoordinates from 'textarea-caret';
-import BeautyButton from "@gui/BeautyButton.js";
+import PrettyButton from "@gui/PrettyButton.js";
 
 import './TextArea.css'
 
@@ -274,7 +274,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
                         {atCandidates.map((user, index) =>
 
                             user.nickname != '' ? 
-                                <BeautyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%', height:'30px'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</BeautyButton>
+                                <PrettyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%', height:'30px'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</PrettyButton>
                             :null)
                         }
                     </ul>

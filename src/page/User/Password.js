@@ -3,7 +3,7 @@ import {useState, useContext, useRef} from "react";
 import * as UserAPI from '@rest/UserAPI.js'
 import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
-import BeautyButton from '@gui/BeautyButton.js';
+import PrettyButton from '@gui/PrettyButton.js';
 import OverlayLoading from "@gui/OverlayLoading.js";
 
 
@@ -139,8 +139,8 @@ export default function({onClose}) {
             <input ref={refNewPassword} id='input_new_password' type='text' maxLength={20} onKeyDown={onKeyDownNew}/>
             <label htmlFor='input_repeat_password'>비밀번호 확인</label>
             <input ref={refRepeatPassword} id='input_repeat_password' type='text' maxLength={20} onKeyDown={onKeyDownRepeat}/>
-            <BeautyButton type="confirm" onClick={onClickPasswordChange}>비밀번호 변경</BeautyButton>
-            <BeautyButton type="confirm" onClick={onClose} type='danger'>취소</BeautyButton>
+            <PrettyButton type="confirm" onClick={onClickPasswordChange}>비밀번호 변경</PrettyButton>
+            <PrettyButton type="confirm" onClick={onClose} type='danger'>취소</PrettyButton>
         </div>
     )
 }

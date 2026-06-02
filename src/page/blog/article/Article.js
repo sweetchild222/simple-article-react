@@ -15,7 +15,7 @@ import CountWithUnit from "@util/CountWithUnit.js";
 import Great from "./Great.js"
 
 import CommentList from "./comment/CommentList.js"
-import OverlayLoading from "@gui/OverlayLoading.js";
+import OverlayProgress from "@gui/OverlayProgress.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
 
 import { TiEye } from "react-icons/ti";
@@ -167,5 +167,5 @@ export default function() {
                 <CommentList article_id={article_id}/>
             </div>
         <div style={{width:'2px', marginLeft:'20px'}}/>
-        </div>) : <OverlayLoading/>
+        </div>) : <OverlayProgress/>
 }

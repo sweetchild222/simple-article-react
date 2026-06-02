@@ -1,4 +1,4 @@
-.overlayLoading::after {
+.overlayProgress::after {
   content: "";
   position: absolute;
   width: 256px;

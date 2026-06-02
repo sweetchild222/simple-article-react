@@ -7,7 +7,7 @@ import * as BlogAPI from '@rest/BlogAPI.js'
 import Modal from "@gui/Modal.js"
 import LoadingImage from "@gui/LoadingImage.js";
 import PrettyButton from '@gui/PrettyButton.js';
-import OverlayLoading from '@gui/OverlayLoading.js';
+import OverlayProgress from '@gui/OverlayProgress.js';
 
 import Integer from "@util/Integer.js";
 import AuthContext from "@util/AuthContext.js";
@@ -122,6 +122,6 @@ export default function() {
         <Modal title={'블로그를 개설하시겠습니까?'} type={'yesno'} isOpen={isCreateBlogModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateBlogModalOpen(false)}></Modal>
 
         {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</PrettyButton>}
-      </div>) : <OverlayLoading/>
+      </div>) : <OverlayProgress/>
 }
 

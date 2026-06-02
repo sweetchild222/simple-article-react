@@ -14,7 +14,7 @@ import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 import ImageCropModal from '@gui/ImageCropModal.js'
 import LoadingImage from "@gui/LoadingImage.js";
-import OverlayLoading from "@gui/OverlayLoading.js";
+import OverlayProgress from "@gui/OverlayProgress.js";
 
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
@@ -32,7 +32,7 @@ export default function() {
     const refPreview = useRef(null)
     const refImageCrop = useRef(null)
 
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false)
+    const [isOverlayProgress, setIsOverlayProgress] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     
     const [thumbnail, setThumbnail] = useState(state.thumbnail != '' ? state.thumbnail : '')
@@ -236,11 +236,11 @@ export default function() {
             category_id:category_id
         }
 
-        setIsOverlayLoading(true)
+        setIsOverlayProgress(true)
         
         const res = await ArticleAPI.putArticle(auth.jwt, article_id, payload)
 
-        setIsOverlayLoading(false)
+        setIsOverlayProgress(false)
 
         return res
 
@@ -295,7 +295,7 @@ export default function() {
 
     return validAuth(auth) ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            {isOverlayLoading && <OverlayLoading/>}
+            {isOverlayProgress && <OverlayProgress/>}
             <label htmlFor='input_title'>제목</label>
             <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title}/>
 

@@ -4,13 +4,13 @@ import * as UserAPI from '@rest/UserAPI.js'
 import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton.js';
-import OverlayLoading from "@gui/OverlayLoading.js";
+import OverlayProgress from "@gui/OverlayProgress.js";
 
 
 export default function({onClose}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [isOverlayLoading, setIsOverlayLoading] = useState(false)
+    const [isOverlayProgress, setIsOverlayProgress] = useState(false)
 
     const refCurPassword = useRef(null)
     const refNewPassword = useRef(null)
@@ -68,11 +68,11 @@ export default function({onClose}) {
             return
         }
 
-        setIsOverlayLoading(true)
+        setIsOverlayProgress(true)
         
         const result = await passwordChange(current_password, new_password)
         
-        setIsOverlayLoading(false)
+        setIsOverlayProgress(false)
 
         if(result == null){
             window.showToast('비밀번호 변경이 실패하였습니다', 'error')            
@@ -131,7 +131,7 @@ export default function({onClose}) {
 
     return (
         <div style={{flex:1, backgroundColor:'rgba(255,255,0,0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            {isOverlayLoading && <OverlayLoading/>}
+            {isOverlayProgress && <OverlayProgress/>}
             <label htmlFor='input_current_password'>기존 비밀번호</label>
             <input ref={refCurPassword} id='input_current_password' type='text' maxLength={20} onKeyDown={onKeyDownCurrent}/>
             <label>비밀번호 조건: 8자 ~ 20자 사이 문자열로 영어소문자, 영어대문자, 숫자, 특수문자 포함</label>

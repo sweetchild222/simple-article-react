@@ -6,7 +6,7 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import ArticleItem from "./ArticleItem.js";
 
-import OverlayLoading from "@gui/OverlayLoading.js";
+import OverlayProgress from "@gui/OverlayProgress.js";
 import ToInteger from "@util/Integer.js";
 import './Home.css'
 import Categories  from "./Categories.js";
@@ -30,7 +30,7 @@ export default function() {
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const [selectedCategory, setSelectedCategory] = useState(null)  
   const [articles, setArticles] = useState(null)
-  const [isOverlayLoading, setIsOverlayLoading] = useState(false)
+  const [isOverlayProgress, setIsOverlayProgress] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
 
   const countPerPage = 8
@@ -64,7 +64,7 @@ export default function() {
 
   const onClickCategory = async(category) => {
 
-    setIsOverlayLoading(true)
+    setIsOverlayProgress(true)
 
     setSelectedCategory(category)
 
@@ -76,7 +76,7 @@ export default function() {
     if(articles != null)
       setArticles(articles)
 
-    setIsOverlayLoading(false)
+    setIsOverlayProgress(false)
     
     setReloadKey(prev => prev + 1)
 
@@ -102,7 +102,7 @@ export default function() {
 
   const onClickPage = async(page) => {
 
-    setIsOverlayLoading(true)    
+    setIsOverlayProgress(true)    
 
     const category_id = selectedCategory.id != 0 ? selectedCategory.id : null
     const posted = selectedCategory.id != 0 ? null : 0
@@ -112,13 +112,13 @@ export default function() {
     if(articles != null)
       setArticles(articles)
 
-    setIsOverlayLoading(false)
+    setIsOverlayProgress(false)
   }
 
   
   return blog_id ? (
       <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%'}}>
-        {isOverlayLoading && <OverlayLoading/>}
+        {isOverlayProgress && <OverlayProgress/>}
         <div style={{width:'100px'}}/>
           <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
               {selectedCategory && articles && (

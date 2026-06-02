@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
 import './ImageCropper.css'
-import './RotateLoading.css'
+import './RotateProgress.css'
 
 export default function({ref, file, containerWidth=768, containerHeight=768, selectMinWidth=128, keepRatio}) {
 
@@ -771,7 +771,7 @@ export default function({ref, file, containerWidth=768, containerHeight=768, sel
   }, [eventMouseMove, eventMouseUp])
 
   return (
-      <div id='container' className={`${isLoading ? 'rotateLoading': ''}`} ref={refContain} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
+      <div id='container' className={`${isLoading ? 'rotateProgress': ''}`} ref={refContain} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
       <canvas ref={refCover} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
         {selectRect != null && 
         <div id='select' ref={refSelect} onMouseDown={onMouseDown}

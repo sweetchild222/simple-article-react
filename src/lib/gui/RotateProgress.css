@@ -1,4 +1,4 @@
-.rotateLoading::after {
+.rotateProgress::after {
   content: "";
   position: absolute;
   width: 16px;

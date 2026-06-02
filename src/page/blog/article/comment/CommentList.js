@@ -345,7 +345,7 @@ export default function({article_id}) {
                 <div key={data.id} style={{display:'flex', flexDirection: 'column', justifyContent:'left', border:'1px solid lightgray'}}>
                     <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                            <ProfileImage size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
+                            <ProfileImage shape={'circle'} size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
                             <ReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
                         </div>
                         <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
@@ -367,7 +367,7 @@ export default function({article_id}) {
                             }
 
                             {data.id == openReplyEditCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                <ProfileImage size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
+                                <ProfileImage shape={'circle'} size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
                                 <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
                             </div>
                             }
@@ -385,7 +385,7 @@ export default function({article_id}) {
                             {isShowReplies(data.id) && data.replies.map((reply, index) =>
                                 <div key={reply.id} id={'replyDiv'} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
-                                        <ProfileImage id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
+                                        <ProfileImage shape={'circle'} id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
                                         <div style={{flex:'1'}}/>
                                     </div>
                                     <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>

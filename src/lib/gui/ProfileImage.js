@@ -5,10 +5,11 @@ import * as UserAPI from '@rest/UserAPI.js'
 
 
 export default function(props) {
-    
+        
+    const shape = props.shape == null ? 'rect' : props.shape
     const width = props.size == null ? 64 : props.size
     const height = width
-    const borderRadius = parseInt(width / 2)
+    const borderRadius = shape == 'circle' ? parseInt(width / 2) : 3
     
     const [user, setUser] = useState(props.user)
 

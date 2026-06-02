@@ -14,6 +14,7 @@ import Modal from '@gui/Modal.js';
 import Password from './Password.js';
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import ImageCropModal from '@gui/ImageCropModal.js'
+import ProfileImage from '@gui/ProfileImage.js'
 import * as validator from './Validator.js'
 import {useNavigate} from 'react-router-dom';
 
@@ -28,15 +29,11 @@ export default function() {
     const [isModalNickname, setIsModalNickname] = useState(false)    
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
-
-    const profileWidth = 256
-    const profileHeight = 256
-
     const [user, setUser] = useState(null)
 
+    const profileSize = 256
     const refImageCrop = useRef(null)
-
-    const navigate = useNavigate()    
+    const navigate = useNavigate() 
 
     useEffect(()=> {
 
@@ -50,9 +47,7 @@ export default function() {
             if(resUser == null)
                 return
 
-            resUser.image = resUser.image != '' ?  (resUser.image + '?size=' + profileWidth + 'x' + profileHeight) : '/image/user.png'
-            setUser(resUser)                    
-            //setNickname(resUser.nickname)
+            setUser(resUser)            
         })
 
     }, [auth])
@@ -117,8 +112,8 @@ export default function() {
         if(!refImageCrop.current)
             return
 
-        const dWidth = profileWidth
-        const dHeight = profileHeight
+        const dWidth = profileSize
+        const dHeight = profileSize
 
         const canvas = await refImageCrop.current.export(dWidth, dHeight)
         
@@ -144,10 +139,8 @@ export default function() {
             window.showToast('프로필 설정에 실패했습니다', 'error')
             return
         }        
-
-        
-        user.image = url + '?size=' + profileWidth + 'x' + profileHeight
-
+    
+        user.image = url
         setUser(structuredClone(user))
         
         setIsModalImageCrop(false)
@@ -333,7 +326,7 @@ export default function() {
     
     return user ? (
       <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
-        <StateProgsImage src={user.image} onClick={onClickProfile} width={profileWidth} height={profileHeight}/>
+        <ProfileImage user={user} onClick={onClickProfile} size={profileSize}/>
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <PrettyButton onClick={onClickLogout} type='warning'>로그아웃</PrettyButton>
         <Modal title={'로그아웃 하시겠습니까?'} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>

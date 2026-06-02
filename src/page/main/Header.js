@@ -59,7 +59,7 @@ export default function() {
                 <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown} ></input>
                 <div style={{margin:'0px 0px 0px 10px', width:'64px'}}>
                     {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn}>로그인</PrettyButton>}
-                    {validAuth(auth) && <ProfileImage key={reloadKey} userId={auth.user_id} onClick={onClickUser}/>}
+                    {validAuth(auth) && <ProfileImage shape={'circle'} key={reloadKey} userId={auth.user_id} onClick={onClickUser}/>}
                 </div>
             </div>
     )

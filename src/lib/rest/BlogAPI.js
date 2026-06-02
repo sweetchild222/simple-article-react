@@ -1,81 +1,32 @@
-import axios from 'axios'
-
-
+import * as restAPI from './RestAPI'
 
 export async function getBlog(id) {
 
-    try{
+  const url = '/api/blog/' + id
 
-      const url = '/api/blog/' + id
-
-      const response = await axios.get(url)
-
-      return response.data    
-
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url)
 }
 
 
 export async function postBlog(jwt, payload){
 
-  try{
+  const url = '/api/blog'
 
-    const authorization = 'Bearer '.concat(jwt);
-
-    const response = await axios.post('/api/blog', payload, { headers: {Authorization: authorization} })
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.post(url, payload, jwt)  
 }
-
-
 
 
 export async function deleteBlog(jwt, blog_id){
 
-  try{
+  const url = '/api/blog/' + blog_id
 
-    const authorization = 'Bearer '.concat(jwt);
-
-    const response = await axios.delete('/api/blog/' + blog_id, { headers: {Authorization: authorization} })
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.del(url, jwt)
 }
 
 
 export async function patchBlog(jwt, blog_id, payload){
 
-  try{
+  const url = '/api/blog/' + blog_id
 
-    const authorization = 'Bearer '.concat(jwt);
-    
-    const response = await axios.patch('/api/blog/' + blog_id, payload, { headers: {Authorization: authorization}})
-
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.patch(url, payload, jwt)
 }

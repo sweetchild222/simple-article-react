@@ -1,72 +1,36 @@
-import axios from 'axios'
+import * as restAPI from './RestAPI'
 
 
 export async function postUser(usename, password){
 
-  try{
+  const url = '/api/user'
+  const payload = {username: usename, password: password}
     
-    const response = await axios.post('/api/user', {username: usename, password: password})
-
-    return response.data
-
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.post(url, payload)
 }
 
-  
+
 export async function getExistUser(username){
-      
-  try{
-  
-    const response = await axios.get('/api/user/exist/' + username)
-    
-    return response.data
 
-  }
-  catch(error){
+  const url = '/api/user/exist/' + username
 
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.get(url)
 }
 
 
 export async function postVerifyEmail(email) {
   
-  try{
-
-    const response = await axios.post('/api/verifyEmail', {email: email})
-
-    return response.data
-
-  }
-  catch(error){
-
-    console.log(error)
-  }
+  const url = '/api/verifyEmail'
+  const payload = {email: email}
+    
+  return await restAPI.post(url, payload)
 }
 
 
 export async function getVerifyEmail(email, code){
-
-  try{
     
-    const response = await axios.get('/api/verifyEmail/' + email + '/' + code)
+  const url = '/api/verifyEmail/' + email + '/' + code
 
-    return response.data
-          
-  }
-  catch(error){
-
-    console.log(error)
-  }
+  return await restAPI.get(url)
 }
-
-
 

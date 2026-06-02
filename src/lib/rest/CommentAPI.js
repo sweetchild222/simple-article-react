@@ -1,86 +1,35 @@
-import axios from 'axios'
-
+import * as restAPI from './RestAPI'
 
 
 export async function getArticleComments(article_id) {
+  
+  const url = '/api/article/' + article_id + '/comment'
 
-  try{
-              
-      const response = await axios.get('/api/article/' + article_id + '/comment')
-
-      return response.data    
-
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url)
 }
 
 
 
-export async function postComment(jwt, payload){
+export async function postComment(jwt, payload) {
 
+  const url = '/api/comment'
 
-    try{
-
-    const authorization = 'Bearer '.concat(jwt);
-
-    const response = await axios.post('/api/comment', payload, { headers: {Authorization: authorization} })
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.post(url, payload, jwt)
 }
 
 
 
 export async function putComment(jwt, comment_id, payload) {
 
+  const url = '/api/comment/' + comment_id
 
-    try{
-
-    const authorization = 'Bearer '.concat(jwt);
-
-    const response = await axios.put('/api/comment/' + comment_id, payload, { headers: {Authorization: authorization} })
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.put(url, payload, jwt)
 }
-
 
 
 export async function deleteComment(jwt, comment_id){
+  
+  const url = '/api/comment/' + comment_id
 
-
-    try{
-
-    const authorization = 'Bearer '.concat(jwt);
-
-    const response = await axios.delete('/api/comment/' + comment_id, { headers: {Authorization: authorization} })
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.del(url, jwt)
 }
-
-
-

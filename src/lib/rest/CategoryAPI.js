@@ -1,104 +1,42 @@
-import axios from 'axios'
-
+import * as restAPI from './RestAPI'
 
 export async function getCategory(category_id){
-
-  try{
     
-      const url = '/api/category/' + category_id
+  const url = '/api/category/' + category_id
 
-      const response = await axios.get(url)
-
-      return response.data
-
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url)
 }
 
 
 export async function getCategories(blog_id) {
+      
+  const url = '/api/blog/' + blog_id + '/category'
 
-  try{
-    
-      const url = '/api/blog/' + blog_id + '/category'
-
-      const response = await axios.get(url)
-
-      return response.data
-
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url)
 }
 
 
 export async function deleteCategory(jwt, category_id){
-
-
-    try{
-
-    const authorization = 'Bearer '.concat(jwt);
-
-    const response = await axios.delete('/api/category/' + category_id, { headers: {Authorization: authorization} })
     
-    return response.data
-  }
-  catch(error){
+  const url = '/api/category/' + category_id
 
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.del('/api/category/' + category_id, jwt)    
 }
-
-
 
 
 export async function patchCategory(jwt, category_id, payload){
-
-  try{
-
-    const authorization = 'Bearer '.concat(jwt);
-    
-    const response = await axios.patch('/api/category/' + category_id, payload, { headers: {Authorization: authorization}})
-
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  
+  const url = '/api/category/' + category_id
+  
+  return await restAPI.patch(url, payload, jwt)
 }
 
 
-
 export async function postCategory(jwt, payload){
+  
+  const url = '/api/category'
 
-  try{
-
-    const authorization = 'Bearer '.concat(jwt);
-
-    const response = await axios.post('/api/category', payload, { headers: {Authorization: authorization} })
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.post(url, payload, jwt)    
 }
 
 

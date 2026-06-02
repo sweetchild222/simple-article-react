@@ -1,90 +1,35 @@
-import axios from 'axios'
+import * as restAPI from './RestAPI'
 
 
 export async function postProfile(jwt, payload) {
 
-  try {
+  const url = '/api/blob/profile'
 
-    const authStr = 'Bearer '.concat(jwt);
-  
-    const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
-    
-    const response = await axios.post('/api/blob/profile', payload, { headers: headers})
-
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.postBlob(url, payload, jwt)
 }
-
 
 
 export async function postArticleImage(jwt, payload) {
 
-  try {
+  const url = '/api/blob/article'
 
-    const authStr = 'Bearer '.concat(jwt);
-  
-    const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
-    
-    const response = await axios.post('/api/blob/article', payload, { headers: headers})
-
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.postBlob(url, payload, jwt)
 }
-
 
 
 export async function postArticleThumbnail(jwt, payload) {
 
-  try {
+  const url = '/api/blob/article/thumbnail'
 
-    const authStr = 'Bearer '.concat(jwt);
-  
-    const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
-    
-    const response = await axios.post('/api/blob/article/thumbnail', payload, { headers: headers})
-
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.postBlob(url, payload, jwt)
 }
-
 
 
 export async function postBlogImage(jwt, payload) {
 
-  try {
+  const url = '/api/blob/blog/image'
 
-    const authStr = 'Bearer '.concat(jwt);
-  
-    const headers = {Authorization: authStr, 'Content-Type':'multipart/form-data'};
-    
-    const response = await axios.post('/api/blob/blog/image', payload, { headers: headers})
-
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.postBlob(url, payload, jwt)
 }
 
 

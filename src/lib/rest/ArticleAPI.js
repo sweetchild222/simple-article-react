@@ -1,147 +1,58 @@
-import axios from 'axios'
+import * as restAPI from './RestAPI'
 
+export async function postArticle(jwt, payload) {
 
-export async function postArticle(jwt, payload){
+  const url = '/api/article'
 
-  try {
-
-      const authStr = 'Bearer '.concat(jwt);
-
-      const headers = {Authorization: authStr};
-      
-      const response = await axios.post('/api/article', payload, { headers: headers})
-
-      return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.post(url, payload, jwt)
 }
-
-
 
 
 export async function getArticles(query) {
 
-  try{
+  const url = '/api/article'
 
-    
-  
-    const response = await axios.get('/api/article' + (query ? ('?' + query) : ''))
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url, query)
 }
 
 
 
+export async function getArticle(jwt, article_id) {  
 
-export async function getArticle(jwt, article_id) {
+  const url = '/api/article/' + article_id
 
-  try{
-        
-      const authorization = jwt != null ? 'Bearer '.concat(jwt) : null
-
-      const response = await axios.get('/api/article/' + article_id, { headers: {Authorization: authorization} })
-
-      return response.data    
-
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url, null, jwt)
 }
 
 
 
 export async function getBlogArticles(jwt, blog_id, query) {
 
-  try{
-    
-      const authorization = jwt != null ? 'Bearer '.concat(jwt) : null
-      
-      const response = await axios.get('/api/blog/' + blog_id + '/article' + (query ? ('?' + query) : ''), { headers: {Authorization: authorization}})
+  const url = '/api/blog/' + blog_id + '/article'  
 
-      return response.data    
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url, query, jwt)
 }
-
 
 
 export async function deleteArticle(jwt, article_id) {
 
-  try{
+  const url = '/api/article/' + article_id
 
-    const authorization = 'Bearer '.concat(jwt);
-
-    const response = await axios.delete('/api/article/' + article_id, { headers: {Authorization: authorization} })
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.del(url, jwt)
 }
-
-
 
 
 export async function postArticleShowed(article_id){
 
-  try {
+  const url = '/api/article/' + article_id + '/showed'
 
-      const response = await axios.post('/api/article/' + article_id + '/showed')
-
-      return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.post(url, null, null)
 }
 
 
 export async function putArticle(jwt, article_id, payload){
 
-  try {
+  const url = '/api/article/' + article_id
 
-      const authStr = 'Bearer '.concat(jwt);
-
-      const headers = {Authorization: authStr};
-      
-      const response = await axios.put('/api/article/' + article_id, payload, { headers: headers})
-
-      return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.put(url, payload, jwt)
 }
-
-

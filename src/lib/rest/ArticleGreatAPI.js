@@ -1,93 +1,32 @@
-import axios from 'axios'
-
-
+import * as restAPI from './RestAPI'
 
 export async function getArticleGreat(query) {
 
-  try{
+  const url = '/api/article/great'
 
-    const response = await axios.get('/api/article/great' + (query ? ('?' + query) : ''))
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url, query)
 }
-
-
 
 
 export async function postArticleGreat(jwt, payload){
 
-  try {
+  const url = '/api/article/great'
 
-      const authStr = 'Bearer '.concat(jwt);
-
-      const headers = {Authorization: authStr};
-      
-      const response = await axios.post('/api/article/great', payload, { headers: headers})
-
-      return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.post(url, payload, jwt)
 }
-
-
 
 
 export async function patchArticleGreat(jwt, great_id, payload){
 
-  try {
+  const url = '/api/article/great/' + great_id
 
-      const authStr = 'Bearer '.concat(jwt);
-
-      const headers = {Authorization: authStr};
-      
-      const response = await axios.patch('/api/article/great/' + great_id, payload, { headers: headers})
-
-      return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  return await restAPI.patch(url, payload, jwt)
 }
-
-
-
-
 
 
 export async function deleteArticleGreat(jwt, great_id) {
 
-  try{
+  const url = '/api/article/great/' + great_id
 
-    const authStr = 'Bearer '.concat(jwt);
-
-    const headers = {Authorization: authStr};
-  
-    const response = await axios.delete('/api/article/great/' + great_id, { headers: headers})
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.del(url, jwt)
 }
-
-
-

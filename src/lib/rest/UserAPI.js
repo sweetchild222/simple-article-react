@@ -1,95 +1,44 @@
 import axios from 'axios'
 
+import * as restAPI from './RestAPI'
+
 export async function getUser(user_id) {
 
-  try{
+  const url = '/api/user/' + user_id
 
-    const response = await axios.get('/api/user/' + user_id)
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url)
 }
 
 
 export async function getUsers(query) {
 
-  try{
+  const url = '/api/user'
 
-    const response = await axios.get('/api/user' + (query ? ('?' + query) : ''))
-    
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url, query)
 }
-
-
 
 
 export async function postAuthenticate(username, password) {
-                
-  try{
+
+  const url = '/api/authenticate'
+  const payload =  {username: username, password: password}
       
-    const response = await axios.post('/api/authenticate', {username: username, password: password})
-
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.post(url, payload)
 }
-
-
 
 
 export async function getUserPasswordCheck(jwt, user_id, password) {
-
-  try{
-
-    const authorization = 'Bearer '.concat(jwt);
-
-    const response = await axios.get('/api/user/' + user_id + '/password/' + password, { headers: {Authorization: authorization} })
     
-    return response.data
-  }
-  catch(error){
+  const url = '/api/user/' + user_id + '/password/' + password
 
-    console.log(error)
-
-    return null;
-  }
+  return await restAPI.get(url, null, jwt)
 }
 
 
-
 export async function patchUser(jwt, user_id, payload){
-
-  try{
-
-    const authorization = 'Bearer '.concat(jwt);
-    
-    const response = await axios.patch('/api/user/' + user_id, payload, { headers: {Authorization: authorization}})
-
-    return response.data
-  }
-  catch(error){
-
-    console.log(error)
-
-    return null
-  }
+  
+  const url = '/api/user/' + user_id
+  
+  return await restAPI.patch(url, payload, jwt)
 }
 

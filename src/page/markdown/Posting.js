@@ -4,7 +4,7 @@ import { useContext, useState, useRef, useEffect} from 'react'
 import BeautyButton from '@gui/BeautyButton.js'
 import * as BlobAPI from '@rest/BlobAPI.js'
 import AuthContext from "@util/AuthContext.js";
-import ExtractHead from "@util/ExtractHead.js";
+import ExtractHead from "./ExtractHead.js";
 import GoLogin from "@gui/GoLogin.js";
 import Modal from "@gui/Modal.js";
 import ImagePicker from "@util/ImagePicker.js";

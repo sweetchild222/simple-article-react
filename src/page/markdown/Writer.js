@@ -10,7 +10,7 @@ import * as BlobAPI from '@rest/BlobAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import GoLogin from "@gui/GoLogin.js";
-import ExtractHead from "@util/ExtractHead.js";
+import ExtractHead from "./ExtractHead.js";
 import { useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
 

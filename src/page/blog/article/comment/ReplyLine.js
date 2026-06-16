@@ -1,5 +1,4 @@
-import {useState, useLayoutEffect, useEffect, useRef } from "react";
-
+import React, {useState, useContext, useLayoutEffect, useEffect, useRef } from "react";
 
 const useResize = (ref) => {
 
@@ -30,7 +29,7 @@ const useResize = (ref) => {
 export default function(props) {
         
     const refDiv = useRef(null)
-    const {width, height} = useResize(refDiv)
+    const {width, height} = useResize(refDiv)    
 
     const [containerCanvasUrl, setContainerCanvasUrl] = useState(null)
 
@@ -90,7 +89,7 @@ export default function(props) {
         if(lastY > 0){
             ctx.fillStyle = color
             ctx.fillRect(width / 2 - (lineWidth / 2), margin, lineWidth, lastY)
-        }
+        }        
 
         setContainerCanvasUrl(canvas.toDataURL())
         
@@ -120,5 +119,5 @@ export default function(props) {
         return {x:x, y:y}
     }
     
-    return containerCanvasUrl ? (<div ref={refDiv} style={{flex:'1', backgroundImage: `url(${containerCanvasUrl})`}}></div>) : (null)
+    return <div ref={refDiv} style={{flex:'1', backgroundImage: containerCanvasUrl && `url(${containerCanvasUrl})`}}></div>
 }

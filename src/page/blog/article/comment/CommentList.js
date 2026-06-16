@@ -383,7 +383,7 @@ export default function({article_id}) {
                             }
                             
                             {isShowReplies(data.id) && data.replies.map((reply, index) =>
-                                <Vertical key={reply.id}>
+                                <Vertical key={reply.id} id={'replyDiv'}>
                                     <Horizental>
                                         <ProfileImage shape={'circle'} id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
                                         <div style={{flex:'1'}}/>

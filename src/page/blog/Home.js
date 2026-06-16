@@ -7,6 +7,7 @@ import AuthContext from "@util/AuthContext.js";
 import ArticleItem from "./ArticleItem.js";
 
 import OverlayProgress from "@gui/OverlayProgress.js";
+import {Horizental, Vertical} from "@gui/Flex.js";
 import ToInteger from "@util/Integer.js";
 import './Home.css'
 import Categories  from "./Categories.js";
@@ -117,32 +118,32 @@ export default function() {
 
   
   return blog_id ? (
-      <div style={{display: 'flex', flexDirection: 'row', alignSelf:'center', width:'100%'}}>
+      <Vertical style={{alignSelf:'center', width:'100%'}}>
         {isOverlayProgress && <OverlayProgress/>}
         <div style={{width:'100px'}}/>
-          <div style={{display: 'flex', flexDirection: 'column', flex:'1'}}>
+          <Horizental style={{flex:'1'}}>
               {selectedCategory && articles && (
                 articles.length > 0 ? 
-                (<div style={{display:'flex', flexDirection:'column', width:'100%'}}>
+                (<Horizental style={{width:'100%'}}>
                   <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px', marginBottom:'20px'}}>
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data} categoryName={getCategoryName(data.category_id)}/>)}
                   </div>
-                  <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
-                    <div style={{flex:'1', display:'flex', flexDirection:'row'}}>
+                  <Vertical style={{width:'100%'}}>
+                    <Vertical style={{flex:'1'}}>
                       {isEditable() && <CreateArticle blogId={blog_id} categoryId={selectedCategory.id}/>}
-                    </div>
+                    </Vertical>
                     {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
                     <div style={{flex:'1'}}></div>
-                  </div>
-                </div>) : 
-                (<div style={{display:'flex', alignItems:'center', flexDirection:'column', width:'100%', justifyContent:'center', height:'100%', marginTop:'20px'}}>                                    
+                  </Vertical>
+                </Horizental>) : 
+                (<Horizental style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'20px'}}>                                    
                   <img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>
                   <div style={{fontSize:'18px', marginTop:'20px'}}>{'카테고리에 글이 없습니다.'}</div>
                   {isEditable() && <div style={{fontSize:'18px', marginTop:'20px'}}>{'글을 작성해 보세요'}</div>}
                   {isEditable() && <CreateArticle blogId={blog_id} categoryId={selectedCategory.id}/>}
-                </div>)
+                </Horizental>)
               )}
-          </div>
+          </Horizental>
         <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{maxWidth:'230px', alignItems:'center', display: 'block'}}>
           <Categories ref={refCategories} blogId={blog_id} initCategoryId={initCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
@@ -150,6 +151,6 @@ export default function() {
           <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
         </div>
         <div style={{width:'100px'}}/>
-      </div>
+      </Vertical>
   ) : null
 }

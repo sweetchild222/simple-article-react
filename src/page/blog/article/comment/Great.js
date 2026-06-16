@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import CountWithUnit from "@util/CountWithUnit.js";
+import {Horizental, Vertical} from "@gui/Flex.js";
 
 import { MdThumbUpAlt } from "react-icons/md";
 import { MdThumbDownAlt } from "react-icons/md";
@@ -172,7 +173,7 @@ export default function({comment_id, like_count, dislike_count}) {
     }
 
     return (
-        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start', alignItems:'center'}}>
+        <Vertical style={{alignItems:'center'}}>
             <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                 <MdThumbUpAlt size={22}/>
                 <div style={{width:'10px'}}/>
@@ -184,6 +185,6 @@ export default function({comment_id, like_count, dislike_count}) {
                 <div style={{width:'10px'}}/>
                 <div>{CountWithUnit(dislikeCount)}</div>
             </PrettyButton>
-        </div>
+        </Vertical>
     )
 }

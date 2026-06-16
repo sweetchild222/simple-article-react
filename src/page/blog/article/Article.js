@@ -7,16 +7,22 @@ import * as CategoryAPI from '@rest/CategoryAPI.js'
 import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
-import StateProgsImage from "@gui/StateProgsImage.js";
-import PrettyButton from "@gui/PrettyButton.js";
-import Modal from "@gui/Modal.js";
 import Integer from "@util/Integer.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import CountWithUnit from "@util/CountWithUnit.js";
+import MarkdownToHtml from '@util/MarkdownToHtml.js'
+
+
+import Modal from "@gui/Modal.js";
+import StateProgsImage from "@gui/StateProgsImage.js";
+import PrettyButton from "@gui/PrettyButton.js";
+import {Horizental, Vertical} from "@gui/Flex.js";
+import OverlayProgress from "@gui/OverlayProgress.js";
+
+
 import Great from "./Great.js"
 import CommentList from "./comment/CommentList.js"
-import OverlayProgress from "@gui/OverlayProgress.js";
-import MarkdownToHtml from '@util/MarkdownToHtml.js'
+
 
 import { TiEye } from "react-icons/ti";
 
@@ -171,29 +177,29 @@ export default function() {
     }
 
 
-    return article ? (<div style={{display:'flex', flexDirection: 'row', justifyContent:'center', marginTop:'20px'}}>
+    return article ? (<Vertical style={{justifyContent:'center', marginTop:'20px'}}>
         <div style={{width:'2px', marginRight:'20px'}}/>
-            <div style={{display:'flex', flexDirection: 'column', alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
+            <Horizental style={{alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
                 <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
-                <div style={{height:'30px', display:'flex', flexDirection: 'row', width:'100%', alignItems:'center'}}>
+                <Vertical style={{height:'30px', width:'100%', alignItems:'center'}}>
                     {isEditable() && <PrettyButton isLoading={isEditLoading} onClick={onClickEdit}>{'수정'}</PrettyButton>}
                     {isEditable() && <PrettyButton isLoading={isDeleteLoading} onClick={onClickDelete}>{'삭제'}</PrettyButton>}
                     {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
                     <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</div>
-                    <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                    <Vertical style={{marginRight:'20px'}}>
                         <TiEye size={22}/>
                         <div>{CountWithUnit(article.showed)}</div>
-                    </div>
+                    </Vertical>
                     <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
                     {category && <PrettyButton type={'transparent'} style={{color:'black'}} onClick={onClickNavigateCategory}>{category.name}</PrettyButton>}
-                </div>
+                </Vertical>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 {/* <div style={{height:'30px'}}></div> */}
                 {/* {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>} */}
                 <div style={{height:'30px'}}></div>
                 <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
                 <CommentList article_id={article_id}/>
-            </div>
+            </Horizental>
         <div style={{width:'2px', marginLeft:'20px'}}/>
-        </div>) : <OverlayProgress/>
+        </Vertical>) : <OverlayProgress/>
 }

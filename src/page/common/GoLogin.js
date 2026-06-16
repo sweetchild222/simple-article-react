@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton';
-
+import {Horizental, Vertical} from "@gui/Flex.js";
 
 
 
@@ -26,10 +26,10 @@ export default function() {
     }
     
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Horizental style={{alignItems: 'center'}}>
             <label>세션이 만료 되었습니다. 다시 로그인 해주세요</label>
             <div style={{height:'10px'}}></div>
             <PrettyButton type='success' onClick={onClickNavigateLogin}>로그인 다시 하기</PrettyButton>
-        </div>
+        </Horizental>
     )
 }

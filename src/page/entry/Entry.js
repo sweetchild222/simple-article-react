@@ -23,26 +23,28 @@ import NotFound from '@page/common/NotFound.js'
 import AuthProvider from '@util/AuthProvider.js'
 import ToastContainer from '@gui/ToastContainer.js'
 
+import {Horizental, Vertical} from "@gui/Flex.js";
+
 
 const Aplication = function() {
 
   const RootLayout = () => (
 
-    <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
+    <Horizental style={{width:'100%', height:'100%'}}>
       <MainHeader/>
       <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
       <Outlet/>
-    </div>
+    </Horizental>
   )
 
 
   const BlogLayout = () => (
     
-    <div style={{width:'100%', height:'100%', display:'flex', flexDirection: 'column'}}>
+    <Horizental style={{width:'100%', height:'100%'}}>
       <BlogHeader/>
       <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
       <Outlet/>
-    </div>
+    </Horizental>
   )
 
 

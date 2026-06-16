@@ -5,6 +5,7 @@ import Split from '@uiw/react-split';
 import OverlayProgress from '@gui/OverlayProgress.js'
 import MDXEditor from './MDXEditor.js'
 import PrettyButton from '@gui/PrettyButton.js'
+import {Horizental, Vertical} from "@gui/Flex.js";
 import Modal from '@gui/Modal.js'
 import * as BlobAPI from '@rest/BlobAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
@@ -335,7 +336,7 @@ export default function() {
                     }
                 </Split>
                 <label ref={refLength} style={{marginLeft:'auto', fontSize:'12px', color:'gray'}}>{state.content.length + '/65535'}</label>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'start', flex: 0, alignItems: 'center', marginTop:'10px'}}>
+                <Vertical style={{flex: 0, alignItems: 'center', marginTop:'10px'}}>
                     <PrettyButton type='danger' style={{marginRight:'10px'}} onClick={onClickDelete}>삭제</PrettyButton>
                     <PrettyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</PrettyButton>
                     <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
@@ -344,7 +345,7 @@ export default function() {
                     <Modal title={'나가기 전에 임시 저장 하시겠습니까?'} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     <div style={{flex:'1', backgroundColor:'red'}}></div>
                     <PrettyButton type='success' onClick={onClickPreview}>미리보기</PrettyButton>
-                </div>
+                </Vertical>
             </div>
         </div>
     ) : (<GoLogin/>)

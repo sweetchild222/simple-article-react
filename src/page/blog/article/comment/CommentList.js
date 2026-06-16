@@ -5,6 +5,7 @@ import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import ProfileImage from "@gui/ProfileImage.js";
+import {Horizental, Vertical} from "@gui/Flex.js";
 import * as CommentAPI from '@rest/CommentAPI.js'
 
 import Great from "./Great.js";
@@ -333,82 +334,82 @@ export default function({article_id}) {
 
     
     return comments ? (
-        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', marginTop:'20px', width:'100%'}}>
+        <Horizental style={{marginTop:'20px', width:'100%'}}>
             {isOpenCommentEdit && <Writer onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
-            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
+            <Vertical style={{justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
                 <label>{'댓글 (' + comments.length + ')'}</label>
                 {!isOpenCommentEdit && <PrettyButton type={'success'} onClick={onOpenCommentEdit}>{'댓글 작성'}</PrettyButton>}
-            </div>
+            </Vertical>
             
             {comments.map((data, index) => 
-                <div key={data.id} style={{display:'flex', flexDirection: 'column', justifyContent:'left', border:'1px solid lightgray'}}>
-                    <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
+                <Horizental key={data.id} style={{justifyContent:'left', border:'1px solid lightgray'}}>
+                    <Vertical>
+                        <Horizental>
                             <ProfileImage shape={'circle'} size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
                             <ReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
-                        </div>
-                        <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
-                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                        </Horizental>
+                        <Horizental style={{width:'100%'}}>
+                            <Vertical>
                                 <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
-                            </div>
+                            </Vertical>
                             
-                            <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                            <Vertical style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                 <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
                                 <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
-                            </div>
+                            </Vertical>
 
-                            {!(modifyModeCommentId == data.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                            {!(modifyModeCommentId == data.id) && <Vertical>
                                 <Great comment_id={data.id} like_count={data.like_count} dislike_count={data.dislike_count}></Great>                                
                                 <div style={{width:'20px'}}></div>
                                 <PrettyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical size={22}/>}</PrettyButton>
-                            </div>
+                            </Vertical>
                             }
 
-                            {data.id == openReplyEditCommentId && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                            {data.id == openReplyEditCommentId && <Vertical>
                                 <ProfileImage shape={'circle'} size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
                                 <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
-                            </div>
+                            </Vertical>
                             }
 
                             {data.replies.length > 0 &&
                                 <PrettyButton id={'replyButton'} type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
-                                    <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                    <Vertical>
                                         {'답글 (' + data.replies.length + ')'}
-                                    </div>
+                                    </Vertical>
                                     <div style={{width:'10px'}}/>
                                     {isShowReplies(data.id) ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
                                 </PrettyButton>
                             }
                             
                             {isShowReplies(data.id) && data.replies.map((reply, index) =>
-                                <div key={reply.id} id={'replyDiv'} style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
-                                    <div style={{display:'flex', flexDirection: 'column', justifyContent:'start'}}>
+                                <Vertical key={reply.id}>
+                                    <Horizental>
                                         <ProfileImage shape={'circle'} id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
                                         <div style={{flex:'1'}}/>
-                                    </div>
-                                    <div style={{display:'flex', flexDirection: 'column', justifyContent:'start', width:'100%'}}>
-                                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                    </Horizental>
+                                    <Horizental style={{width:'100%'}}>
+                                        <Vertical>
                                             <div style={{fontSize:'14px', marginRight:'10px'}}>{reply.user.nickname}</div>
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
-                                        </div>
+                                        </Vertical>
 
-                                        <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                                        <Vertical style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                             <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)}/>
                                             <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
-                                        </div>                                        
-                                        {!(modifyModeCommentId == reply.id) && <div style={{display:'flex', flexDirection: 'row', justifyContent:'start'}}>
+                                        </Vertical>
+                                        {!(modifyModeCommentId == reply.id) && <Vertical>
                                             <Great comment_id={reply.id} like_count={reply.like_count} dislike_count={reply.dislike_count}></Great>
-                                        </div>
+                                        </Vertical>
                                         }
-                                    </div>
-                                </div>
+                                    </Horizental>
+                                </Vertical>
                             )}
-                        </div>
-                    </div>
-                </div>
+                        </Horizental>
+                    </Vertical>
+                </Horizental>
             )}
-            </div>
+            </Horizental>
         
         ) : null
 }

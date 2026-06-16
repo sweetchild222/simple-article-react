@@ -1,6 +1,7 @@
 import React, {useState, useContext, useRef} from "react";
 
 import TextArea from "./TextArea.js";
+import {Horizental, Vertical} from "@gui/Flex.js";
 import PrettyButton from "@gui/PrettyButton.js";
 
 export default function(props) {
@@ -49,7 +50,8 @@ export default function(props) {
             props.onCancel()
     }
 
-    return  (<div style={{position:'relative', display:'flex', flexDirection: 'column', justifyContent:'end', width:'100%', backgroundColor:'lightgreen'}}>
+
+    return  (<Horizental style={{position:'relative', justifyContent:'end', width:'100%', backgroundColor:'lightgreen'}}>
                 <TextArea ref={refArea} atCandidates={atCandidates} onInput={onInput} maxCharLength={maxCharLength}></TextArea>
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
@@ -58,6 +60,6 @@ export default function(props) {
                     <div style={{width:'10px'}}/>
                     <PrettyButton disabled={isPostLoading ? true : false} onClick={()=>onClickCancel()}>{'취소'}</PrettyButton>
                 </div>
-            </div>
+            </Horizental>
         )
 }

@@ -12,6 +12,7 @@ import ProfileImage from '@gui/ProfileImage.js';
 import Integer from "@util/Integer.js";
 import AuthContext from "@util/AuthContext.js";
 import NotFound from '@page/common/NotFound.js';
+import {Horizental, Vertical} from "@gui/Flex.js";
 
 
 export default function() {
@@ -111,7 +112,7 @@ export default function() {
 
 
     return user ? (
-      <div style={{position:'relative', alignItems:'center', display:'flex', flexDirection:'column'}}>
+      <Horizental style={{position:'relative', alignItems:'center'}}>
         <label style={{marginBottom:'10px'}}>{user.nickname}</label>
         <ProfileImage size={256} shape={'rect'} user={user}/>
         {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</PrettyButton>}
@@ -119,6 +120,6 @@ export default function() {
         <Modal title={'블로그를 개설하시겠습니까?'} type={'yesno'} isOpen={isCreateBlogModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateBlogModalOpen(false)}></Modal>
 
         {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</PrettyButton>}
-      </div>) : <OverlayProgress/>
+      </Horizental>) : <OverlayProgress/>
 }
 

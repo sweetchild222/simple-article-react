@@ -6,6 +6,7 @@ import {useContext, useEffect, useState} from 'react';
 import * as UserAPI from '@rest/UserAPI.js'
 import { useNavigate, useLocation} from 'react-router-dom';
 import PrettyButton from '@gui/PrettyButton.js';
+import {Horizental, Vertical} from "@gui/Flex.js";
 
 
 export default function() {
@@ -85,14 +86,14 @@ export default function() {
     
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Horizental style={{alignItems: 'center'}}>
             <label htmlFor='input_username'>사용자 이름</label>
             <input id='input_username' type='text' defaultValue={'crazygun22@nate.com'} onKeyDown={onKeyDownUserName} maxLength={254}/>
             <label htmlFor='input_password'>비밀번호</label>
             <input id='input_password' type='password' defaultValue={'Sweetchild@22'} onKeyDown={onKeyDownPassword} maxLength={254}/>
             <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</PrettyButton>
             {!relogin && <PrettyButton onClick={() => {navigate('regist', {replace:true})}}>회원가입</PrettyButton>}
-        </div>
+        </Horizental>
     )
 }
 

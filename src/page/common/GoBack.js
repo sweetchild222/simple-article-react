@@ -1,6 +1,7 @@
 
 import PrettyButton from '@gui/PrettyButton';
 import { useNavigate } from 'react-router-dom';
+import {Horizental, Vertical} from "@gui/Flex.js";
 
 export default function({value}) {
 
@@ -12,10 +13,10 @@ export default function({value}) {
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Horizental style={{alignItems: 'center'}}>
             <label>{value}</label>
             <div style={{height:'10px'}}></div>
             <PrettyButton type='success' onClick={onClickGoBack}>뒤로 가기</PrettyButton>
-        </div>
+        </Horizental>
     )
 }

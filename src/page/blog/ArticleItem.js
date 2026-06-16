@@ -9,7 +9,7 @@ import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { MdThumbDownAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
-
+import {Horizental, Vertical} from "@gui/Flex.js";
 
 export default function({article, categoryName}) {
 
@@ -40,43 +40,43 @@ export default function({article, categoryName}) {
     }
     
     return (
-        <div onClick={onClickNavigateArticle} style={{display: 'flex', flexDirection: 'row', flex:'1', padding:'10px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5'}}>
-            <div style={{display: 'flex', flexDirection: 'column', flex:'1', marginLeft:'5px', marginRight:'5px'}}>
+        <Vertical onClick={onClickNavigateArticle} style={{flex:'1', padding:'10px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5'}}>
+            <Horizental style={{ flex:'1', marginLeft:'5px', marginRight:'5px'}}>
                 <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'600', marginBottom:'10px', color:'#1A1A1A'}}>{article.title != '' ? article.title : '...'}</div>
                 <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head : '내용 없음')}</div>
                 <div style={{flex:'1'}}></div>
-                <div style={{display: 'flex', flexDirection: 'row',  alignItems:'center', color:'#888888'}}>
-                    {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                <Vertical style={{alignItems:'center', color:'#888888'}}>
+                    {article.posted == 1 && <Vertical style={{marginRight:'20px'}}>
                         <TiEye size={22}/>
                         <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.showed)}</div>
-                    </div>}
-                    {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                    </Vertical>}
+                    {article.posted == 1 && <Vertical style={{marginRight:'20px'}}>
                         <MdThumbUpAlt size={22}/>
                         <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.like_count)}</div>
-                    </div>
+                    </Vertical>
                     }
 
-                    {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'20px'}}>
+                    {article.posted == 1 && <Vertical style={{marginRight:'20px'}}>
                         <MdThumbDownAlt size={22}/>
                         <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.dislike_count)}</div>
-                    </div>
+                    </Vertical>
                     }
                     
-                    {article.posted == 1 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
+                    {article.posted == 1 && <Vertical style={{marginRight:'30px'}}>
                         <BiSolidComment size={22}/>
                         <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.comment_count)}</div>
-                    </div>
+                    </Vertical>
                     }
-                    {article.posted == 0 && <div style={{display: 'flex', flexDirection: 'row', marginRight:'30px'}}>
+                    {article.posted == 0 && <Vertical style={{marginRight:'30px'}}>
                         <div className={'clamped-text'} style={{'--line-count':1, width:'160px'}}>{categoryName}</div>
-                    </div>
+                    </Vertical>
                     }
                     <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</div>
-                </div>
+                </Vertical>
 
-            </div>
+            </Horizental>
             {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
-        </div>
+        </Vertical>
     )
 }
 

@@ -15,6 +15,7 @@ import { RiImageAiFill } from "react-icons/ri";
 import ImagePicker from "@util/ImagePicker.js";
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import ImageCropModal from '@gui/ImageCropModal.js'
+import {Horizental, Vertical} from "@gui/Flex.js";
 import Modal from '@gui/Modal.js'
 
 
@@ -173,18 +174,18 @@ export default function() {
 
     return blog ? (                
             <div style={{backgroundColor:' #494D5F', height:'168px', minHeight:'168px', backgroundImage:`url(` + blog.image + '?size=1920x168', backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black', display:'block'}}>
-                <div style={{backgroundColor:'#00000080', display: 'flex', alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
+                <Vertical style={{backgroundColor:'#00000080', alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
                     <ProfileImage size={96} shape={'circle'} userId={blog.user_id} onClick={onClickNavigateUser}/>
-                    <div style={{display: 'flex', alignItems: 'center', marginLeft:'32px', marginRight:'32px'}}>
+                    <Vertical style={{alignItems: 'center', marginLeft:'32px', marginRight:'32px'}}>
                         <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':2,  backgroundColor:'#00000000', color:'white', fontSize:'36px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', alignItems:'center', textOverflow:'ellipsis'}}>{blog.title}</label>
                         {isEditable() && <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>}
                         <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
                         {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}
                         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
-                    </div>
+                    </Vertical>
                     <div style={{flex:1}}/>
                     <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
-                </div>
+                </Vertical>
             </div>
     ) : null
 }

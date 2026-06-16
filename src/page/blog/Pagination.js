@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import PrettyButton from '@gui/PrettyButton.js';
+import {Horizental, Vertical} from "@gui/Flex.js";
 import './Pagination.css'
 import { FaForward } from "react-icons/fa";
 import { FaBackward } from "react-icons/fa6";
@@ -73,14 +74,14 @@ export default function({totalPageCount, displayPageCount, onClickPage}) {
     }
 
     return (
-        <div style={{display:'flex', flexDirection:'row', justifyContent:'center'}}>
+        <Vertical style={{justifyContent:'center'}}>
             <PrettyButton type={'transparent'} style={{color:'black', visibility:(curStartPage > 0 ? 'visible' : 'hidden')}} onClick={onClickForward}><FaBackward size={20}/></PrettyButton>
-            <div style={{display:'flex', flexDirection:'column'}} >
+            <Horizental>
                 <div style={{display:'flex', flexDirection:'row', justifyContent:'start', width:((displayPageCount * pageNumWidth) + 'px')}}>
                     {getCurPageList().map((data, index) => <PrettyButton key={index} type={'transparent'} style={{color:'black', width: pageNumWidth + 'px', fontSize:'20px'}} onClick={()=> onClickPageInner(index, data)}>{data}</PrettyButton>)}
                 </div>
                 <div key={animationKey} className={'movingbar'} style={{marginLeft:(movingBarMarginLeft + 'px'), width:(pageNumWidth - movingBarMarginLeft - movingBarMarginRight + 'px'), height:'4px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px', marginRight:(movingBarMarginRight + 'px')}}></div>
-            </div>
+            </Horizental>
             <PrettyButton type={'transparent'} style={{color:'black', visibility:((curStartPage + displayPageCount < totalPageCount) ? 'visible' : 'hidden')}} onClick={onClickBackward}><FaForward size={20}/></PrettyButton>
-        </div> )
+        </Vertical> )
 }

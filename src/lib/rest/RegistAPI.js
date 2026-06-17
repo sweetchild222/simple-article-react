@@ -1,10 +1,10 @@
 import * as restAPI from './RestAPI'
 
 
-export async function postUser(usename, password){
+export async function postUser(usename, password, image, nickname){
 
   const url = '/api/user'
-  const payload = {username: usename, password: password}
+  const payload = {username: usename, password: password, image:image, nickname:nickname}
     
   return await restAPI.post(url, payload)
 }

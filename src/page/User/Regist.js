@@ -140,7 +140,7 @@ export default function() {
       return
 
     setIsLoadingRegist(true)
-
+    
     const auth = await regist(email, password)
 
     setIsLoadingRegist(false)
@@ -163,6 +163,22 @@ export default function() {
     navigate('/')
   }
 
+
+  const getRandomUnsignedInt = (min, max) => {
+
+    return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+
+  
+  const randomProfile = () =>{    
+
+    const staticProfile = ['bear', 'tiger', 'sheep', 'boar', 'elephant', 'lion', 'sheep', 'rhino', 'cat']
+    
+    const randomIndex = getRandomUnsignedInt(0, staticProfile.length - 1)
+
+    return staticProfile[randomIndex]
+  }
+
   
   const regist = async(email, password) => {
       
@@ -176,7 +192,14 @@ export default function() {
       return null
     }
 
-    const resUser = await RegistAPI.postUser(email, password)
+    
+    const random = randomProfile()
+    const timestamp = Date.now()
+    
+    const image = process.env.API_TARGET + '/api/blob/profile/' + random + '.webp'
+    const nickname = random + ' ' + timestamp
+
+    const resUser = await RegistAPI.postUser(email, password, image, nickname)
 
     if(resUser.success == false)
       return null

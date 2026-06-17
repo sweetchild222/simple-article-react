@@ -251,11 +251,11 @@ export default function() {
 
             setIsTempSaveLoading(true)
             
-            const res = await tempSave()
+            const success = await tempSave()
 
             setIsTempSaveLoading(false)
 
-            if(res != null)
+            if(success == true)
                 window.showToast('임시 저장 됨', 'info')
             else
                 window.showToast('임시 저장 실패', 'error')

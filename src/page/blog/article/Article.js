@@ -98,7 +98,7 @@ export default function() {
         setIsEditLoading(true)
         
         const res = await ArticleAPI.getBlogArticles(auth.jwt, auth.blog_id, 'source_id=' + article.id + '&posted=0')
-
+        
         if(res.success == false) {
             setIsEditLoading(false)
             window.showToast('수정 본을 찾는데 실패했습니다', 'error')
@@ -118,16 +118,16 @@ export default function() {
         }
 
         if(!copiedArticle){
-                        
+
             const resPost = await ArticleAPI.postArticle(auth.jwt, payload)
 
+            setIsEditLoading(false)
+
             if(resPost.success == false){
-                setIsEditLoading(false)
                 window.showToast('수정 본 생성에 실패 했습니다', 'error')
                 return
             }
-
-            setIsEditLoading(false)
+            
             window.showToast('수정 본 생성에 성공하였습니다', 'info')
             const state = {id:resPost.payload.id, ...payload}
 

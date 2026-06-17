@@ -47,36 +47,36 @@ export default function() {
 
         ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, article_id).then((article) => {
 
-            if(article == null){
+            if(article.success == false){
                 navigate('/notFound')
                 return
             }
 
-            if(article.posted == 0){
+            if(article.payload.posted == 0){
                 navigate('/notFound')
                 return
             }
 
-            if(blog_id != article.blog_id){
+            if(blog_id != article.payload.blog_id){
                 navigate('/notFound')
                 return
             }
 
-            CategoryAPI.getCategory(article.category_id).then(category => {
+            CategoryAPI.getCategory(article.payload.category_id).then(category => {
 
-                if(!category){
+                if(category.success == false){
                     navigate('/notFound')
                     return
                 }
 
-                setArticle(article)
-                setCategory(category)                
+                setArticle(article.payload)
+                setCategory(category.payload)                
 
                 ArticleAPI.postArticleShowed(article_id).then(showed => {
                     
-                    if(showed != null){
-                        article.showed += 1
-                        setArticle(structuredClone(article))
+                    if(showed.success == true){
+                        article.payload.showed += 1
+                        setArticle(structuredClone(article.payload))
                     }
                 })
             })
@@ -99,13 +99,13 @@ export default function() {
         
         const res = await ArticleAPI.getBlogArticles(auth.jwt, auth.blog_id, 'source_id=' + article.id + '&posted=0')
 
-        if(res == null) {
+        if(res.success == false) {
             setIsEditLoading(false)
             window.showToast('수정 본을 찾는데 실패했습니다', 'error')
             return
         }
 
-        const copiedArticle = res.length > 0 ? res[0] : null
+        const copiedArticle = res.payload.length > 0 ? res.payload[0] : null
         
         const payload = {
             title:article.title,
@@ -121,7 +121,7 @@ export default function() {
                         
             const resPost = await ArticleAPI.postArticle(auth.jwt, payload)
 
-            if(resPost == null){         
+            if(resPost.success == false){
                 setIsEditLoading(false)
                 window.showToast('수정 본 생성에 실패 했습니다', 'error')
                 return
@@ -129,7 +129,7 @@ export default function() {
 
             setIsEditLoading(false)
             window.showToast('수정 본 생성에 성공하였습니다', 'info')
-            const state = {id:resPost.id, ...payload}
+            const state = {id:resPost.payload.id, ...payload}
 
             navigate('/blog/' + auth.blog_id + '/write', {state:state})
         }
@@ -160,7 +160,7 @@ export default function() {
 
             setIsDeleteLoading(false)
             
-            if(res == null){                
+            if(res.success == false){
                 window.showToast('삭제가 실패 하였습니다', 'error')
                 return
             }

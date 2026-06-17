@@ -82,10 +82,10 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         
         const res = await ArticleAPI.getBlogArticles(auth.jwt, blogId, query)
         
-        if(res == null)
+        if(res.success == false)
             return 0
 
-        return res.length
+        return res.payload.length
     }
 
 
@@ -93,15 +93,15 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
     
         const res = await CategoryAPI.getCategories(blogId)
         
-        if(res == null)
+        if(res.success == false)
             return null
     
-        res.sort((a, b)=> {
+        res.payload.sort((a, b)=> {
 
             return a.id - b.id
         })
 
-        return res
+        return res.payload
     }
 
 
@@ -131,9 +131,9 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
         for(const category of categories) {
 
-            const res = await CategoryAPI.deleteCategory(auth.jwt, category.id)
+            const res = await CategoryAPI.deleteCategory(auth.jwt, category.id)            
 
-            if(res != null){
+            if(res.success == true){
                 window.showToast(category.name + ' 이 삭제 되었습니다', 'info')
                 applyCount++
             }
@@ -158,7 +158,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
             const res = await CategoryAPI.postCategory(auth.jwt, payload)
 
-            if(res != null){
+            if(res.success == true){
                 window.showToast(category.name + ' 이 추가 되었습니다', 'info')
                 applyCount++
             }
@@ -180,7 +180,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
             
             const res = await CategoryAPI.patchCategory(auth.jwt, category.id, payload)
 
-            if(res != null){
+            if(res.success == true){
                 window.showToast(category.name + ' 로 이름이 변경 되었습니다', 'info')
                 applyCount++
             }

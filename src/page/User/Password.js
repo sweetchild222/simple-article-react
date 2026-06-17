@@ -89,20 +89,20 @@ export default function({onClose}) {
         
         const resPasswordCheck = await UserAPI.getUserPasswordCheck(auth.jwt, auth.user_id, current_password)
 
-        if(resPasswordCheck == null)
+        if(resPasswordCheck.success == false)
             return null
         
-        if(resPasswordCheck.correct == false)
+        if(resPasswordCheck.payload.correct == false)
             return null
 
         const payload = {password: new_password}
 
         const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
 
-        if(resUser == null)
+        if(resUser.success == false)
             return null
 
-        return resUser
+        return resUser.payload
     }
 
     

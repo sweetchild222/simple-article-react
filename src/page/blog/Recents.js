@@ -28,12 +28,12 @@ export default function({ref, blogId, isEdit}) {
 
         const articles = await ArticleAPI.getBlogArticles(null, blogId, query)
 
-        if(articles == null){
+        if(articles.success == false){
             window.showToast('최근 작성한 글을 가져 올 수 없습니다', 'error')
             return
         }
         
-        setArticles(articles.length > 0 ? articles : null)
+        setArticles(articles.payload.length > 0 ? articles.payload : null)
     }
 
 

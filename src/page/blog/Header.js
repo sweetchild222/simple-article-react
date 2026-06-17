@@ -47,12 +47,12 @@ export default function() {
 
         BlogAPI.getBlog(blog_id).then((blog)=> {
 
-            if(blog == null){
+            if(blog.success == false){
                 navigate('/notFound')
                 return
             }
 
-            setBlog(blog)
+            setBlog(blog.payload)
         })
 
     }, [blog_id])
@@ -120,17 +120,17 @@ export default function() {
         
         const resImage = await BlobAPI.postBlogImage(auth.jwt, formData)
 
-        if(resImage == null){
+        if(resImage.success == false){
             setIsModalImageCrop(false)
             window.showToast('블로그 이미지 설정에 실패했습니다', 'error')
             return
         }
 
-        const url = process.env.API_TARGET + '/api/blob/blog/image/' + resImage.id
+        const url = process.env.API_TARGET + '/api/blob/blog/image/' + resImage.payload.id
 
         const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {image:url})
         
-        if(res == null){
+        if(res.success == false){
             window.showToast('블로그 이미지 설정에 실패했습니다', 'error')
             return
         }

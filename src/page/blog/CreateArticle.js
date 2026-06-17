@@ -29,17 +29,17 @@ export default function({ref, blogId, categoryId}) {
     
         const res = await CategoryAPI.getCategories(blogId)
         
-        if(res == null)
+        if(res.success == false)
             return -1
 
-        res.sort((a, b)=> {
+        res.payload.sort((a, b)=> {
             return a.id - b.id
         })
 
-        if(res.length == 0)
+        if(res.payload.length == 0)
             return -1
 
-        return res[0].id
+        return res.payload[0].id
     }
 
 
@@ -52,14 +52,14 @@ export default function({ref, blogId, categoryId}) {
 
         const res = await ArticleAPI.getBlogArticles(auth.jwt, blogId, query)
 
-        if(res == null){
+        if(res.success == false){
             window.showToast('작성 중인 글을 가져 올 수 없습니다', 'error')
             return
         }
 
         const maxWritingCount = 10
 
-        if(res.length >= maxWritingCount){
+        if(res.payload.length >= maxWritingCount){
 
             window.showToast('작성 중인 글이 너무 많습니다 (' + maxWritingCount + ' 이하)', 'error')
             return
@@ -83,12 +83,12 @@ export default function({ref, blogId, categoryId}) {
                 
         const resArticle = await ArticleAPI.postArticle(auth.jwt, payload)
                         
-        if(resArticle == null) {
+        if(resArticle.success == false) {
             window.showToast('새 글 생성에 실패 했습니다', 'error')
             return
         }
 
-        const state = {id:resArticle.id, ...payload}
+        const state = {id:resArticle.payload.id, ...payload}
 
         navigate('/blog/' + blogId + '/write', {state:state})
     }

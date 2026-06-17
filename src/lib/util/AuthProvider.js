@@ -50,9 +50,9 @@ export default function({children}){
 
         if(auth === logout)
             return false
-
+        
         if(Date.now() > auth.expire_time)
-            return false
+            return false        
 
         return true
     }

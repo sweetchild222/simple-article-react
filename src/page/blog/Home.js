@@ -74,8 +74,8 @@ export default function() {
     
     const articles = await getBlogArticles(0, category_id, posted)
 
-    if(articles != null)
-      setArticles(articles)
+    if(articles.success == true)
+      setArticles(articles.payload)
 
     setIsOverlayProgress(false)
     
@@ -110,8 +110,8 @@ export default function() {
         
     const articles = await getBlogArticles(page, category_id, posted)
 
-    if(articles != null)
-      setArticles(articles)
+    if(articles.success == true)
+      setArticles(articles.payload)
 
     setIsOverlayProgress(false)
   }

@@ -53,16 +53,21 @@ export default function() {
         setIsLoading(true)
 
         const resAuth = await UserAPI.postAuthenticate(username, password)
-        
-        if(resAuth == null) {
-            setIsLoading(false)
-            window.showToast('로그인이 실패하였습니다', 'error')
-            return
-        }
 
         setIsLoading(false)
         
-        updateAuth(resAuth)
+        if(resAuth.success == false) {            
+            window.showToast('로그인이 실패하였습니다', 'error')
+            return
+        }
+        
+        if(!(Object.hasOwn(resAuth.payload, "jwt") && Object.hasOwn(resAuth.payload, "user_id"))){
+
+            window.showToast('로그인이 실패하였습니다', 'error')
+            return
+        }
+        
+        updateAuth(resAuth.payload)
 
         window.showToast('로그인이 성공하였습니다', 'success')
         

@@ -8,14 +8,14 @@ export async function get(url, query=null, jwt=null) {
     const authorization = jwt ? 'Bearer '.concat(jwt) : null
 
     const response = await axios.get(url + (query ? ('?' + query) : ''), {headers: {Authorization: authorization}})
-    
-    return response.data
+  
+    return {success:true, payload:response.data}
   }
   catch(error){
 
     console.log(error)
 
-    return null;
+    return {success:false, payload:null}
   }
 }
 
@@ -28,13 +28,13 @@ export async function post(url, payload=null, jwt=null){
       
     const response = await axios.post(url, payload, {headers: {Authorization: authorization}})
 
-    return response.data
+    return {success:true, payload:response.data}
   }
   catch(error){
 
     console.log(error)
 
-    return null
+    return {success:false, payload:null}
   }
 }
 
@@ -47,13 +47,13 @@ export async function postBlob(url, payload=null, jwt=null){
 
     const response = await axios.post(url, payload, {headers: {Authorization: authorization, 'Content-Type':'multipart/form-data'}})
 
-    return response.data
+    return {success:true, payload:response.data}
   }
   catch(error){
 
     console.log(error)
 
-    return null
+    return {success:false, payload:null}
   }
 }
 
@@ -67,13 +67,13 @@ export async function del(url, jwt=null) {
 
     const response = await axios.delete(url, { headers: {Authorization: authorization}})
     
-    return response.data
+    return {success:true, payload:response.data}
   }
   catch(error){
 
     console.log(error)
 
-    return null;
+    return {success:false, payload:null}
   }
 }
 
@@ -87,13 +87,13 @@ export async function put(url, payload=null, jwt=null){
       
     const response = await axios.put(url, payload, { headers: {Authorization: authorization}})
 
-    return response.data
+    return {success:true, payload:response.data}
   }
   catch(error){
 
     console.log(error)
 
-    return null
+    return {success:false, payload:null}
   }
 }
 
@@ -107,12 +107,12 @@ export async function patch(url, payload=null, jwt=null){
     
     const response = await axios.patch(url, payload, { headers: {Authorization: authorization}})
 
-    return response.data
+    return {success:true, payload:response.data}
   }
   catch(error){
 
     console.log(error)
 
-    return null
+    return {success:false, payload:null}
   }
 }

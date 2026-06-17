@@ -30,11 +30,11 @@ export default function({article, categoryName}) {
 
                 const res = await ArticleAPI.getArticle(auth.jwt, article.id)
 
-                if(res == null){
+                if(res.success == false){
                     window.showToast('작성 중인 글을 가져 올 수 없습니다', 'error')
                     return
                 }
-                navigate('/blog/' + article.blog_id + '/write', {state:res})
+                navigate('/blog/' + article.blog_id + '/write', {state:res.payload})
             }
         }
     }

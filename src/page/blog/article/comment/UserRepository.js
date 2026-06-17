@@ -10,7 +10,8 @@ export const getByIDList = async(userIDList) => {
         
         const newUserList = await UserAPI.getUsers('id=' + filterIDList)
 
-        newUserList.forEach(item=>repository.push(item))
+        if(newUserList.success == true)
+            newUserList.payload.forEach(item=>repository.push(item))
     }
 
     return repository.filter(item => userIDList.find(id => item.id == id))
@@ -25,7 +26,8 @@ export const getByID = async(userId) => {
         
         const newUserList = await UserAPI.getUsers('id=' + [userId])
 
-        newUserList.forEach(item=>repository.push(item))
+        if(newUserList.success == true)
+            newUserList.payload.forEach(item=>repository.push(item))
     }
 
     return repository.find(item => item.id == userId)

@@ -32,9 +32,6 @@ export default function({article_id, like_count, dislike_count}) {
 
         const res = await ArticleGreatAPI.postArticleGreat(auth.jwt, payload)
 
-        if(res == null)
-            return null
-
         return res
     }
 
@@ -43,12 +40,9 @@ export default function({article_id, like_count, dislike_count}) {
 
         const query = 'user_id=' + user_id + '&article_id=' + article_id
 
-        const resGreat = await ArticleGreatAPI.getArticleGreat(query)
+        const res = await ArticleGreatAPI.getArticleGreat(query)
 
-        if(resGreat == null)
-            return null
-
-        return resGreat
+        return res
     }
 
 
@@ -77,16 +71,16 @@ export default function({article_id, like_count, dislike_count}) {
         
         const resGreat = await getGreat(auth.user_id, article_id)
 
-        if(resGreat == null)
+        if(resGreat.success == false)
             return false        
 
-        if(resGreat.length > 0){            
+        if(resGreat.payload.length > 0){            
 
-            if(resGreat[0].great != great) {
+            if(resGreat.payload[0].great != great) {
                 
-                const res = await patchGreat(auth.jwt, resGreat[0].id, great)
+                const res = await patchGreat(auth.jwt, resGreat.payload[0].id, great)
 
-                if(res == null){
+                if(res.success == false){
                     window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경에 실패 하였습니다', 'error')
                     return false
                 }
@@ -107,9 +101,9 @@ export default function({article_id, like_count, dislike_count}) {
 
             }else {
 
-                const res = await deleteGreat(auth.jwt, resGreat[0].id)
+                const res = await deleteGreat(auth.jwt, resGreat.payload[0].id)
 
-                if(res == null){
+                if(res.success == false){
                     window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 실패 하였습니다', 'error')
                     return false
                 }
@@ -129,7 +123,7 @@ export default function({article_id, like_count, dislike_count}) {
             
             const res = await postGreat(auth.jwt, auth.user_id, article_id, great)
 
-            if(!res){
+            if(res.success == false){
                 window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 실패 하였습니다', 'error')
                 return false
             }

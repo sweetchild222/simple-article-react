@@ -24,15 +24,15 @@ export default function(props) {
 
         UserAPI.getUser(props.userId).then((res)=>{
             
-            if(res == null)
+            if(res.success == false)
                 return
 
-            if(res.image == '')
-                res.image = '/image/user.png'
+            if(res.payload.image == '')
+                res.payload.image = '/image/user.png'
             else
-                res.image + '?size=' + width + 'x' + height
+                res.payload.image + '?size=' + width + 'x' + height
 
-            setUser(res)
+            setUser(res.payload)
         })
         
     },  [props.userId])

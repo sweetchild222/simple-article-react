@@ -13,7 +13,7 @@ export default function() {
 
     useEffect(() => {
 
-        if(validAuth(auth))
+        if(validAuth(auth))            
             setReloadKey(prev => prev + 1)
 
     }, [auth])

@@ -37,13 +37,13 @@ export default function() {
 
         UserAPI.getUser(user_id).then((resUser)=>{
 
-            if(resUser == null){
+            if(resUser.success == false){
                 navigate('/notFound')
                 return
             }
 
             //resUser.image = resUser.image != '' ?  (resUser.image + '?size=' + profileWidth + 'x' + profileHeight) : '/image/user.png'
-            setUser(resUser)
+            setUser(resUser.payload)
         })
 
     }, [user_id])
@@ -93,13 +93,13 @@ export default function() {
 
         const res = await BlogAPI.postBlog(auth.jwt, payload)
 
-        if(res == null){
+        if(res.success == false){
             window.showToast('블로그 개설에 실패하였습니다', 'error')
             return
         }
         
         window.showToast('블로그 개설에 성공하였습니다', 'info')
-        auth.blog_id = res.id
+        auth.blog_id = res.payload.id
         updateAuth(auth)
         navigate('/blog/' + auth.blog_id)
     }

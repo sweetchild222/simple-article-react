@@ -35,12 +35,11 @@ export default function Home() {
     
     const res = await CommentAPI.deleteComment(auth.jwt, comment_id)
 
-    if(res == null)
+    if(res.success == false)
       return
 
-    console.log(res)
+    console.log(res.payload)
   }
-
 
 
 
@@ -50,10 +49,10 @@ export default function Home() {
       
     const res = await UserAPI.getUsers(query)
 
-    if(res == null)
+    if(res.success == false)
       return
 
-    console.log(res)
+    console.log(res.payload)
   }
 
   

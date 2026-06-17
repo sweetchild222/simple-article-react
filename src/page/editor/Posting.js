@@ -90,18 +90,18 @@ export default function() {
 
         const res = await CategoryAPI.getCategories(auth.blog_id)
         
-        if(res == null)
+        if(res.success == false)
             return null
 
-        if(res.length == 0)
+        if(res.payload.length == 0)
             return null
     
-        res.sort((a, b)=> {
+        res.payload.sort((a, b)=> {
 
             return b.is_default - a.is_default
         })
 
-        return res
+        return res.payload
     }
 
 
@@ -112,10 +112,10 @@ export default function() {
 
         const resArticleImage = await BlobAPI.postArticleImage(auth.jwt, formData)
 
-        if(resArticleImage == null)
+        if(resArticleImage.success == false)
             return null
         
-        const url = process.env.API_TARGET + '/api/blob/article/' + resArticleImage.id
+        const url = process.env.API_TARGET + '/api/blob/article/' + resArticleImage.payload.id
 
         return url
     }
@@ -164,12 +164,12 @@ export default function() {
 
         const res = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
 
-        if(res == null){
+        if(res.success == false){
             window.showToast('대표 이미지 설정에 실패했습니다', 'error')
             return
         }
 
-        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + res.id
+        const url = process.env.API_TARGET + '/api/blob/article/thumbnail/' + res.payload.id
 
         setThumbnail(url)
         setIsImageCropModalOpen(false)
@@ -200,7 +200,7 @@ export default function() {
             
         const res = await putArticle(article_id, title, head, content, thumbnail, posted, category_id)
 
-        if(res == null){
+        if(res.success == false){
             window.showToast(state.source_id != null ?  '글 수정에 실패 하였습니다' : '글 등록에 실패 하였습니다', 'error')
             return
         }
@@ -254,7 +254,7 @@ export default function() {
 
             const res = await ArticleAPI.deleteArticle(auth.jwt, state.id)
             
-            if(res == null){
+            if(res.success == false){
                 window.showToast('삭제가 실패 하였습니다', 'error')
                 return
             }
@@ -285,7 +285,7 @@ export default function() {
             
         const res = await putArticle(article_id, title, head, content, thumbnail, posted, category_id)
 
-        if(res == null){
+        if(res.success == false){
             window.showToast('글의 임시 저장에 실패 하였습니다 ', 'error')
             return
         }

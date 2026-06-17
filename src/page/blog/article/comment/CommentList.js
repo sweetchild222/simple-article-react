@@ -36,14 +36,14 @@ export default function({article_id}) {
 
         CommentAPI.getArticleComments(article_id).then((comments) =>{
 
-            if(comments == null){
+            if(comments.success == false){
                 window.showToast('댓글을 가져 올 수 없습니다', 'error')
                 return
             }
                         
-            comments.sort((a, b) => { return b.create_at - a.create_at})
+            comments.payload.sort((a, b) => { return b.create_at - a.create_at})
 
-            const userIDList = comments.map(item => item.user_id)            
+            const userIDList = comments.payload.map(item => item.user_id)            
         
             UserRepository.getByIDList([...new Set(userIDList)]).then((resUsers)=>{
                 
@@ -54,7 +54,7 @@ export default function({article_id}) {
                 
                 setAtCandidates(resUsers.filter(item=> item.nickname != ''))
                 
-                comments.forEach((item, index) =>{
+                comments.payload.forEach((item, index) =>{
 
                     const user = resUsers.find(user => (user.id == item.user_id))
 
@@ -62,10 +62,10 @@ export default function({article_id}) {
                         item.user = user
                 })
 
-                const upperComments = comments.filter(comment => (comment.comment_id == null))
+                const upperComments = comments.payload.filter(comment => (comment.comment_id == null))
 
                 for(const upperComment of upperComments)
-                    upperComment.replies = comments.filter(reply => reply.comment_id == upperComment.id)
+                    upperComment.replies = comments.payload.filter(reply => reply.comment_id == upperComment.id)
             
                 setComments(upperComments)
             })
@@ -86,7 +86,7 @@ export default function({article_id}) {
         
         const res = await CommentAPI.deleteComment(auth.jwt, comment_id)
         
-        if(res == null){
+        if(res.success == false){
             window.showToast('댓글 삭제에 실패하였습니다', 'error')
             return false
         }
@@ -170,18 +170,18 @@ export default function({article_id}) {
             comment_id:null
         }
 
-        const res = await CommentAPI.postComment(auth.jwt, payload)        
+        const res = await CommentAPI.postComment(auth.jwt, payload)
 
-        if(res == null){
+        if(res.success == false){
             window.showToast('댓글 작성에 실패하였습니다', 'error')
             return false
         }
 
-        window.showToast('댓글이 작성 되었습니다', 'info')
+        window.showToast('댓글이 작성 되었습니다', 'info')        
         
         const user = await UserRepository.getByID(auth.user_id)
 
-        comments.unshift({id:res.id, replies:[], update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
+        comments.unshift({id:res.payload.id, replies:[], update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
         setComments(structuredClone(comments))     
         setIsOpenCommentEdit(false)
 
@@ -230,7 +230,7 @@ export default function({article_id}) {
 
         const res = await CommentAPI.postComment(auth.jwt, payload)
         
-        if(res == null){
+        if(res.success == false){
             window.showToast('대댓글 작성에 실패하였습니다', 'error')
             return false
         }
@@ -239,7 +239,7 @@ export default function({article_id}) {
 
         const user = await UserRepository.getByID(auth.user_id)
         
-        findComment.replies.unshift({id:res.id, update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
+        findComment.replies.unshift({id:res.payload.id, update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
         setComments(structuredClone(comments))
 
         if(!showReplies.find(id => openReplyEditCommentId == id))
@@ -313,7 +313,7 @@ export default function({article_id}) {
 
         const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)        
 
-        if(res == null){
+        if(res.success == false){
             window.showToast('수정에 실패하였습니다', 'error')
             return
         }

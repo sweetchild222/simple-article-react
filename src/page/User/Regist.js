@@ -68,17 +68,17 @@ export default function() {
     
     const resExist = await RegistAPI.getExistUser(email)
 
-    if(resExist == null)
+    if(resExist.success == false)
       return false
 
-    if(resExist.exist == 1){
+    if(resExist.payload.exist == 1){
       window.showToast('이미 가입한 사용자입니다', 'error')
       return false
     }
 
     const resVerifyEmail =  await RegistAPI.postVerifyEmail(email)
 
-    return (resVerifyEmail != null)
+    return resVerifyEmail.success
   }
 
 
@@ -124,10 +124,10 @@ export default function() {
 
     const resVerifyEmail = await RegistAPI.getVerifyEmail(email, verifyCode)
 
-    if(resVerifyEmail == null)
+    if(resVerifyEmail.success == false)
       return false
         
-    return resVerifyEmail.match
+    return resVerifyEmail.payload.match
   }
 
 
@@ -142,14 +142,19 @@ export default function() {
     setIsLoadingRegist(true)
 
     const auth = await regist(email, password)
+
+    setIsLoadingRegist(false)
         
-    if(auth == null){
-      setIsLoadingRegist(false)
+    if(auth == null){      
       window.showToast('회원 가입이 실패하였습니다', 'error')
       return
     }
 
-    setIsLoadingRegist(false)
+    if(!(Object.hasOwn(auth, "jwt") && Object.hasOwn(auth, "user_id"))){
+
+      window.showToast('회원 가입이 실패하였습니다', 'error')
+      return
+    }
 
     updateAuth(auth)
     
@@ -163,28 +168,28 @@ export default function() {
       
     const resExist = await RegistAPI.getExistUser(email)
 
-    if(resExist == null)
+    if(resExist.success == false)
       return null
 
-    if(resExist.exist == 1){
+    if(resExist.payload.exist == 1){
       window.showToast('이미 존재하는 사용자입니다', 'error')
       return null
     }
 
     const resUser = await RegistAPI.postUser(email, password)
 
-    if(resUser == null)
+    if(resUser.success == false)
       return null
     
     const resAuthenticate = await UserAPI.postAuthenticate(email, password)
               
-    if(resAuthenticate == null)
+    if(resAuthenticate.success == false)
       return null
 
-    if(resUser.id != resAuthenticate.user_id)
+    if(resUser.payload.id != resAuthenticate.payload.user_id)
       return null
 
-    return resAuthenticate
+    return resAuthenticate.payload
   }
 
 

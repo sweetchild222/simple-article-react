@@ -44,10 +44,10 @@ export default function() {
 
         UserAPI.getUser(auth.user_id).then((resUser)=> {
             
-            if(resUser == null)
+            if(resUser.success == false)
                 return
 
-            setUser(resUser)            
+            setUser(resUser.payload)
         })
 
     }, [auth])
@@ -56,7 +56,7 @@ export default function() {
     const onResultLogout = (result) => {
 
         if(result == true){
-            removeAuth()            
+            removeAuth()
             window.showToast('로그 아웃이 성공하였습니다', 'success')
             navigate('/')
         }
@@ -124,17 +124,17 @@ export default function() {
         
         const resProfile = await BlobAPI.postProfile(auth.jwt, formData)
 
-        if(resProfile == null){
+        if(resProfile.success == false){
             setIsModalImageCrop(false)
             window.showToast('프로필 설정에 실패했습니다', 'error')
             return
         }
 
-        const url = process.env.API_TARGET + '/api/blob/profile/' + resProfile.id
+        const url = process.env.API_TARGET + '/api/blob/profile/' + resProfile.payload.id
 
         const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {image: url})
 
-        if(resUser == null){
+        if(resUser.success == false){
             setIsModalImageCrop(false)
             window.showToast('프로필 설정에 실패했습니다', 'error')
             return
@@ -166,7 +166,7 @@ export default function() {
 
         const res = await withdraw(input)
 
-        if(res == null){
+        if(res.success == false){
             window.showToast('회원 탈퇴가 실패하였습니다', 'error')
             return
         }
@@ -196,7 +196,7 @@ export default function() {
         
         const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {nickname: input})
 
-        if(resUser == null) {
+        if(resUser.success == false) {
             window.showToast('닉네임 수정에 실패 했습니다', 'error')
             return
         }        
@@ -218,10 +218,10 @@ export default function() {
     
         const resPasswordCheck = await UserAPI.getUserPasswordCheck(auth.jwt, auth.user_id, password)
 
-        if(resPasswordCheck == null)
+        if(resPasswordCheck.success == false)
             return null
 
-        if(resPasswordCheck.correct == false)
+        if(resPasswordCheck.payload.correct == false)
             return null
 
         const payload = {withdraw:true}
@@ -251,20 +251,20 @@ export default function() {
 
         const resCategories = await CategoryAPI.getCategories(user.blog_id)
 
-        if(resCategories == null){
+        if(resCategories.success == false){
             window.showToast('카테고리 정보를 가져 올 수 없습니다', 'error')
             return
         }
 
 
-        if(resCategories.length > 0){
+        if(resCategories.payload.length > 0){
             window.showToast('블로그에 남아 있는 카테고리를 삭제해주세요', 'error')
             return
         }
 
         const res = await deleteBlog(input)
 
-        if(res == null){
+        if(res.success == false){
             window.showToast('블로그 삭제가 실패하였습니다', 'error')
             return
         }
@@ -286,13 +286,13 @@ export default function() {
 
         if(auth.blog_id != user.blog_id)
             return null
-    
+
         const resPasswordCheck = await UserAPI.getUserPasswordCheck(auth.jwt, auth.user_id, password)
 
-        if(resPasswordCheck == null)
+        if(resPasswordCheck.success == false)
             return null
 
-        if(resPasswordCheck.correct == false)                        
+        if(resPasswordCheck.payload.correct == false)                        
             return null
         
         return await BlogAPI.deleteBlog(auth.jwt, user.blog_id)        
@@ -303,19 +303,19 @@ export default function() {
 
         if(!validAuth(auth))
             return
-
+                
         if(auth.blog_id != user.blog_id)
             return null
 
         const resCategories = await CategoryAPI.getCategories(user.blog_id)
-
-        if(resCategories == null){
+        
+        if(resCategories.success == false){
             window.showToast('카테고리 정보를 가져 올 수 없습니다', 'error')
             return
         }
 
 
-        if(resCategories.length > 0){
+        if(resCategories.payload.length > 0){
             window.showToast('블로그에 남아 있는 카테고리를 먼저 삭제해주세요', 'error')
             return
         }

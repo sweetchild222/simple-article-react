@@ -139,10 +139,10 @@ export default function() {
 
         const resArticleImage = await BlobAPI.postArticleImage(auth.jwt, formData)
 
-        if(resArticleImage == null)
+        if(resArticleImage.success == false)
             return null
         
-        const url = process.env.API_TARGET + '/api/blob/article/' + resArticleImage.id
+        const url = process.env.API_TARGET + '/api/blob/article/' + resArticleImage.payload.id
 
         return url
     }
@@ -192,29 +192,26 @@ export default function() {
 
         const res = await putArticle(article_id, title, content, thumbnail, posted, category_id)
 
-        if(res == null)
-            return null
-
-        return res
+        return res.success
     }
 
     const onClickSave = async() => {
 
         if(refMDX.current == null)
-            return        
+            return
 
         setIsTempSaveLoading(true)
         
-        const res = await tempSave()
+        const success = await tempSave()
 
         setIsTempSaveLoading(false)
 
-        if(res != null)
+        if(success == true)
             window.showToast('임시 저장됨', 'info')
         else
             window.showToast('임시 저장 실패', 'error')
 
-        setIsTouched(res != null ? false : true)
+        setIsTouched(success == true ? false : true)
     }
 
 
@@ -288,7 +285,7 @@ export default function() {
             
             const res = await ArticleAPI.deleteArticle(auth.jwt, state.id)
             
-            if(res == null){
+            if(res.success == false){
                 window.showToast('삭제가 실패 하였습니다', 'error')
                 return
             }

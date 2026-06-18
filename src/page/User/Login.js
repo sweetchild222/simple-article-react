@@ -56,7 +56,7 @@ export default function() {
 
         setIsLoading(false)
         
-        if(resAuth.success == false) {            
+        if(resAuth.success == false) {
             window.showToast('로그인이 실패하였습니다', 'error')
             return
         }
@@ -97,7 +97,7 @@ export default function() {
             <label htmlFor='input_password'>비밀번호</label>
             <input id='input_password' type='password' defaultValue={'Sweetchild@22'} onKeyDown={onKeyDownPassword} maxLength={254}/>
             <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</PrettyButton>
-            {!relogin && <PrettyButton onClick={() => {navigate('regist', {replace:true})}}>회원가입</PrettyButton>}
+            <PrettyButton onClick={() => {navigate('regist', {state:{relogin:relogin}, replace:true})}}>회원가입</PrettyButton>
         </Vertical>
     )
 }

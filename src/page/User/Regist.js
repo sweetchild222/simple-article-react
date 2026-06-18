@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 
 import * as RegistAPI from '@rest/RegistAPI.js'
 import * as UserAPI from '@rest/UserAPI.js'
@@ -24,6 +24,9 @@ export default function() {
 
   const [isLoadingRegist, setIsLoadingRegist] = useState(false)
   const [isDisabledRegist, setIsDisabledRegist] = useState(false)
+
+  const location = useLocation()
+  const relogin = location.state != null && location.state.relogin == true
 
   useEffect(() => {
 
@@ -159,8 +162,8 @@ export default function() {
     updateAuth(auth)
     
     window.showToast('회원 가입이 성공하였습니다', 'success')
-       
-    navigate('/')
+    
+    navigate(relogin == true ? -1 : '/')
   }
 
 

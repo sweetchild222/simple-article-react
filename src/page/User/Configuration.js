@@ -9,6 +9,7 @@ import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 import ImagePicker from "@util/ImagePicker.js";
 import PrettyButton from '@gui/PrettyButton.js';
+import OverlayProgress from '@gui/OverlayProgress.js';
 import Modal from '@gui/Modal.js';
 import Password from './Password.js';
 import {blobFromCanvas} from "@util/ImageUtil.js";
@@ -17,6 +18,7 @@ import ProfileImage from '@gui/ProfileImage.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
 import * as validator from './Validator.js'
 import {useNavigate} from 'react-router-dom';
+
 
 export default function() {
     
@@ -342,6 +344,6 @@ export default function() {
 
         {user.blog_id && <PrettyButton onClick={onClickDeleteBlog} type='success'>블로그 삭제</PrettyButton>}
         <Modal title={'패스워드를 입력하세요'} description={'블로그에 카테고리가 남아 있으면 먼저 삭제해주세요'} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalDeleteBlog} onClose={()=>setIsModalDeleteBlog(false)} onInput={onInputPasswordForBlog}/>
-      </Vertical>) : null
+      </Vertical>) : <OverlayProgress/>
 }
 

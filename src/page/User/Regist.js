@@ -7,7 +7,7 @@ import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import GoBack from "@page/common/GoBack.js";
-import {Horizental, Vertical} from "@gui/Flex.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 
 export default function() {
 
@@ -263,24 +263,24 @@ export default function() {
   }
 
   return !validAuth(auth) ? (
-    <Horizental style={{alignItems: 'center' }}>
-      <Vertical style={{ alignItems: 'center' }}>
+    <Vertical style={{alignItems: 'center' }}>
+      <Horizental style={{ alignItems: 'center' }}>
         <input id='input_email' type="text" maxLength="254" onChange={onChangeEmail} placeholder="이메일" maxLength={254}/>
         <PrettyButton isLoading={isLoadingSendCode} disabled={isDisabledSendCode} onClick={onClickSendVerifyCode}>인증 번호 발송</PrettyButton>
-      </Vertical>
+      </Horizental>
 
       <input id='input_verifyCode' type="number" maxLength="6" onChange={onChangeVerifyCode} placeholder="인증 코드"/>
       <PrettyButton isLoading={isLoadingVerify} disabled={isDisabledVerify} onClick={onClickRequestVerify}>인증 번호 확인</PrettyButton>
       <label>{isVerified ? '인증 완료' : '미 인증'}</label>
 
       <div style={{height:100}}></div>
-      <Vertical style={{alignItems: 'center' }}>
+      <Horizental style={{alignItems: 'center' }}>
         <input id='input_password' type="text" onChange={onChangePassword} placeholder="비밀번호 (8~20자)" maxLength={20}/>
-      </Vertical>
+      </Horizental>
       <input id='input_confirm_password' type="text" onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20}/>
       <label>비밀번호 조건: 소문자, 대문자, 숫자, 특수문자 각 1개 이상 포함</label>
       <label>{passwordValid ? '유효한 패스워드' : '무효한 패스워드'}</label>
       <PrettyButton isLoading={isLoadingRegist} disabled={isDisabledRegist} onClick={onClickRegist} type='confirm'>회원 가입</PrettyButton>
-    </Horizental>
+    </Vertical>
   ) : (<GoBack value={'로그인된 사용자는 접근 할 수 없습니다'}/>)
 }

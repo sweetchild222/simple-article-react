@@ -1,6 +1,6 @@
-export function Horizental(props){
+export function Vertical(props){
 
-    const combinedStyle = {    
+    const combinedStyle = {
         ...props.style
     }
 
@@ -12,7 +12,8 @@ export function Horizental(props){
 }
 
 
-export function Vertical(props){
+
+export function Horizental(props){
 
     const combinedStyle = {    
         ...props.style

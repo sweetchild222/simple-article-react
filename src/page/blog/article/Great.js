@@ -8,7 +8,7 @@ import AuthContext from "@util/AuthContext.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 
 import PrettyButton from "@gui/PrettyButton.js";
-import {Horizental, Vertical} from "@gui/Flex.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 
 
 export default function({article_id, like_count, dislike_count}) {
@@ -169,7 +169,7 @@ export default function({article_id, like_count, dislike_count}) {
     }
 
     return (
-            <Vertical style={{justifyContent:'center', alignItems:'center'}}>
+            <Horizental style={{justifyContent:'center', alignItems:'center'}}>
                 <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickGreatLike}>
                     <MdThumbUpAlt size={22}/>
                     <div>{CountWithUnit(likeCount)}</div>
@@ -179,6 +179,6 @@ export default function({article_id, like_count, dislike_count}) {
                     <MdThumbDownAlt size={22}/>
                     <div>{CountWithUnit(dislikeCount)}</div>
                 </PrettyButton>
-            </Vertical>
+            </Horizental>
         )
 }

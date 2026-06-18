@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef} from "react";
 
 import PrettyButton from "@gui/PrettyButton.js";
-import {Horizental, Vertical} from "@gui/Flex.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 
 import * as UserRepository from "./UserRepository.js";
 import DOMPurify from 'dompurify';
@@ -168,7 +168,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         
 
     return seenComment ? (
-            <Horizental style={{position:'relative', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:editable ? '100%' : 'auto'}}>
+            <Vertical style={{position:'relative', justifyContent:'end', backgroundColor:'orange', alignItems:'start', width:editable ? '100%' : 'auto'}}>
 
                 {editable && <TextArea ref={refArea} comment={editingComment} atCandidates={atCandidates} onInput={onInput} maxCharLength={maxCharLength}></TextArea>}
                 {!editable && <div ref={refComment} dangerouslySetInnerHTML={{ __html: seenComment}} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', backgroundColor:'lightblue', width:'auto', padding:'5px'}}/>}
@@ -177,15 +177,15 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                     <PrettyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></PrettyButton>
                 </div>}
 
-                {editable && <Vertical style={{justifyContent:'end', width:'100%', alignItems:'center'}}>
+                {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'10px'}}/>
                     <PrettyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner} >{<MdOutlineDoneOutline size={22}/>}</PrettyButton>
                     <div style={{width:'10px'}}></div>
                     <PrettyButton type={'transparent'} tooltip={'취소'} style={{color:'black'}} disabled={isModifyLoading} onClick={onClickModifyCancelInner} >{<MdCancel size={22}/>}</PrettyButton>
-                </Vertical>
+                </Horizental>
                 }
-            </Horizental>
+            </Vertical>
         ) : null
 }
 

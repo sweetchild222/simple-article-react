@@ -15,7 +15,7 @@ import * as CategoryAPI from '@rest/CategoryAPI.js'
 import ImageCropModal from '@gui/ImageCropModal.js'
 import StateProgsImage from "@gui/StateProgsImage.js";
 import OverlayProgress from "@gui/OverlayProgress.js";
-import {Horizental, Vertical} from "@gui/Flex.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
@@ -295,7 +295,7 @@ export default function() {
 
 
     return validAuth(auth) ? (
-        <Horizental style={{alignItems: 'center'}}>
+        <Vertical style={{alignItems: 'center'}}>
             {isOverlayProgress && <OverlayProgress/>}
             <label htmlFor='input_title'>제목</label>
             <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title}/>
@@ -311,7 +311,7 @@ export default function() {
             <PrettyButton type='success' onClick={onClickSave}>임시 저장</PrettyButton>
             <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
             <PrettyButton type='danger' onClick={onClickLeave}>뒤로가기</PrettyButton>
-        </Horizental>
+        </Vertical>
         ) : (<GoLogin/>)
 }
 

@@ -5,7 +5,7 @@ import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import ProfileImage from "@gui/ProfileImage.js";
-import {Horizental, Vertical} from "@gui/Flex.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 import * as CommentAPI from '@rest/CommentAPI.js'
 
 import Great from "./Great.js";
@@ -336,14 +336,14 @@ export default function({article_id}) {
 
 
     return comments ? (
-        <Horizental style={{marginTop:'20px', width:'100%'}}>
+        <Vertical style={{marginTop:'20px', width:'100%'}}>
             {isOpenCommentEdit && <Writer onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
-            <Vertical style={{justifyContent:'end', alignItems:'center', marginBottom:'10px'}}>
+            <Horizental style={{justifyContent:'end', alignItems:'center', marginBottom:'10px'}}>
                 {comments.length > 0 && 
                     <PrettyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> setIsShowComments(item => !item)}>
-                        <Vertical>
+                        <Horizental>
                             {'댓글 (' + comments.length + ')'}
-                        </Vertical>
+                        </Horizental>
                         <div style={{width:'10px'}}/>
                         {isShowComments ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
                     </PrettyButton>
@@ -351,77 +351,77 @@ export default function({article_id}) {
 
                 <div style={{flex:'1'}}></div>
                 {!isOpenCommentEdit && <PrettyButton type={'success'}  onClick={onOpenCommentEdit}>{'댓글 작성'}</PrettyButton>}
-            </Vertical>
+            </Horizental>
             
             {isShowComments && comments.map((data, index) => 
-                <Horizental key={data.id} style={{justifyContent:'left', border:'1px solid lightgray'}}>
-                    <Vertical>
-                        <Horizental>
+                <Vertical key={data.id} style={{justifyContent:'left', border:'1px solid lightgray'}}>
+                    <Horizental>
+                        <Vertical>
                             <ProfileImage shape={'circle'} size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
                             <ReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
-                        </Horizental>
-                        <Horizental style={{width:'100%'}}>
-                            <Vertical>
+                        </Vertical>
+                        <Vertical style={{width:'100%'}}>
+                            <Horizental>
                                 <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
-                            </Vertical>
+                            </Horizental>
                             
-                            <Vertical style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                            <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                 <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
                                 <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
-                            </Vertical>
+                            </Horizental>
 
-                            {!(modifyModeCommentId == data.id) && <Vertical>
+                            {!(modifyModeCommentId == data.id) && <Horizental>
                                 <Great comment_id={data.id} like_count={data.like_count} dislike_count={data.dislike_count}></Great>                                
                                 <div style={{width:'20px'}}></div>
                                 <PrettyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical size={22}/>}</PrettyButton>
-                            </Vertical>
+                            </Horizental>
                             }
 
-                            {data.id == openReplyEditCommentId && <Vertical>
+                            {data.id == openReplyEditCommentId && <Horizental>
                                 <ProfileImage shape={'circle'} size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
                                 <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
-                            </Vertical>
+                            </Horizental>
                             }
 
                             {data.replies.length > 0 &&
                                 <PrettyButton id={'replyButton'} type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
-                                    <Vertical>
+                                    <Horizental>
                                         {'답글 (' + data.replies.length + ')'}
-                                    </Vertical>
+                                    </Horizental>
                                     <div style={{width:'10px'}}/>
                                     {isShowReplies(data.id) ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
                                 </PrettyButton>
                             }
                             
                             {isShowReplies(data.id) && data.replies.map((reply, index) =>
-                                <Vertical key={reply.id} id={'replyDiv'}>
-                                    <Horizental>
+                                <Horizental key={reply.id} id={'replyDiv'}>
+                                    <Vertical>
                                         <ProfileImage shape={'circle'} id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
                                         <div style={{flex:'1'}}/>
-                                    </Horizental>
-                                    <Horizental style={{width:'100%'}}>
-                                        <Vertical>
+                                    </Vertical>
+                                    <Vertical style={{width:'100%'}}>
+                                        <Horizental>
                                             <div style={{fontSize:'14px', marginRight:'10px'}}>{reply.user.nickname}</div>
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
-                                        </Vertical>
+                                        </Horizental>
 
-                                        <Vertical style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                                        <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                             <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)}/>
                                             <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
-                                        </Vertical>
-                                        {!(modifyModeCommentId == reply.id) && <Vertical>
+                                        </Horizental>
+                                        {!(modifyModeCommentId == reply.id) && <Horizental>
                                             <Great comment_id={reply.id} like_count={reply.like_count} dislike_count={reply.dislike_count}></Great>
-                                        </Vertical>
+                                        </Horizental>
                                         }
-                                    </Horizental>
-                                </Vertical>
+                                    </Vertical>
+                                </Horizental>
                             )}
-                        </Horizental>
-                    </Vertical>
-                </Horizental>
+                        </Vertical>
+                    </Horizental>
+                </Vertical>
             )}
-            </Horizental>
+            </Vertical>
         
         ) : null
 }

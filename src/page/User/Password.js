@@ -4,7 +4,7 @@ import * as UserAPI from '@rest/UserAPI.js'
 import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton.js';
-import {Horizental, Vertical} from "@gui/Flex.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 import OverlayProgress from "@gui/OverlayProgress.js";
 
 
@@ -131,7 +131,7 @@ export default function({onClose}) {
 
 
     return (
-        <Horizental style={{flex:1, backgroundColor:'rgba(255,255,0,0.3)', alignItems: 'center'}}>
+        <Vertical style={{flex:1, backgroundColor:'rgba(255,255,0,0.3)', alignItems: 'center'}}>
             {isOverlayProgress && <OverlayProgress/>}
             <label htmlFor='input_current_password'>기존 비밀번호</label>
             <input ref={refCurPassword} id='input_current_password' type='text' maxLength={20} onKeyDown={onKeyDownCurrent}/>
@@ -142,7 +142,7 @@ export default function({onClose}) {
             <input ref={refRepeatPassword} id='input_repeat_password' type='text' maxLength={20} onKeyDown={onKeyDownRepeat}/>
             <PrettyButton type="confirm" onClick={onClickPasswordChange}>비밀번호 변경</PrettyButton>
             <PrettyButton type="confirm" onClick={onClose} type='danger'>취소</PrettyButton>
-        </Horizental>
+        </Vertical>
     )
 }
 

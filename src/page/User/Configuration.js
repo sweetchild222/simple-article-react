@@ -14,7 +14,7 @@ import Password from './Password.js';
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import ImageCropModal from '@gui/ImageCropModal.js'
 import ProfileImage from '@gui/ProfileImage.js'
-import {Horizental, Vertical} from "@gui/Flex.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 import * as validator from './Validator.js'
 import {useNavigate} from 'react-router-dom';
 
@@ -325,7 +325,7 @@ export default function() {
 
     
     return user ? (
-      <Horizental style={{position:'relative', alignItems:'center'}}>
+      <Vertical style={{position:'relative', alignItems:'center'}}>
         <ProfileImage user={user} onClick={onClickProfile} size={profileSize}/>
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <PrettyButton onClick={onClickLogout} type='warning'>로그아웃</PrettyButton>
@@ -342,6 +342,6 @@ export default function() {
 
         {user.blog_id && <PrettyButton onClick={onClickDeleteBlog} type='success'>블로그 삭제</PrettyButton>}
         <Modal title={'패스워드를 입력하세요'} description={'블로그에 카테고리가 남아 있으면 먼저 삭제해주세요'} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalDeleteBlog} onClose={()=>setIsModalDeleteBlog(false)} onInput={onInputPasswordForBlog}/>
-      </Horizental>) : null
+      </Vertical>) : null
 }
 

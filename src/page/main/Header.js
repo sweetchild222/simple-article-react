@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import AuthContext from "@util/AuthContext.js";
 import ProfileImage from "@gui/ProfileImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
-import {Horizental, Vertical} from "@gui/Flex.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 
 export default function() {
 
@@ -53,7 +53,7 @@ export default function() {
     
 
     return (
-            <Vertical style={{ alignItems: 'center', padding:'10px 10px 10px 10px', backgroundColor:' #494D5F', boxShadow: '0 4px 3px -3px black'}}>
+            <Horizental style={{ alignItems: 'center', padding:'10px 10px 10px 10px', backgroundColor:' #494D5F', boxShadow: '0 4px 3px -3px black'}}>
                 <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickHome}/>
                 <div style={{flexGrow:1, backgroundColor:'blue'}} />
                 <PrettyButton  type='success' onClick={onClickSearch} style={{margin:'0px 5px 0 5px'}}>검색</PrettyButton>
@@ -62,6 +62,6 @@ export default function() {
                     {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn}>로그인</PrettyButton>}
                     {validAuth(auth) && <ProfileImage shape={'circle'} key={reloadKey} userId={auth.user_id} onClick={onClickUser}/>}
                 </div>
-            </Vertical>
+            </Horizental>
     )
 }

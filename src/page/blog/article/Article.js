@@ -16,7 +16,7 @@ import MarkdownToHtml from '@util/MarkdownToHtml.js'
 import Modal from "@gui/Modal.js";
 import StateProgsImage from "@gui/StateProgsImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
-import {Horizental, Vertical} from "@gui/Flex.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 import OverlayProgress from "@gui/OverlayProgress.js";
 
 
@@ -177,29 +177,29 @@ export default function() {
     }
 
 
-    return article ? (<Vertical style={{justifyContent:'center', marginTop:'20px'}}>
+    return article ? (<Horizental style={{justifyContent:'center', marginTop:'20px'}}>
         <div style={{width:'2px', marginRight:'20px'}}/>
-            <Horizental style={{alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
+            <Vertical style={{alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
                 <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
-                <Vertical style={{height:'30px', width:'100%', alignItems:'center'}}>
+                <Horizental style={{height:'30px', width:'100%', alignItems:'center'}}>
                     {isEditable() && <PrettyButton isLoading={isEditLoading} onClick={onClickEdit}>{'수정'}</PrettyButton>}
                     {isEditable() && <PrettyButton isLoading={isDeleteLoading} onClick={onClickDelete}>{'삭제'}</PrettyButton>}
                     {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
                     <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</div>
-                    <Vertical style={{marginRight:'20px'}}>
+                    <Horizental style={{marginRight:'20px'}}>
                         <TiEye size={22}/>
                         <div>{CountWithUnit(article.showed)}</div>
-                    </Vertical>
+                    </Horizental>
                     <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
                     {category && <PrettyButton type={'transparent'} style={{color:'black'}} onClick={onClickNavigateCategory}>{category.name}</PrettyButton>}
-                </Vertical>
+                </Horizental>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 {/* <div style={{height:'30px'}}></div> */}
                 {/* {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>} */}
                 <div style={{height:'30px'}}></div>
                 <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
                 <CommentList article_id={article_id}/>
-            </Horizental>
+            </Vertical>
         <div style={{width:'2px', marginLeft:'20px'}}/>
-        </Vertical>) : <OverlayProgress/>
+        </Horizental>) : <OverlayProgress/>
 }

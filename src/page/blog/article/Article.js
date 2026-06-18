@@ -177,29 +177,44 @@ export default function() {
     }
 
 
-    return article ? (<Horizental style={{justifyContent:'center', marginTop:'20px'}}>
-        <div style={{width:'2px', marginRight:'20px'}}/>
+    return article ? (
+        <Horizental style={{justifyContent:'center', marginTop:'20px'}}>
             <Vertical style={{alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
                 <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
                 <Horizental style={{height:'30px', width:'100%', alignItems:'center'}}>
-                    {isEditable() && <PrettyButton isLoading={isEditLoading} onClick={onClickEdit}>{'수정'}</PrettyButton>}
-                    {isEditable() && <PrettyButton isLoading={isDeleteLoading} onClick={onClickDelete}>{'삭제'}</PrettyButton>}
-                    {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
-                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</div>
-                    <Horizental style={{marginRight:'20px'}}>
+                    {category && 
+                        <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap'}} onClick={onClickNavigateCategory}>{category.name}</div>
+                    }
+                    <div style={{width:'20px'}}/>
+                    <Horizental style={{alignItems:'center'}}>
                         <TiEye size={22}/>
+                        <div style={{width:'5px'}}/>
                         <div>{CountWithUnit(article.showed)}</div>
                     </Horizental>
-                    <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
-                    {category && <PrettyButton type={'transparent'} style={{color:'black'}} onClick={onClickNavigateCategory}>{category.name}</PrettyButton>}
+
+                    <Horizental style={{whiteSpace: 'nowrap', color:'gray', fontStyle: 'italic', flex:'1', justifyContent:'end', marginRight:'10px'}}>
+                        {article.post_at ? ElapsedTime(article.post_at) + '': ''}
+                    </Horizental>
+
+                    {isEditable() && 
+                        <Horizental>
+                            <PrettyButton isLoading={isEditLoading} onClick={onClickEdit}>{'수정'}</PrettyButton>
+                            <div style={{width:'10px'}}></div>
+                            <PrettyButton isLoading={isDeleteLoading} onClick={onClickDelete}>{'삭제'}</PrettyButton>
+                            <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
+                        </Horizental>
+                    }
+
                 </Horizental>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
-                {/* <div style={{height:'30px'}}></div> */}
-                {/* {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>} */}
+                <div style={{height:'30px'}}></div>
+                {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
                 <div style={{height:'30px'}}></div>
                 <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
+                <Horizental style={{alignSelf:'end', backgroundColor:'blue'}}>
+                    <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
+                </Horizental>
                 <CommentList article_id={article_id}/>
             </Vertical>
-        <div style={{width:'2px', marginLeft:'20px'}}/>
         </Horizental>) : <OverlayProgress/>
 }

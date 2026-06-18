@@ -170,12 +170,12 @@ export default function({article_id, like_count, dislike_count}) {
 
     return (
             <Horizental style={{justifyContent:'center', alignItems:'center'}}>
-                <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickGreatLike}>
+                <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                     <MdThumbUpAlt size={22}/>
                     <div>{CountWithUnit(likeCount)}</div>
                 </PrettyButton>
-
-                <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row', marginRight:'20px'}} onClick={onClickGreatDislike}>
+                <div style={{width:'20px'}}></div>
+                <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
                     <MdThumbDownAlt size={22}/>
                     <div>{CountWithUnit(dislikeCount)}</div>
                 </PrettyButton>

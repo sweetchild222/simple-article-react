@@ -29,7 +29,8 @@ export default function({article_id}) {
     const [modifyModeCommentId, setModifyModeCommentId] = useState(-1)
     const [atCandidates, setAtCandidates] = useState([])
     const [showReplies, setShowReplies] = useState([])
-            
+    const [isShowComments, setIsShowComments] = useState(false)
+
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -148,7 +149,7 @@ export default function({article_id}) {
 
         setIsOpenCommentEdit(true)
         setOpenReplyEditCommentId(-1)
-        setModifyModeCommentId(-1)
+        setModifyModeCommentId(-1)        
     }
 
 
@@ -177,13 +178,14 @@ export default function({article_id}) {
             return false
         }
 
-        window.showToast('댓글이 작성 되었습니다', 'info')        
+        window.showToast('댓글이 작성 되었습니다', 'info')
         
         const user = await UserRepository.getByID(auth.user_id)
 
         comments.unshift({id:res.payload.id, replies:[], update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
-        setComments(structuredClone(comments))     
+        setComments(structuredClone(comments))
         setIsOpenCommentEdit(false)
+        setIsShowComments(true)
 
         if(user && user.nickname != '' && !atCandidates.find(item => item.id == user.id))
             setAtCandidates([...atCandidates, user])
@@ -332,16 +334,26 @@ export default function({article_id}) {
         setModifyModeCommentId(-1)
     }
 
-    
+
     return comments ? (
         <Horizental style={{marginTop:'20px', width:'100%'}}>
             {isOpenCommentEdit && <Writer onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
-            <Vertical style={{justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
-                <label>{'댓글 (' + comments.length + ')'}</label>
-                {!isOpenCommentEdit && <PrettyButton type={'success'} onClick={onOpenCommentEdit}>{'댓글 작성'}</PrettyButton>}
+            <Vertical style={{justifyContent:'end', alignItems:'center', marginBottom:'10px'}}>
+                {comments.length > 0 && 
+                    <PrettyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> setIsShowComments(item => !item)}>
+                        <Vertical>
+                            {'댓글 (' + comments.length + ')'}
+                        </Vertical>
+                        <div style={{width:'10px'}}/>
+                        {isShowComments ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
+                    </PrettyButton>
+                }
+
+                <div style={{flex:'1'}}></div>
+                {!isOpenCommentEdit && <PrettyButton type={'success'}  onClick={onOpenCommentEdit}>{'댓글 작성'}</PrettyButton>}
             </Vertical>
             
-            {comments.map((data, index) => 
+            {isShowComments && comments.map((data, index) => 
                 <Horizental key={data.id} style={{justifyContent:'left', border:'1px solid lightgray'}}>
                     <Vertical>
                         <Horizental>

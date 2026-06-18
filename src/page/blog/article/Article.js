@@ -22,6 +22,7 @@ import OverlayProgress from "@gui/OverlayProgress.js";
 
 import Great from "./Great.js"
 import CommentList from "./comment/CommentList.js"
+import ControlMenu from "./comment/ControlMenu.js";
 
 
 import { TiEye } from "react-icons/ti";
@@ -37,8 +38,8 @@ export default function() {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [article, setArticle] = useState(null)    
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
-    const [isEditLoading, setIsEditLoading] = useState(false)
-    const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+    const [isControlLoading, setIsControlLoading] = useState(false)
+    
     const [category, setCategory] = useState(null)
     
     const navigate = useNavigate()
@@ -95,12 +96,12 @@ export default function() {
         if(!isEditable())
             return
 
-        setIsEditLoading(true)
+        setIsControlLoading(true)
         
         const res = await ArticleAPI.getBlogArticles(auth.jwt, auth.blog_id, 'source_id=' + article.id + '&posted=0')
         
         if(res.success == false) {
-            setIsEditLoading(false)
+            setIsControlLoading(false)
             window.showToast('수정 본을 찾는데 실패했습니다', 'error')
             return
         }
@@ -121,7 +122,7 @@ export default function() {
 
             const resPost = await ArticleAPI.postArticle(auth.jwt, payload)
 
-            setIsEditLoading(false)
+            setIsControlLoading(false)
 
             if(resPost.success == false){
                 window.showToast('수정 본 생성에 실패 했습니다', 'error')
@@ -134,7 +135,7 @@ export default function() {
             navigate('/blog/' + auth.blog_id + '/write', {state:state})
         }
         else{
-            setIsEditLoading(false)
+            setIsControlLoading(false)
             window.showToast('이미 수정 중인 글로 이동합니다', 'info')
             const state = {id:copiedArticle.id, ...payload}
             navigate('/blog/' + auth.blog_id + '/write', {state:state})
@@ -154,11 +155,11 @@ export default function() {
 
         if(result == true){
 
-            setIsDeleteLoading(true)
+            setIsControlLoading(true)
             
             const res = await ArticleAPI.deleteArticle(auth.jwt, article_id)
 
-            setIsDeleteLoading(false)
+            setIsControlLoading(false)
             
             if(res.success == false){
                 window.showToast('삭제가 실패 하였습니다', 'error')
@@ -182,25 +183,20 @@ export default function() {
             <Vertical style={{alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
                 <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
                 <Horizental style={{height:'30px', width:'100%', alignItems:'center'}}>
-                    {category && 
+                    {category &&
                         <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap'}} onClick={onClickNavigateCategory}>{category.name}</div>
                     }
                     <div style={{width:'20px'}}/>
-                    <Horizental style={{alignItems:'center'}}>
-                        <TiEye size={22}/>
-                        <div style={{width:'5px'}}/>
-                        <div>{CountWithUnit(article.showed)}</div>
-                    </Horizental>
-
+                    <TiEye size={22}/>
+                    <div style={{width:'5px'}}/>
+                    <div>{CountWithUnit(article.showed)}</div>
                     <Horizental style={{whiteSpace: 'nowrap', color:'gray', fontStyle: 'italic', flex:'1', justifyContent:'end', marginRight:'10px'}}>
                         {article.post_at ? ElapsedTime(article.post_at) + '': ''}
                     </Horizental>
 
                     {isEditable() && 
                         <Horizental>
-                            <PrettyButton isLoading={isEditLoading} onClick={onClickEdit}>{'수정'}</PrettyButton>
-                            <div style={{width:'10px'}}></div>
-                            <PrettyButton isLoading={isDeleteLoading} onClick={onClickDelete}>{'삭제'}</PrettyButton>
+                            <ControlMenu isLoading={isControlLoading} onRemove={onClickDelete} onModify={onClickEdit}></ControlMenu>
                             <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
                         </Horizental>
                     }

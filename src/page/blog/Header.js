@@ -34,7 +34,6 @@ export default function() {
     const [isBlogTitleModalOpen, setIsBlogTitleModalOpen] = useState(false)
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
-    
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
 
     useEffect(()=>{
@@ -53,6 +52,7 @@ export default function() {
             }
 
             setBlog(blog.payload)
+
         })
 
     }, [blog_id])
@@ -187,6 +187,6 @@ export default function() {
                     <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
                 </Horizental>
             </div>
-    ) : null
+    ) : <div style={{backgroundColor:' #24262F', height:'168px', minHeight:'168px', boxShadow: '0 4px 3px -3px black', display:'block'}}></div>
 }
 

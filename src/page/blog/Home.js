@@ -74,8 +74,8 @@ export default function() {
     
     const articles = await getBlogArticles(0, category_id, posted)
 
-    if(articles.success == true)      
-      setArticles(articles.payload)    
+    if(articles.success == true)
+      setArticles(articles.payload)
 
     setIsOverlayProgress(false)
     
@@ -110,8 +110,10 @@ export default function() {
         
     const articles = await getBlogArticles(page, category_id, posted)
 
-    if(articles.success == true)      
-      setArticles(articles.payload)    
+    if(articles.success == true){
+      console.log('geeg')
+      setArticles(articles.payload)
+    }
 
     setIsOverlayProgress(false)
   }
@@ -144,7 +146,7 @@ export default function() {
                 </Vertical>)
               )}
           </Vertical>
-        <div style={{backgroundColor:'gray', width:'2px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
+        <div style={{backgroundColor:'gray', width:'1px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{maxWidth:'230px', alignItems:'center', display: 'block'}}>
           <Categories ref={refCategories} blogId={blog_id} initCategoryId={initCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
           <div style={{height:'30px'}}></div>

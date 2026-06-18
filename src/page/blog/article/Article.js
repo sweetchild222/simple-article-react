@@ -203,11 +203,12 @@ export default function() {
 
                 </Horizental>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
-                <div style={{height:'30px'}}></div>
+                {/* <div style={{height:'30px'}}></div>
                 {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
-                <div style={{height:'30px'}}></div>
+                <div style={{height:'30px'}}></div> */}
                 <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
-                <Horizental style={{alignSelf:'end', backgroundColor:'blue'}}>
+                <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
+                <Horizental style={{alignSelf:'end'}}>
                     <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
                 </Horizental>
                 <CommentList article_id={article_id}/>

@@ -29,9 +29,9 @@ export default function() {
 
   const refCategories = useRef(null)  
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-  const [selectedCategory, setSelectedCategory] = useState(null)  
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const [articles, setArticles] = useState(null)
-  const [isOverlayProgress, setIsOverlayProgress] = useState(false)
+  const [isOverlayProgress, setIsOverlayProgress] = useState(true)
   const [reloadKey, setReloadKey] = useState(0)
 
   const countPerPage = 8
@@ -74,8 +74,8 @@ export default function() {
     
     const articles = await getBlogArticles(0, category_id, posted)
 
-    if(articles.success == true)
-      setArticles(articles.payload)
+    if(articles.success == true)      
+      setArticles(articles.payload)    
 
     setIsOverlayProgress(false)
     
@@ -110,8 +110,8 @@ export default function() {
         
     const articles = await getBlogArticles(page, category_id, posted)
 
-    if(articles.success == true)
-      setArticles(articles.payload)
+    if(articles.success == true)      
+      setArticles(articles.payload)    
 
     setIsOverlayProgress(false)
   }

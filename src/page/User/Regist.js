@@ -26,7 +26,7 @@ export default function() {
   const [isDisabledRegist, setIsDisabledRegist] = useState(false)
 
   const location = useLocation()
-  const relogin = location.state != null && location.state.relogin == true
+  const comback = location.state != null && location.state.comback == true
 
   useEffect(() => {
 
@@ -163,7 +163,7 @@ export default function() {
     
     window.showToast('회원 가입이 성공하였습니다', 'success')
     
-    navigate(relogin == true ? -1 : '/')
+    navigate(comback == true ? -1 : '/')
   }
 
 

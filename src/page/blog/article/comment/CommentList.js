@@ -143,7 +143,7 @@ export default function({article_id}) {
 
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
-            navigate('/account', {state:{relogin:true}})
+            navigate('/account', {state:{comback:true}})
             return
         }
 
@@ -198,7 +198,7 @@ export default function({article_id}) {
 
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
-            navigate('/account', {state:{relogin:true}})
+            navigate('/account', {state:{comback:true}})
             return
         }
 

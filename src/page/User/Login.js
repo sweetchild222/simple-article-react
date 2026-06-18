@@ -18,13 +18,13 @@ export default function() {
 
     const location = useLocation()
     
-    const relogin = location.state != null && location.state.relogin == true
+    const comback = location.state != null && location.state.comback == true
 
     useEffect(() => {
 
         if(validAuth(auth)){
             
-            if(!relogin)
+            if(!comback)
                 navigate('/')
         }        
 
@@ -71,7 +71,7 @@ export default function() {
 
         window.showToast('로그인이 성공하였습니다', 'success')
         
-        if(relogin)
+        if(comback)
             navigate(-1)
     }
 
@@ -97,7 +97,7 @@ export default function() {
             <label htmlFor='input_password'>비밀번호</label>
             <input id='input_password' type='password' defaultValue={'Sweetchild@22'} onKeyDown={onKeyDownPassword} maxLength={254}/>
             <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</PrettyButton>
-            <PrettyButton onClick={() => {navigate('regist', {state:{relogin:relogin}, replace:true})}}>회원가입</PrettyButton>
+            <PrettyButton onClick={() => {navigate('regist', {state:{comback:comback}, replace:true})}}>회원가입</PrettyButton>
         </Vertical>
     )
 }

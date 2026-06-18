@@ -144,7 +144,7 @@ export default function({comment_id, like_count, dislike_count}) {
         
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
-            navigate('/account', {state:{relogin:true}})
+            navigate('/account', {state:{comback:true}})
             return
         }
         setIsLikeLoading(true)
@@ -157,7 +157,7 @@ export default function({comment_id, like_count, dislike_count}) {
         
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
-            navigate('/account', {state:{relogin:true}})
+            navigate('/account', {state:{comback:true}})
             return
         }
 

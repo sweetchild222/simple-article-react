@@ -180,37 +180,34 @@ export default function() {
 
 
     return article ? (
-        <Horizental style={{justifyContent:'center', marginTop:'20px'}}>
-            <Vertical style={{alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
-                <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px', padding:'0px 0px 30px 0px', boxSizing:'border-box'}}>{article.title}</div>
-                <Horizental style={{height:'30px', width:'100%', alignItems:'center'}}>
-                    {category &&
-                        <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap'}} onClick={onClickNavigateCategory}>{category.name}</div>
-                    }
-                    <div style={{width:'20px'}}/>
-                    <TiEye size={22}/>
-                    <div style={{width:'5px'}}/>
-                    <div>{CountWithUnit(article.showed)}</div>
-                    <Horizental style={{whiteSpace: 'nowrap', color:'gray', fontStyle: 'italic', flex:'1', justifyContent:'end', marginRight:'10px'}}>
-                        {article.post_at ? ElapsedTime(article.post_at) + '': ''}
-                    </Horizental>
+        <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', minWidth:'960px', maxWidth:'960px'}}>
+            <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px', padding:'0px 0px 20px 0px'}}>{article.title}</div>
+            <Horizental style={{width:'100%', alignItems:'center'}}>
+                {category &&
+                    <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap'}} onClick={onClickNavigateCategory}>{category.name}</div>
+                }
+                <div style={{width:'20px'}}/>
+                <TiEye size={22}/>
+                <div style={{width:'5px'}}/>
+                <div>{CountWithUnit(article.showed)}</div>
+                <Horizental style={{whiteSpace: 'nowrap', color:'gray', fontStyle: 'italic', flex:'1', justifyContent:'end', marginRight:'10px'}}>
+                    {article.post_at ? ElapsedTime(article.post_at) + '': ''}
+                </Horizental>
 
-                    {isEditable() && 
-                        <Horizental>
-                            <ControlMenu isLoading={isControlLoading} onRemove={onClickDelete} onModify={onClickEdit}></ControlMenu>
-                            <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
-                        </Horizental>
-                    }
-                </Horizental>
-                <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
-                <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>                
-                <Horizental style={{alignSelf:'end', marginTop:'20px'}}>
-                    <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
-                </Horizental>
-                <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
-                <CommentList article_id={article.id}/>
-                <div style={{height:'20px'}}/>
-                <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>
-            </Vertical>
-        </Horizental>) : <OverlayProgress/>
+                {isEditable() && 
+                    <div>
+                        <ControlMenu isLoading={isControlLoading} onRemove={onClickDelete} onModify={onClickEdit}></ControlMenu>
+                        <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
+                    </div>
+                }
+            </Horizental>
+            <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
+            <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
+            <Great style={{marginLeft: 'auto'}} article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
+            <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
+            <CommentList article_id={article.id}/>
+            <div style={{height:'20px'}}/>
+            <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>
+        </Vertical>
+    ) : <OverlayProgress/>
 }

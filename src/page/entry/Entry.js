@@ -44,6 +44,7 @@ const Aplication = function() {
       <BlogHeader/>
       <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
       <Outlet/>
+      <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
     </Vertical>
   )
 

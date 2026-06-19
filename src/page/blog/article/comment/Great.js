@@ -11,7 +11,7 @@ import { MdThumbDownAlt } from "react-icons/md";
 
 import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
 
-export default function({comment_id, like_count, dislike_count}) {
+export default function({comment_id, like_count, dislike_count, style}) {
     
     const [isLikeLoading, setIsLikeLoading] = useState(false)
     const [isDislikeLoading, setIsDislikeLoading] = useState(false)
@@ -167,7 +167,7 @@ export default function({comment_id, like_count, dislike_count}) {
     }
 
     return (
-        <Horizental style={{alignItems:'center'}}>
+        <Horizental style={{alignItems:'center', ...style}}>
             <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                 <MdThumbUpAlt size={22}/>
                 <div style={{width:'10px'}}/>

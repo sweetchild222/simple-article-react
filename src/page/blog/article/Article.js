@@ -21,6 +21,7 @@ import OverlayProgress from "@gui/OverlayProgress.js";
 
 
 import Great from "./Great.js"
+import Series from "./Series.js"
 import CommentList from "./comment/CommentList.js"
 import ControlMenu from "./comment/ControlMenu.js";
 
@@ -208,10 +209,11 @@ export default function() {
                 <div style={{height:'30px'}}></div> */}
                 <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
-                <Horizental style={{alignSelf:'end'}}>
+                <Horizental style={{alignSelf:'end', marginTop:'20px'}}>
                     <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
                 </Horizental>
-                <CommentList article_id={article_id}/>
+                <CommentList article_id={article.id}/>
+                <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>                                
             </Vertical>
         </Horizental>) : <OverlayProgress/>
 }

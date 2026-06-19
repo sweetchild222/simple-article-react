@@ -2,10 +2,6 @@ import './PrettyButton.css';
 
 export default function(props) {    
 
-    const combinedStyle = {
-    
-    ...props.style // The passed style object
-    }
 
     const isDisable = (props) => {
         
@@ -16,7 +12,7 @@ export default function(props) {
     }
 
     return (
-        <button ref={props.ref} id={props.id} title={props.tooltip} className={`beauty-button ${props.type ? props.type : 'default'} ${props.isLoading ? 'circle': ''}`} disabled={isDisable(props)} style={{...combinedStyle}} onClick={props.onClick}>
+        <button ref={props.ref} id={props.id} title={props.tooltip} className={`beauty-button ${props.type ? props.type : 'default'} ${props.isLoading ? 'circle': ''}`} disabled={isDisable(props)} style={{...props.style}} onClick={props.onClick}>
             {props.children}
         </button>
     );

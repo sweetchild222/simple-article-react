@@ -207,12 +207,13 @@ export default function() {
                 {/* <div style={{height:'30px'}}></div>
                 {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
                 <div style={{height:'30px'}}></div> */}
-                <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
-                <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
+                <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>                
                 <Horizental style={{alignSelf:'end', marginTop:'20px'}}>
                     <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
                 </Horizental>
+                <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 <CommentList article_id={article.id}/>
+                <div style={{height:'20px'}}/>
                 <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>                                
             </Vertical>
         </Horizental>) : <OverlayProgress/>

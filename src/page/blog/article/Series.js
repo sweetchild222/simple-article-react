@@ -45,17 +45,20 @@ export default function({ref, blog_id, article_id, category_id}) {
     }, [article_id])
 
 
-    const onClickArticle = async(article_id)=> {
+    const onClickArticle = async(value)=> {
 
-        navigate('/blog/' + blog_id + '/article/' + article_id)
+        if(article_id == value)
+            return
+
+        navigate('/blog/' + blog_id + '/article/' + value)
     }
 
     return articles ? (
         <Vertical style={{width:'100%'}}>
-            <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'10px', alignSelf:'start'}}>주변 글</label>
+            <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'10px', alignSelf:'start'}}>앞뒤 글</label>
             <Vertical style={{alignItems:'left', padding:'10px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
                 {articles.map((data, index) => 
-                    <div className={'clamped-text'} key={data.id} style={{'--line-count':1, color:'black', cursor:'pointer', marginTop:'10px', marginBottom:'10px', fontWeight:(data.id == article_id  ? '600' : null)}} onClick={()=> onClickArticle(data.id)}>
+                    <div className={data.id != article_id ? ('clamped-text underline-text') : ('clamped-text')} key={data.id} style={{'--line-count':1, color:'black', marginTop:'10px', marginBottom:'10px', fontWeight:(data.id == article_id  ? '600' : null)}} onClick={()=> onClickArticle(data.id)}>
                         {data.title}
                     </div>)
                 }

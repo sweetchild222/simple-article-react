@@ -6,8 +6,7 @@ import PrettyButton from "@gui/PrettyButton.js";
 
 export default function(props) {
 
-    const atCandidates = props.atCandidates
-    const combinedStyle = { ...props.style }
+    const atCandidates = props.atCandidates    
 
     const [isPostLoading, setIsPostLoading] = useState(false)
     const [inputLength, setInputLength] = useState('0/1000')

@@ -27,6 +27,8 @@ import ControlMenu from "./comment/ControlMenu.js";
 
 
 import { TiEye } from "react-icons/ti";
+import { FaAlignLeft } from "react-icons/fa6";
+import { FaAlignCenter } from "react-icons/fa6";
 
 
 export default function() {
@@ -39,9 +41,9 @@ export default function() {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [article, setArticle] = useState(null)    
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
-    const [isControlLoading, setIsControlLoading] = useState(false)
-    
+    const [isControlLoading, setIsControlLoading] = useState(false)    
     const [category, setCategory] = useState(null)
+    const [textAlign, setTextAlign] = useState('left')
     
     const navigate = useNavigate()
 
@@ -190,6 +192,11 @@ export default function() {
                 <TiEye size={22}/>
                 <div style={{width:'5px'}}/>
                 <div>{CountWithUnit(article.showed)}</div>
+                <div style={{width:'40px'}}/>
+                <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('left')}><FaAlignLeft size={22}/></PrettyButton>
+                <div style={{width:'10px'}}/>
+                <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('center')}><FaAlignCenter size={22}/></PrettyButton>
+                            
                 <Horizental style={{whiteSpace: 'nowrap', color:'gray', fontStyle: 'italic', flex:'1', justifyContent:'end', marginRight:'10px'}}>
                     {article.post_at ? ElapsedTime(article.post_at) + '': ''}
                 </Horizental>
@@ -202,7 +209,7 @@ export default function() {
                 }
             </Horizental>
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
-            <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>
+            <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', textAlign:textAlign, width:'100%'}}/>
             <Great style={{marginLeft: 'auto'}} article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
             <CommentList article_id={article.id}/>

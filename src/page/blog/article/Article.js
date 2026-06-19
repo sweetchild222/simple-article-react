@@ -182,7 +182,7 @@ export default function() {
     return article ? (
         <Horizental style={{justifyContent:'center', marginTop:'20px'}}>
             <Vertical style={{alignItems:'center', width:'100%', minWidth:'960px', maxWidth:'960px'}}>
-                <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
+                <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px', padding:'0px 0px 30px 0px', boxSizing:'border-box'}}>{article.title}</div>
                 <Horizental style={{height:'30px', width:'100%', alignItems:'center'}}>
                     {category &&
                         <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap'}} onClick={onClickNavigateCategory}>{category.name}</div>
@@ -201,12 +201,8 @@ export default function() {
                             <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
                         </Horizental>
                     }
-
                 </Horizental>
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
-                {/* <div style={{height:'30px'}}></div>
-                {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
-                <div style={{height:'30px'}}></div> */}
                 <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', width:'100%'}}/>                
                 <Horizental style={{alignSelf:'end', marginTop:'20px'}}>
                     <Great article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
@@ -214,7 +210,7 @@ export default function() {
                 <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
                 <CommentList article_id={article.id}/>
                 <div style={{height:'20px'}}/>
-                <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>                                
+                <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>
             </Vertical>
         </Horizental>) : <OverlayProgress/>
 }

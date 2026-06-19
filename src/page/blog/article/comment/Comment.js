@@ -169,7 +169,6 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
     return seenComment ? (
             <Vertical style={{position:'relative', justifyContent:'end', alignItems:'start', width:editable ? '100%' : 'auto'}}>
-
                 {editable && <TextArea ref={refArea} comment={editingComment} atCandidates={atCandidates} onInput={onInput} maxCharLength={maxCharLength}></TextArea>}
                 {!editable && <div ref={refComment} dangerouslySetInnerHTML={{ __html: seenComment}} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', width:'auto', padding:'5px'}}/>}
                 
@@ -177,12 +176,12 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                     <PrettyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></PrettyButton>
                 </div>}
 
-                {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center'}}>
+                {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center', marginTop:'10px'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'10px'}}/>
-                    <PrettyButton type={'transparent'} tooltip={'적용'} style={{color:'black'}} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner} >{<MdOutlineDoneOutline size={22}/>}</PrettyButton>
+                    <PrettyButton tooltip={'수정'} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner} >{'수정'}</PrettyButton>
                     <div style={{width:'10px'}}></div>
-                    <PrettyButton type={'transparent'} tooltip={'취소'} style={{color:'black'}} disabled={isModifyLoading} onClick={onClickModifyCancelInner} >{<MdCancel size={22}/>}</PrettyButton>
+                    <PrettyButton tooltip={'취소'} disabled={isModifyLoading} onClick={onClickModifyCancelInner}>{'취소'}</PrettyButton>
                 </Horizental>
                 }
             </Vertical>

@@ -50,8 +50,9 @@ export default function(props) {
     }
 
 
-    return  (<Vertical style={{position:'relative', justifyContent:'end', width:'100%', backgroundColor:'lightgreen'}}>
+    return  (<Vertical style={{position:'relative', justifyContent:'end', width:'100%'}}>
                 <TextArea ref={refArea} atCandidates={atCandidates} onInput={onInput} maxCharLength={maxCharLength}></TextArea>
+                <div style={{height:'10px'}}></div>
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'10px'}}/>

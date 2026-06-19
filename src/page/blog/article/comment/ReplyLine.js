@@ -74,6 +74,7 @@ export default function(props) {
                 div = child.childNodes[0].childNodes[0]
 
             if(div){
+                
                 const position = relativePosition(refDiv.current, div)
                 const cx = width / 2 + (circleWidth / 2)
                 const cy = position.y - (circleWidth / 2 - div.offsetHeight / 2)

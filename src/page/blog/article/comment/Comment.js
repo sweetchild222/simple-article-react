@@ -173,10 +173,10 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 {!editable && <div ref={refComment} dangerouslySetInnerHTML={{ __html: seenComment}} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', width:'auto', padding:'5px'}}/>}
                 
                 {!editable && isClamped && !isExpand && <div style={{position: 'absolute', alignSelf:'end'}}>
-                    <PrettyButton type={'transparent'} style={{color:'black'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={12}/></PrettyButton>
+                    <PrettyButton type={'transparent'} style={{color:'orange', backgroundColor:'lavender'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={16}/></PrettyButton>
                 </div>}
 
-                {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center', marginTop:'10px'}}>
+                {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center', marginTop:'5px'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'10px'}}/>
                     <PrettyButton tooltip={'수정'} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner} >{'수정'}</PrettyButton>

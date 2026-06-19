@@ -29,6 +29,7 @@ import ControlMenu from "./comment/ControlMenu.js";
 import { TiEye } from "react-icons/ti";
 import { FaAlignLeft } from "react-icons/fa6";
 import { FaAlignCenter } from "react-icons/fa6";
+import { FaAlignRight } from "react-icons/fa6";
 
 
 export default function() {
@@ -196,7 +197,9 @@ export default function() {
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('left')}><FaAlignLeft size={22}/></PrettyButton>
                 <div style={{width:'10px'}}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('center')}><FaAlignCenter size={22}/></PrettyButton>
-                            
+                <div style={{width:'10px'}}/>
+                <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('right')}><FaAlignRight size={22}/></PrettyButton>
+
                 <Horizental style={{whiteSpace: 'nowrap', color:'gray', fontStyle: 'italic', flex:'1', justifyContent:'end', marginRight:'10px'}}>
                     {article.post_at ? ElapsedTime(article.post_at) + '': ''}
                 </Horizental>

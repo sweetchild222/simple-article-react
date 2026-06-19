@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton';
 import {Vertical, Horizental} from "@gui/Flex.js";
@@ -12,11 +12,10 @@ export default function() {
     const navigate = useNavigate()
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    
-        
+            
     useEffect(()=> {
 
-        removeAuth()        
+        removeAuth()
         
     }, [auth])
 

@@ -313,7 +313,9 @@ export default function() {
 
     const memoMDXEditor = useMemo(() => {
 
-        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} initMarkdown={state.content} markdown={state.content}
+        console.log(state.content)
+
+        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} markdown={state.content}
                     onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                             
     }, [])

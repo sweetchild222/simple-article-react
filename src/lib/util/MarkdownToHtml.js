@@ -119,20 +119,6 @@ const adjustStyle = (html) => {
     })
 
 
-    doc.querySelectorAll('img').forEach(tag => {
-
-        const div = document.createElement("div");
-
-        div.style.display='flex'
-        div.style.flexDirection='column'
-        div.style.alignItems='center'
-            
-        div.appendChild(tag.cloneNode(true))
-
-        div.firstChild.style.border = '1px solid gray'
-
-        tag.replaceWith(div)
-    })
 
     doc.querySelectorAll('table').forEach(tag => {
 

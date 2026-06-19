@@ -29,7 +29,7 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
   markdownShortcutPlugin, frontmatterPlugin, tablePlugin, KitchenSinkToolbar, codeBlockPlugin, maxLengthPlugin, ButtonWithTooltip} from '@mdxeditor/editor'
 
 
-export default function({ref, placeHolder, postImage, initMarkdown, markdown, onChange, onParsingError, onUserError}){
+export default function({ref, placeHolder, postImage, markdown, onChange, onParsingError, onUserError}){
 
   const refEditor = useRef(null);
     
@@ -474,14 +474,16 @@ export default function({ref, placeHolder, postImage, initMarkdown, markdown, on
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
     codeMirrorPlugin({ codeMirrorExtensions: [dracula], codeBlockLanguages: {javascript: 'javascript', typescript: 'typescript', python: 'python', json:'json', xml:'html', css: 'css', txt: 'txt', csharp:'c#', c:'c'}}),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
-    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: initMarkdown}),
+    diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: markdown}),
     markdownShortcutPlugin(),
     maxLengthPlugin(65535),
     toolbarPlugin({ toolbarClassName: 'toolbarRoot', toolbarContents: () => (<CustomToolbar />)})
   ]
 
+  
+
   return (
-      <MDXEditor placeholder={placeHolder} suppressHtmlProcessing={true} ref={refEditor} markdown={markdown} onChange={onChange}
+      <MDXEditor placeholder={placeHolder} suppressHtmlProcessing={false} ref={refEditor} markdown={markdown} onChange={onChange}
         plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
         translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>    
   )

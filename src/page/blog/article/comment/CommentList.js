@@ -29,7 +29,7 @@ export default function({article_id}) {
     const [modifyModeCommentId, setModifyModeCommentId] = useState(-1)
     const [atCandidates, setAtCandidates] = useState([])
     const [showReplies, setShowReplies] = useState([])
-    const [isShowComments, setIsShowComments] = useState(false)
+    const [isShowComments, setIsShowComments] = useState(true)
 
     const navigate = useNavigate()
 
@@ -354,27 +354,27 @@ export default function({article_id}) {
             </Horizental>
             
             {isShowComments && comments.map((data, index) => 
-                <Vertical key={data.id} style={{justifyContent:'left', border:'1px solid lightgray'}}>
+                <Vertical key={data.id} style={{justifyContent:'left'}}>
                     <Horizental>
-                        <Vertical>
+                        <Vertical style={{marginRight:'10px'}}>
                             <ProfileImage shape={'circle'} size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
                             <ReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
                         </Vertical>
+                        
                         <Vertical style={{width:'100%'}}>
                             <Horizental>
-                                <div style={{fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
+                                <div style={{fontSize:'14px', marginRight:'10px', color:'gray'}}>{data.user.nickname}</div>
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </Horizental>
                             
-                            <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
+                            <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start', marginTop:'10px', marginBottom:'10px'}}>
                                 <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
                                 <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </Horizental>
 
-                            {!(modifyModeCommentId == data.id) && <Horizental>
-                                <Great comment_id={data.id} like_count={data.like_count} dislike_count={data.dislike_count}></Great>                                
-                                <div style={{width:'20px'}}></div>
-                                <PrettyButton type={'transparent'} tooltip={'답글 작성'} style={{color:'black'}} onClick={() => onClickReplyEditOpen(data.id)}>{<FaCommentMedical size={22}/>}</PrettyButton>
+                            {!(modifyModeCommentId == data.id) && <Horizental style={{justifyContent:'space-between'}}>
+                                <PrettyButton type={'success'} tooltip={'답글 작성'} onClick={() => onClickReplyEditOpen(data.id)}>{'답글 작성'}</PrettyButton>
+                                <Great comment_id={data.id} like_count={data.like_count} dislike_count={data.dislike_count}></Great>
                             </Horizental>
                             }
 

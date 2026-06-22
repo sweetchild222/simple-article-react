@@ -17,7 +17,7 @@ export async function getArticles(query) {
 
 
 
-export async function getArticle(jwt, article_id) {  
+export async function getArticle(jwt, article_id) {
 
   const url = '/api/article/' + article_id
 

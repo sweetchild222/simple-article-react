@@ -12,7 +12,6 @@ import ElapsedTime from "@util/ElapsedTime.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
 
-
 import Modal from "@gui/Modal.js";
 import StateProgsImage from "@gui/StateProgsImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
@@ -20,8 +19,10 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import OverlayProgress from "@gui/OverlayProgress.js";
 
 
+
 import Great from "./Great.js"
 import Series from "./Series.js"
+import Bookmark from "./Bookmark.js"
 import CommentList from "./comment/CommentList.js"
 import ControlMenu from "./comment/ControlMenu.js";
 
@@ -30,7 +31,6 @@ import { TiEye } from "react-icons/ti";
 import { FaAlignLeft } from "react-icons/fa6";
 import { FaAlignCenter } from "react-icons/fa6";
 import { FaAlignRight } from "react-icons/fa6";
-
 
 export default function() {
 
@@ -182,6 +182,7 @@ export default function() {
     }
 
 
+
     return article ? (
         <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', minWidth:'960px', maxWidth:'960px'}}>
             <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px', padding:'0px 0px 20px 0px'}}>{article.title}</div>
@@ -213,7 +214,12 @@ export default function() {
             </Horizental>
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
             <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', textAlign:textAlign, width:'100%'}}/>
-            <Great style={{marginLeft: 'auto'}} article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
+
+            <Horizental style={{justifyContent:'space-between', marginBottom:'5px', width:'100%'}}>
+                <Bookmark article_id={article.id}/>
+                <Great style={{marginLeft: 'auto'}} article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
+            </Horizental>
+
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
             <CommentList article_id={article.id}/>
             <div style={{height:'20px'}}/>

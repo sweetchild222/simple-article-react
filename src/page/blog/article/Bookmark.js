@@ -96,8 +96,11 @@ export default function({article_id, count}) {
     
     
     return ( isBookmark != null ? <Horizental style={{alignItems:'center'}}>
-                <PrettyButton type={'transparent'} isLoading={isBookmarkLoading} style={{color:'black'}} onClick={onClickBookmark}>{isBookmark ? <IoMdHeart size={22}/> : <IoIosHeartEmpty size={22}/>}</PrettyButton>
-                <div>{CountWithUnit(bookmarkCount)}</div>
+                <PrettyButton type={'transparent'} isLoading={isBookmarkLoading} style={{color:'black'}} onClick={onClickBookmark}>
+                    {isBookmark ? <IoMdHeart size={22}/> : <IoIosHeartEmpty size={22}/>}
+                    <div style={{width:'5px'}}></div>
+                    <div>{CountWithUnit(bookmarkCount)}</div>
+                </PrettyButton>
             </Horizental>
             : null
     )

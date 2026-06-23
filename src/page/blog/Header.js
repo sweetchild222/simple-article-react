@@ -36,7 +36,7 @@ export default function() {
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [isSubscribe, setIsSubscribe] = useState(false)
+    const [isSubscribe, setIsSubscribe] = useState(null)
     const [isSubscribeLoading, setIsSubscribeLoading] = useState(false)
 
     useEffect(()=>{
@@ -58,13 +58,13 @@ export default function() {
 
             if(!validAuth(auth))
                 return
-        
-            const query = 'user_id=' + auth.user_id + '&blog_id=' + blog_id
 
-            const res = SubscribeAPI.getSubscribe(query).then(res =>{
+            const query = 'blog_id=' + blog_id
+
+            const res = SubscribeAPI.getSubscribe(query).then(res => {
 
                 if(res.success == false)
-                    return
+                    return                                
 
                 setIsSubscribe(res.payload.length > 0 ? true : false)
             })
@@ -84,7 +84,9 @@ export default function() {
     }
 
 
-    const onClickEditTitle = async(e) => {
+    const onClickEditTitle = async(event) => {
+
+        event.stopPropagation()
 
         if(!isEditable())
             return
@@ -99,7 +101,9 @@ export default function() {
     }
     
 
-    const onClickEditImage = async() =>{
+    const onClickEditImage = async(event) =>{
+
+        event.stopPropagation()
 
         const imageFile = await ImagePicker()
 
@@ -190,11 +194,13 @@ export default function() {
     }
 
 
-    const onClickSubscribe = async()=> {
+    const onClickSubscribe = async(event)=> {
+
+        event.stopPropagation()
 
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
-            navigate('/account', {state:{comback:true}})
+            navigate('/', {state:{comback:true}})
             return
         }
 
@@ -260,7 +266,7 @@ export default function() {
                         {isEditable() && <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>}
                         <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
                         {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}
-                        {!isEditable() && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe}>{isSubscribe ? '구독중' : '구독'}</PrettyButton>}
+                        {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
                         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
                     </Horizental>
                     <div style={{flex:1}}/>

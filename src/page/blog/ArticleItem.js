@@ -9,6 +9,7 @@ import { TiEye } from "react-icons/ti";
 import { MdThumbUpAlt } from "react-icons/md";
 import { MdThumbDownAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
+import { IoMdHeart } from "react-icons/io";
 import {Vertical, Horizental} from "@gui/Flex.js";
 
 export default function({article, categoryName}) {
@@ -16,6 +17,8 @@ export default function({article, categoryName}) {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     
     const navigate = useNavigate()
+
+    console.log(article.bookmark_count)
 
     const onClickNavigateArticle = async() =>{
 
@@ -46,32 +49,33 @@ export default function({article, categoryName}) {
                 <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head : '내용 없음')}</div>
                 <div style={{flex:'1'}}></div>
                 <Horizental style={{alignItems:'center', color:'#888888'}}>
-                    {article.posted == 1 && <Horizental style={{marginRight:'20px'}}>
-                        <TiEye size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.showed)}</div>
-                    </Horizental>}
-                    {article.posted == 1 && <Horizental style={{marginRight:'20px'}}>
-                        <MdThumbUpAlt size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.like_count)}</div>
-                    </Horizental>
-                    }
-
-                    {article.posted == 1 && <Horizental style={{marginRight:'20px'}}>
-                        <MdThumbDownAlt size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.dislike_count)}</div>
-                    </Horizental>
-                    }
-                    
-                    {article.posted == 1 && <Horizental style={{marginRight:'30px'}}>
-                        <BiSolidComment size={22}/>
-                        <div style={{width:'48px', marginLeft:'5px'}}>{CountWithUnit(article.comment_count)}</div>
-                    </Horizental>
+                    {article.posted == 1 &&                     
+                        <Horizental>
+                            <Horizental>
+                                <IoMdHeart size={22}/>
+                                <div style={{width:'5px'}}/>
+                                {CountWithUnit(article.bookmark_count)}
+                            </Horizental>
+                            <div style={{width:'30px'}}/>
+                            <Horizental>
+                                <MdThumbUpAlt size={22}/>
+                                <div style={{width:'5px'}}/>
+                                {CountWithUnit(article.like_count)}
+                            </Horizental>                            
+                            <div style={{width:'30px'}}/>
+                            <Horizental>
+                                <BiSolidComment size={22}/>
+                                <div style={{width:'5px'}}/>
+                                {CountWithUnit(article.comment_count)}
+                            </Horizental>
+                            <div style={{width:'30px'}}/>
+                        </Horizental>
                     }
                     {article.posted == 0 && <Horizental style={{marginRight:'30px'}}>
-                        <div className={'clamped-text'} style={{'--line-count':1, width:'160px'}}>{categoryName}</div>
-                    </Horizental>
+                            <div className={'clamped-text'} style={{'--line-count':1, width:'160px'}}>{categoryName}</div>
+                        </Horizental>
                     }
-                    <div style={{whiteSpace: 'nowrap'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</div>
+                    <Horizental style={{flex:'1', whiteSpace: 'nowrap', justifyContent:'flex-end'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</Horizental>
                 </Horizental>
 
             </Vertical>

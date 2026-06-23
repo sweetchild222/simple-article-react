@@ -188,7 +188,9 @@ export default function() {
     }
 
 
-    const onClickNavigateHome = () =>{
+    const onClickNavigateHome = (event) =>{
+        
+        event.stopPropagation()
 
         navigate('/')
     }
@@ -258,7 +260,8 @@ export default function() {
 
     
     return blog ? (
-            <div style={{cursor:'pointer', backgroundColor:' #24262F', height:'168px', minHeight:'168px', backgroundImage: blog.image != '' && ('url(' + blog.image + '?size=1920x168)'), backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black', display:'block'}} onClick={onClickBlogHome}>
+            <div style={{backgroundColor:' #24262F', height:'168px', minHeight:'168px', backgroundImage: blog.image != '' && ('url(' + blog.image + '?size=1920x168)'), backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black',  position: 'relative'}}>
+                <div style={{cursor:'pointer', backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%', top:'0', left:'0', zIndex:'10'}} onClick={onClickBlogHome}>
                 <Horizental style={{alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
                     <ProfileImage size={96} shape={'circle'} userId={blog.user_id} onClick={onClickNavigateUser}/>
                     <Horizental style={{alignItems: 'center', marginLeft:'32px', marginRight:'32px'}}>
@@ -272,6 +275,7 @@ export default function() {
                     <div style={{flex:1}}/>
                     <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
                 </Horizental>
+                </div>
             </div>
     ) : <div style={{backgroundColor:' #24262F', height:'168px', minHeight:'168px', boxShadow: '0 4px 3px -3px black', display:'block'}}></div>
 }

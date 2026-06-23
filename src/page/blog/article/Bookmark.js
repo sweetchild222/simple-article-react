@@ -62,8 +62,7 @@ export default function({article_id}) {
             const resDelete = await BookmarkAPI.deleteBookmark(auth.jwt, res.payload[0].id)
             setIsBookmarkLoading(false)
 
-            if(resDelete.success == true){
-                
+            if(resDelete.success == true){                
                 setIsBookmark(false)
                 window.showToast('북마크를 취소하였습니다', 'info')
             }
@@ -83,7 +82,7 @@ export default function({article_id}) {
 
             if(resPost.success == true){
                 setIsBookmark(true)
-                window.showToast('북마크에 성공하였습니다', 'info')            
+                window.showToast('북마크에 성공하였습니다', 'info')
             }
             else{
                 window.showToast('북마크에 실패 하였습니다', 'error')

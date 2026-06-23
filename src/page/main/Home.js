@@ -5,6 +5,7 @@ import { useNavigate} from 'react-router-dom';
 import * as BlobAPI from '@rest/BlobAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CommentAPI from '@rest/CommentAPI.js'
+import * as FollowAPI from '@rest/FollowAPI.js'
 import * as UserAPI from '@rest/UserAPI.js'
 import * as blobToBase64 from '@util/BlobToBase64.js'
 import PrettyButton from '@gui/PrettyButton.js'
@@ -55,13 +56,71 @@ export default function Home() {
     console.log(res.payload)
   }
 
+  const postFollow = async()=>{
+
+    const payload = {
+
+
+      user_id:auth.user_id,
+      following_id:142
+    }
+
+
+    const res = await FollowAPI.postFollow(auth.jwt, payload)
+
+    console.log(res)
+
+  }
+
+
+  const deleteFollow = async()=>{
+
+    const follow_id = 10
+
+    const res = await FollowAPI.deleteFollow(auth.jwt, follow_id)
+
+    console.log(res)
+
+  }
+
+
+  const getFollow = async() =>{
+
+    const query = 'user_id=' + auth.user_id + '&following_id=182&status=ACCEPTED'
+
+    const res = await FollowAPI.getFollow(query)
+
+    console.log(res)
+
+  }
+
+
+
+  const patchFollow = async() =>{
+
+    const follow_id = 11
+
+    const payload = {
+
+      status:'REJECTED'
+
+    }
+
+    const res = await FollowAPI.patchFollow(auth.jwt, follow_id, payload)
+
+    console.log(res)
+    
+  }
+
+
   
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%', marginTop:'40px'}}>            
       
-      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={deleteComment}>댓글 삭제</PrettyButton>      
-    
-      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getUser}>유저 목록</PrettyButton>
+      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getFollow}>팔로우 가져오기</PrettyButton>
+      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={patchFollow}>팔로우 수정</PrettyButton>
+      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={postFollow}>팔로우 추가</PrettyButton>
+      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={deleteFollow}>팔로우 삭제</PrettyButton>
       
 
       {/* <button onClick={test}>imageRegion</button>

@@ -5,7 +5,7 @@ export async function deleteBookmark(jwt, bookmark_id){
     
   const url = '/api/bookmark/' + bookmark_id
 
-  return await restAPI.del('/api/bookmark/' + bookmark_id, jwt)
+  return await restAPI.del(url, jwt)
 }
 
 

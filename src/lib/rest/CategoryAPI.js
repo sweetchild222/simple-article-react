@@ -20,7 +20,7 @@ export async function deleteCategory(jwt, category_id){
     
   const url = '/api/category/' + category_id
 
-  return await restAPI.del('/api/category/' + category_id, jwt)    
+  return await restAPI.del(url, jwt)    
 }
 
 

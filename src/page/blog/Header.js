@@ -3,11 +3,13 @@ import {useNavigate, useParams} from 'react-router-dom';
 
 import * as BlobAPI from '@rest/BlobAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
+import * as UserAPI from '@rest/UserAPI.js'
 import * as SubscribeAPI from '@rest/SubscribeAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
 import ProfileImage from "@gui/ProfileImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
+import CountWithUnit from "@util/CountWithUnit.js";
 import Integer from "@util/Integer.js";
 
 
@@ -38,6 +40,8 @@ export default function() {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isSubscribe, setIsSubscribe] = useState(null)
     const [isSubscribeLoading, setIsSubscribeLoading] = useState(false)
+    const [nickname, setNickname] = useState(null)
+    const [subscribeCount, setSubscribeCount] = useState(null)
 
     useEffect(()=>{
 
@@ -47,14 +51,22 @@ export default function() {
         }
 
 
-        BlogAPI.getBlog(blog_id).then((blog)=> {
+        BlogAPI.getBlog(blog_id).then((resBlog)=> {
 
-            if(blog.success == false){
+            if(resBlog.success == false){
                 navigate('/notFound')
                 return
             }
 
-            setBlog(blog.payload)
+            setBlog(resBlog.payload)
+
+            UserAPI.getUser(resBlog.payload.user_id).then((resUser)=>{
+
+                if(resUser.success == false)
+                    return
+
+                setNickname(resUser.payload.nickname)
+            })
 
             if(!validAuth(auth))
                 return
@@ -64,9 +76,11 @@ export default function() {
             const res = SubscribeAPI.getSubscribe(query).then(res => {
 
                 if(res.success == false)
-                    return                                
+                    return
 
-                setIsSubscribe(res.payload.length > 0 ? true : false)
+                setSubscribeCount(res.payload.length)
+
+                setIsSubscribe(res.payload.findIndex(s => s.user_id === auth.user_id) != -1)                
             })
         })
 
@@ -189,7 +203,7 @@ export default function() {
 
 
     const onClickNavigateHome = (event) =>{
-        
+
         event.stopPropagation()
 
         navigate('/')
@@ -226,6 +240,7 @@ export default function() {
 
             if(resDelete.success == true){
                 setIsSubscribe(false)
+                setSubscribeCount(count => count - 1)
                 window.showToast('구독을 취소하였습니다', 'info')
             }
             else
@@ -244,17 +259,18 @@ export default function() {
 
             if(resPost.success == true){
                 setIsSubscribe(true)
+                setSubscribeCount(count => count + 1)
                 window.showToast('구독에 성공하였습니다', 'info')
             }
             else{
                 window.showToast('구독에 실패 하였습니다', 'error')
             }
-        }        
+        }
     }
 
 
     const onClickBlogHome = (e) => {
-        
+
         navigate('/blog/' + blog_id)
     }
 
@@ -264,14 +280,22 @@ export default function() {
                 <div style={{cursor:'pointer', backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%', top:'0', left:'0', zIndex:'10'}} onClick={onClickBlogHome}>
                 <Horizental style={{alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
                     <ProfileImage size={96} shape={'circle'} userId={blog.user_id} onClick={onClickNavigateUser}/>
-                    <Horizental style={{alignItems: 'center', marginLeft:'32px', marginRight:'32px'}}>
-                        <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':2,  backgroundColor:'#00000000', color:'white', fontSize:'36px', paddingLeft:'9px', paddingRight:'9px', borderColor:'white', alignItems:'center', textOverflow:'ellipsis', cursor:'pointer'}}>{blog.title}</label>
-                        {isEditable() && <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>}
-                        <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
-                        {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}
-                        {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
-                        {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
-                    </Horizental>
+                    <Vertical style={{marginLeft:'32px', marginRight:'32px'}}>
+                        <Horizental style={{alignItems: 'center'}}>
+                            <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{nickname != null ? '@' + nickname: ' ' }</label>
+                            <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'  •  '}</label>
+                            <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'구독자 ' + (subscribeCount != null ? CountWithUnit(subscribeCount) : '')}</label>
+                            <div style={{width:'10px'}}></div>
+                            {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
+                        </Horizental>
+                        <Horizental style={{alignItems: 'center'}}>
+                            <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1,  backgroundColor:'#00000000', color:'white', fontSize:'24px', borderColor:'white', textOverflow:'ellipsis', cursor:'pointer'}}>{blog.title}</label>
+                            {isEditable() && <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>}
+                            <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
+                            {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}                            
+                            {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
+                        </Horizental>
+                    </Vertical>
                     <div style={{flex:1}}/>
                     <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
                 </Horizental>

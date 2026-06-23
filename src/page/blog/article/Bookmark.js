@@ -3,22 +3,24 @@ import {useNavigate} from 'react-router-dom';
 
 import * as BookmarkAPI from '@rest/BookmarkAPI.js'
 import AuthContext from "@util/AuthContext.js";
-
+import {Vertical, Horizental} from "@gui/Flex.js";
 import PrettyButton from "@gui/PrettyButton.js";
+import CountWithUnit from "@util/CountWithUnit.js";
 
 import { IoMdHeart } from "react-icons/io";
 import { IoIosHeartEmpty } from "react-icons/io";
 
-export default function({article_id}) {
+export default function({article_id, count}) {
 
     const [isBookmarkLoading, setIsBookmarkLoading] = useState(false)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isBookmark, setIsBookmark] = useState(null)
+    const [bookmarkCount, setBookmarkCount] = useState(count)
 
     const navigate = useNavigate()
 
     useEffect(()=>{
-        
+
         if(!validAuth(auth)){
             setIsBookmark(false)
             return
@@ -64,6 +66,7 @@ export default function({article_id}) {
 
             if(resDelete.success == true){                
                 setIsBookmark(false)
+                setBookmarkCount(count => count - 1)
                 window.showToast('북마크를 취소하였습니다', 'info')
             }
             else
@@ -82,6 +85,7 @@ export default function({article_id}) {
 
             if(resPost.success == true){
                 setIsBookmark(true)
+                setBookmarkCount(count => count + 1)
                 window.showToast('북마크에 성공하였습니다', 'info')
             }
             else{
@@ -91,8 +95,10 @@ export default function({article_id}) {
     }
     
     
-    return ( isBookmark != null ? 
-            <PrettyButton type={'transparent'} isLoading={isBookmarkLoading} style={{color:'black'}} onClick={onClickBookmark}>{isBookmark ? <IoMdHeart size={22}/> : <IoIosHeartEmpty size={22}/>}</PrettyButton>
+    return ( isBookmark != null ? <Horizental style={{alignItems:'center'}}>
+                <PrettyButton type={'transparent'} isLoading={isBookmarkLoading} style={{color:'black'}} onClick={onClickBookmark}>{isBookmark ? <IoMdHeart size={22}/> : <IoIosHeartEmpty size={22}/>}</PrettyButton>
+                <div>{CountWithUnit(bookmarkCount)}</div>
+            </Horizental>
             : null
     )
 }

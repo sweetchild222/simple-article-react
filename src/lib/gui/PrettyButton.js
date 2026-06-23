@@ -12,7 +12,7 @@ export default function(props) {
     }
 
     return (
-        <button ref={props.ref} id={props.id} title={props.tooltip} className={`beauty-button ${props.type ? props.type : 'default'} ${props.isLoading ? 'circle': ''}`} disabled={isDisable(props)} style={{...props.style}} onClick={props.onClick}>
+        <button ref={props.ref} id={props.id} title={props.tooltip} className={`beauty-button ${props.type ? props.type : 'default'} ${props.isLoading ? 'circle': ''}`} disabled={isDisable(props)} style={{whiteSpace:'nowrap', ...props.style}} onClick={props.onClick}>
             {props.children}
         </button>
     );

@@ -112,16 +112,16 @@ export default function() {
 
 
     return user ? (
-      <Vertical style={{alignItems:'center', marginTop:'20px'}}>
+      <Vertical style={{alignItems:'center', marginTop:'20px'}}>        
+        <label style={{fontSize:'20px'}}>{user.nickname}</label>
+        <div style={{height:'30px'}}></div>
         <ProfileImage size={128} shape={'rect'} user={user}/>
-        <div style={{height:'10px'}}/>
-        <label style={{fontSize:'24px', fontWeight:'bold'}}>{user.nickname}</label>
-        <label style={{fontSize:'18px', color:'gray'}}>{user.username}</label>
-        <div style={{height:'30px'}}/>
-        {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'20px'}}>회원 정보 수정</PrettyButton>}
+        <div style={{height:'30px'}}></div>
         {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</PrettyButton>}
         {!user.blog_id && validAuth(auth) && auth.user_id == user_id && <PrettyButton onClick={onClickCreateBlog} type='success'>블로그 개설하기</PrettyButton>}
-        <Modal title={'블로그를 개설하시겠습니까?'} type={'yesno'} isOpen={isCreateBlogModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateBlogModalOpen(false)}></Modal>        
+        <Modal title={'블로그를 개설하시겠습니까?'} type={'yesno'} isOpen={isCreateBlogModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateBlogModalOpen(false)}></Modal>
+        <div style={{height:'30px'}}></div>
+        {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default'>회원 정보 수정</PrettyButton>}
       </Vertical>) : <OverlayProgress/>
 }
 

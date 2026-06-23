@@ -5,7 +5,7 @@ import { useNavigate} from 'react-router-dom';
 import * as BlobAPI from '@rest/BlobAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CommentAPI from '@rest/CommentAPI.js'
-import * as FollowAPI from '@rest/FollowAPI.js'
+import * as SubscribeAPI from '@rest/SubscribeAPI.js'
 import * as UserAPI from '@rest/UserAPI.js'
 import * as blobToBase64 from '@util/BlobToBase64.js'
 import PrettyButton from '@gui/PrettyButton.js'
@@ -56,71 +56,54 @@ export default function Home() {
     console.log(res.payload)
   }
 
-  const postFollow = async()=>{
+
+  const postSubscribe = async()=>{
 
     const payload = {
-
 
       user_id:auth.user_id,
-      following_id:142
+      blog_id:29
     }
 
 
-    const res = await FollowAPI.postFollow(auth.jwt, payload)
+    const res = await SubscribeAPI.postSubscribe(auth.jwt, payload)
 
     console.log(res)
 
   }
 
 
-  const deleteFollow = async()=>{
+  const deleteSubscribe = async()=>{
 
-    const follow_id = 10
+    const subscribe_id = 15
 
-    const res = await FollowAPI.deleteFollow(auth.jwt, follow_id)
-
-    console.log(res)
-
-  }
-
-
-  const getFollow = async() =>{
-
-    const query = 'user_id=' + auth.user_id + '&following_id=182&status=ACCEPTED'
-
-    const res = await FollowAPI.getFollow(query)
+    const res = await SubscribeAPI.deleteSubscribe(auth.jwt, subscribe_id)
 
     console.log(res)
 
   }
 
 
+  const getSubscribe = async() =>{
 
-  const patchFollow = async() =>{
+    const query = 'user_id=' + auth.user_id + '&blog_id=29'
 
-    const follow_id = 11
-
-    const payload = {
-
-      status:'REJECTED'
-
-    }
-
-    const res = await FollowAPI.patchFollow(auth.jwt, follow_id, payload)
+    const res = await SubscribeAPI.getSubscribe(query)
 
     console.log(res)
-    
   }
+
+
+
 
 
   
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%', marginTop:'40px'}}>            
       
-      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getFollow}>팔로우 가져오기</PrettyButton>
-      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={patchFollow}>팔로우 수정</PrettyButton>
-      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={postFollow}>팔로우 추가</PrettyButton>
-      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={deleteFollow}>팔로우 삭제</PrettyButton>
+      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getSubscribe}>블로그 가져오기</PrettyButton>      
+      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={postSubscribe}>블로그 추가</PrettyButton>
+      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={deleteSubscribe}>블로그 삭제</PrettyButton>
       
 
       {/* <button onClick={test}>imageRegion</button>

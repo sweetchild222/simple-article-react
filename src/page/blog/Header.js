@@ -67,10 +67,7 @@ export default function() {
 
                 setNickname(resUser.payload.nickname)
             })
-
-            if(!validAuth(auth))
-                return
-
+            
             const query = 'blog_id=' + blog_id
 
             const res = SubscribeAPI.getSubscribe(query).then(res => {
@@ -80,7 +77,12 @@ export default function() {
 
                 setSubscribeCount(res.payload.length)
 
-                setIsSubscribe(res.payload.findIndex(s => s.user_id === auth.user_id) != -1)                
+                if(!validAuth(auth)){
+                    setIsSubscribe(false)
+                    return
+                }
+
+                setIsSubscribe(res.payload.findIndex(s => s.user_id === auth.user_id) != -1)
             })
         })
 
@@ -274,7 +276,6 @@ export default function() {
         navigate('/blog/' + blog_id)
     }
 
-    
     return blog ? (
             <div style={{backgroundColor:' #24262F', height:'168px', minHeight:'168px', backgroundImage: blog.image != '' && ('url(' + blog.image + '?size=1920x168)'), backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black',  position: 'relative'}}>
                 <div style={{cursor:'pointer', backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%', top:'0', left:'0', zIndex:'10'}} onClick={onClickBlogHome}>
@@ -303,4 +304,3 @@ export default function() {
             </div>
     ) : <div style={{backgroundColor:' #24262F', height:'168px', minHeight:'168px', boxShadow: '0 4px 3px -3px black', display:'block'}}></div>
 }
-

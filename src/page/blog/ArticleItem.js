@@ -17,9 +17,7 @@ export default function({article, categoryName}) {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     
     const navigate = useNavigate()
-
-    console.log(article.bookmark_count)
-
+    
     const onClickNavigateArticle = async() =>{
 
         if(article.posted == 1)

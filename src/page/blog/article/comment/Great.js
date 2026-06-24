@@ -1,4 +1,4 @@
-import {useState, useContext} from "react";
+import {useState, useContext, useEffect} from "react";
 import {useNavigate} from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
@@ -6,8 +6,10 @@ import PrettyButton from "@gui/PrettyButton.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 
-import { MdThumbUpAlt } from "react-icons/md";
-import { MdThumbDownAlt } from "react-icons/md";
+import { FaRegThumbsDown } from "react-icons/fa";
+import { FaRegThumbsUp } from "react-icons/fa";
+import { FaThumbsDown } from "react-icons/fa";
+import { FaThumbsUp } from "react-icons/fa";
 
 import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
 
@@ -19,8 +21,28 @@ export default function({comment_id, like_count, dislike_count, style}) {
     const [likeCount, setLikeCount] = useState(like_count)
     const [dislikeCount, setDislikeCount] = useState(dislike_count)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const [currentGreat, setCurrentGreat] = useState(null)
 
     const navigate = useNavigate()
+
+    
+    useEffect(()=>{
+
+        if(!validAuth(auth))
+            return
+
+        getGreat(auth.user_id, comment_id).then(res=>{
+
+            if(res.success == false)
+                return
+
+            if(res.payload.length > 0)                
+                setCurrentGreat(res.payload[0].great)            
+            else                
+                setCurrentGreat(0)            
+        })
+
+    },[comment_id])
     
     const postGreat = async(jwt, user_id, comment_id, like) =>{
 
@@ -85,10 +107,12 @@ export default function({comment_id, like_count, dislike_count, style}) {
                 }
 
                 if(great == 1){
+                    setCurrentGreat(1)
                     setLikeCount(item => item + 1)
                     setDislikeCount(item => item - 1)
                 }
                 else if(great == -1){
+                    setCurrentGreat(-1)
                     setLikeCount(item => item - 1)
                     setDislikeCount(item => item + 1)
                 }
@@ -107,10 +131,14 @@ export default function({comment_id, like_count, dislike_count, style}) {
                     return false
                 }
 
-                if(great == 1)
+                if(great == 1){
+                    setCurrentGreat(0)
                     setLikeCount(item => item - 1)
-                else if(great == -1)
+                }
+                else if(great == -1){
+                    setCurrentGreat(0)
                     setDislikeCount(item => item - 1)
+                }
                 else 
                     return false
 
@@ -127,10 +155,14 @@ export default function({comment_id, like_count, dislike_count, style}) {
                 return false
             }
             
-            if(great == 1)
+            if(great == 1){
+                setCurrentGreat(1)
                 setLikeCount(item => item + 1)
-            else if(great == -1)
+            }
+            else if(great == -1){
+                setCurrentGreat(-1)
                 setDislikeCount(item => item + 1)
+            }
             else
                 return false
 
@@ -170,13 +202,15 @@ export default function({comment_id, like_count, dislike_count, style}) {
     return (
         <Horizental style={{alignItems:'center', ...style}}>
             <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
-                <MdThumbUpAlt size={22}/>
+                {currentGreat != null && currentGreat == 1 && <FaThumbsUp size={22}/>}
+                {currentGreat != null && (currentGreat != 1) && <FaRegThumbsUp size={22}/>}
                 <div style={{width:'5px'}}/>
                 <div>{CountWithUnit(likeCount)}</div>
             </PrettyButton>
             <div style={{width:'20px'}}></div>
             <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
-                <MdThumbDownAlt size={22}/>
+                {currentGreat != null && currentGreat == -1 && <FaThumbsDown size={22}/>}
+                {currentGreat != null && (currentGreat != -1) && <FaRegThumbsDown size={22}/>}
                 <div style={{width:'5px'}}/>
                 <div>{CountWithUnit(dislikeCount)}</div>
             </PrettyButton>

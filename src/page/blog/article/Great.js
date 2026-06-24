@@ -36,10 +36,10 @@ export default function({article_id, like_count, dislike_count, style}) {
             if(res.success == false)
                 return
 
-            if(res.payload.length > 0)                
-                setCurrentGreat(res.payload[0].great)            
-            else                
-                setCurrentGreat(0)            
+            if(res.payload.length > 0)
+                setCurrentGreat(res.payload[0].great)
+            else
+                setCurrentGreat(0)
         })
 
     },[article_id])
@@ -123,7 +123,7 @@ export default function({article_id, like_count, dislike_count, style}) {
                 else 
                     return false
 
-                window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경 하였습니다', 'info')                
+                window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경 하였습니다', 'info')
                 return true
 
             }else {
@@ -146,7 +146,7 @@ export default function({article_id, like_count, dislike_count, style}) {
                 else 
                     return false
 
-                window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 성공 하였습니다', 'info')                
+                window.showToast((great == 1 ? '좋아요' : '싫어요') + '취소를 성공 하였습니다', 'info')
                 return true
             }
         }
@@ -170,7 +170,7 @@ export default function({article_id, like_count, dislike_count, style}) {
             else
                 return false
             
-            window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 성공 하였습니다', 'info')            
+            window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 성공 하였습니다', 'info')
             return true
         }
     }

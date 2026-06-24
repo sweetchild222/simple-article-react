@@ -36,10 +36,10 @@ export default function({comment_id, like_count, dislike_count, style}) {
             if(res.success == false)
                 return
 
-            if(res.payload.length > 0)                
-                setCurrentGreat(res.payload[0].great)            
+            if(res.payload.length > 0)
+                setCurrentGreat(res.payload[0].great)
             else                
-                setCurrentGreat(0)            
+                setCurrentGreat(0)
         })
 
     },[comment_id])
@@ -119,7 +119,7 @@ export default function({comment_id, like_count, dislike_count, style}) {
                 else 
                     return false
 
-                window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경 하였습니다', 'info')                
+                window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경 하였습니다', 'info')
                 return true
 
             }else {

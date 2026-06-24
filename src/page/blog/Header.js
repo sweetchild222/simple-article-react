@@ -89,20 +89,20 @@ export default function() {
     }, [blog_id])
 
 
-    const onClickNavigateUser = (event) => {
+    const onClickNavigateBlog = (event) => {
     
-        event.stopPropagation()
+        //event.stopPropagation()
 
         if(!blog)
             return
         
-        navigate('/user/' + blog.user_id)
+        navigate('/blog/' + blog.id)
     }
 
 
     const onClickEditTitle = async(event) => {
 
-        event.stopPropagation()
+        //event.stopPropagation()
 
         if(!isEditable())
             return
@@ -119,7 +119,7 @@ export default function() {
 
     const onClickEditImage = async(event) =>{
 
-        event.stopPropagation()
+        //event.stopPropagation()
 
         const imageFile = await ImagePicker()
 
@@ -206,7 +206,7 @@ export default function() {
 
     const onClickNavigateHome = (event) =>{
 
-        event.stopPropagation()
+        //event.stopPropagation()
 
         navigate('/')
     }
@@ -214,7 +214,7 @@ export default function() {
 
     const onClickSubscribe = async(event)=> {
 
-        event.stopPropagation()
+        //event.stopPropagation()
 
         if(!validAuth(auth)){
             window.showToast('로그인 해주세요', 'info')
@@ -271,16 +271,11 @@ export default function() {
     }
 
 
-    const onClickBlogHome = (e) => {
-
-        navigate('/blog/' + blog_id)
-    }
-
     return blog ? (
             <div style={{backgroundColor:' #24262F', height:'168px', minHeight:'168px', backgroundImage: blog.image != '' && ('url(' + blog.image + '?size=1920x168)'), backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black',  position: 'relative'}}>
-                <div style={{cursor:'pointer', backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%', top:'0', left:'0', zIndex:'10'}} onClick={onClickBlogHome}>
+                <div style={{backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%', top:'0', left:'0', zIndex:'10'}}>
                 <Horizental style={{alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
-                    <ProfileImage size={96} shape={'circle'} userId={blog.user_id} onClick={onClickNavigateUser}/>
+                    <ProfileImage size={96} shape={'circle'} userId={blog.user_id} onClick={onClickNavigateBlog}/>
                     <Vertical style={{marginLeft:'32px', marginRight:'32px'}}>
                         <Horizental style={{alignItems: 'center'}}>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{nickname != null ? '@' + nickname: ' ' }</label>
@@ -290,7 +285,7 @@ export default function() {
                             {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
                         </Horizental>
                         <Horizental style={{alignItems: 'center'}}>
-                            <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1,  backgroundColor:'#00000000', color:'white', fontSize:'24px', borderColor:'white', textOverflow:'ellipsis', cursor:'pointer'}}>{blog.title}</label>
+                            <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1,  backgroundColor:'#00000000', color:'white', fontSize:'24px', borderColor:'white', textOverflow:'ellipsis'}}>{blog.title}</label>
                             {isEditable() && <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>}
                             <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
                             {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}                            

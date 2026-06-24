@@ -40,11 +40,11 @@ export default function({article_id}) {
             if(comments.success == false){
                 window.showToast('댓글을 가져 올 수 없습니다', 'error')
                 return
-            }
-                        
+            }            
+
             comments.payload.sort((a, b) => { return b.create_at - a.create_at})
 
-            const userIDList = comments.payload.map(item => item.user_id)            
+            const userIDList = comments.payload.map(item => item.user_id)
         
             UserRepository.getByIDList([...new Set(userIDList)]).then((resUsers)=>{
                 
@@ -256,9 +256,9 @@ export default function({article_id}) {
     }
 
 
-    const onClickNavigateUser = async(userId) =>{
-        
-        navigate('/user/' + userId)
+    const onClickNavigateBlog = async(blog_id) =>{
+                        
+        navigate('/blog/' + blog_id)
     }
 
 
@@ -357,7 +357,7 @@ export default function({article_id}) {
                 <Vertical key={data.id} style={{marginBottom:'20px'}}>
                     <Horizental>
                         <Vertical style={{marginRight:'10px'}}>
-                            <ProfileImage shape={'circle'} size={48} user={data.user} onClick={()=> onClickNavigateUser(data.user_id)}/>
+                            <ProfileImage shape={'circle'} size={48} user={data.user} onClick={()=> onClickNavigateBlog(data.user.blog_id)}/>
                             <ReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
                         </Vertical>
                         
@@ -385,7 +385,7 @@ export default function({article_id}) {
 
                             {data.id == openReplyEditCommentId && 
                                 <Horizental style={{marginBottom:'5px'}}>
-                                    <ProfileImage shape={'circle'} size={32} userId={auth.user_id} onClick={()=> onClickNavigateUser(auth.user_id)}/>
+                                    <ProfileImage shape={'circle'} size={32} userId={auth.user_id} onClick={()=> onClickNavigateBlog(auth.blog_id)}/>
                                     <div style={{width:'10px'}}></div>
                                     <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>                                    
                                 </Horizental>
@@ -402,7 +402,7 @@ export default function({article_id}) {
                             {isShowReplies(data.id) && data.replies.map((reply, index) =>
                                 <Horizental key={reply.id} id={'replyDiv'}>
                                     <Vertical style={{marginRight:'10px'}}>
-                                        <ProfileImage shape={'circle'} id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateUser(reply.user_id)}/>
+                                        <ProfileImage shape={'circle'} id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateBlog(reply.user.blog_id)}/>
                                         <div style={{flex:'1'}}/>
                                     </Vertical>
                                     <Vertical style={{width:'100%'}}>

@@ -38,7 +38,8 @@ export default function({ref, blog_id, article_id, category_id}) {
 
                 unique.sort((a, b)=> a.post_at - b.post_at)
 
-                setArticles(unique)
+                if(unique.length > 1)
+                    setArticles(unique)                
             })
         })
         

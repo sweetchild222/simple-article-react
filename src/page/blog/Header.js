@@ -298,7 +298,7 @@ export default function() {
                         </Horizental>
                     </Vertical>
                     <div style={{flex:1}}/>
-                    <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
+                    <img src='/logo/logo.svg' alt='logo' style={{height:'64px', width:'64px'}} onClick={onClickNavigateHome}/>
                 </Horizental>
                 </div>
             </div>

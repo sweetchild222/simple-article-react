@@ -143,7 +143,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         if(onClickModifyComplete){
 
             if(!refArea.current)
-                return            
+                return
 
             setIsModifyLoading(true)
                 
@@ -154,7 +154,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 if(candidate.nickname != '')
                     value = value.replaceAll('@' + candidate.nickname + ' ', ('<user>' + candidate.id + '</user>'))
             }
-                                    
+
             await onClickModifyComplete(value)
             setIsModifyLoading(false)
         }

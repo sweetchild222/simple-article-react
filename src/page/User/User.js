@@ -22,9 +22,7 @@ export default function() {
     const user_id = Integer(id)
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
-    const [user, setUser] = useState(null)
-
-    const [isCreateBlogModalOpen, setIsCreateBlogModalOpen] = useState(false)
+    const [user, setUser] = useState(null)    
         
     const navigate = useNavigate()
     
@@ -73,42 +71,7 @@ export default function() {
         navigate('/blog/' + user.blog_id)
     }
 
-    const onResultCreate = async(result) =>{
 
-        if(!result)
-            return
-
-        if(!isEditable())
-            return
-        
-        if(!user)
-            return
-
-        if(user.blog_id != null)
-            return
-        
-        const payload = {
-            user_id:auth.user_id
-        }
-
-        const res = await BlogAPI.postBlog(auth.jwt, payload)
-
-        if(res.success == false){
-            window.showToast('블로그 개설에 실패하였습니다', 'error')
-            return
-        }
-        
-        window.showToast('블로그 개설에 성공하였습니다', 'info')
-        auth.blog_id = res.payload.id
-        updateAuth(auth)
-        navigate('/blog/' + auth.blog_id)
-    }
-
-
-    const onClickCreateBlog = async() => {
-
-        setIsCreateBlogModalOpen(true)
-    }
 
 
     return user ? (
@@ -120,8 +83,6 @@ export default function() {
         <div style={{height:'30px'}}/>
         {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'20px'}}>회원 정보 수정</PrettyButton>}
         {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</PrettyButton>}
-        {!user.blog_id && validAuth(auth) && auth.user_id == user_id && <PrettyButton onClick={onClickCreateBlog} type='success'>블로그 개설하기</PrettyButton>}
-        <Modal title={'블로그를 개설하시겠습니까?'} type={'yesno'} isOpen={isCreateBlogModalOpen} onResult={onResultCreate} onClose={()=>setIsCreateBlogModalOpen(false)}></Modal>        
       </Vertical>) : <OverlayProgress/>
 }
 

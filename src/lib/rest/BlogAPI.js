@@ -8,6 +8,7 @@ export async function getBlog(id) {
 }
 
 
+/*
 export async function postBlog(jwt, payload){
 
   const url = '/api/blog'
@@ -22,6 +23,7 @@ export async function deleteBlog(jwt, blog_id){
 
   return await restAPI.del(url, jwt)
 }
+*/
 
 
 export async function patchBlog(jwt, blog_id, payload){

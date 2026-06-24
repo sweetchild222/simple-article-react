@@ -10,7 +10,6 @@ import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from "@gui/PrettyButton.js";
-import { FaPen } from "react-icons/fa6"
 import {Vertical, Horizental} from "@gui/Flex.js";
 
 export default function({ref, blogId, categoryId}) {    
@@ -94,8 +93,8 @@ export default function({ref, blogId, categoryId}) {
     }
 
     return (
-        <Vertical>
-            <PrettyButton type={'transparent'} tooltip='새글 작성' style={{color:'black', cursor:'pointer', marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}><FaPen size={30}/></PrettyButton>
+        <Vertical style={{alignItems:'right'}}>
+            <PrettyButton type={'confirm'} tooltip='새글 작성' style={{marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}>{'새글 작성'}</PrettyButton>
         </Vertical>
     )
 }

@@ -4,7 +4,6 @@ import AuthContext from "@util/AuthContext.js";
 
 import * as UserAPI from '@rest/UserAPI.js'
 import * as BlobAPI from '@rest/BlobAPI.js'
-import * as BlogAPI from '@rest/BlogAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 import ImagePicker from "@util/ImagePicker.js";
@@ -25,8 +24,7 @@ export default function() {
     const {auth, updateAuth, validAuth, reloadAuth, removeAuth} = useContext(AuthContext)
     const [isModalLogout, setIsModalLogout] = useState(false)
     const [isModalPassword, setIsModalPassword] = useState(false)
-    const [isModalWithdraw, setIsModalWithdraw] = useState(false)
-    const [isModalDeleteBlog, setIsModalDeleteBlog] = useState(false)
+    const [isModalWithdraw, setIsModalWithdraw] = useState(false)    
     
     const [isModalNickname, setIsModalNickname] = useState(false)    
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
@@ -232,99 +230,6 @@ export default function() {
     }
 
 
-
-    const onInputPasswordForBlog = async(input) => {
-
-        if(!validAuth(auth))
-            return
-
-        if(input == ''){
-            window.showToast('현재 비밀번호를 입력하세요', 'error')
-            return
-        }        
-        
-        if(validator.password(input) == false) {
-            window.showToast('비밀번호가 틀렸습니다', 'error')
-            return
-        }
-
-        if(auth.blog_id != user.blog_id)
-            return null
-
-        const resCategories = await CategoryAPI.getCategories(user.blog_id)
-
-        if(resCategories.success == false){
-            window.showToast('카테고리 정보를 가져 올 수 없습니다', 'error')
-            return
-        }
-
-
-        if(resCategories.payload.length > 0){
-            window.showToast('블로그에 남아 있는 카테고리를 삭제해주세요', 'error')
-            return
-        }
-
-        const res = await deleteBlog(input)
-
-        if(res.success == false){
-            window.showToast('블로그 삭제가 실패하였습니다', 'error')
-            return
-        }
-
-        window.showToast('블로그 삭제가 성공하였습니다', 'info')
-
-        auth.blog_id = -1
-        updateAuth(auth)
-
-        user.blog_id = null
-        setUser(structuredClone(user))
-    }
-
-
-    const deleteBlog = async(password) =>{
-
-        if(!validAuth(auth))
-            return
-
-        if(auth.blog_id != user.blog_id)
-            return null
-
-        const resPasswordCheck = await UserAPI.getUserPasswordCheck(auth.jwt, auth.user_id, password)
-
-        if(resPasswordCheck.success == false)
-            return null
-
-        if(resPasswordCheck.payload.correct == false)                        
-            return null
-        
-        return await BlogAPI.deleteBlog(auth.jwt, user.blog_id)        
-    }
-
-
-    const onClickDeleteBlog = async() => {
-
-        if(!validAuth(auth))
-            return
-                
-        if(auth.blog_id != user.blog_id)
-            return null
-
-        const resCategories = await CategoryAPI.getCategories(user.blog_id)
-        
-        if(resCategories.success == false){
-            window.showToast('카테고리 정보를 가져 올 수 없습니다', 'error')
-            return
-        }
-
-
-        if(resCategories.payload.length > 0){
-            window.showToast('블로그에 남아 있는 카테고리를 먼저 삭제해주세요', 'error')
-            return
-        }
-
-        setIsModalDeleteBlog(true)
-    }
-
     
     return user ? (
       <Vertical style={{position:'relative', alignItems:'center'}}>
@@ -341,9 +246,6 @@ export default function() {
         
         <Modal title={'닉네임을 입력하세요'} type={'input'} isCloseOutsideClick={false} defaultValue={user.nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
         <PrettyButton onClick={onClickUserNickname} type='success'>닉네임 설정</PrettyButton>
-
-        {user.blog_id && <PrettyButton onClick={onClickDeleteBlog} type='success'>블로그 삭제</PrettyButton>}
-        <Modal title={'패스워드를 입력하세요'} description={'블로그에 카테고리가 남아 있으면 먼저 삭제해주세요'} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalDeleteBlog} onClose={()=>setIsModalDeleteBlog(false)} onInput={onInputPasswordForBlog}/>
       </Vertical>) : <OverlayProgress/>
 }
 

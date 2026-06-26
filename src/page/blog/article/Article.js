@@ -3,7 +3,6 @@ import {useState, useContext, useEffect} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
-import * as BlogAPI from '@rest/BlogAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
 import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
 
@@ -45,7 +44,6 @@ export default function() {
     const [isControlLoading, setIsControlLoading] = useState(false)    
     const [category, setCategory] = useState(null)
     const [textAlign, setTextAlign] = useState('left')
-    const [userId, setUserId] = useState(null)
     
     const navigate = useNavigate()
 
@@ -84,14 +82,6 @@ export default function() {
                         article.payload.showed += 1
                         setArticle(structuredClone(article.payload))
                     }
-                })
-
-
-                BlogAPI.getBlog(blog_id).then((resBlog)=> {
-
-                    if(resBlog.success == true)
-                        setUserId(resBlog.payload.user_id)
-
                 })
             })
         })
@@ -234,7 +224,7 @@ export default function() {
             </Horizental>
 
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
-            <CommentList article_id={article.id} article_user_id={userId}/>
+            <CommentList article_id={article.id} article_user_id={article.user_id}/>
             <div style={{height:'20px'}}/>
             <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>
         </Vertical>

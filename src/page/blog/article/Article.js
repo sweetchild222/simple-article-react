@@ -19,7 +19,6 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import OverlayProgress from "@gui/OverlayProgress.js";
 
 
-
 import Great from "./Great.js"
 import Series from "./Series.js"
 import Bookmark from "./Bookmark.js"
@@ -185,6 +184,10 @@ export default function() {
 
     return article ? (
         <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', minWidth:'960px', maxWidth:'960px'}}>
+            
+            {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>}
+            {article.thumbnail != '' && <div style={{height:'30px'}}></div>}
+            
             <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px', padding:'0px 0px 20px 0px'}}>{article.title}</div>
             <Horizental style={{width:'100%', alignItems:'center'}}>
                 {category &&
@@ -212,7 +215,7 @@ export default function() {
                     </div>
                 }
             </Horizental>
-            <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
+            <div style={{height:'1px', backgroundColor:'lightgray', width:'100%', borderRadius:'1px', marginBottom:'5px', marginTop:'5px'}}></div>
             <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', textAlign:textAlign, width:'100%'}}/>
 
             <Horizental style={{justifyContent:'space-between', alignItems:'center', marginBottom:'5px', width:'100%'}}>

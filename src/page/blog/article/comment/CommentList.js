@@ -7,6 +7,7 @@ import PrettyButton from "@gui/PrettyButton.js";
 import ProfileImage from "@gui/ProfileImage.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import * as CommentAPI from '@rest/CommentAPI.js'
+import * as AlarmAPI from '@rest/AlarmAPI.js'
 
 import Great from "./Great.js";
 import ReplyLine from "./ReplyLine.js";
@@ -20,7 +21,7 @@ import { SlArrowDown } from "react-icons/sl";
 import { SlArrowUp } from "react-icons/sl";
 
 
-export default function({article_id}) {
+export default function({article_id, article_user_id}) {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [comments, setComments] = useState(null)
@@ -153,7 +154,28 @@ export default function({article_id}) {
     }
 
 
-    const onPostComment = async(comment) =>{
+
+    const postAlarmCore = async(to_user_id, type, comment_id)=>{
+        
+        if(!validAuth(auth))
+            return
+
+        if(auth.user_id == to_user_id)
+            return
+        
+        const payload = {
+
+            from_user_id:auth.user_id,
+            to_user_id:to_user_id,
+            type:type,
+            comment_id:comment_id
+        }
+
+        const res = await AlarmAPI.postAlarm(auth.jwt, payload)
+    }
+
+
+    const onPostComment = async(comment) => {
 
         if(!validAuth(auth))
             return false
@@ -179,7 +201,7 @@ export default function({article_id}) {
         }
 
         window.showToast('댓글이 작성 되었습니다', 'info')
-        
+
         const user = await UserRepository.getByID(auth.user_id)
 
         comments.unshift({id:res.payload.id, replies:[], update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
@@ -190,7 +212,33 @@ export default function({article_id}) {
         if(user && user.nickname != '' && !atCandidates.find(item => item.id == user.id))
             setAtCandidates([...atCandidates, user])
 
+        
+        await postAlarmCore(article_user_id, 'COMMENT', res.payload.id)
+
+        const mention_user_ids = getMentionUserIds(comment, article_user_id)
+        
+        await postMentionAlarm(mention_user_ids, res.payload.id)
+                
         return true
+    }
+
+
+    const getMentionUserIds = (comment, except_user_id) =>{
+
+        const regex = /<user>([^<]+)<\/user>/g;
+        const matches = [...comment.matchAll(regex)];
+        const user_ids = matches.map(match => parseInt(match[1]))
+
+        return user_ids.filter(id => id !== except_user_id)
+
+    }
+
+
+    const postMentionAlarm = async(user_ids, comment_id) => {
+                        
+        for (const [index, user_id] of user_ids.entries()) {           
+            await postAlarmCore(user_id, 'MENTION', comment_id)
+        }        
     }
 
 
@@ -245,13 +293,22 @@ export default function({article_id}) {
         setComments(structuredClone(comments))
 
         if(!showReplies.find(id => openReplyEditCommentId == id))
-            setShowReplies([...showReplies, openReplyEditCommentId])                    
+            setShowReplies([...showReplies, openReplyEditCommentId])
             
         setOpenReplyEditCommentId(-1)
 
         if(user && !atCandidates.find(item => item.id == user.id))
             setAtCandidates([...atCandidates, user])
+        
+        await postAlarmCore(findComment.user_id, 'REPLY', res.payload.id)
 
+        if(findComment.user_id != article_user_id)
+            await postAlarmCore(article_user_id, 'COMMENT', res.payload.id)
+
+        const mention_user_ids = getMentionUserIds(comment, findComment.user_id)
+        
+        await postMentionAlarm(mention_user_ids, res.payload.id)
+        
         return true
     }
 
@@ -326,6 +383,10 @@ export default function({article_id}) {
         comment.comment = modifiedComment
         comment.update_at = Date.now()
         setComments(structuredClone(comments))
+
+        const mention_user_ids = getMentionUserIds(modifiedComment, comment.user_id)
+        
+        await postMentionAlarm(mention_user_ids, comment.id)
     }
 
 

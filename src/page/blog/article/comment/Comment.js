@@ -58,7 +58,6 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
     }, [editable])
 
-
     
 
     useEffect(()=>{

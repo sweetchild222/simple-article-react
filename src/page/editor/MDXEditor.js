@@ -285,6 +285,8 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
       setIsImageModalOpen(false)
     }
 
+    //const aa = '<img style="display:block; margin:auto;" src="http://localhost:9981/api/blob/article/20260629092705-68ee5ee9-8167-4219-9218-290b0655c0f5.webp" />'
+    //const aa = '<img style="display:block; margin-left:auto;" src="http://localhost:9981/api/blob/article/20260629092705-68ee5ee9-8167-4219-9218-290b0655c0f5.webp" />'
 
 
     const onChangeUrl = (event) => {

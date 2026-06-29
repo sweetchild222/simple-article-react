@@ -215,9 +215,10 @@ export default function() {
                     </div>
                 }
             </Horizental>
-            <div style={{height:'1px', backgroundColor:'lightgray', width:'100%', borderRadius:'1px', marginBottom:'5px', marginTop:'5px'}}></div>
+            <div style={{height:'1px', backgroundColor:'lightgray', width:'100%', borderRadius:'1px', marginTop:'5px'}}></div>
+            <div style={{height:'20px'}}></div>
             <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', textAlign:textAlign, width:'100%'}}/>
-
+            <div style={{height:'20px'}}></div>
             <Horizental style={{justifyContent:'space-between', alignItems:'center', marginBottom:'5px', width:'100%'}}>
                 <Bookmark article_id={article.id} count={article.bookmark_count}/>
                 <Great style={{marginLeft: 'auto'}} article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>

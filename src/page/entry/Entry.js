@@ -8,6 +8,7 @@ import BlogHeader from '@page/blog/Header.js'
 import BlogHome  from '@page/blog/Home.js'
 import Article  from '@page/blog/article/Article.js'
 import MainHeader from '@page/main/Header.js'
+import Side from '@page/main/Side.js'
 import MainHome from '@page/main/Home.js'
 
 import Configuration from '@page/user/Configuration.js'
@@ -30,11 +31,14 @@ const Aplication = function() {
 
   const RootLayout = () => (
 
-    <Vertical style={{width:'100%', height:'100%'}}>
-      <MainHeader/>
-      <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
-      <Outlet/>
-    </Vertical>
+    <Horizental style={{width:'100%', height:'100%'}}>
+      <Side></Side>
+      <Vertical style={{width:'100%', height:'100%'}}>
+        <MainHeader/>
+        <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
+        <Outlet/>
+      </Vertical>      
+    </Horizental>
   )
 
 

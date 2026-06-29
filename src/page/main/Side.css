@@ -1,0 +1,87 @@
+/* Base sidebar setup */
+.sidebar {
+  height: 100vh;
+  background-color: #494D5F;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+  font-family: sans-serif;
+}
+
+/* Width variations based on state */
+.sidebar.open {
+  width: 260px;
+}
+
+.sidebar.collapsed {
+  width: 90px;
+}
+
+/* Header styling */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  height:100px;
+  border-bottom: 1px solid #2d2d44;
+}
+
+.brand-logo {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* Navigation items structure */
+.sidebar-nav {
+  flex: 1;
+  padding: 10px 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  padding: 5px 10px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  color: #b3b3b3;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+  background-color: #2d2d44;
+  color: #ffffff;
+}
+
+.nav-icon {
+  font-size: 1.25rem;
+  margin-right: 15px;
+  min-width: 25px;
+  text-align: center;
+}
+
+/* Prevent text clipping when collapsed */
+.nav-text {
+  white-space: nowrap;
+}

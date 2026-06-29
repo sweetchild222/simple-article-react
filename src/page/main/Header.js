@@ -4,17 +4,33 @@ import AuthContext from "@util/AuthContext.js";
 import ProfileImage from "@gui/ProfileImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import * as AlarmAPI from '@rest/AlarmAPI.js'
+import { VscBellDot } from "react-icons/vsc";
+import { VscBell } from "react-icons/vsc";
 
 export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [reloadKey, setReloadKey] = useState(0)
+    const [alarm, setAlarm] = useState(null)
+    
     const navigate = useNavigate()
 
     useEffect(() => {
 
-        if(validAuth(auth))
+        if(validAuth(auth)){
             setReloadKey(prev => prev + 1)
+
+            AlarmAPI.getAlarm(auth.jwt, auth.user_id).then(res=>{
+
+                if(res.success == false)
+                    return
+
+                setAlarm(res.payload)
+
+                //setAlarmCount(res.payload.length)
+            })            
+        }       
 
     }, [auth])
 
@@ -56,18 +72,36 @@ export default function() {
 
         navigate('/')
     }
+
+    const onClickAlarm = async(e) => {
+
+        console.log(alarm)
+        
+        // if(!validAuth(auth))
+        //     return
+
+        // const res = await AlarmAPI.getAlarm(auth.jwt, auth.user_id)
+        // console.log(res)
+
+        // console.log('alarm')
+    }
     
 
     return (
-            <Horizental style={{ alignItems: 'center', padding:'10px 10px 10px 10px', backgroundColor:' #494D5F', boxShadow: '0 4px 3px -3px black'}}>
-                <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickHome}/>
-                <div style={{flexGrow:1, backgroundColor:'blue'}} />
-                <PrettyButton  type='success' onClick={onClickSearch} style={{margin:'0px 5px 0 5px'}}>검색</PrettyButton>
-                <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px', margin:'0px 5px 0 5px'}} onKeyDown={onKeyDown} ></input>
-                <div style={{margin:'0px 0px 0px 10px', width:'64px'}}>
+            <Horizental style={{ alignItems: 'center', width:'100%'}}>
+                <Horizental style={{ alignItems: 'center', flexGrow:'1'}}/>
+
+                <Horizental style={{justifyContent:'center', alignItems: 'center', flexGrow:'1'}}>
+                    <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px'}} onKeyDown={onKeyDown}></input>
+                    <PrettyButton  type='success' onClick={onClickSearch}>검색</PrettyButton>
+                </Horizental>
+                <Horizental style={{justifyContent:'end', flexGrow:'1', alignItems:'center', marginRight:'20px'}}>
                     {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn}>로그인</PrettyButton>}
+                    {validAuth(auth) && alarm != null && <PrettyButton  type='transparent' style={{height:'fit-content', marginRight:'10px', color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarm.length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+
                     {validAuth(auth) && <ProfileImage shape={'circle'} key={reloadKey} userId={auth.user_id} onClick={onClickUser} onClickAtError={onClickAtError}/>}
-                </div>
+                </Horizental>
+                
             </Horizental>
     )
 }

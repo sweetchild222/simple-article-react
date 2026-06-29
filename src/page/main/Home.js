@@ -8,8 +8,8 @@ import * as CommentAPI from '@rest/CommentAPI.js'
 import * as AlarmAPI from '@rest/AlarmAPI.js'
 import * as UserAPI from '@rest/UserAPI.js'
 import * as blobToBase64 from '@util/BlobToBase64.js'
-import PrettyButton from '@gui/PrettyButton.js'
 
+import PrettyButton from '@gui/PrettyButton.js'
 import AuthContext from "@util/AuthContext.js";
 
 export default function Home() {
@@ -114,7 +114,7 @@ export default function Home() {
       <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getAlarm}>알람 가져오기</PrettyButton>
       <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={postAlarm}>알람 추가</PrettyButton>
       <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={deleteAlarm}>알람 삭제</PrettyButton>
-      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={patchAlarm}>알람 수정</PrettyButton>
+      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={patchAlarm}>알람 수정</PrettyButton>      
       
       
 

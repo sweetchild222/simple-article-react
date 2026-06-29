@@ -50,23 +50,25 @@ const createAdmonition = (name, content) => {
 
 const directiveFunc = directiveHtml({
 
+
     youtube(directive){            
 
         const url = directive.attributes.url
         const shorts = directive.attributes.shorts == 'y' ? true : false
+        const align = directive.attributes.align
+
+        const alignMap = {'center':'display:block; margin:auto;', 'start':'display:block; margin-right:auto;', 'end':'display:block; margin-left:auto;', 'left':'display:block; margin-right:auto;', 'right':'display:block; margin-left:auto;'}
+
+        const alignStyle = alignMap[align] != null ? alignMap[align] : ''
 
         const width = shorts ? 315 : 560
         const height = shorts ? 560 : 315
 
-        const iframe = '<iframe width=' + width + ' height=' + height + ' title=Youtube ' + 'style="border:1px solid gray" '
-                        + ' allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;" '
-                        + ' src="' + url + '"></iframe>'
-
-
-        const containDiv = '<div style="display:flex; flex-direction:column; align-items:center; position:relative;">'
-                        + iframe + '</div>'
+        const iframe = '<iframe title="Youtube" ' + 'style="' + alignStyle + ' width:' + width + 'px; ' + 'height:' + height + 'px;'+ ' border:1px solid gray;" '
+                + ' allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;" '
+                + ' src="' + url + '"></iframe>'
     
-        this.tag(containDiv)
+        this.tag(iframe)
     },
     info(directive){
         const admonition = createAdmonition(directive.name, directive.content)

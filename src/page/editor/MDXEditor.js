@@ -76,8 +76,14 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
       const wdith = (shorts == 'y') ? 315 : 560;
       const height = (shorts == 'y') ? 560 : 315;
 
+      const align = mdastNode.attributes.align
+
+      const alignMap = {'start':'start', 'center':'center', 'end':'end', 'left':'start', 'right':'end'}
+
+      const alignValue = alignMap[align] != null ? alignMap[align] : null
+      
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position:'relative'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: alignValue, position:'relative'}}>
           <div style={{position:'relative', display: 'flex', flexDirection: 'column'}}>
             <button style={{position:'absolute', border:'0px', backgroundColor:'white', borderRadius: '0 0 0 3px', alignSelf: 'flex-end'}}
               onClick={() => {
@@ -132,12 +138,13 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
         const prefix = match[1]
         const shorts = (prefix == 'youtube.com/shorts') ? 'y' : 'n'
         const url = 'https://www.youtube.com/embed/' + videoId
+        const align = 'center'
 
         if(videoId){
           insertDirective({
             name: 'youtube',
             type: 'leafDirective',
-            attributes: { url: url, shorts:shorts},
+            attributes: { url: url, shorts:shorts, align:align},
             children: []
           })
         }

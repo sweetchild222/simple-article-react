@@ -3,11 +3,12 @@ import { useState, useRef, useEffect } from 'react'
 import PrettyButton from "@gui/PrettyButton.js"
 import ReactDOM from 'react-dom';
 import { VscTrash } from "react-icons/vsc";
+import {Vertical, Horizental} from "@gui/Flex.js";
+import ElapsedTime from "@util/ElapsedTime.js";
 
 export default function({ref, isOpen, onClose, alarms}) {
       
-  const refDialog = useRef(null)
-  const refListDiv = useRef(null)
+  const refDialog = useRef(null)  
 
   const [isApplyLoading, setIsApplyLoading] = useState(false)  
 
@@ -35,20 +36,32 @@ export default function({ref, isOpen, onClose, alarms}) {
   }
 
 
+  const userText = (alarm)=> {
+
+    console.log(alarm)
+
+
+    return 'asdfassdfasfjdakjfdiaosjfwoiejfwoijfwoei<br>fjwoijdfdfsfsdfsdfsdfsfsdfsdsdfsdfssf'
+  }
+
+
 
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
-                <div ref={refListDiv} style={{ display: 'flex', flexDirection: 'column'}}>
+              <Vertical style={{alignItems: 'start'}}>
                   {alarms && alarms.map((data, index) => 
-                      <PrettyButton key={data.id} onClick={()=> onClickAlarm(data)} >{data.type}</PrettyButton>
-                  )}
-                </div>
-                <div syle={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                  <PrettyButton type='cancel' onClick={onClose}>닫기</PrettyButton>
-                  <PrettyButton type='cancel' onClick={onClose}>전체 삭제</PrettyButton>
-                </div>
-              </div>
+                      <Horizental key={data.id} style={{alignItems:'center', height:'2.5lh', maxWidth:'500px'}}>                        
+                        <div style={{width:'100px', color:'gray', fontStyle:'italic'}}>{ElapsedTime(data.create_at)}</div>
+                        <div className={'clamped-text underline-text'} style={{'--line-count':2, backgroundColor:'lightblue'}} onClick={()=> onClickAlarm(data)}>{userText(data)}</div>
+                        <PrettyButton type='transparent' style={{color:'black'}}>{<VscTrash size={15}/>}</PrettyButton>
+                      </Horizental>
+                  )}                
+                <Horizental style={{alignItems: 'center', alignSelf:'end', marginTop:'10px'}}>
+                  <PrettyButton type='danger' onClick={onClose}>닫기</PrettyButton>
+                  <div style={{width:'20px'}}></div>
+                  <PrettyButton type='success' onClick={onClose}>전체 삭제</PrettyButton>
+                </Horizental>
+              </Vertical>
           </dialog>,
           document.getElementById('modal-root')
         )

@@ -166,16 +166,14 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
 
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
-              <Vertical style={{alignItems: 'center'}}>
-                <div ref={refListDiv} style={{ display: 'flex', flexDirection: 'column'}}>
+              <Vertical ref={refListDiv} style={{alignItems: 'center'}}>                
                   {newCategories && newCategories.map((data, index) => 
-                    <div key={data.id} style={{ display: 'flex', flexDirection: 'row'}}>
+                    <Horizental key={data.id} style={{ display: 'flex', flexDirection: 'row'}}>
                       <input key={data.id} style={{color:'black', width:'150px'}} maxLength={16} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
                       <PrettyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.article_count > 0) ? 'gray' : 'black')}}size={15}/></PrettyButton>
-                    </div>
+                    </Horizental>
                   )}
-                </div>
-                <Horizental style={{alignItems: 'center'}}>
+                <Horizental style={{alignItems: 'center', alignSelf:'end'}}>
                   <PrettyButton type='confirm' onClick={onCliCkAdd}>추가</PrettyButton>
                   <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</PrettyButton>
                   <PrettyButton type='cancel' onClick={onClose}>취소</PrettyButton>

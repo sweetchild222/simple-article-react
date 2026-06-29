@@ -8,7 +8,7 @@ import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 
 import AuthContext from "@util/AuthContext.js";
-import CategoryModal from '@gui/CategoryModal.js'
+import CategoryModal from './CategoryModal.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
 import { MdCategory } from "react-icons/md";
 

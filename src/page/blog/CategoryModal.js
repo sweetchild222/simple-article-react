@@ -1,8 +1,10 @@
+
 import { useState, useRef, useEffect } from 'react'
 
-import PrettyButton from "./PrettyButton.js"
+import PrettyButton from "@gui/PrettyButton.js"
 import ReactDOM from 'react-dom';
 import { VscTrash } from "react-icons/vsc";
+import {Vertical, Horizental} from "@gui/Flex.js";
 
 export default function({ref, isOpen, onClose, onClickApply, categories}) {
       
@@ -164,7 +166,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
 
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+              <Vertical style={{alignItems: 'center'}}>
                 <div ref={refListDiv} style={{ display: 'flex', flexDirection: 'column'}}>
                   {newCategories && newCategories.map((data, index) => 
                     <div key={data.id} style={{ display: 'flex', flexDirection: 'row'}}>
@@ -173,12 +175,12 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
                     </div>
                   )}
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                <Horizental style={{alignItems: 'center'}}>
                   <PrettyButton type='confirm' onClick={onCliCkAdd}>추가</PrettyButton>
                   <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</PrettyButton>
                   <PrettyButton type='cancel' onClick={onClose}>취소</PrettyButton>
-                </div>
-              </div>
+                </Horizental>
+              </Vertical>
           </dialog>,
           document.getElementById('modal-root')
         )

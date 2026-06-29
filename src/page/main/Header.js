@@ -2,6 +2,7 @@ import {useState, useContext, useEffect} from "react";
 import {useNavigate} from 'react-router-dom';
 import AuthContext from "@util/AuthContext.js";
 import ProfileImage from "@gui/ProfileImage.js";
+import AlarmModal from "./AlarmModal.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import * as AlarmAPI from '@rest/AlarmAPI.js'
@@ -12,7 +13,8 @@ export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [reloadKey, setReloadKey] = useState(0)
-    const [alarm, setAlarm] = useState(null)
+    const [alarms, setAlarms] = useState(null)
+    const [isOpenAlarmModal, setIsOpenAlarmModal] = useState(false)
     
     const navigate = useNavigate()
 
@@ -26,7 +28,7 @@ export default function() {
                 if(res.success == false)
                     return
 
-                setAlarm(res.payload)
+                setAlarms(res.payload)
 
                 //setAlarmCount(res.payload.length)
             })            
@@ -75,7 +77,9 @@ export default function() {
 
     const onClickAlarm = async(e) => {
 
-        console.log(alarm)
+        //console.log(alarm)
+
+        setIsOpenAlarmModal(true)
         
         // if(!validAuth(auth))
         //     return
@@ -97,7 +101,9 @@ export default function() {
                 </Horizental>
                 <Horizental style={{justifyContent:'end', flexGrow:'1', alignItems:'center', marginRight:'20px'}}>
                     {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn}>로그인</PrettyButton>}
-                    {validAuth(auth) && alarm != null && <PrettyButton  type='transparent' style={{height:'fit-content', marginRight:'10px', color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarm.length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+                    {validAuth(auth) && alarms != null && <PrettyButton  type='transparent' style={{height:'fit-content', marginRight:'10px', color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+
+                    {validAuth(auth) && <AlarmModal isOpen={isOpenAlarmModal} onClose={()=>setIsOpenAlarmModal(false)} alarms={alarms}></AlarmModal>}
 
                     {validAuth(auth) && <ProfileImage shape={'circle'} key={reloadKey} userId={auth.user_id} onClick={onClickUser} onClickAtError={onClickAtError}/>}
                 </Horizental>

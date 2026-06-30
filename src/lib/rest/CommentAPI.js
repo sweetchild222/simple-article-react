@@ -10,6 +10,15 @@ export async function getArticleComments(article_id) {
 
 
 
+export async function getComments(query) {
+
+  const url = '/api/comment'
+
+  return await restAPI.get(url, query)
+}
+
+
+
 export async function postComment(jwt, payload) {
 
   const url = '/api/comment'

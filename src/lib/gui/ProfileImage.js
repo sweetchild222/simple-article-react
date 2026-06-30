@@ -38,11 +38,12 @@ export default function(props) {
 
         if(image == '')
             return '/image/user.png'
-        else
+        else{
             return (image + '?size=' + width + 'x' + height)
+        }
     }
 
-
+    
     return user ? 
         (<StateProgsImage src={urlWithSize(user.image, width, height)} tooltip={user.nickname} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{cursor:'pointer', ...props.style}}/>)
         : (isError ? 

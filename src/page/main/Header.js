@@ -6,8 +6,10 @@ import AlarmModal from "./AlarmModal.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import * as AlarmAPI from '@rest/AlarmAPI.js'
+import * as CommentAPI from '@rest/CommentAPI.js'
 import { VscBellDot } from "react-icons/vsc";
 import { VscBell } from "react-icons/vsc";
+import * as UserRepository from "@util/UserRepository.js";
 
 export default function() {
 
@@ -28,10 +30,24 @@ export default function() {
                 if(res.success == false)
                     return
 
-                setAlarms(res.payload)
+                const alarms = res.payload
 
+                const user_ids = alarms.map(({from_user_id}) => from_user_id);
+        
+                UserRepository.getByIDList([...new Set(user_ids)]).then(users =>{
+
+                    if(users == null)
+                        return
+
+                    for(const alarm of alarms)
+                        alarm.user = users.find(user => user.id == alarm.from_user_id)
+        
+                    setAlarms(alarms)
+                })
+
+                
                 //setAlarmCount(res.payload.length)
-            })            
+            })
         }       
 
     }, [auth])
@@ -75,26 +91,42 @@ export default function() {
         navigate('/')
     }
 
+
     const onClickAlarm = async(e) => {
 
-        //console.log(alarm)
+        if(!validAuth(auth)){
+            window.showToast('로그인 해주세요', 'info')
+            navigate('/account')
+            return
+        }
+
+        if(alarms == null)
+            return
+
+        if(alarms.length == 0)
+            return
 
         setIsOpenAlarmModal(true)
+    }
+
+
+    const onCloseAlarmModal = async() => {        
+
         
-        // if(!validAuth(auth))
-        //     return
+        setIsOpenAlarmModal(false)
+    }
 
-        // const res = await AlarmAPI.getAlarm(auth.jwt, auth.user_id)
-        // console.log(res)
+    const onUpdatedAlarms = async(alarms)=>{
 
-        // console.log('alarm')
+        setAlarms(structuredClone(alarms))
     }
     
 
     return (
             <Horizental style={{ alignItems: 'center', width:'100%'}}>
-                <Horizental style={{ alignItems: 'center', flexGrow:'1'}}/>
-
+                <Horizental style={{ alignItems: 'center', flexGrow:'1'}}>
+                    <PrettyButton>{'내 블로그'}</PrettyButton>
+                </Horizental>
                 <Horizental style={{justifyContent:'center', alignItems: 'center', flexGrow:'1'}}>
                     <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px'}} onKeyDown={onKeyDown}></input>
                     <PrettyButton  type='success' onClick={onClickSearch}>검색</PrettyButton>
@@ -102,10 +134,8 @@ export default function() {
                 <Horizental style={{justifyContent:'end', flexGrow:'1', alignItems:'center', marginRight:'20px'}}>
                     {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn}>로그인</PrettyButton>}
                     {validAuth(auth) && alarms != null && <PrettyButton  type='transparent' style={{height:'fit-content', marginRight:'10px', color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
-
-                    {validAuth(auth) && <AlarmModal isOpen={isOpenAlarmModal} onClose={()=>setIsOpenAlarmModal(false)} alarms={alarms}></AlarmModal>}
-
-                    {validAuth(auth) && <ProfileImage shape={'circle'} key={reloadKey} userId={auth.user_id} onClick={onClickUser} onClickAtError={onClickAtError}/>}
+                    {validAuth(auth) && alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
+                    {validAuth(auth) && <ProfileImage shape={'circle'}  userId={auth.user_id} onClick={onClickUser} onClickAtError={onClickAtError}/>}
                 </Horizental>
                 
             </Horizental>

@@ -3,7 +3,7 @@ import {useState, useEffect, useRef} from "react";
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 
-import * as UserRepository from "./UserRepository.js";
+import * as UserRepository from "@util/UserRepository.js";
 import DOMPurify from 'dompurify';
 import TextArea from "./TextArea.js";
 

@@ -7,6 +7,8 @@ import * as UserRepository from "@util/UserRepository.js";
 import DOMPurify from 'dompurify';
 import TextArea from "./TextArea.js";
 
+import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
+
 import { RiArrowDownWideLine } from "react-icons/ri";
 import { MdOutlineDoneOutline } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
@@ -33,17 +35,14 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
     }
 
     useEffect(()=>{
-
-        const rawComment = comment.comment
-        const regex = /\<user\>(.*?)\<\/user\>/g
-
-        replaceAsync(rawComment, regex, toUserLink).then(replaceString =>
+        
+        ReplaceUserTag.toUserLink(comment.comment).then(replaceString =>
             setSeenComment(DOMPurify.sanitize(replaceString))
         )
 
-        replaceAsync(rawComment, regex, toUserNickname).then(replaceString =>
+        ReplaceUserTag.toUserNickname(comment.comment).then(replaceString =>
             setEditingComment(replaceString)
-        )
+        )        
 
     }, [comment])
 
@@ -71,70 +70,6 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
     }, [seenComment])
 
-
-
-    async function replaceAsync(str, regex, asyncFn) {
-
-        const promises = []
-    
-        str.replace(regex, (match, ...args) => {
-            promises.push(asyncFn(match, ...args))
-            return match
-        })
-  
-        const data = await Promise.all(promises)
-        return str.replace(regex, () => data.shift())
-    }
-    
-
-    const toUserLink = async(matched)=>{
-        
-        const match = matched.match(/\<user\>(.*?)\<\/user\>/)
-
-        if(!match)
-            return matched
-        
-        if(match.length > 0){
-
-            const id = match[1]
-
-            const user = await UserRepository.getByID(id)
-
-            const host = 'http://' + window.location.host
-
-            if(user == null)
-                return '@알수없음 '
-                        
-            const link = '<a href=\"' + host + '/user/' + id + '\">'+ '@' + user.nickname + ' ' +'</a>'
-        
-            return link
-        }
-
-        return matched
-    }
-
-    
-    const toUserNickname = async(matched)=>{
-
-        const match = matched.match(/\<user\>(.*?)\<\/user\>/)
-
-        if(!match)
-            return
-
-        if(match.length > 0){
-
-            const id = match[1]
-
-            const user = await UserRepository.getByID(id)
-
-            if(user == null)
-                return '@알수없음 '
-            
-            return '@' + user.nickname + ' '
-        }
-
-        return matched
-    }
 
 
     const onClickModifyCompleteInner = async() => {

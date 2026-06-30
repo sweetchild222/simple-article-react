@@ -10,6 +10,7 @@ import * as CommentAPI from '@rest/CommentAPI.js'
 import { VscBellDot } from "react-icons/vsc";
 import { VscBell } from "react-icons/vsc";
 import * as UserRepository from "@util/UserRepository.js";
+import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
 
 export default function() {
 
@@ -32,21 +33,28 @@ export default function() {
 
                 const alarms = res.payload
 
-                const user_ids = alarms.map(({from_user_id}) => from_user_id);
-        
-                UserRepository.getByIDList([...new Set(user_ids)]).then(users =>{
+                const promises = []
 
-                    if(users == null)
+                alarms.map(alarm => promises.push(ReplaceUserTag.toUserNicknameHtml(alarm.comment)))
+
+                Promise.all(promises).then(res => {
+
+                    if(res.length != alarms.length)
                         return
 
-                    for(const alarm of alarms)
-                        alarm.user = users.find(user => user.id == alarm.from_user_id)
-        
-                    setAlarms(alarms)
-                })
+                    res.map((data, index) => alarms[index].seenComment = data)                                    
 
-                
-                //setAlarmCount(res.payload.length)
+                    const user_ids = alarms.map(({from_user_id}) => from_user_id)
+        
+                    UserRepository.getByIDList([...new Set(user_ids)]).then(users => {
+                                        
+                    for(const alarm of alarms)
+                        
+                        alarm.user = users.find(user => user.id == alarm.from_user_id)
+                                    
+                        setAlarms(alarms)
+                    })
+                })
             })
         }       
 

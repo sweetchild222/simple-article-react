@@ -2,6 +2,8 @@ import { useState, useRef, useEffect, useContext } from 'react'
 import {useNavigate} from 'react-router-dom';
 
 import PrettyButton from "@gui/PrettyButton.js"
+
+
 import ReactDOM from 'react-dom';
 import ProfileImage from "@gui/ProfileImage.js";
 import { VscTrash } from "react-icons/vsc";
@@ -45,14 +47,6 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
   }
 
 
-  const userText = (alarm) =>{
-    
-    if(alarm.id == 67)
-      return 'asdfassdfassdfsdfsdsdfsdfsdfasdfsdaklfmsadlfjoasdfjposdfpoasdfjisoajdfoiasjfoaisjdfoijsdaoijdsofijio;fos'
-
-    return alarm.comment
-  }
-
   const onClickDelete = async(id) => {
 
     if(!validAuth(auth))
@@ -86,10 +80,10 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
                             <div style={{color:'gray', fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
                             <div style={{color:'gray', fontSize:'14px', whiteSpace:'pre'}}>{ElapsedTime(data.create_at)}</div>
                           </Horizental>
-                          <div className={'clamped-text underline-text'} style={{'--line-count':2, height:'2lh'}} onClick={()=> onClickAlarm(data)}>{userText(data)}</div>
+                          <div className={'clamped-text underline-text'} style={{'--line-count':2, height:'2lh'}} dangerouslySetInnerHTML={{ __html: data.seenComment}} onClick={()=> onClickAlarm(data)}></div>
                         </Vertical>
                         <Horizental style={{flex:'1'}}></Horizental>
-                        <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'10px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<CiSquareRemove size={15}/>}</PrettyButton>
+                        <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'10px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<CiSquareRemove size={25}/>}</PrettyButton>
                       </Horizental>
                   )}
                 <Horizental style={{alignItems: 'center', alignSelf:'end', marginTop:'10px'}}>

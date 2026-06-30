@@ -42,7 +42,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
         ReplaceUserTag.toUserNickname(comment.comment).then(replaceString =>
             setEditingComment(replaceString)
-        )        
+        )
 
     }, [comment])
 

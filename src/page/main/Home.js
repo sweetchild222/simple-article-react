@@ -77,7 +77,6 @@ export default function Home() {
   const getAlarm = async() =>{    
 
     const res = await AlarmAPI.getAlarm(auth.jwt, auth.user_id)
-
     console.log(res)
   }
 

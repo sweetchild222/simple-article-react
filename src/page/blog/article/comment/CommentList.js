@@ -1,4 +1,4 @@
-import {useState, useContext, useEffect, useLayoutEffect} from "react";
+import {useState, useContext, useRef, useEffect, useLayoutEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
@@ -31,10 +31,9 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
     const [atCandidates, setAtCandidates] = useState([])
     const [showReplies, setShowReplies] = useState([])
     const [isShowComments, setIsShowComments] = useState(true)
+    const commentRef = useRef(new Map())    
 
     const navigate = useNavigate()
-
-    console.log(scroll_comment_id)
 
     useEffect(()=>{
 
@@ -70,14 +69,41 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
 
                 for(const upperComment of upperComments)
                     upperComment.replies = comments.payload.filter(reply => reply.comment_id == upperComment.id)
-            
+
                 setComments(upperComments)
 
-                console.log(upperComments)
+                const findUpperComment = upperComments.find(comment => comment.replies.find(reply => reply.id == scroll_comment_id))
+
+                if(findUpperComment != null)
+                    onClickShowReplies(findUpperComment.id)
+                                
+                setTimeout(()=> {
+
+                    const node = commentRef.current.get(scroll_comment_id)
+
+                    if(node)
+                        node.scrollIntoView({ behavior: 'smooth' })
+                    
+                }, 1000)
             })
         })
         
     }, [article_id])
+
+
+
+    useLayoutEffect(() => {
+
+        if(scroll_comment_id == null)
+            return
+
+        // console.log(commentRef.current)
+
+
+
+        // console.log(scroll_comment_id)
+    
+    }, []); 
 
 
     const removeComment = async(comment_id) => {
@@ -419,7 +445,9 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
             </Horizental>
             
             {isShowComments && comments.map((data, index) => 
-                <Vertical key={data.id} style={{marginBottom:'20px'}}>
+                <Vertical key={data.id} style={{marginBottom:'20px'}}
+                    ref={(node) => { node ? commentRef.current.set(data.id, node) : commentRef.current.delete(data.id)}}
+                >
                     <Horizental>
                         <Vertical style={{marginRight:'10px'}}>
                             <ProfileImage shape={'circle'} size={48} user={data.user} onClick={()=> onClickNavigateBlog(data.user.blog_id)}/>
@@ -457,7 +485,7 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                             }
 
                             {data.replies.length > 0 &&
-                                <PrettyButton id={'replyButton'} type={'transparent'} style={{marginBottom:'10px', color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>                                    
+                                <PrettyButton id={'replyButton'} type={'transparent'} style={{marginBottom:'10px', color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
                                     {'답글 (' + data.replies.length + ')'}
                                     <div style={{width:'10px'}}/>
                                     {isShowReplies(data.id) ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
@@ -465,7 +493,9 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                             }
                             
                             {isShowReplies(data.id) && data.replies.map((reply, index) =>
-                                <Horizental key={reply.id} id={'replyDiv'}>
+                                <Horizental key={reply.id} id={'replyDiv'}
+                                    ref={(node) => { node ? commentRef.current.set(reply.id, node) : commentRef.current.delete(reply.id)}}
+                                >
                                     <Vertical style={{marginRight:'10px'}}>
                                         <ProfileImage shape={'circle'} id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateBlog(reply.user.blog_id)}/>
                                         <div style={{flex:'1'}}/>

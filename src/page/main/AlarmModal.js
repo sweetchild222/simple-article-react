@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 
 import PrettyButton from "@gui/PrettyButton.js"
 import ReactDOM from 'react-dom';
+import ProfileImage from "@gui/ProfileImage.js";
 import { VscTrash } from "react-icons/vsc";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import ElapsedTime from "@util/ElapsedTime.js";
@@ -11,6 +12,8 @@ export default function({ref, isOpen, onClose, alarms}) {
   const refDialog = useRef(null)  
 
   const [isApplyLoading, setIsApplyLoading] = useState(false)  
+
+  
 
   useEffect(() => {
       
@@ -45,12 +48,12 @@ export default function({ref, isOpen, onClose, alarms}) {
   }
 
 
-
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <Vertical style={{alignItems: 'start'}}>
                   {alarms && alarms.map((data, index) => 
-                      <Horizental key={data.id} style={{alignItems:'center', height:'2.5lh', maxWidth:'500px'}}>                        
+                      <Horizental key={data.id} style={{alignItems:'center', height:'2.5lh', maxWidth:'500px'}}>
+                        <ProfileImage shape={'circle'} size={32} userId={alarms.from_user_id}/>
                         <div style={{width:'100px', color:'gray', fontStyle:'italic'}}>{ElapsedTime(data.create_at)}</div>
                         <div className={'clamped-text underline-text'} style={{'--line-count':2, backgroundColor:'lightblue'}} onClick={()=> onClickAlarm(data)}>{userText(data)}</div>
                         <PrettyButton type='transparent' style={{color:'black'}}>{<VscTrash size={15}/>}</PrettyButton>

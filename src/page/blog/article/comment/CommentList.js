@@ -454,7 +454,7 @@ export default function({article_id, article_user_id}) {
 
                             {data.replies.length > 0 &&
                                 <PrettyButton id={'replyButton'} type={'transparent'} style={{marginBottom:'10px', color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>                                    
-                                    {'답글 (' + data.replies.length + ')'}                                    
+                                    {'답글 (' + data.replies.length + ')'}
                                     <div style={{width:'10px'}}/>
                                     {isShowReplies(data.id) ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
                                 </PrettyButton>

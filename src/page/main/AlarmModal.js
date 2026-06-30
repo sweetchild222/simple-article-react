@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useContext } from 'react'
 import {useNavigate} from 'react-router-dom';
-
 import PrettyButton from "@gui/PrettyButton.js"
 
 
@@ -20,7 +19,9 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
 
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const [isApplyLoading, setIsApplyLoading] = useState(false)
-  const [newAlarms, setNewAlarms] = useState(structuredClone(alarms))  
+  const [newAlarms, setNewAlarms] = useState(structuredClone(alarms))
+
+  const navigate = useNavigate()
   
   useEffect(() => {
       
@@ -40,10 +41,9 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
   }
 
   
-  const onClickAlarm = async(alarm)=>{
+  const onClickAlarm = async(alarm)=> {
 
-  
-    console.log(alarm)
+    navigate('/blog/' + alarm.blog_id + '/article/' + alarm.article_id, {state:{comment_id:alarm.comment_id}})
   }
 
 
@@ -82,7 +82,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
                           </Horizental>
                           <div className={'clamped-text underline-text'} style={{'--line-count':2, height:'2lh'}} dangerouslySetInnerHTML={{ __html: data.seenComment}} onClick={()=> onClickAlarm(data)}></div>
                         </Vertical>
-                        <Horizental style={{flex:'1'}}></Horizental>
+                        <Horizental style={{flex:'1'}} onClick={()=> onClickAlarm(data)}></Horizental>
                         <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'10px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<CiSquareRemove size={25}/>}</PrettyButton>
                       </Horizental>
                   )}

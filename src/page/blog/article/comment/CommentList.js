@@ -1,4 +1,4 @@
-import {useState, useContext, useEffect, } from "react";
+import {useState, useContext, useEffect, useLayoutEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
@@ -21,7 +21,7 @@ import { SlArrowDown } from "react-icons/sl";
 import { SlArrowUp } from "react-icons/sl";
 
 
-export default function({article_id, article_user_id}) {
+export default function({article_id, article_user_id, scroll_comment_id}) {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [comments, setComments] = useState(null)
@@ -33,6 +33,8 @@ export default function({article_id, article_user_id}) {
     const [isShowComments, setIsShowComments] = useState(true)
 
     const navigate = useNavigate()
+
+    console.log(scroll_comment_id)
 
     useEffect(()=>{
 
@@ -70,6 +72,8 @@ export default function({article_id, article_user_id}) {
                     upperComment.replies = comments.payload.filter(reply => reply.comment_id == upperComment.id)
             
                 setComments(upperComments)
+
+                console.log(upperComments)
             })
         })
         

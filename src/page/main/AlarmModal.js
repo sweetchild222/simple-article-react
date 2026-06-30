@@ -45,7 +45,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
   }
 
 
-  const userText = (alarm)=> {
+  const userText = (alarm) =>{
     
     if(alarm.id == 67)
       return 'asdfassdfassdfsdfsdsdfsdfsdfasdfsdaklfmsadlfjoasdfjposdfpoasdfjisoajdfoiasjfoaisjdfoijsdaoijdsofijio;fos'

@@ -7,9 +7,7 @@ export const getByIDList = async(userIDList) => {
     const filterIDList = userIDList.filter(id => (repository.find(item => item.id == id) == null))
     
     if(filterIDList.length > 0) {
-
-        console.log('id=' + filterIDList)
-        
+                
         const newUserList = await UserAPI.getUsers('id=' + filterIDList)
 
         if(newUserList.success == true)

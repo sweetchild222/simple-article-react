@@ -35,7 +35,7 @@ export default function() {
 
                 const promises = []
 
-                alarms.map(alarm => promises.push(ReplaceUserTag.toUserNicknameHtml(alarm.comment)))
+                alarms.map(alarm => promises.push(alarm.checked == 0 ? ReplaceUserTag.toUserNicknameGreen(alarm.comment) : ReplaceUserTag.toUserNicknameGray(alarm.comment)))
 
                 Promise.all(promises).then(res => {
 

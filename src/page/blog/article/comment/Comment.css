@@ -6,14 +6,15 @@
 }
 
 .background-smooth {
-  animation: colorCycle 3s alternate ease-in-out;
+  animation: colorCycle 4s alternate ease-in-out;
 }
 
 
 @keyframes colorCycle {
   0% { background-color: #FFFFFF; }
-  40% { background-color: #FFFFFF; }
-  50% { background-color: #ff7675; }
-  90% { background-color: #ff7675; }
+  30% { background-color: #FFFFFF; }
+  50% { background-color: #92e0f3; }
+  65% { background-color: #baeb7b; }
+  80% { background-color: #d19191; }
   100% { background-color: #FFFFFF; }
 }

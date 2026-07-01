@@ -66,7 +66,7 @@ const toUserNicknameCore = async(matched)=>{
 
     
 
-const toUserNicknameHtmlCore = async(matched)=>{
+const toUserNicknameGreenCore = async(matched)=>{
 
   const match = matched.match(/\<user\>(.*?)\<\/user\>/)
 
@@ -82,11 +82,38 @@ const toUserNicknameHtmlCore = async(matched)=>{
       if(user == null)
           return '@알수없음 '
       
-      return '<span style="color:green;">@' + user.nickname + '</span>&nbsp'
+      return '<span style="color:darkgreen;">@' + user.nickname + '</span>&nbsp'
   }
 
   return matched
 }
+
+
+
+    
+
+const toUserNicknameGrayCore = async(matched)=>{
+
+  const match = matched.match(/\<user\>(.*?)\<\/user\>/)
+
+  if(!match)
+      return
+
+  if(match.length > 0){
+
+      const id = match[1]
+
+      const user = await UserRepository.getByID(id)
+
+      if(user == null)
+          return '@알수없음 '
+      
+      return '<span style="color:darkgray;">@' + user.nickname + '</span>&nbsp'
+  }
+
+  return matched
+}
+
 
 
 export const toUserLink = async(content) => {
@@ -109,11 +136,22 @@ export const toUserNickname = async(content) => {
 }
 
 
-export const toUserNicknameHtml = async(content) => {
+export const toUserNicknameGreen = async(content) => {
           
   const regex = /\<user\>(.*?)\<\/user\>/g
 
-  const replaceString = await replaceAsync(content, regex, toUserNicknameHtmlCore)  
+  const replaceString = await replaceAsync(content, regex, toUserNicknameGreenCore)  
+  
+  return (replaceString)
+}
+
+
+
+export const toUserNicknameGray = async(content) => {
+          
+  const regex = /\<user\>(.*?)\<\/user\>/g
+
+  const replaceString = await replaceAsync(content, regex, toUserNicknameGrayCore)  
   
   return (replaceString)
 }

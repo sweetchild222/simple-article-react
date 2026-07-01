@@ -42,7 +42,12 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
 
   
   const onClickAlarm = async(alarm)=> {
-
+        
+    if(validAuth(auth)) {
+      const payload = { checked:1 }
+      const res = await AlarmAPI.patchAlarm(auth.jwt, alarm.id, payload)
+    }
+    
     navigate('/blog/' + alarm.blog_id + '/article/' + alarm.article_id, {state:{comment_id:alarm.comment_id}})
   }
 
@@ -52,10 +57,10 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
     if(!validAuth(auth))
         return
     
-    // const resDelete = await AlarmAPI.deleteAlarm(auth.jwt, id)
+    const resDelete = await AlarmAPI.deleteAlarm(auth.jwt, id)
 
-    // if(resDelete.success == false)
-    //   return
+    if(resDelete.success == false)
+      return
 
     const alarms = newAlarms.filter(item => item.id !== id)
 
@@ -64,7 +69,6 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
     
     if(alarms.length == 0)
       onClose()
-
   }
 
   //style={{alignItems:'center', height:'2.5lh', maxWidth:'500px'}}
@@ -74,13 +78,13 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
               <Vertical style={{alignItems: 'start', minWidth:'360px', maxWidth:'660px', marginLeft:'10px', marginRight:'10px', marginTop:'5px', marginBottom:'5px'}}>
                   {newAlarms && newAlarms.map((data, index) => 
                       <Horizental key={data.id} style={{marginTop:'10px', marginBottom:'10px', width:'100%'}}>
-                        <ProfileImage shape={'rect'} size={48} userId={data.from_user_id} style={{marginRight:'10px'}}/>
+                        <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} userId={data.from_user_id} style={{marginRight:'10px'}}/>
                         <Vertical>
                           <Horizental style={{marginBottom:'5px'}}>
                             <div style={{color:'gray', fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
                             <div style={{color:'gray', fontSize:'14px', whiteSpace:'pre'}}>{ElapsedTime(data.create_at)}</div>
                           </Horizental>
-                          <div className={'clamped-text underline-text'} style={{'--line-count':2, height:'2lh'}} dangerouslySetInnerHTML={{ __html: data.seenComment}} onClick={()=> onClickAlarm(data)}></div>
+                          <div className={'clamped-text underline-text'} style={{'--line-count':2, height:'2lh', color:(data.checked == 0 ? 'black' : 'darkgray')}} dangerouslySetInnerHTML={{ __html: data.seenComment}} onClick={()=> onClickAlarm(data)}></div>
                         </Vertical>
                         <Horizental style={{flex:'1'}} onClick={()=> onClickAlarm(data)}></Horizental>
                         <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'10px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<CiSquareRemove size={25}/>}</PrettyButton>

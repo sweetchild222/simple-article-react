@@ -141,7 +141,7 @@ export default function() {
                 </Horizental>
                 <Horizental style={{justifyContent:'end', flexGrow:'1', alignItems:'center', marginRight:'20px'}}>
                     {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn}>로그인</PrettyButton>}
-                    {validAuth(auth) && alarms != null && <PrettyButton  type='transparent' style={{height:'fit-content', marginRight:'10px', color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+                    {validAuth(auth) && alarms != null && <PrettyButton  type='transparent' style={{height:'fit-content', marginRight:'10px', color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
                     {validAuth(auth) && alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
                     {validAuth(auth) && <ProfileImage shape={'circle'}  userId={auth.user_id} onClick={onClickUser} onClickAtError={onClickAtError}/>}
                 </Horizental>

@@ -1,5 +1,5 @@
 import {useState, useContext, useRef, useEffect, useLayoutEffect} from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
@@ -23,7 +23,9 @@ import { SlArrowDown } from "react-icons/sl";
 import { SlArrowUp } from "react-icons/sl";
 
 
-export default function({article_id, article_user_id, scroll_comment_id}) {
+export default function({article_id, article_user_id}) {
+
+    const location = useLocation()
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [comments, setComments] = useState(null)
@@ -34,12 +36,13 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
     const [atCandidates, setAtCandidates] = useState([])
     const [showReplies, setShowReplies] = useState([])
     const [isShowComments, setIsShowComments] = useState(true)
+    const [scrollCommentId, setScrollCommentId] = useState(location.state != null ? location.state.comment_id : null)
 
     const commentRef = useRef(new Map())    
 
     const navigate = useNavigate()
 
-    useEffect(()=>{
+    useEffect(()=>{        
 
         CommentAPI.getArticleComments(article_id).then((comments) =>{
 
@@ -58,8 +61,18 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                     window.showToast('사용자 목록을 가져 올 수 없습니다', 'error')
                     return
                 }
-                
-                setAtCandidates(resUsers.filter(item=> item.nickname != ''))
+
+
+                setAtCandidates(resUsers.filter(item => {
+                    
+                    if(validAuth(auth)) {
+
+                        if(item.id == auth.user_id)                            
+                            return false                        
+                    }
+
+                    return item.nickname != ''
+                }))
                 
                 comments.payload.forEach((item, index) =>{
 
@@ -83,14 +96,14 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
 
                         setComments(upperComments)
 
-                        autoShowReplies(upperComments, scroll_comment_id)
+                        autoShowReplies(upperComments, scrollCommentId)
                     })
                 }
                 else{
 
                     setComments(upperComments)
                     
-                    autoShowReplies(upperComments, scroll_comment_id)
+                    autoShowReplies(upperComments, scrollCommentId)
                 }
             })
         })
@@ -104,21 +117,30 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
 
         if(findComment != null)
             onClickShowReplies(findComment.id)
-
     }
-
 
     useEffect(()=>{
         
-        if(comments != null && scroll_comment_id != null){
+        if(comments != null && scrollCommentId != null){
 
-            const node = commentRef.current.get(scroll_comment_id)
+            if(scrollCommentId != null)
+                window.history.replaceState(null, '')
+            
+            const node = commentRef.current.get(scrollCommentId)
 
-            if(node){        
+            if(node){
                 setTimeout(()=>{
+
                     slowScrollTo(node)
+
+                    setTimeout(()=>{
+
+                        setScrollCommentId(null)
+
+                    }, 4000)
+                    
                 }, 400)
-            }
+            }            
         }
 
     }, [comments])
@@ -553,7 +575,7 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                             <div style={{height:'5px'}}/>
 
                             <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)} backgroundSmooth={scroll_comment_id == data.id}/>
+                                <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)} backgroundSmooth={scrollCommentId == data.id}/>
                                 <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </Horizental>
 
@@ -599,7 +621,7 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                                         <div style={{height:'5px'}}/>
 
                                         <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)} backgroundSmooth={scroll_comment_id == reply.id}/>
+                                            <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)} backgroundSmooth={scrollCommentId == reply.id}/>
                                             <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
                                         </Horizental>
 

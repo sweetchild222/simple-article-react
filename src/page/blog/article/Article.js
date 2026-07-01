@@ -1,6 +1,6 @@
 
 import {useState, useContext, useEffect} from "react";
-import {useNavigate, useParams, useLocation} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
@@ -36,7 +36,7 @@ export default function() {
     const { b_id, a_id } = useParams()
 
     const blog_id = Integer(b_id)
-    const article_id = Integer(a_id)
+    const article_id = Integer(a_id)    
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [article, setArticle] = useState(null)    
@@ -44,16 +44,10 @@ export default function() {
     const [isControlLoading, setIsControlLoading] = useState(false)    
     const [category, setCategory] = useState(null)
     const [textAlign, setTextAlign] = useState('left')
-    
+        
     const navigate = useNavigate()
 
-    const location = useLocation()
-    const scroll_comment_id = location.state != null ? location.state.comment_id : null
-
-    useEffect(()=>{
-
-        if(scroll_comment_id != null)
-            window.history.replaceState(null, '')
+    useEffect(()=>{        
 
         ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, article_id).then((article) => {            
 
@@ -87,7 +81,7 @@ export default function() {
                     if(showed.success == true){
                         article.payload.showed += 1
                         setArticle(structuredClone(article.payload))
-                    }
+                    }                    
                 })
             })
         })
@@ -231,7 +225,7 @@ export default function() {
             </Horizental>
 
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
-            <CommentList article_id={article.id} article_user_id={article.user_id} scroll_comment_id={scroll_comment_id}/>
+            <CommentList article_id={article.id} article_user_id={article.user_id}/>
             <div style={{height:'20px'}}/>
             <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>
         </Vertical>

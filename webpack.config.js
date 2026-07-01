@@ -68,8 +68,8 @@ export default {
     port:3001,
     open: true,
     hot: true,
-    webSocketServer: false,
-    historyApiFallback:true,    
+    // webSocketServer: true,
+    historyApiFallback:true,
     proxy: [
       {
         context: ['/api'],        

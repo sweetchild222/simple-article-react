@@ -114,7 +114,8 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
                 const y = top - element.scrollTop + (menuBottom < window.innerHeight ? topMargin : -menuHeight)
                 
                 setMenuPosition({x:left, y:y})
-                setFocusItemIndex(null)
+
+                setTimeout(()=>{setFocusItemIndex(0)}, 0)
             }
         })
             
@@ -271,7 +272,6 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
                 {menuPosition &&
                     <ul ref={refMenu} className={'atCandidates'} style={{left:menuPosition.x, top:menuPosition.y}}>
                         {atCandidates.map((user, index) =>
-
                             user.nickname != '' ? 
                                 <PrettyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%', height:'30px'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</PrettyButton>
                             :null)

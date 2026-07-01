@@ -4,3 +4,16 @@
   overflow: hidden;
   word-break:break-all;
 }
+
+.background-smooth {
+  animation: colorCycle 3s alternate ease-in-out;
+}
+
+
+@keyframes colorCycle {
+  0% { background-color: #FFFFFF; }
+  40% { background-color: #FFFFFF; }
+  50% { background-color: #ff7675; }
+  90% { background-color: #ff7675; }
+  100% { background-color: #FFFFFF; }
+}

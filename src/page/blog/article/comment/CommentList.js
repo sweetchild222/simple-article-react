@@ -126,19 +126,6 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
     }
 
 
-    useLayoutEffect(() => {
-
-        if(scroll_comment_id == null)
-            return
-
-        // console.log(commentRef.current)
-
-
-
-        // console.log(scroll_comment_id)
-    
-    }, []); 
-
 
     const removeComment = async(comment_id) => {
 
@@ -497,7 +484,7 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                             <div style={{height:'5px'}}/>
 
                             <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)}/>
+                                <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)} backgroundSmooth={scroll_comment_id == data.id}/>
                                 <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </Horizental>
 
@@ -543,7 +530,7 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                                         <div style={{height:'5px'}}/>
 
                                         <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)}/>
+                                            <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)} backgroundSmooth={scroll_comment_id == reply.id}/>
                                             <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
                                         </Horizental>
 

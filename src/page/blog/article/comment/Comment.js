@@ -15,7 +15,7 @@ import { MdCancel } from "react-icons/md";
 import './Comment.css'
 
 
-export default function({ref, comment, editable, onClickModifyComplete, onClickModifyCancel, atCandidates}) {
+export default function({ref, comment, editable, onClickModifyComplete, onClickModifyCancel, atCandidates, backgroundSmooth = false}) {
 
     const [isClamped, setIsClamped] = useState(false)
     const [isExpand, setIsExpand] = useState(false)
@@ -102,7 +102,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
         
 
     return seenComment ? (
-            <Vertical style={{position:'relative', justifyContent:'end', alignItems:'start', width:editable ? '100%' : 'auto'}}>
+            <Vertical className={backgroundSmooth == true ? 'background-smooth' : ''} style={{position:'relative', justifyContent:'end', alignItems:'start', width:editable ? '100%' : 'auto'}}>
                 {editable && <TextArea ref={refArea} comment={editingComment} atCandidates={atCandidates} onInput={onInput} maxCharLength={maxCharLength}></TextArea>}
                 {!editable && <div ref={refComment} dangerouslySetInnerHTML={{ __html: seenComment}} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', width:'auto', padding:'5px'}}/>}
                 

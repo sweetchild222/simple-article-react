@@ -13,8 +13,8 @@
 @keyframes colorCycle {
   0% { background-color: #FFFFFF; }
   30% { background-color: #FFFFFF; }
-  50% { background-color: #92e0f3; }
+  50% { background-color: #d19191; }
   65% { background-color: #baeb7b; }
-  80% { background-color: #d19191; }
+  80% { background-color: #92e0f3; }
   100% { background-color: #FFFFFF; }
 }

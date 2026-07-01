@@ -13,7 +13,7 @@ import { FaThumbsUp } from "react-icons/fa";
 
 import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
 
-export default function({comment_id, like_count, dislike_count, style}) {
+export default function({comment_id, like_count, dislike_count, greatValue, onUpdate, style}) {
     
     const [isLikeLoading, setIsLikeLoading] = useState(false)
     const [isDislikeLoading, setIsDislikeLoading] = useState(false)
@@ -21,29 +21,10 @@ export default function({comment_id, like_count, dislike_count, style}) {
     const [likeCount, setLikeCount] = useState(like_count)
     const [dislikeCount, setDislikeCount] = useState(dislike_count)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [currentGreat, setCurrentGreat] = useState(null)
+    const [currentGreat, setCurrentGreat] = useState(greatValue)
 
-    const navigate = useNavigate()
+    const navigate = useNavigate()    
 
-    
-    useEffect(()=>{
-
-        if(!validAuth(auth))
-            return
-
-        getGreat(auth.user_id, comment_id).then(res=>{
-
-            if(res.success == false)
-                return
-
-            if(res.payload.length > 0)
-                setCurrentGreat(res.payload[0].great)
-            else                
-                setCurrentGreat(0)
-        })
-
-    },[comment_id])
-    
     const postGreat = async(jwt, user_id, comment_id, like) =>{
 
         const payload = {
@@ -108,11 +89,13 @@ export default function({comment_id, like_count, dislike_count, style}) {
 
                 if(great == 1){
                     setCurrentGreat(1)
+                    onUpdate(1, like_count + 1, dislike_count - 1)
                     setLikeCount(item => item + 1)
                     setDislikeCount(item => item - 1)
                 }
                 else if(great == -1){
                     setCurrentGreat(-1)
+                    onUpdate(-1, like_count - 1, dislike_count + 1)
                     setLikeCount(item => item - 1)
                     setDislikeCount(item => item + 1)
                 }
@@ -133,10 +116,12 @@ export default function({comment_id, like_count, dislike_count, style}) {
 
                 if(great == 1){
                     setCurrentGreat(0)
+                    onUpdate(0, like_count - 1, dislike_count)
                     setLikeCount(item => item - 1)
                 }
                 else if(great == -1){
                     setCurrentGreat(0)
+                    onUpdate(0, like_count, dislike_count - 1)
                     setDislikeCount(item => item - 1)
                 }
                 else 
@@ -157,10 +142,12 @@ export default function({comment_id, like_count, dislike_count, style}) {
             
             if(great == 1){
                 setCurrentGreat(1)
+                onUpdate(1, like_count + 1, dislike_count)
                 setLikeCount(item => item + 1)
             }
             else if(great == -1){
                 setCurrentGreat(-1)
+                onUpdate(-1, like_count, dislike_count + 1)
                 setDislikeCount(item => item + 1)
             }
             else

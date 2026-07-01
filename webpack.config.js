@@ -68,15 +68,8 @@ export default {
     port:3001,
     open: true,
     hot: true,
-    historyApiFallback:true,
-    // historyApiFallback: {
-    //   index: '/index.html',
-    //   verbose: true,
-    //   rewrites: [
-    //     { from: /./, to: '/index.html'}, // Rewrites all paths to index.html
-    //     { from: /./, to: '/index.html'}, // Rewrites all paths to index.html
-    //   ]
-    // },    
+    webSocketServer: false,
+    historyApiFallback:true,    
     proxy: [
       {
         context: ['/api'],        

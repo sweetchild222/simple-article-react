@@ -8,6 +8,8 @@ import ProfileImage from "@gui/ProfileImage.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import * as CommentAPI from '@rest/CommentAPI.js'
 import * as AlarmAPI from '@rest/AlarmAPI.js'
+import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
+
 
 import Great from "./Great.js";
 import ReplyLine from "./ReplyLine.js";
@@ -25,12 +27,14 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [comments, setComments] = useState(null)
+    const [greats, setGreats] = useState(null)
     const [openReplyEditCommentId, setOpenReplyEditCommentId] = useState(-1)
     const [isOpenCommentEdit, setIsOpenCommentEdit] = useState(false)
     const [modifyModeCommentId, setModifyModeCommentId] = useState(-1)
     const [atCandidates, setAtCandidates] = useState([])
     const [showReplies, setShowReplies] = useState([])
     const [isShowComments, setIsShowComments] = useState(true)
+
     const commentRef = useRef(new Map())    
 
     const navigate = useNavigate()
@@ -69,17 +73,39 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
 
                 for(const upperComment of upperComments)
                     upperComment.replies = comments.payload.filter(reply => reply.comment_id == upperComment.id)
+                
+                if(validAuth(auth)){
 
-                setComments(upperComments)
+                    getGreat(auth.user_id, article_id).then(resGreat => {
 
-                const findComment = upperComments.find(comment => comment.replies.find(reply => reply.id == scroll_comment_id))
+                        if(resGreat.success == true)
+                            setGreats(resGreat.payload)
 
-                if(findComment != null)
-                    onClickShowReplies(findComment.id)
+                        setComments(upperComments)
+
+                        autoShowReplies(upperComments, scroll_comment_id)
+                    })
+                }
+                else{
+
+                    setComments(upperComments)
+                    
+                    autoShowReplies(upperComments, scroll_comment_id)
+                }
             })
         })
         
     }, [article_id])
+
+
+    const autoShowReplies = (comments, comment_id) =>{
+
+        const findComment = comments.find(comment => comment.replies.find(reply => reply.id == comment_id))
+
+        if(findComment != null)
+            onClickShowReplies(findComment.id)
+
+    }
 
 
     useEffect(()=>{
@@ -93,10 +119,19 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                     slowScrollTo(node)
                 }, 400)
             }
-                
         }
 
     }, [comments])
+
+
+    const getGreat = async(user_id, article_id) =>{
+
+        const query = 'user_id=' + user_id + '&article_id=' + article_id
+
+        const res = await CommentGreatAPI.getCommentGreat(query)
+
+        return res
+    }
 
 
     const slowScrollTo = async(targetElement, duration = 500) => {
@@ -174,6 +209,7 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
         if(await removeComment(comment_id))
             setComments(structuredClone(comments.filter(item => item.id != comment_id)))
     }
+
 
     const onRemoveReply = async(comment_id) => {
             
@@ -281,15 +317,13 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
         const user_ids = matches.map(match => parseInt(match[1]))
 
         return user_ids.filter(id => id !== except_user_id)
-
     }
 
 
     const postMentionAlarm = async(user_ids, comment_id) => {
                         
-        for (const [index, user_id] of user_ids.entries()) {           
-            await postAlarmCore(user_id, 'MENTION', comment_id)
-        }        
+        for (const [index, user_id] of user_ids.entries())
+            await postAlarmCore(user_id, 'MENTION', comment_id)    
     }
 
 
@@ -447,6 +481,41 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
     }
 
 
+    const findGreatValue = (comment_id)=>{
+
+        if(greats == null)
+            return 0
+
+        const find = greats.find(great => great.comment_id == comment_id)        
+
+        if(find == null)
+            return 0
+
+        return find.great
+    }
+
+
+    const onUpdateGreat = (comment_id, great, like_count, dislike_count) =>{
+        
+        const findGreat = greats.find(great => great.comment_id == comment_id)
+                    
+        if(findGreat != null){
+            findGreat.great = great
+            setGreats(structuredClone(greats))
+        }
+        else
+            greats.push({article_id:article_id, comment_id:comment_id, great:great, user_id:auth.user_id, id:5})
+        
+        const comment = findComment(comment_id)
+
+        if(comment != null){            
+            comment.like_count = like_count
+            comment.dislike_count = dislike_count
+            setComments(comments)
+        }
+    }
+
+
     return comments ? (
         <Vertical style={{marginTop:'20px', width:'100%'}}>
             {isOpenCommentEdit && <Writer onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
@@ -492,7 +561,7 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                             
                             {!(modifyModeCommentId == data.id) && 
                                 <Horizental style={{justifyContent:'space-between', marginBottom:'5px'}}>
-                                    <Great comment_id={data.id} like_count={data.like_count} dislike_count={data.dislike_count}></Great>
+                                    <Great comment_id={data.id} like_count={data.like_count} dislike_count={data.dislike_count} greatValue={findGreatValue(data.id)} onUpdate={(great, like_count, dislike_count)=> onUpdateGreat(data.id, great, like_count, dislike_count)}></Great>
                                     <PrettyButton type={'success'} tooltip={'답글 작성'} onClick={() => onClickReplyEditOpen(data.id)}>{'답글 작성'}</PrettyButton>
                                 </Horizental>
                             }
@@ -537,7 +606,7 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
                                         <div style={{height:'5px'}}/>
 
                                         {!(modifyModeCommentId == reply.id) && <Horizental style={{marginBottom:'5px'}}>
-                                            <Great comment_id={reply.id} like_count={reply.like_count} dislike_count={reply.dislike_count}></Great>
+                                            <Great comment_id={reply.id} like_count={reply.like_count} dislike_count={reply.dislike_count} greatValue={findGreatValue(reply.id)} onUpdate={(great, like_count, dislike_count)=> onUpdateGreat(reply.id, great, like_count, dislike_count)}></Great>
                                         </Horizental>
                                         }
                                     </Vertical>

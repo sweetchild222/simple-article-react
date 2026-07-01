@@ -72,24 +72,58 @@ export default function({article_id, article_user_id, scroll_comment_id}) {
 
                 setComments(upperComments)
 
-                const findUpperComment = upperComments.find(comment => comment.replies.find(reply => reply.id == scroll_comment_id))
+                const findComment = upperComments.find(comment => comment.replies.find(reply => reply.id == scroll_comment_id))
 
-                if(findUpperComment != null)
-                    onClickShowReplies(findUpperComment.id)
-                                
-                setTimeout(()=> {
-
-                    const node = commentRef.current.get(scroll_comment_id)
-
-                    if(node)
-                        node.scrollIntoView({ behavior: 'smooth' })
-                    
-                }, 1000)
+                if(findComment != null)
+                    onClickShowReplies(findComment.id)
             })
         })
         
     }, [article_id])
 
+
+    useEffect(()=>{
+        
+        if(comments != null && scroll_comment_id != null){
+
+            const node = commentRef.current.get(scroll_comment_id)
+
+            if(node){        
+                setTimeout(()=>{
+                    slowScrollTo(node)
+                }, 400)
+            }
+                
+        }
+
+    }, [comments])
+
+
+    const slowScrollTo = async(targetElement, duration = 500) => {
+
+        const targetTop = targetElement.getBoundingClientRect().top
+        const startPos = window.scrollY
+        const distance = targetTop
+        let startTime = null
+
+        const animation = (currentTime) => {
+
+            if (startTime === null) 
+                startTime = currentTime
+
+            const timeElapsed = currentTime - startTime
+                        
+            const progress = Math.min(timeElapsed / duration, 1)            
+            const ease = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress
+
+            window.scrollTo(0, startPos + (distance * ease))
+
+            if(timeElapsed < duration)
+                requestAnimationFrame(animation);        
+        }
+
+        requestAnimationFrame(animation)
+    }
 
 
     useLayoutEffect(() => {

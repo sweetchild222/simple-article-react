@@ -75,7 +75,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
 
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
-              <Vertical style={{alignItems: 'start', minWidth:'360px', maxWidth:'660px', marginLeft:'10px', marginRight:'10px', marginTop:'5px', marginBottom:'5px'}}>
+              <Vertical style={{alignItems: 'start', width:'500px', minWidth:'500px', maxWidth:'500px', marginLeft:'10px', marginRight:'10px', marginTop:'5px', marginBottom:'5px'}}>
                   {newAlarms && newAlarms.map((data, index) => 
                       <Horizental key={data.id} style={{marginTop:'10px', marginBottom:'10px', width:'100%'}}>
                         <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} userId={data.from_user_id} style={{marginRight:'10px'}}/>

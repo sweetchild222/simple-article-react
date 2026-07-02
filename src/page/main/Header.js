@@ -130,12 +130,22 @@ export default function() {
 
         setAlarms(structuredClone(alarms))
     }
-    
 
+    const onClickNavigateMyBlog = async() =>{
+
+        if(!validAuth(auth)){
+            window.showToast('로그인 해주세요', 'info')
+            navigate('/', {state:{comback:true}})
+            return
+        }
+    
+        navigate("/blog/" + auth.blog_id)
+    }
+    
     return (
             <Horizental style={{ alignItems: 'center', width:'100%'}}>
                 <Horizental style={{ alignItems: 'center', flexGrow:'1'}}>
-                    <PrettyButton>{'내 블로그'}</PrettyButton>
+                    <PrettyButton onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
                 </Horizental>
                 <Horizental style={{justifyContent:'center', alignItems: 'center', flexGrow:'1'}}>
                     <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px'}} onKeyDown={onKeyDown}></input>

@@ -246,6 +246,6 @@ export default function() {
         
         <Modal title={'닉네임을 입력하세요'} type={'input'} isCloseOutsideClick={false} defaultValue={user.nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
         <PrettyButton onClick={onClickUserNickname} type='success'>닉네임 설정</PrettyButton>
-      </Vertical>) : <OverlayProgress type={'contain'}/>
+      </Vertical>) : <OverlayProgress type={'relative'}/>
 }
 

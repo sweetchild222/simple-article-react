@@ -1,7 +1,7 @@
 .dynamicColumnContainer {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Two equal columns */
-  gap: 20px;
+  gap: 16px;
 }
 
 

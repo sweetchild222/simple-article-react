@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import AuthContext from "@util/AuthContext.js";
+import ElapsedTime from "@util/ElapsedTime.js";
 import { MdEdit } from "react-icons/md";
 import { FaPen } from "react-icons/fa6"
 
@@ -59,9 +60,15 @@ export default function({ref, blog_id, article_id, category_id}) {
             <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'10px', alignSelf:'start'}}>앞뒤 글</label>
             <Vertical style={{alignItems:'left', padding:'10px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
                 {articles.map((data, index) => 
-                    <div className={data.id != article_id ? ('clamped-text underline-text') : ('clamped-text')} key={data.id} style={{'--line-count':1, color:'black', marginTop:'10px', marginBottom:'10px', fontWeight:(data.id == article_id  ? '600' : null)}} onClick={()=> onClickArticle(data.id)}>
-                        {data.title}
-                    </div>)
+                    <Horizental style={{alignItems:'center'}}>                        
+                        
+                        <div className={data.id != article_id ? ('clamped-text underline-text') : ('clamped-text')} key={data.id} style={{'--line-count':1, color:'black', marginTop:'10px', marginBottom:'10px', fontWeight:(data.id == article_id  ? '600' : null)}} onClick={()=> onClickArticle(data.id)}>
+                            {data.title}
+                        </div>
+                        <div style={{width:'16px'}}></div>
+                        <div style={{color:'gray'}}>{ElapsedTime(data.post_at)}</div>
+                    </Horizental>
+                    )
                 }
             </Vertical>
         </Vertical>        

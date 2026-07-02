@@ -120,13 +120,14 @@ export default function() {
 
   
   return blog_id ? (
-      <Horizental style={{alignSelf:'center', width:'100%'}}>
-        <div style={{width:'100px'}}/>
-          {!isOverlayProgress && <Vertical style={{flex:'1'}}>
+      <Horizental style={{width:'100%'}}>
+        <div style={{width:'128px'}}/>
+        <div style={{flex:'1', position:'relative'}}>
+          <Vertical>
               {selectedCategory && articles && (
                 articles.length > 0 ? 
                 (<Vertical style={{width:'100%'}}>
-                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'10px', marginBottom:'20px'}}>
+                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'8px', marginBottom:'16px'}}>
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data} categoryName={getCategoryName(data.category_id)}/>)}
                   </div>
                   <Horizental style={{width:'100%'}}>
@@ -137,22 +138,22 @@ export default function() {
                     <div style={{flex:'1'}}></div>
                   </Horizental>
                 </Vertical>) : 
-                (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'20px'}}>
+                (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px'}}>
                   {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
-                  {<div style={{fontSize:'18px', marginTop:'20px'}}>{'카테고리에 글이 없습니다.'}</div>}
-                  {isEditable() && <div style={{fontSize:'18px', marginTop:'20px'}}>{'글을 작성해 보세요'}</div>}
+                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}                  
                   {isEditable() && <CreateArticle blogId={blog_id} categoryId={selectedCategory.id}/>}
                 </Vertical>)
               )}
-          </Vertical>}
-          {isOverlayProgress && <OverlayProgress/> }
-        <div style={{backgroundColor:'gray', width:'1px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
-        <div style={{maxWidth:'230px', alignItems:'center', display: 'block'}}>
+          </Vertical>
+          {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
+        </div>
+        <div style={{backgroundColor:'lightgray', width:'2px', height:'100%', marginLeft:'32px', marginRight:'32px'}}/>
+        <div style={{minWidth:'256px', width:'256px',maxWidth:'256px', display: 'block'}}>
           <Categories ref={refCategories} blogId={blog_id} initCategoryId={initCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
-          <div style={{height:'30px'}}></div>
+          <div style={{height:'48px'}}></div>
           <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
         </div>
-        <div style={{width:'100px'}}/>
+        <div style={{width:'128px'}}/>
       </Horizental>
   ) : null
 }

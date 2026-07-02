@@ -204,7 +204,7 @@ export default function() {
                 <div style={{width:'10px'}}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('right')}><FaAlignRight size={22}/></PrettyButton>
 
-                <Horizental style={{whiteSpace: 'nowrap', color:'gray', fontStyle: 'italic', flex:'1', justifyContent:'end', marginRight:'10px'}}>
+                <Horizental style={{whiteSpace: 'nowrap', color:'gray', flex:'1', justifyContent:'end', marginRight:'10px'}}>
                     {article.post_at ? ElapsedTime(article.post_at) + '': ''}
                 </Horizental>
 

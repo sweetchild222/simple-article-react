@@ -72,8 +72,6 @@ export default function() {
     }
 
 
-
-
     return user ? (
       <Vertical style={{alignItems:'center', marginTop:'20px'}}>
         <ProfileImage size={128} shape={'rect'} user={user}/>
@@ -83,6 +81,6 @@ export default function() {
         <div style={{height:'30px'}}/>
         {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'20px'}}>회원 정보 수정</PrettyButton>}
         {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</PrettyButton>}
-      </Vertical>) : <OverlayProgress/>
+      </Vertical>) : <OverlayProgress type={'contain'}/>
 }
 

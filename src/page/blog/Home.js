@@ -121,9 +121,8 @@ export default function() {
   
   return blog_id ? (
       <Horizental style={{alignSelf:'center', width:'100%'}}>
-        {isOverlayProgress && <OverlayProgress/>}
         <div style={{width:'100px'}}/>
-          <Vertical style={{flex:'1'}}>
+          {!isOverlayProgress && <Vertical style={{flex:'1'}}>
               {selectedCategory && articles && (
                 articles.length > 0 ? 
                 (<Vertical style={{width:'100%'}}>
@@ -137,15 +136,16 @@ export default function() {
                     {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
                     <div style={{flex:'1'}}></div>
                   </Horizental>
-                </Vertical>) :
+                </Vertical>) : 
                 (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'20px'}}>
-                  <img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>
-                  <div style={{fontSize:'18px', marginTop:'20px'}}>{'카테고리에 글이 없습니다.'}</div>
+                  {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
+                  {<div style={{fontSize:'18px', marginTop:'20px'}}>{'카테고리에 글이 없습니다.'}</div>}
                   {isEditable() && <div style={{fontSize:'18px', marginTop:'20px'}}>{'글을 작성해 보세요'}</div>}
                   {isEditable() && <CreateArticle blogId={blog_id} categoryId={selectedCategory.id}/>}
                 </Vertical>)
               )}
-          </Vertical>
+          </Vertical>}
+          {isOverlayProgress && <OverlayProgress/> }
         <div style={{backgroundColor:'gray', width:'1px', height:'100%', marginLeft:'20px', marginRight:'20px'}}/>
         <div style={{maxWidth:'230px', alignItems:'center', display: 'block'}}>
           <Categories ref={refCategories} blogId={blog_id} initCategoryId={initCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>

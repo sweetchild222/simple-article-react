@@ -11,6 +11,10 @@ import ElapsedTime from "@util/ElapsedTime.js";
 import { CiSquareRemove } from "react-icons/ci";
 import * as AlarmAPI from '@rest/AlarmAPI.js'
 import AuthContext from "@util/AuthContext.js";
+import { MdVisibility } from 'react-icons/md';
+
+import { GrNext } from "react-icons/gr";
+import { GrPrevious } from "react-icons/gr";
 
 
 export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
@@ -21,16 +25,22 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
   const [isApplyLoading, setIsApplyLoading] = useState(false)
   const [newAlarms, setNewAlarms] = useState(structuredClone(alarms))
 
+  const [fromIndex, setFromIndex] = useState(0)
+
   const navigate = useNavigate()
   
   useEffect(() => {
       
-    if(isOpen)
-        refDialog.current.showModal()
+    if(isOpen){      
+      setFromIndex(0)      
+      refDialog.current.showModal()
+    }
     else
-        refDialog.current.close()
+      refDialog.current.close()
 
   }, [isOpen]);
+
+
 
   
   const onKeyDownDialog=(event)=>{
@@ -71,15 +81,30 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
       onClose()
   }
 
-  //style={{alignItems:'center', height:'2.5lh', maxWidth:'500px'}}
+  const pageCount = 5
 
+  const onClickNext = () => {
+
+    const alarmLength = newAlarms.length
+
+    if(alarmLength > (fromIndex + pageCount))
+      setFromIndex(index => index + pageCount)
+  }
+
+
+  const onClickPrev = () =>{
+
+    setFromIndex(index => (index - pageCount < 0) ? 0 : (index - pageCount))
+
+  }  
+  
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <Vertical style={{alignItems: 'start', width:'500px', minWidth:'500px', maxWidth:'500px', marginLeft:'10px', marginRight:'10px', marginTop:'5px', marginBottom:'5px'}}>
-                  {newAlarms && newAlarms.map((data, index) => 
-                      <Horizental key={data.id} style={{marginTop:'10px', marginBottom:'10px', width:'100%'}}>
-                        <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} userId={data.from_user_id} style={{marginRight:'10px'}}/>
-                        <Vertical>
+                  {newAlarms && newAlarms.slice(fromIndex, fromIndex + pageCount).map((data, index) => 
+                      <Horizental key={data.id} style={{marginTop:'10px', marginBottom:'10px', width:'100%',}}>
+                        <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} userId={data.from_user_id}/>
+                        <Vertical style={{marginLeft:'10px'}}>
                           <Horizental style={{marginBottom:'5px'}}>
                             <div style={{color:'gray', fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
                             <div style={{color:'gray', fontSize:'14px', whiteSpace:'pre'}}>{ElapsedTime(data.create_at)}</div>
@@ -90,10 +115,14 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
                         <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'10px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<CiSquareRemove size={25}/>}</PrettyButton>
                       </Horizental>
                   )}
-                <Horizental style={{alignItems: 'center', alignSelf:'end', marginTop:'10px'}}>
+                <Horizental style={{alignItems: 'center', marginTop:'10px', justifyContent:'center', width:'100%'}}>
+                  <div style={{flex:'1'}}/>
+                  {newAlarms.length > pageCount && <PrettyButton type='transparent' disabled={fromIndex - pageCount < 0} style={{color:'black'}} onClick={onClickPrev}><GrPrevious size={20}/></PrettyButton>}
+                  <div style={{width:'20px'}}/>
+                  {newAlarms.length > pageCount && <PrettyButton type='transparent' disabled={!(newAlarms.length > (fromIndex + pageCount))} style={{color:'black'}} onClick={onClickNext}><GrNext size={20}/></PrettyButton>}
+                  <div style={{flex:'1'}}/>
                   <PrettyButton type='danger' onClick={onClose}>닫기</PrettyButton>
-                  <div style={{width:'20px'}}></div>
-                  <PrettyButton type='success' onClick={onClose}>전체 삭제</PrettyButton>
+                                    
                 </Horizental>
               </Vertical>
           </dialog>,

@@ -49,7 +49,7 @@ export default function({article_id, article_user_id}) {
             if(comments.success == false){
                 window.showToast('댓글을 가져 올 수 없습니다', 'error')
                 return
-            }            
+            }
 
             comments.payload.sort((a, b) => { return b.create_at - a.create_at})
 
@@ -67,8 +67,8 @@ export default function({article_id, article_user_id}) {
                     
                     if(validAuth(auth)) {
 
-                        if(item.id == auth.user_id)                            
-                            return false                        
+                        if(item.id == auth.user_id)
+                            return false
                     }
 
                     return item.nickname != ''
@@ -170,13 +170,13 @@ export default function({article_id, article_user_id}) {
 
             const timeElapsed = currentTime - startTime
                         
-            const progress = Math.min(timeElapsed / duration, 1)            
+            const progress = Math.min(timeElapsed / duration, 1)
             const ease = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress
 
             window.scrollTo(0, startPos + (distance * ease))
 
             if(timeElapsed < duration)
-                requestAnimationFrame(animation);        
+                requestAnimationFrame(animation);
         }
 
         requestAnimationFrame(animation)

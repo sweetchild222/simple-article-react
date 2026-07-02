@@ -33,6 +33,8 @@ export default function() {
 
                 const alarms = res.payload
 
+                alarms.sort((a, b)=> b.id - a.id)
+
                 const promises = []
 
                 alarms.map(alarm => promises.push(alarm.checked == 0 ? ReplaceUserTag.toUserNicknameGreen(alarm.comment) : ReplaceUserTag.toUserNicknameGray(alarm.comment)))

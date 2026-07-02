@@ -35,8 +35,9 @@ const Aplication = function() {
       <Side></Side>
       <Vertical style={{width:'100%', height:'100%'}}>
         <MainHeader/>
-        <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
+        <div style={{height:'32px', maxHeight:'32px', minHeight:'32px'}}/>
         <Outlet/>
+        <div style={{height:'32px', maxHeight:'32px', minHeight:'32px'}}/>
       </Vertical>      
     </Horizental>
   )
@@ -46,9 +47,9 @@ const Aplication = function() {
     
     <Vertical style={{width:'100%', height:'100%'}}>
       <BlogHeader/>
-      <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
+      <div style={{height:'32px', maxHeight:'32px', minHeight:'32px'}}/>
       <Outlet/>
-      <div style={{height:'30px', maxHeight:'30px', minHeight:'30px'}}/>
+      <div style={{height:'32px', maxHeight:'32px', minHeight:'32px'}}/>
     </Vertical>
   )
 

@@ -518,9 +518,9 @@ export default function({article_id, article_user_id}) {
 
 
     const onUpdateGreat = (comment_id, great, like_count, dislike_count) =>{
-        
+                
         const findGreat = greats.find(great => great.comment_id == comment_id)
-                    
+                            
         if(findGreat != null){
             findGreat.great = great
             setGreats(structuredClone(greats))
@@ -530,7 +530,7 @@ export default function({article_id, article_user_id}) {
         
         const comment = findComment(comment_id)
 
-        if(comment != null){            
+        if(comment != null){
             comment.like_count = like_count
             comment.dislike_count = dislike_count
             setComments(comments)

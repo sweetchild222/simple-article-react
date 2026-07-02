@@ -7,7 +7,7 @@ export default function(props) {
   const size = props.size != null ? props.size + 'px' : '256px'    
   const type = props.type != null ? props.type : 'overall' // 'overall', 'relative', 'absolute'
 
-  const [start, setStart] = useState(true)
+  const [start, setStart] = useState(false)
 
   useEffect(()=> {
 

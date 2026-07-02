@@ -16,14 +16,22 @@ import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
 export default function({comment_id, like_count, dislike_count, greatValue, onUpdate, style}) {
     
     const [isLikeLoading, setIsLikeLoading] = useState(false)
-    const [isDislikeLoading, setIsDislikeLoading] = useState(false)
+    const [isDislikeLoading, setIsDislikeLoading] = useState(false)    
     
-    const [likeCount, setLikeCount] = useState(like_count)
-    const [dislikeCount, setDislikeCount] = useState(dislike_count)
+    const [likeCount, setLikeCount] = useState(0)
+    const [dislikeCount, setDislikeCount] = useState(0)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [currentGreat, setCurrentGreat] = useState(greatValue)
+    const [currentGreat, setCurrentGreat] = useState(null)
 
-    const navigate = useNavigate()    
+    const navigate = useNavigate()
+
+    useEffect(()=>{
+
+        setLikeCount(like_count)
+        setDislikeCount(dislike_count)
+        setCurrentGreat(greatValue)
+        
+    }, [])
 
     const postGreat = async(jwt, user_id, comment_id, like) =>{
 
@@ -94,7 +102,7 @@ export default function({comment_id, like_count, dislike_count, greatValue, onUp
                     setDislikeCount(item => item - 1)
                 }
                 else if(great == -1){
-                    setCurrentGreat(-1)
+                    setCurrentGreat(-1)                    
                     onUpdate(-1, like_count - 1, dislike_count + 1)
                     setLikeCount(item => item - 1)
                     setDislikeCount(item => item + 1)
@@ -143,7 +151,7 @@ export default function({comment_id, like_count, dislike_count, greatValue, onUp
             if(great == 1){
                 setCurrentGreat(1)
                 onUpdate(1, like_count + 1, dislike_count)
-                setLikeCount(item => item + 1)
+                setLikeCount(item => item + 1)            
             }
             else if(great == -1){
                 setCurrentGreat(-1)

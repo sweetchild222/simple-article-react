@@ -60,8 +60,7 @@ export default function({ref, blog_id, article_id, category_id}) {
             <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'10px', alignSelf:'start'}}>앞뒤 글</label>
             <Vertical style={{alignItems:'left', padding:'10px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
                 {articles.map((data, index) => 
-                    <Horizental style={{alignItems:'center'}}>                        
-                        
+                    <Horizental key={data.id} style={{alignItems:'center'}}>                
                         <div className={data.id != article_id ? ('clamped-text underline-text') : ('clamped-text')} key={data.id} style={{'--line-count':1, color:'black', marginTop:'10px', marginBottom:'10px', fontWeight:(data.id == article_id  ? '600' : null)}} onClick={()=> onClickArticle(data.id)}>
                             {data.title}
                         </div>

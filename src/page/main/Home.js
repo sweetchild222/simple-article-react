@@ -17,7 +17,6 @@ import './Home.css'
 export default function() {
 
   
-  
   const navigate = useNavigate()
   
   const location = useLocation()
@@ -32,20 +31,45 @@ export default function() {
 
   const countPerPage = 8
 
-  useEffect(() =>{
+  useEffect(() => {
 
-    const query = 'offset=0&limit=10&order_type=post_at&order=1'
+    console.log(currentType, offset)
 
+    const query = getQueryByType(currentType, offset)
+
+    if(query == null)
+      return
+      
     ArticleAPI.getArticles(query).then((resArtices) => {
 
       if(resArtices.success == false)
-        return 
+        return
 
       setArticles(resArtices.payload)
       setIsOverlayProgress(false)      
     })
 
-  }, [currentType])
+  }, [currentType, offset])
+
+
+
+  const getQueryByType = (currentType, offset) => {
+
+    const limit = 10
+
+    if(currentType == 0)
+      return 'offset=' + offset + '&limit=' + limit + '&order_type=post_at&order=1'    
+    else if(currentType == 1)
+      return 'offset=' + offset + '&limit=' + limit + '&order_type=like_count&order=1'
+    else if(currentType == 2)
+      return 'offset=' + offset + '&limit=' + limit + '&order_type=comment_count&order=1'
+    else if(currentType == 3){
+
+      if(blogIds == null || blogIds.length == 0)
+          return null
+      return 'offset=' + offset + '&limit=' + limit + '&order_type=post_at&order=1&blog_id=' + blogIds
+    }
+  }
 
 
   useEffect(()=>{
@@ -67,48 +91,7 @@ export default function() {
 
 
 
-  
-  const getBlogArticles = async(page, category_id, posted) => {
-    
-    let query = 'offset=' + (countPerPage * page)
 
-    query +=  '&limit=' + countPerPage
-
-    query += '&order=1'
-
-    query += category_id != null ? ('&category_id=' + category_id) : ''
-
-    query += posted != null ? ('&posted=' + posted) : ''
-    
-    const jwt = validAuth(auth.jwt) ? auth.jwt : null
-    
-    const res = await ArticleAPI.getBlogArticles(jwt, blog_id, query)
-
-    return res
-
-  }
-
-
-
-
-  const onClickPage = async(page) => {
-
-    // setIsOverlayProgress(true)
-
-    // const category_id = selectedCategory.id != 0 ? selectedCategory.id : null
-    // const posted = selectedCategory.id != 0 ? null : 0
-        
-    // const articles = await getBlogArticles(page, category_id, posted)
-
-    // if(articles.success == true){      
-    //   setArticles(articles.payload)
-    // }
-
-    // setIsOverlayProgress(false)
-  }
-
-
-  const limit = 10
 
   const loadArticles = async(query) => {
 
@@ -127,45 +110,30 @@ export default function() {
     })
   }
 
-  const onClickNewest = async(offset)=> {
-
-    const query = 'offset=' + offset + '&limit=' + limit + '&order_type=post_at&order=1'
-
-    await loadArticles(query)
-
+  const onClickNewest = async()=> {
+        
     setCurrentType(0)
+    setOffset(0)
   }
 
-  const onClickFavorite = async(offset)=>{
-
-    const query = 'offset=' + offset + '&limit=' + limit + '&order_type=like_count&order=1'
-
-    await loadArticles(query)
-
+  const onClickFavorite = async()=>{
+    
     setCurrentType(1)
-
+    setOffset(0)
   }
 
-  const onClickManyComment = async(offset)=>{
-
-    const query = 'offset=' + offset + '&limit=' + limit + '&order_type=comment_count&order=1'
-
-    await loadArticles(query)
-
+  const onClickManyComment = async()=>{
+    
     setCurrentType(2)
+    setOffset(0)
   }
 
 
-  const onClickSubscribe = async(offset)=> {
-
-    if(blogIds == null || blogIds.length == 0)
-      return
-
-    const query = 'offset=' + offset + '&limit=' + limit + '&order_type=post_at&order=1&blog_id=' + blogIds
-
-    await loadArticles(query)
+  const onClickSubscribe = async()=> {
 
     setCurrentType(3)
+    setOffset(0)
+
   }
 
   const onClickPrev = async() =>{
@@ -173,48 +141,22 @@ export default function() {
     if(offset - 10 < 0)
       return
 
-    setOffset(offset => {
-
-      if(currentType == 0)
-        onClickNewest(offset - 10)
-      else if(currentType == 1)
-        onClickFavorite(offset - 10)
-      else if(currentType == 2)
-        onClickManyComment(offset - 10)
-      else if(currentType == 3)
-        onClickSubscribe(offset - 10)
-      
-      return offset - 10
-    })
-
+    setOffset(offset => offset - 10)
   }
-
 
   const onClickNext = async() => {
 
-    setOffset(offset => {
-          
-      if(currentType == 0)
-        onClickNewest(offset + 10)
-      else if(currentType == 1)
-        onClickFavorite(offset + 10)
-      else if(currentType == 2)
-        onClickManyComment(offset + 10)
-      else if(currentType == 3)
-        onClickSubscribe(offset + 10)
-      
-      return offset + 10
-    })
+    setOffset(offset => offset + 10)
   }
 
 
   return (
     <Vertical>
       <Horizental>
-        <PrettyButton onClick={() => onClickNewest(0)}>{'최신글'}</PrettyButton>
-        <PrettyButton onClick={() => onClickFavorite(0)}>{'인기글'}</PrettyButton>
-        <PrettyButton onClick={() => onClickManyComment(0)}>{'댓글 많은 글'}</PrettyButton>
-        <PrettyButton onClick={() => onClickSubscribe(0)}>{'구독한 글'}</PrettyButton>
+        <PrettyButton onClick={onClickNewest}>{'최신순'}</PrettyButton>
+        <PrettyButton onClick={onClickFavorite}>{'인기순'}</PrettyButton>
+        <PrettyButton onClick={onClickManyComment}>{'댓글 많은 순'}</PrettyButton>
+        <PrettyButton onClick={onClickSubscribe}>{'구독한 글'}</PrettyButton>
       </Horizental>
       <Horizental>
         <div style={{width:'32px'}}/>
@@ -233,7 +175,7 @@ export default function() {
                 </Vertical>) : 
                 (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px'}}>
                   {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
-                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}                  
+                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 더 이상 없습니다.'}</div>}
                 </Vertical>)
               )}
           </Vertical>
@@ -241,10 +183,10 @@ export default function() {
         </div>
         <div style={{width:'32px'}}/>
       </Horizental>
-      <Horizental style={{alignSelf:'center', alignItems:'center'}}>
-        <PrettyButton onClick={onClickPrev}>{'이전'}</PrettyButton>
-        <PrettyButton onClick={onClickNext}>{'다음'}</PrettyButton>
-      </Horizental>
+      {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
+        <PrettyButton disabled={offset == 0}onClick={onClickPrev}>{'이전'}</PrettyButton>
+        <PrettyButton disabled={articles.length == 0} onClick={onClickNext}>{'다음'}</PrettyButton>
+      </Horizental>}
       </Vertical>
   )
 }

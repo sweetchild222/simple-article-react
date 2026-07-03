@@ -20,7 +20,7 @@ export default function({comment_id, greatSet, style}) {
     const [reloadKey, setReloadKey] = useState(0)            
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
 
-    const navigate = useNavigate()    
+    const navigate = useNavigate()        
 
     const postGreat = async(jwt, user_id, comment_id, like) =>{
 
@@ -183,7 +183,7 @@ export default function({comment_id, greatSet, style}) {
     }
     
 
-    return (
+    return greatSet ? (
         <Horizental key={reloadKey} style={{alignItems:'center', ...style}}>
             <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                 {greatSet.great == 1 && <FaThumbsUp size={22}/>}
@@ -199,5 +199,5 @@ export default function({comment_id, greatSet, style}) {
                 <div>{CountWithUnit(greatSet.dislike_count)}</div>
             </PrettyButton>
         </Horizental>
-    )
+    ) : null
 }

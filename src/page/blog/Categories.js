@@ -42,13 +42,18 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
     const loadCategory = async() => {
 
         const categories = await getCategories(blogId)
-        
+                
         if(categories == null) {
-
             window.showToast('카테고리를 가져 올 수 없습니다', 'error')
             return
         }
 
+
+        if(categories.length == 0) {
+            window.showToast('카테고리가 없습니다', 'error')
+            return
+        }
+        
 
         if(isEditable()){
 

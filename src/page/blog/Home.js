@@ -65,6 +65,8 @@ export default function() {
 
   const onClickCategory = async(category) => {
 
+    console.log('dd')
+
     setIsOverlayProgress(true)
 
     setSelectedCategory(category)
@@ -110,7 +112,7 @@ export default function() {
         
     const articles = await getBlogArticles(page, category_id, posted)
 
-    if(articles.success == true){      
+    if(articles.success == true){
       setArticles(articles.payload)
     }
 

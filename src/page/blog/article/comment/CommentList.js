@@ -267,7 +267,7 @@ export default function({article_id, article_user_id}) {
 
         setIsOpenCommentEdit(true)
         setOpenReplyEditCommentId(-1)
-        setModifyModeCommentId(-1)        
+        setModifyModeCommentId(-1)
     }
 
 
@@ -321,7 +321,9 @@ export default function({article_id, article_user_id}) {
 
         const user = await UserRepository.getByID(auth.user_id)
 
-        comments.unshift({id:res.payload.id, replies:[], update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
+        const greatSet = {article_id:article_id, comment_id:res.payload.id, great:0, like_count:0, dislike_count:0}
+
+        comments.unshift({id:res.payload.id, replies:[], update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, greatSet:greatSet, ...payload})
         setComments(structuredClone(comments))
         setIsOpenCommentEdit(false)
         setIsShowComments(true)
@@ -402,9 +404,11 @@ export default function({article_id, article_user_id}) {
 
         window.showToast('대댓글이 작성 되었습니다', 'info')
 
+        const greatSet = {article_id:article_id, comment_id:res.payload.id, great:0, like_count:0, dislike_count:0}
+
         const user = await UserRepository.getByID(auth.user_id)
         
-        findComment.replies.unshift({id:res.payload.id, update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, ...payload})
+        findComment.replies.unshift({id:res.payload.id, update_at:null, create_at:Date.now(), dislike_count:0, like_count:0, user:user, greatSet:greatSet, ...payload})
         setComments(structuredClone(comments))
 
         if(!showReplies.find(id => openReplyEditCommentId == id))

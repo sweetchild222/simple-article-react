@@ -12,32 +12,15 @@ import { BiSolidComment } from "react-icons/bi";
 import { IoMdHeart } from "react-icons/io";
 import {Vertical, Horizental} from "@gui/Flex.js";
 
-export default function({article, categoryName}) {
+export default function({article}) {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     
     const navigate = useNavigate()
     
-    const onClickNavigateArticle = async() =>{
-
-        if(article.posted == 1)
-            navigate('article/' + article.id)
-        else{
-            
-            if(validAuth(auth)){
-
-                if(auth.blog_id != article.blog_id)
-                    return
-
-                const res = await ArticleAPI.getArticle(auth.jwt, article.id)
-
-                if(res.success == false){
-                    window.showToast('작성 중인 글을 가져 올 수 없습니다', 'error')
-                    return
-                }
-                navigate('/blog/' + article.blog_id + '/write', {state:res.payload})
-            }
-        }
+    const onClickNavigateArticle = async() => {
+        
+        navigate('/blog/' + article.blog_id + '/article/' + article.id)
     }
     
     return (
@@ -67,10 +50,6 @@ export default function({article, categoryName}) {
                                 {CountWithUnit(article.comment_count)}
                             </Horizental>
                             <div style={{width:'30px'}}/>
-                        </Horizental>
-                    }
-                    {article.posted == 0 && <Horizental style={{marginRight:'30px'}}>
-                            <div className={'clamped-text'} style={{'--line-count':1, width:'160px'}}>{categoryName}</div>
                         </Horizental>
                     }
                     <Horizental style={{flex:'1', whiteSpace: 'nowrap', justifyContent:'flex-end'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</Horizental>

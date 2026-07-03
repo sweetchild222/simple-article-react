@@ -14,8 +14,7 @@ import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
 
 export default function() {
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [reloadKey, setReloadKey] = useState(0)
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
     const [alarms, setAlarms] = useState(null)
     const [isOpenAlarmModal, setIsOpenAlarmModal] = useState(false)
     
@@ -23,8 +22,7 @@ export default function() {
 
     useEffect(() => {
 
-        if(validAuth(auth)){
-            setReloadKey(prev => prev + 1)
+        if(validAuth(auth)) {            
 
             AlarmAPI.getAlarm(auth.jwt, auth.user_id).then(res=>{
 
@@ -53,12 +51,16 @@ export default function() {
                     for(const alarm of alarms)
                         
                         alarm.user = users.find(user => user.id == alarm.from_user_id)
-                                    
+                        
                         setAlarms(alarms)
                     })
                 })
             })
-        }       
+        }
+        else{
+            setAlarms(null)
+            setIsOpenAlarmModal(false)
+        }
 
     }, [auth])
 

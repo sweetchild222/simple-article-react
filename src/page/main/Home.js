@@ -92,35 +92,26 @@ export default function Home() {
 
 
 
-  const patchAlarm = async()=>{
+  const getArticles = async()=>{
 
-    const alarm_id = 1
+    const query = 'offset=0&limit=10&order_type=post_at&order=1'
+    //const query = 'offset=0&limit=10&order_type=like_count&order=1'
+    //const query = 'offset=0&limit=10&order_type=comment_count&order=1'
+    //const query = 'offset=0&limit=30&order_type=post_at&order=1&blog_id=29,30'
 
-    const payload = {
-      checked:1 
-    }
+    const res = await ArticleAPI.getArticles(query)
 
-    const res = await AlarmAPI.patchAlarm(auth.jwt, alarm_id, payload)
+    console.log(res.success)
 
-    console.log(res)
+    console.log(res.payload)
 
   }
 
   
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%', marginTop:'40px'}}>            
-      
-      <PrettyButton disabled={false} isLoading={isLoading} type='confirm' onClick={getAlarm}>알람 가져오기</PrettyButton>
-      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={postAlarm}>알람 추가</PrettyButton>
-      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={deleteAlarm}>알람 삭제</PrettyButton>
-      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={patchAlarm}>알람 수정</PrettyButton>      
-      
-      
-
-      {/* <button onClick={test}>imageRegion</button>
-      <button onClick={test2}/>      
-      <button ref={refSelect} onClick={test3} className="loadingbutton">
-        <span className="btn_text">Save</span></button> */}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height:'100%', marginTop:'40px'}}>  
+      <PrettyButton disabled={false} isLoading={isLoading} type='success' onClick={getArticles}>게시글 가져오기</PrettyButton>      
+            
     </div>
   );  
 }

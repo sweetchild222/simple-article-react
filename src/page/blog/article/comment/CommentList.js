@@ -82,29 +82,31 @@ export default function({article_id, article_user_id}) {
                         item.user = user
                 })
 
-                const upperComments = comments.payload.filter(comment => (comment.comment_id == null))
+                getGreat(article_id).then(resGreat => {
 
-                for(const upperComment of upperComments)
-                    upperComment.replies = comments.payload.filter(reply => reply.comment_id == upperComment.id)
-                
-                if(validAuth(auth)){
+                    comments.payload.forEach((item, index) => {
 
-                    getGreat(auth.user_id, article_id).then(resGreat => {
+                        const great = resGreat.find(great => (great.comment_id == item.id))
 
-                        if(resGreat.success == true)
-                            setGreats(resGreat.payload)
+                        if(great != null)
+                            item.greatSet = great
+                        else
+                            item.greatSet = {article_id:article_id, comment_id:item.id, great:0}
 
-                        setComments(upperComments)
-
-                        autoShowReplies(upperComments, scrollCommentId)
+                        item.greatSet.like_count = item.like_count
+                        item.greatSet.dislike_count = item.dislike_count
                     })
-                }
-                else{
+
+
+                    const upperComments = comments.payload.filter(comment => (comment.comment_id == null))
+
+                    for(const upperComment of upperComments)
+                        upperComment.replies = comments.payload.filter(reply => reply.comment_id == upperComment.id)
 
                     setComments(upperComments)
-                    
+
                     autoShowReplies(upperComments, scrollCommentId)
-                }
+                })
             })
         })
         
@@ -146,13 +148,19 @@ export default function({article_id, article_user_id}) {
     }, [comments])
 
 
-    const getGreat = async(user_id, article_id) =>{
+    const getGreat = async(article_id) =>{
 
-        const query = 'user_id=' + user_id + '&article_id=' + article_id
+        if(!validAuth(auth))
+            return []
+
+        const query = 'user_id=' + auth.user_id + '&article_id=' + article_id
 
         const res = await CommentGreatAPI.getCommentGreat(query)
 
-        return res
+        if(res.success == false)
+            return []
+
+        return res.payload
     }
 
 
@@ -583,7 +591,7 @@ export default function({article_id, article_user_id}) {
                             
                             {!(modifyModeCommentId == data.id) && 
                                 <Horizental style={{justifyContent:'space-between', marginBottom:'5px'}}>
-                                    <Great comment_id={data.id} like_count={data.like_count} dislike_count={data.dislike_count} greatValue={findGreatValue(data.id)} onUpdate={(great, like_count, dislike_count)=> onUpdateGreat(data.id, great, like_count, dislike_count)}></Great>
+                                    <Great comment_id={data.id} greatSet={data.greatSet}></Great>
                                     <PrettyButton type={'success'} tooltip={'답글 작성'} onClick={() => onClickReplyEditOpen(data.id)}>{'답글 작성'}</PrettyButton>
                                 </Horizental>
                             }
@@ -628,7 +636,7 @@ export default function({article_id, article_user_id}) {
                                         <div style={{height:'5px'}}/>
 
                                         {!(modifyModeCommentId == reply.id) && <Horizental style={{marginBottom:'5px'}}>
-                                            <Great comment_id={reply.id} like_count={reply.like_count} dislike_count={reply.dislike_count} greatValue={findGreatValue(reply.id)} onUpdate={(great, like_count, dislike_count)=> onUpdateGreat(reply.id, great, like_count, dislike_count)}></Great>
+                                            <Great comment_id={reply.id} greatSet={reply.greatSet}></Great>
                                         </Horizental>
                                         }
                                     </Vertical>

@@ -13,25 +13,14 @@ import { FaThumbsUp } from "react-icons/fa";
 
 import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
 
-export default function({comment_id, like_count, dislike_count, greatValue, onUpdate, style}) {
+export default function({comment_id, greatSet, style}) {
     
     const [isLikeLoading, setIsLikeLoading] = useState(false)
-    const [isDislikeLoading, setIsDislikeLoading] = useState(false)    
-    
-    const [likeCount, setLikeCount] = useState(0)
-    const [dislikeCount, setDislikeCount] = useState(0)
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [currentGreat, setCurrentGreat] = useState(null)
+    const [isDislikeLoading, setIsDislikeLoading] = useState(false)
+    const [reloadKey, setReloadKey] = useState(0)            
+    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
 
-    const navigate = useNavigate()
-
-    useEffect(()=>{
-
-        setLikeCount(like_count)
-        setDislikeCount(dislike_count)
-        setCurrentGreat(greatValue)
-        
-    }, [])
+    const navigate = useNavigate()    
 
     const postGreat = async(jwt, user_id, comment_id, like) =>{
 
@@ -96,16 +85,16 @@ export default function({comment_id, like_count, dislike_count, greatValue, onUp
                 }
 
                 if(great == 1){
-                    setCurrentGreat(1)
-                    onUpdate(1, like_count + 1, dislike_count - 1)
-                    setLikeCount(item => item + 1)
-                    setDislikeCount(item => item - 1)
+                    greatSet.great = 1
+                    greatSet.like_count += 1
+                    greatSet.dislike_count -= 1
+                    setReloadKey(prev => prev + 1)
                 }
                 else if(great == -1){
-                    setCurrentGreat(-1)                    
-                    onUpdate(-1, like_count - 1, dislike_count + 1)
-                    setLikeCount(item => item - 1)
-                    setDislikeCount(item => item + 1)
+                    greatSet.great = -1
+                    greatSet.like_count -= 1
+                    greatSet.dislike_count += 1
+                    setReloadKey(prev => prev + 1)
                 }
                 else 
                     return false
@@ -123,14 +112,14 @@ export default function({comment_id, like_count, dislike_count, greatValue, onUp
                 }
 
                 if(great == 1){
-                    setCurrentGreat(0)
-                    onUpdate(0, like_count - 1, dislike_count)
-                    setLikeCount(item => item - 1)
+                    greatSet.great = 0
+                    greatSet.like_count -= 1
+                    setReloadKey(prev => prev + 1)
                 }
                 else if(great == -1){
-                    setCurrentGreat(0)
-                    onUpdate(0, like_count, dislike_count - 1)
-                    setDislikeCount(item => item - 1)
+                    greatSet.great = 0
+                    greatSet.dislike_count -= 1
+                    setReloadKey(prev => prev + 1)
                 }
                 else 
                     return false
@@ -149,14 +138,14 @@ export default function({comment_id, like_count, dislike_count, greatValue, onUp
             }
             
             if(great == 1){
-                setCurrentGreat(1)
-                onUpdate(1, like_count + 1, dislike_count)
-                setLikeCount(item => item + 1)            
+                greatSet.great = 1
+                greatSet.like_count += 1
+                setReloadKey(prev => prev + 1)
             }
             else if(great == -1){
-                setCurrentGreat(-1)
-                onUpdate(-1, like_count, dislike_count + 1)
-                setDislikeCount(item => item + 1)
+                greatSet.great = -1
+                greatSet.dislike_count += 1
+                setReloadKey(prev => prev + 1)
             }
             else
                 return false
@@ -195,19 +184,19 @@ export default function({comment_id, like_count, dislike_count, greatValue, onUp
     
 
     return (
-        <Horizental style={{alignItems:'center', ...style}}>
+        <Horizental key={reloadKey} style={{alignItems:'center', ...style}}>
             <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
-                {currentGreat != null && currentGreat == 1 && <FaThumbsUp size={22}/>}
-                {currentGreat != null && (currentGreat != 1) && <FaRegThumbsUp size={22}/>}
+                {greatSet.great == 1 && <FaThumbsUp size={22}/>}
+                {greatSet.great != 1 && <FaRegThumbsUp size={22}/>}
                 <div style={{width:'5px'}}/>
-                <div>{CountWithUnit(likeCount)}</div>
+                <div>{CountWithUnit(greatSet.like_count)}</div>
             </PrettyButton>
             <div style={{width:'20px'}}></div>
             <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
-                {currentGreat != null && currentGreat == -1 && <FaThumbsDown size={22}/>}
-                {currentGreat != null && (currentGreat != -1) && <FaRegThumbsDown size={22}/>}
+                {greatSet.great == -1 && <FaThumbsDown size={22}/>}
+                {greatSet.great != -1 && <FaRegThumbsDown size={22}/>}
                 <div style={{width:'5px'}}/>
-                <div>{CountWithUnit(dislikeCount)}</div>
+                <div>{CountWithUnit(greatSet.dislike_count)}</div>
             </PrettyButton>
         </Horizental>
     )

@@ -110,8 +110,7 @@ export default function() {
         
     const articles = await getBlogArticles(page, category_id, posted)
 
-    if(articles.success == true){
-      console.log('geeg')
+    if(articles.success == true){      
       setArticles(articles.payload)
     }
 

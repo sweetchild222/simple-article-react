@@ -26,9 +26,11 @@ export default function() {
   const [articles, setArticles] = useState(null)
   const [isOverlayProgress, setIsOverlayProgress] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
+  const [offset, setOffset] = useState(0)
+  const [blogIds, setBlogIds] = useState(null)
+  const [currentType, setCurrentType] = useState(0)
 
   const countPerPage = 8
-
 
   useEffect(() =>{
 
@@ -40,11 +42,31 @@ export default function() {
         return 
 
       setArticles(resArtices.payload)
-      setIsOverlayProgress(false)
+      setIsOverlayProgress(false)      
     })
 
+  }, [currentType])
 
-  }, [])
+
+  useEffect(()=>{
+
+    if(!validAuth(auth))
+      return
+    
+    SubscribeAPI.getSubscribe('user_id=' + auth.user_id).then(res=>{
+
+      if(res.success == false)
+        return
+      
+      const blog_ids = res.payload.map(item => item.blog_id)
+
+      setBlogIds(blog_ids)
+    })
+
+  }, [auth])
+
+
+
   
   const getBlogArticles = async(page, category_id, posted) => {
     
@@ -86,74 +108,114 @@ export default function() {
   }
 
 
+  const limit = 10
+
   const loadArticles = async(query) => {
 
     setIsOverlayProgress(true)
 
       ArticleAPI.getArticles(query).then((resArtices) => {
 
-      if(resArtices.success == false){
-        window.showToast('글을 가져오는데 실패 했습니다', 'error')        
-        return 
-      }
+        setIsOverlayProgress(false)
 
-      setArticles(resArtices.payload)
-      setIsOverlayProgress(false)
+        if(resArtices.success == false){
+          window.showToast('글을 가져오는데 실패 했습니다', 'error')        
+          return 
+        }
+
+        setArticles(resArtices.payload)      
     })
   }
 
-  const onClickNewest = async()=>{
+  const onClickNewest = async(offset)=> {
 
-    const query = 'offset=0&limit=10&order_type=post_at&order=1'
-
-    await loadArticles(query)
-  }
-
-  const onClickFavorite = async()=>{
-
-    const query = 'offset=0&limit=10&order_type=like_count&order=1'
+    const query = 'offset=' + offset + '&limit=' + limit + '&order_type=post_at&order=1'
 
     await loadArticles(query)
 
+    setCurrentType(0)
   }
 
-  const onClickManyComment = async()=>{
+  const onClickFavorite = async(offset)=>{
 
-    const query = 'offset=0&limit=10&order_type=comment_count&order=1'
+    const query = 'offset=' + offset + '&limit=' + limit + '&order_type=like_count&order=1'
 
     await loadArticles(query)
+
+    setCurrentType(1)
+
+  }
+
+  const onClickManyComment = async(offset)=>{
+
+    const query = 'offset=' + offset + '&limit=' + limit + '&order_type=comment_count&order=1'
+
+    await loadArticles(query)
+
+    setCurrentType(2)
   }
 
 
-  const onClickSubscribe = async()=> {
+  const onClickSubscribe = async(offset)=> {
 
-    if(!validAuth(auth)){
-      window.showToast('로그인 해주세요', 'info')
-      navigate('/', {state:{comback:true}})
+    if(blogIds == null || blogIds.length == 0)
       return
-    }
-    
-    const res = await SubscribeAPI.getSubscribe('user_id=' + auth.user_id)
 
-    if(res.success == false)
-      return
-    
-    const blog_ids = res.payload.map(item => item.blog_id)
-
-    const query = 'offset=0&limit=10&order_type=post_at&order=1&blog_id=' + blog_ids
+    const query = 'offset=' + offset + '&limit=' + limit + '&order_type=post_at&order=1&blog_id=' + blogIds
 
     await loadArticles(query)
+
+    setCurrentType(3)
   }
 
-  
+  const onClickPrev = async() =>{
+
+    if(offset - 10 < 0)
+      return
+
+    setOffset(offset => {
+
+      if(currentType == 0)
+        onClickNewest(offset - 10)
+      else if(currentType == 1)
+        onClickFavorite(offset - 10)
+      else if(currentType == 2)
+        onClickManyComment(offset - 10)
+      else if(currentType == 3)
+        onClickSubscribe(offset - 10)
+      
+      return offset - 10
+    })
+
+  }
+
+
+  const onClickNext = async() => {
+
+    setOffset(offset => {
+          
+      if(currentType == 0)
+        onClickNewest(offset + 10)
+      else if(currentType == 1)
+        onClickFavorite(offset + 10)
+      else if(currentType == 2)
+        onClickManyComment(offset + 10)
+      else if(currentType == 3)
+        onClickSubscribe(offset + 10)
+      
+      return offset + 10
+    })
+  }
+
+
   return (
     <Vertical>
       <Horizental>
-        <PrettyButton onClick={onClickNewest}>{'최신글'}</PrettyButton>
-        <PrettyButton onClick={onClickFavorite}>{'인기글'}</PrettyButton>
-        <PrettyButton onClick={onClickManyComment}>{'댓글 많은 글'}</PrettyButton>
-        <PrettyButton onClick={onClickSubscribe}>{'구독한 글'}</PrettyButton>
-      </Horizental>      
+        <PrettyButton onClick={() => onClickNewest(0)}>{'최신글'}</PrettyButton>
+        <PrettyButton onClick={() => onClickFavorite(0)}>{'인기글'}</PrettyButton>
+        <PrettyButton onClick={() => onClickManyComment(0)}>{'댓글 많은 글'}</PrettyButton>
+        <PrettyButton onClick={() => onClickSubscribe(0)}>{'구독한 글'}</PrettyButton>
+      </Horizental>
       <Horizental>
         <div style={{width:'32px'}}/>
         <div style={{flex:'1', position:'relative'}}>
@@ -176,8 +238,12 @@ export default function() {
               )}
           </Vertical>
           {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
-        </div>        
+        </div>
         <div style={{width:'32px'}}/>
+      </Horizental>
+      <Horizental style={{alignSelf:'center', alignItems:'center'}}>
+        <PrettyButton onClick={onClickPrev}>{'이전'}</PrettyButton>
+        <PrettyButton onClick={onClickNext}>{'다음'}</PrettyButton>
       </Horizental>
       </Vertical>
   )

@@ -6,6 +6,7 @@ import * as SubscribeAPI from '@rest/SubscribeAPI.js'
 
 
 import AuthContext from "@util/AuthContext.js";
+import * as UserRepository from "@util/UserRepository.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import ArticleItem from "./ArticleItem.js";
 
@@ -39,14 +40,39 @@ export default function() {
 
     if(query == null)
       return
+
+    setIsOverlayProgress(true)
+
+      ArticleAPI.getArticles(query).then((resArtices) => {
+        
+        if(resArtices.success == false){
+          setIsOverlayProgress(false)
+          window.showToast('글을 가져오는데 실패 했습니다', 'error')
+          return 
+        }
+
+        const userIDList = resArtices.payload.map(article => article.user_id);
+        
+        UserRepository.getByIDList([...new Set(userIDList)]).then((resUsers)=>{
+                          
+            if(resUsers == null) {
+              setIsOverlayProgress(false)
+                window.showToast('사용자 목록을 가져 올 수 없습니다', 'error')
+                return
+            }
+
+            resArtices.payload.forEach((item, index) =>{
+
+              const user = resUsers.find(user => (user.id == item.user_id))
+
+                if(user != null)
+                    item.user = user
+            })
+
+            setIsOverlayProgress(false)
       
-    ArticleAPI.getArticles(query).then((resArtices) => {
-
-      if(resArtices.success == false)
-        return
-
-      setArticles(resArtices.payload)
-      setIsOverlayProgress(false)      
+            setArticles(resArtices.payload)
+        })
     })
 
   }, [currentType, offset])
@@ -92,19 +118,7 @@ export default function() {
 
   const loadArticles = async(query) => {
 
-    setIsOverlayProgress(true)
 
-      ArticleAPI.getArticles(query).then((resArtices) => {
-
-        setIsOverlayProgress(false)
-
-        if(resArtices.success == false){
-          window.showToast('글을 가져오는데 실패 했습니다', 'error')        
-          return 
-        }
-
-        setArticles(resArtices.payload)      
-    })
   }
 
   const onClickNewest = async()=> {
@@ -156,7 +170,7 @@ export default function() {
         <PrettyButton onClick={onClickSubscribe}>{'구독한 글'}</PrettyButton>
       </Horizental>
       <Horizental>
-        <div style={{width:'16px'}}/>
+        <div style={{width:'32px'}}/>
         <div style={{flex:'1', position:'relative'}}>
           <Vertical>
               {articles && (
@@ -165,10 +179,6 @@ export default function() {
                   <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'8px', marginBottom:'16px'}}>
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data} />)}
                   </div>
-                  <Horizental style={{width:'100%'}}>
-                    {/* {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>} */}
-                    <div style={{flex:'1'}}></div>
-                  </Horizental>
                 </Vertical>) : 
                 (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px'}}>
                   {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
@@ -178,7 +188,7 @@ export default function() {
           </Vertical>
           {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
         </div>
-        <div style={{width:'16px'}}/>
+        <div style={{width:'32px'}}/>
       </Horizental>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
         <PrettyButton disabled={offset == 0} onClick={onClickPrev}> {<GrPrevious size={16}/>}</PrettyButton>

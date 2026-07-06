@@ -50,7 +50,7 @@ export default function({article}) {
             </div>            
             
             <Horizental style={{alignItems:'start', marginTop:'8px'}}>
-                <ProfileImage shape={'circle'} size={48} userId={article.user_id}></ProfileImage>
+                <ProfileImage shape={'circle'} size={48} user={article.user}></ProfileImage>
                 <div style={{width:'16px'}}></div>
                 <div className={'clamped-text'} style={{'--line-count':2, fontSize:'18px', color:'black', textShadow:'2px 2px 5px rgba(0, 0, 0, 0.5)'}}>{article.title + 'werwerwerwrwerwerwerwerkdspofksdfsfdsdpofkeopwsfkoep'}</div>
             </Horizental>

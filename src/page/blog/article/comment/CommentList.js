@@ -580,7 +580,7 @@ export default function({article_id, article_user_id}) {
                         
                         <Vertical style={{width:'100%'}}>
                             <Horizental>
-                                <div style={{fontSize:'14px', marginRight:'10px', color:'gray'}}>{data.user != null ? data.user.nickname : '탈퇴함'}</div>
+                                <div style={{fontSize:'14px', marginRight:'10px', color:'gray'}}>{data.user != null ? data.user.nickname : '알수없음'}</div>
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </Horizental>
                             
@@ -626,7 +626,7 @@ export default function({article_id, article_user_id}) {
                                     </Vertical>
                                     <Vertical style={{width:'100%'}}>
                                         <Horizental>
-                                            <div style={{fontSize:'14px', marginRight:'10px', color:'gray'}}>{reply.user != null ? data.user.nickname : '탈퇴함'}</div>
+                                            <div style={{fontSize:'14px', marginRight:'10px', color:'gray'}}>{reply.user != null ? data.user.nickname : '알수없음'}</div>
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
                                         </Horizental>
 

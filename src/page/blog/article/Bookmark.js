@@ -98,7 +98,7 @@ export default function({article_id, count}) {
     return ( isBookmark != null ? <Horizental style={{alignItems:'center'}}>
                 <PrettyButton type={'transparent'} isLoading={isBookmarkLoading} style={{color:'black'}} onClick={onClickBookmark}>
                     {isBookmark ? <IoMdHeart size={22}/> : <IoIosHeartEmpty size={22}/>}
-                    <div style={{width:'5px'}}></div>
+                    <div style={{width:'4px'}}></div>
                     <div>{CountWithUnit(bookmarkCount)}</div>
                 </PrettyButton>
             </Horizental>

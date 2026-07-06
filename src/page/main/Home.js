@@ -12,6 +12,8 @@ import ArticleItem from "./ArticleItem.js";
 import OverlayProgress from "@gui/OverlayProgress.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import ToInteger from "@util/Integer.js";
+import { GrNext } from "react-icons/gr";
+import { GrPrevious } from "react-icons/gr";
 import './Home.css'
 
 export default function() {
@@ -28,13 +30,11 @@ export default function() {
   const [offset, setOffset] = useState(0)
   const [blogIds, setBlogIds] = useState(null)
   const [currentType, setCurrentType] = useState(0)
-
-  const countPerPage = 8
+  
+  const countPerPage = 12
 
   useEffect(() => {
-
-    console.log(currentType, offset)
-
+    
     const query = getQueryByType(currentType, offset)
 
     if(query == null)
@@ -52,22 +52,21 @@ export default function() {
   }, [currentType, offset])
 
 
-
   const getQueryByType = (currentType, offset) => {
 
-    const limit = 10
-
+    
     if(currentType == 0)
-      return 'offset=' + offset + '&limit=' + limit + '&order_type=post_at&order=1'    
+      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1'
     else if(currentType == 1)
-      return 'offset=' + offset + '&limit=' + limit + '&order_type=like_count&order=1'
+      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=like_count&order=1'
     else if(currentType == 2)
-      return 'offset=' + offset + '&limit=' + limit + '&order_type=comment_count&order=1'
+      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=comment_count&order=1'
     else if(currentType == 3){
 
       if(blogIds == null || blogIds.length == 0)
           return null
-      return 'offset=' + offset + '&limit=' + limit + '&order_type=post_at&order=1&blog_id=' + blogIds
+        
+      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1&blog_id=' + blogIds
     }
   }
 
@@ -88,8 +87,6 @@ export default function() {
     })
 
   }, [auth])
-
-
 
 
 
@@ -138,15 +135,15 @@ export default function() {
 
   const onClickPrev = async() =>{
 
-    if(offset - 10 < 0)
+    if(offset - countPerPage < 0)
       return
 
-    setOffset(offset => offset - 10)
+    setOffset(offset => offset - countPerPage)
   }
 
   const onClickNext = async() => {
 
-    setOffset(offset => offset + 10)
+    setOffset(offset => offset + countPerPage)
   }
 
 
@@ -159,7 +156,7 @@ export default function() {
         <PrettyButton onClick={onClickSubscribe}>{'구독한 글'}</PrettyButton>
       </Horizental>
       <Horizental>
-        <div style={{width:'32px'}}/>
+        <div style={{width:'16px'}}/>
         <div style={{flex:'1', position:'relative'}}>
           <Vertical>
               {articles && (
@@ -181,11 +178,12 @@ export default function() {
           </Vertical>
           {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
         </div>
-        <div style={{width:'32px'}}/>
+        <div style={{width:'16px'}}/>
       </Horizental>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
-        <PrettyButton disabled={offset == 0}onClick={onClickPrev}>{'이전'}</PrettyButton>
-        <PrettyButton disabled={articles.length == 0} onClick={onClickNext}>{'다음'}</PrettyButton>
+        <PrettyButton disabled={offset == 0} onClick={onClickPrev}> {<GrPrevious size={16}/>}</PrettyButton>
+        <div style={{width:'64px'}}></div>
+        <PrettyButton disabled={articles.length == 0} onClick={onClickNext}> {<GrNext size={16}/>}</PrettyButton>
       </Horizental>}
       </Vertical>
   )

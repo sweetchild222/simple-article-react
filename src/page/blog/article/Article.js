@@ -193,15 +193,15 @@ export default function() {
                 {category &&
                     <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap'}} onClick={onClickNavigateCategory}>{category.name}</div>
                 }
-                <div style={{width:'20px'}}/>
+                <div style={{width:'32px'}}/>
                 <TiEye size={22}/>
-                <div style={{width:'5px'}}/>
+                <div style={{width:'4px'}}/>
                 <div>{CountWithUnit(article.showed)}</div>
-                <div style={{width:'40px'}}/>
+                <div style={{width:'32px'}}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('left')}><FaAlignLeft size={22}/></PrettyButton>
-                <div style={{width:'10px'}}/>
+                <div style={{width:'8px'}}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('center')}><FaAlignCenter size={22}/></PrettyButton>
-                <div style={{width:'10px'}}/>
+                <div style={{width:'8px'}}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('right')}><FaAlignRight size={22}/></PrettyButton>
 
                 <Horizental style={{whiteSpace: 'nowrap', color:'gray', flex:'1', justifyContent:'end', marginRight:'10px'}}>

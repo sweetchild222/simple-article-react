@@ -188,14 +188,14 @@ export default function({comment_id, greatSet, style}) {
             <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                 {greatSet.great == 1 && <FaThumbsUp size={22}/>}
                 {greatSet.great != 1 && <FaRegThumbsUp size={22}/>}
-                <div style={{width:'5px'}}/>
+                <div style={{width:'4px'}}/>
                 <div>{CountWithUnit(greatSet.like_count)}</div>
             </PrettyButton>
-            <div style={{width:'20px'}}></div>
+            <div style={{width:'16px'}}></div>
             <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
                 {greatSet.great == -1 && <FaThumbsDown size={22}/>}
                 {greatSet.great != -1 && <FaRegThumbsDown size={22}/>}
-                <div style={{width:'5px'}}/>
+                <div style={{width:'4px'}}/>
                 <div>{CountWithUnit(greatSet.dislike_count)}</div>
             </PrettyButton>
         </Horizental>

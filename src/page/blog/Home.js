@@ -9,7 +9,6 @@ import ArticleItem from "./ArticleItem.js";
 import OverlayProgress from "@gui/OverlayProgress.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import ToInteger from "@util/Integer.js";
-import './Home.css'
 import Categories  from "./Categories.js";
 import Recents  from "./Recents.js";
 import CreateArticle  from "./CreateArticle.js";
@@ -128,7 +127,7 @@ export default function() {
               {selectedCategory && articles && (
                 articles.length > 0 ? 
                 (<Vertical style={{width:'100%'}}>
-                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'8px', marginBottom:'16px'}}>
+                  <div style={{width:'100%', marginTop:'8px', marginBottom:'16px'}}>
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data} categoryName={getCategoryName(data.category_id)}/>)}
                   </div>
                   <Horizental style={{width:'100%'}}>

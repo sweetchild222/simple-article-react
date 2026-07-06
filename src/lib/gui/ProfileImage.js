@@ -27,7 +27,9 @@ export default function(props) {
                 setIsError(true)
                 return
             }
-                        
+
+            console.log(res.payload)
+
             setUser(res.payload)
         })
         
@@ -43,13 +45,15 @@ export default function(props) {
         }
     }
 
-    
     return user ? 
         (<StateProgsImage src={urlWithSize(user.image, width, height)} gray={props.gray} tooltip={user.nickname} width={width} height={height}  borderWidth={0} borderRadius={borderRadius} onClick={props.onClick} style={{cursor:'pointer', ...props.style}}/>)
         : (isError ? 
-            <div style={{display:'flex', justifyContent:'center', alignItems:'center', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width}} onClick={props.onClickAtError}><MdError size={45}></MdError></div>
-            :
-            <div className={`${isError ? 'rotateProgress': 'rotateProgress'}`} style={{position: 'relative', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width}}></div>
+            <div style={{position: 'relative', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width, backgroundImage:'url(/image/error-user.png)', backgroundSize:'contain', backgroundPosition:'center'}} onClick={props.onClickAtError}></div>
+            : ( props.userId ? 
+                <div className={'rotateProgress'} style={{position: 'relative', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width}}/>
+                :
+                <div style={{position: 'relative', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width, backgroundImage:'url(/image/no-user.png)', backgroundSize:'contain', backgroundPosition:'center'}}/>
+            )
         )
 }
 

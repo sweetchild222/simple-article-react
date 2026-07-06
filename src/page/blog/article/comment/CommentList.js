@@ -76,10 +76,7 @@ export default function({article_id, article_user_id}) {
                 
                 comments.payload.forEach((item, index) =>{
 
-                    const user = resUsers.find(user => (user.id == item.user_id))
-
-                    if(user != null)                        
-                        item.user = user                
+                    item.user = resUsers.find(user => (user.id == item.user_id))                    
                 })
 
                 getGreat(article_id).then(resGreat => {

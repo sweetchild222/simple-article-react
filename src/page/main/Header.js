@@ -145,21 +145,30 @@ export default function() {
     }
     
     return (
-            <Horizental style={{ alignItems: 'center', width:'100%'}}>
-                <Horizental style={{ alignItems: 'center', flexGrow:'1'}}>
+            <Horizental style={{alignItems: 'center', width:'100%', marginTop:'8px', paddingLeft:'16px', paddingRight:'16px'}}>
+                <PrettyButton>{'최신순'}</PrettyButton>
+                <div style={{width:'8px'}}/>
+                <PrettyButton>{'인기순'}</PrettyButton>
+                <div style={{width:'8px'}}/>
+                <PrettyButton>{'댓글 많은 순'}</PrettyButton>
+                <div style={{width:'8px'}}/>
+                <PrettyButton>{'구독한 글'}</PrettyButton>
+                <Horizental style={{flex:'1'}}></Horizental>
+                <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'100px', maxWidth:'400px'}} onKeyDown={onKeyDown}></input>
+                <div style={{width:'8px'}}/>
+                <PrettyButton  type='success' onClick={onClickSearch}>검색</PrettyButton>
+                <Horizental style={{flex:'1'}}></Horizental>
+                {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn}>로그인</PrettyButton>}
+                {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
                     <PrettyButton onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
-                </Horizental>
-                <Horizental style={{justifyContent:'center', alignItems: 'center', flexGrow:'1'}}>
-                    <input id="search" placeholder="검색" maxLength="256" style={{width:'300px', minWidth:'50px'}} onKeyDown={onKeyDown}></input>
-                    <PrettyButton  type='success' onClick={onClickSearch}>검색</PrettyButton>
-                </Horizental>
-                <Horizental style={{justifyContent:'end', flexGrow:'1', alignItems:'center', marginRight:'20px'}}>
-                    {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn}>로그인</PrettyButton>}
-                    {validAuth(auth) && alarms != null && <PrettyButton  type='transparent' style={{height:'fit-content', marginRight:'10px', color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
-                    {validAuth(auth) && alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
-                    {validAuth(auth) && <ProfileImage shape={'circle'}  userId={auth.user_id} onClick={onClickUser} onClickAtError={onClickAtError}/>}
-                </Horizental>
-                
+                    <div style={{width:'8px'}}/>
+                    {alarms != null && <PrettyButton  type='transparent' style={{color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+                    {alarms != null && <div style={{width:'8px'}}/>}
+                    {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}                    
+                    <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
+                    </Horizental>
+                }
+                        
             </Horizental>
-    )
+        )
 }

@@ -8,7 +8,7 @@ import ProfileImage from "@gui/ProfileImage.js";
 import { VscTrash } from "react-icons/vsc";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import ElapsedTime from "@util/ElapsedTime.js";
-import { CiSquareRemove } from "react-icons/ci";
+
 import * as AlarmAPI from '@rest/AlarmAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import { MdVisibility } from 'react-icons/md';
@@ -112,7 +112,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
                           <div className={'clamped-text underline-text'} style={{'--line-count':2, height:'2lh', color:(data.checked == 0 ? 'black' : 'darkgray')}} dangerouslySetInnerHTML={{ __html: data.seenComment}} onClick={()=> onClickAlarm(data)}></div>
                         </Vertical>
                         <Horizental style={{flex:'1'}} onClick={()=> onClickAlarm(data)}></Horizental>
-                        <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'10px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<CiSquareRemove size={25}/>}</PrettyButton>
+                        <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'10px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<VscTrash size={25}/>}</PrettyButton>
                       </Horizental>
                   )}
                 <Horizental style={{alignItems: 'center', marginTop:'10px', justifyContent:'center', width:'100%'}}>

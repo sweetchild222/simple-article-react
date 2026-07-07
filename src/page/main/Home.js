@@ -4,7 +4,6 @@ import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as SubscribeAPI from '@rest/SubscribeAPI.js'
 
-
 import AuthContext from "@util/AuthContext.js";
 import * as UserRepository from "@util/UserRepository.js";
 import PrettyButton from "@gui/PrettyButton.js";
@@ -18,7 +17,6 @@ import { GrPrevious } from "react-icons/gr";
 import './Home.css'
 
 export default function() {
-
   
   const navigate = useNavigate()
   
@@ -32,7 +30,7 @@ export default function() {
   const [blogIds, setBlogIds] = useState(null)
   const [currentType, setCurrentType] = useState(0)
   
-  const countPerPage = 12
+  const countPerPage = 6
 
   useEffect(() => {
     
@@ -158,40 +156,56 @@ export default function() {
   }
 
 
+  const onKeyDown = (e) => {
+
+      if(e.key === 'Enter')
+          onClickSearch(inputElement.value)
+  }
+
+  
+  const onClickSearch = (e) => {
+
+  }
+
+
   return (
-    <Vertical>
+    <Vertical style={{width:'100%', marginLeft:'16px', marginRight:'16px'}}>
+      <div style={{height:'16px', minHeight:'16px', maxHeight:'16px'}}/>
       <Horizental>
         <PrettyButton onClick={onClickNewest}>{'최신순'}</PrettyButton>
+        <div style={{width:'8px'}}/>
         <PrettyButton onClick={onClickFavorite}>{'인기순'}</PrettyButton>
+        <div style={{width:'8px'}}/>
         <PrettyButton onClick={onClickManyComment}>{'댓글 많은 순'}</PrettyButton>
+        <div style={{width:'8px'}}/>
         <PrettyButton onClick={onClickSubscribe}>{'구독한 글'}</PrettyButton>
+        <Horizental style={{flex:'1'}}></Horizental>
+        <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'100px', maxWidth:'400px'}} onKeyDown={onKeyDown}></input>
+        <div style={{width:'8px'}}/>
+        <PrettyButton  type='success' onClick={onClickSearch}>검색</PrettyButton>
+        <Horizental style={{flex:'1'}}></Horizental>
       </Horizental>
-      <Horizental>
-        <div style={{width:'32px'}}/>
-        <div style={{flex:'1', position:'relative'}}>
-          <Vertical>
-              {articles && (
-                articles.length > 0 ? 
-                (<Vertical style={{width:'100%'}}>
-                  <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'8px', marginBottom:'16px'}}>
-                    {articles.map((data, index) => <ArticleItem key={data.id} article={data} />)}
-                  </div>
-                </Vertical>) : 
-                (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px'}}>
-                  {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
-                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 더 이상 없습니다.'}</div>}
-                </Vertical>)
-              )}
-          </Vertical>
-          {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
-        </div>
-        <div style={{width:'32px'}}/>
-      </Horizental>
+      <div style={{flex:'1', position:'relative'}}>
+        {articles && (
+          articles.length > 0 ? 
+          (<Vertical style={{width:'100%'}}>
+            <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'8px', marginBottom:'16px'}}>
+              {articles.map((data, index) => <ArticleItem key={data.id} article={data} />)}
+            </div>
+          </Vertical>) : 
+          (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px'}}>
+            {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
+            {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 더 이상 없습니다.'}</div>}
+          </Vertical>)
+        )}        
+        {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
+      </div>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
         <PrettyButton disabled={offset == 0} onClick={onClickPrev}> {<GrPrevious size={16}/>}</PrettyButton>
         <div style={{width:'64px'}}></div>
         <PrettyButton disabled={articles.length == 0} onClick={onClickNext}> {<GrNext size={16}/>}</PrettyButton>
       </Horizental>}
-      </Vertical>
+      <div style={{height:'32px', minHeight:'32px', maxHeight:'32px'}}/>
+    </Vertical>
   )
 }

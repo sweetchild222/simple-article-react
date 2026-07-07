@@ -7,7 +7,7 @@ import {BrowserRouter, createBrowserRouter, RouterProvider, Outlet } from 'react
 import BlogHeader from '@page/blog/Header.js'
 import BlogHome  from '@page/blog/Home.js'
 import Article  from '@page/blog/article/Article.js'
-import MainHeader from '@page/main/Header.js'
+
 import Side from '@page/main/Side.js'
 import MainHome from '@page/main/Home.js'
 
@@ -32,13 +32,8 @@ const Aplication = function() {
   const RootLayout = () => (
 
     <Horizental style={{width:'100%', height:'100%'}}>
-      <Side></Side>
-      <Vertical style={{width:'100%', height:'100%'}}>
-        <MainHeader/>
-        <div style={{height:'32px', maxHeight:'32px', minHeight:'32px'}}/>
-        <Outlet/>
-        <div style={{height:'32px', maxHeight:'32px', minHeight:'32px'}}/>
-      </Vertical>      
+      <Side/>
+      <Outlet/>
     </Horizental>
   )
 

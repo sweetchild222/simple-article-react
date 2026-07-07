@@ -67,13 +67,13 @@ export default function() {
 
         if(!user)
             return
-                
+
         navigate('/blog/' + user.blog_id)
     }
 
 
     return user ? (
-      <Vertical style={{alignItems:'center', marginTop:'20px'}}>
+      <Vertical style={{alignItems:'center', marginTop:'20px', width:'100%'}}>
         <ProfileImage size={128} shape={'rect'} user={user}/>
         <div style={{height:'10px'}}/>
         <label style={{fontSize:'24px', fontWeight:'bold'}}>{user.nickname}</label>

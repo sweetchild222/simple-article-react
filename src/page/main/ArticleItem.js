@@ -29,8 +29,8 @@ export default function({article}) {
         <Vertical onClick={onClickNavigateArticle} style={{cursor:'pointer'}}>
             <div style={{position: 'relative', display:' inline-block', backgroundImage: article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'none', width:'100%', height:'auto', aspectRatio:'4/3', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', borderRadius:'3px'}}>
                 <div style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px'}}/>
-                <div className={'clamped-text'} style={{'--line-count':3, position:'absolute', zIndex:2, fontSize:'18px', color:'lightgray', left:'0px', top:'0px', marginTop:'16px', marginLeft:'16px', marginRight:'16px', textShadow:'2px 2px 8px rgba(0, 0, 0, 0.9)'}}>
-                    {article.head + 'asdfkljsafoijwoefjwiofjwiowjoifjwoiwjfoiwjoiwejfoiwejwoiejiojasdfkljsafoijwoefjwiofjwiowjoifjwoiwjfoiwjoiwejfoiwejwoiejioj'}
+                <div className={'clamped-text'} style={{'--line-count':3, position:'absolute', zIndex:2, fontSize:'18px', color:'lightgray', left:'0px', top:'0px', marginTop:'16px', marginLeft:'16px', marginRight:'16px', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>
+                    {article.head}
                 </div>            
                 <Horizental style={{position:'absolute', zIndex:3, left:'0px', bottom:'0px', color:'lightgray', width:'100%', alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingBottom:'8px'}}>
                     <IoMdHeart size={22}/>
@@ -52,7 +52,7 @@ export default function({article}) {
             <Horizental style={{alignItems:'start', marginTop:'8px'}}>
                 <ProfileImage shape={'circle'} size={48} user={article.user}></ProfileImage>
                 <div style={{width:'16px'}}></div>
-                <div className={'clamped-text'} style={{'--line-count':2, fontSize:'18px', color:'black', textShadow:'2px 2px 5px rgba(0, 0, 0, 0.5)'}}>{article.title + 'werwerwerwrwerwerwerwerkdspofksdfsfdsdpofkeopwsfkoep'}</div>
+                <div className={'clamped-text'} style={{'--line-count':2, fontSize:'18px', color:'black', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>{article.title}</div>
             </Horizental>
 
         </Vertical>

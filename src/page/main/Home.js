@@ -178,7 +178,7 @@ export default function() {
         <div style={{width:'8px'}}/>
         <PrettyButton onClick={onClickManyComment}>{'댓글 많은 순'}</PrettyButton>
         <div style={{width:'8px'}}/>
-        <PrettyButton onClick={onClickSubscribe}>{'구독한 글'}</PrettyButton>
+        <PrettyButton onClick={onClickSubscribe}>{'구독한 블로그'}</PrettyButton>
         <Horizental style={{flex:'1'}}></Horizental>
         <div style={{width:'8px'}}/>
         <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'80px', maxWidth:'300px'}} onKeyDown={onKeyDown}></input>

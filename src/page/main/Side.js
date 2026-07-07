@@ -35,40 +35,14 @@ export default function Sidebar() {
 
     useEffect(() => {
 
-        if(validAuth(auth)) {            
+        if(validAuth(auth)) {
 
-            AlarmAPI.getAlarm(auth.jwt, auth.user_id).then(res=>{
+            loadAlarms().then(alarms=>{
 
-                if(res.success == false)
-                    return
-
-                const alarms = res.payload
-
-                alarms.sort((a, b)=> b.id - a.id)
-
-                const promises = []
-
-                alarms.map(alarm => promises.push(alarm.checked == 0 ? ReplaceUserTag.toUserNicknameGreen(alarm.comment) : ReplaceUserTag.toUserNicknameGray(alarm.comment)))
-
-                Promise.all(promises).then(res => {
-
-                    if(res.length != alarms.length)
-                        return
-
-                    res.map((data, index) => alarms[index].seenComment = data)                                    
-
-                    const user_ids = alarms.map(({from_user_id}) => from_user_id)
-        
-                    UserRepository.getByIDList([...new Set(user_ids)]).then(users => {
-                                        
-                    for(const alarm of alarms)
-                        
-                        alarm.user = users.find(user => user.id == alarm.from_user_id)
-                        
-                        setAlarms(alarms)
-                    })
-                })
+                if(alarms != null)
+                    setAlarms(alarms)
             })
+
         }
         else{
             setAlarms(null)
@@ -77,6 +51,38 @@ export default function Sidebar() {
 
     }, [auth])
     
+
+    const loadAlarms = async()=>{
+
+        const resAlarms = await AlarmAPI.getAlarm(auth.jwt, auth.user_id)
+
+        if(resAlarms.success == false)
+            return null
+
+        const alarms = resAlarms.payload
+
+        alarms.sort((a, b)=> b.id - a.id)
+
+        const promises = []
+
+        alarms.map(alarm => promises.push(alarm.checked == 0 ? ReplaceUserTag.toUserNicknameGreen(alarm.comment) : ReplaceUserTag.toUserNicknameGray(alarm.comment)))
+
+        const resPromise = await Promise.all(promises)
+
+        if(resPromise.length != alarms.length)
+            return null
+
+        resPromise.map((data, index) => alarms[index].seenComment = data)
+
+        const user_ids = alarms.map(({from_user_id}) => from_user_id)
+
+        const users = await UserRepository.getByIDList([...new Set(user_ids)])
+                            
+        for(const alarm of alarms)
+            alarm.user = users.find(user => user.id == alarm.from_user_id)
+                
+        return alarms
+    }
 
 
     const onClickNavigateHome = (e) =>{
@@ -189,7 +195,9 @@ export default function Sidebar() {
             { validAuth(auth) && <div style={{borderBottom: '1px solid #2d2d44', borderTop: '1px solid #2d2d44'}}>
                     <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%'}} onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
                 </div>
-            }            
+            }
+
+            <label style={{color:'white', fontWeight:'bold', fontStyle:'italic'}}>구독한 블로그</label>
             <nav className="sidebar-nav">
                 <ul>
                 {NAV_ITEMS.map((item, index) => (
@@ -202,6 +210,8 @@ export default function Sidebar() {
                 ))}
                 </ul>
             </nav>
+            <label style={{color:'white', fontWeight:'bold', fontStyle:'italic'}}>북마크</label>
+
         <div style={{flex:'1'}}/>
         <Horizental style={{justifyContent:'center'}}>
             <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>        

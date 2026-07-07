@@ -168,27 +168,28 @@ export default function Sidebar() {
     }
 
     return (
-        <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
-            {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn}>로그인</PrettyButton>}
-            {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
-                <PrettyButton onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
-                <div style={{width:'8px'}}/>
-                {alarms != null && <PrettyButton  type='transparent' style={{color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
-                {alarms != null && <div style={{width:'8px'}}/>}
-                {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
-                <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
-                </Horizental>
-            }
+        <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`} style={{padding:'8px'}}>
             <Horizental style={{justifyContent:'space-between'}}>
-                {isOpen && <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' style={{backgroundColor:'red'}}onClick={onClickNavigateHome}/>}
+                {isOpen && <Horizental style={{alignItems:'center'}}>
+                    {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn} style={{height:'fit-content'}}>로그인</PrettyButton>}
+                    {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
+                        <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
+                        {alarms != null && <div style={{width:'8px'}}/>}
+                        {alarms != null && <PrettyButton  type='transparent' style={{color:'white'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+                        {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
+                        </Horizental>
+                    }
+                    </Horizental>
+                }
                 <PrettyButton type={'transparent'} style={{height:'64px', width:'64px'}} onClick={() => setIsOpen(!isOpen)}>
                     {isOpen ? <RiMenuFold3Line size={32}/> : <RiMenuUnfold3Line size={32}/>}
                 </PrettyButton>
             </Horizental>
 
-            <div style={{height:'1px', backgroundColor:'#2d2d44', width:'100%'}}></div>
-
-            {/* Navigation List */}
+            { validAuth(auth) && <div style={{borderBottom: '1px solid #2d2d44', borderTop: '1px solid #2d2d44'}}>
+                    <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%'}} onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
+                </div>
+            }            
             <nav className="sidebar-nav">
                 <ul>
                 {NAV_ITEMS.map((item, index) => (
@@ -201,6 +202,11 @@ export default function Sidebar() {
                 ))}
                 </ul>
             </nav>
+        <div style={{flex:'1'}}/>
+        <Horizental style={{justifyContent:'center'}}>
+            <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>        
+        </Horizental>
+        <div style={{height:'16px'}}/>
         </div>
     );
 }

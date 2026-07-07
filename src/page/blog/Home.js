@@ -33,7 +33,7 @@ export default function() {
   const [isOverlayProgress, setIsOverlayProgress] = useState(true)
   const [reloadKey, setReloadKey] = useState(0)
 
-  const countPerPage = 8
+  const countPerPage = 6
 
   const isEditable = ()=> {
 
@@ -63,9 +63,7 @@ export default function() {
 
 
   const onClickCategory = async(category) => {
-
-    console.log('dd')
-
+    
     setIsOverlayProgress(true)
 
     setSelectedCategory(category)

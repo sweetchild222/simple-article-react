@@ -180,11 +180,11 @@ export default function() {
         <div style={{width:'8px'}}/>
         <PrettyButton onClick={onClickSubscribe}>{'구독한 글'}</PrettyButton>
         <Horizental style={{flex:'1'}}></Horizental>
-        <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'100px', maxWidth:'400px'}} onKeyDown={onKeyDown}></input>
+        <div style={{width:'8px'}}/>
+        <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'80px', maxWidth:'300px'}} onKeyDown={onKeyDown}></input>
         <div style={{width:'8px'}}/>
         <PrettyButton  type='success' onClick={onClickSearch}>검색</PrettyButton>
-        <Horizental style={{flex:'1'}}></Horizental>
-      </Horizental>
+      </Horizental>      
       <div style={{flex:'1', position:'relative'}}>
         {articles && (
           articles.length > 0 ? 

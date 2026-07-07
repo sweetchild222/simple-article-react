@@ -160,7 +160,12 @@ export default function() {
 
   return (
     <Vertical>
-
+      <Horizental>
+        <PrettyButton onClick={onClickNewest}>{'최신순'}</PrettyButton>
+        <PrettyButton onClick={onClickFavorite}>{'인기순'}</PrettyButton>
+        <PrettyButton onClick={onClickManyComment}>{'댓글 많은 순'}</PrettyButton>
+        <PrettyButton onClick={onClickSubscribe}>{'구독한 글'}</PrettyButton>
+      </Horizental>
       <Horizental>
         <div style={{width:'32px'}}/>
         <div style={{flex:'1', position:'relative'}}>

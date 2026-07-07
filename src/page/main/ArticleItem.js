@@ -12,6 +12,7 @@ import { MdThumbDownAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 import { IoMdHeart } from "react-icons/io";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import './ArticleItem.css'
 
 export default function({article}) {
 
@@ -27,11 +28,11 @@ export default function({article}) {
     
     return (
         <Vertical onClick={onClickNavigateArticle} style={{cursor:'pointer'}}>
-            <div style={{position: 'relative', display:' inline-block', backgroundImage: article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'none', width:'100%', height:'auto', aspectRatio:'4/3', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', borderRadius:'3px'}}>
+            <div className={'card'} style={{'--imgurl--': article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'none'}}>
                 <div style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px'}}/>
                 <div className={'clamped-text'} style={{'--line-count':3, position:'absolute', zIndex:2, fontSize:'18px', color:'lightgray', left:'0px', top:'0px', marginTop:'16px', marginLeft:'16px', marginRight:'16px', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>
                     {article.head}
-                </div>            
+                </div>
                 <Horizental style={{position:'absolute', zIndex:3, left:'0px', bottom:'0px', color:'lightgray', width:'100%', alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingBottom:'8px'}}>
                     <IoMdHeart size={22}/>
                     <div style={{width:'4px'}}/>
@@ -43,11 +44,10 @@ export default function({article}) {
                     <div style={{width:'32px'}}/>
                     <BiSolidComment size={22}/>
                     <div style={{width:'5px'}}/>
-                    {CountWithUnit(article.comment_count)}                
+                    {CountWithUnit(article.comment_count)}
                     <Horizental style={{display:'flex', flex:'1', whiteSpace: 'nowrap', justifyContent:'flex-end'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</Horizental>
                 </Horizental>
-                
-            </div>            
+            </div>
             
             <Horizental style={{alignItems:'start', marginTop:'8px'}}>
                 <ProfileImage shape={'circle'} size={48} user={article.user}></ProfileImage>

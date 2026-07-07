@@ -1,0 +1,35 @@
+.card {
+  position: relative;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4/3;
+  overflow: hidden;  
+  display: inline-block;
+  background-size: cover;
+  background-position: center;
+  border-radius: 3px;
+}
+
+/* style={{position: 'relative', display:' inline-block', backgroundImage: article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'none', width:'100%', height:'auto', aspectRatio:'4/3', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', borderRadius:'3px'}} */
+
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4/3;
+  background-image: var(--imgurl--);
+  background-size: cover;
+  background-position: center;
+  z-index: -1; /* Keeps the image behind the text */
+  transition: transform 0.5s ease; /* Controls the speed and smoothness */
+  border-radius: 3px;
+}
+
+
+.card:hover::before {
+  transform: scale(1.10);
+}

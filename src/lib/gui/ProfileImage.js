@@ -28,8 +28,6 @@ export default function(props) {
                 return
             }
 
-            console.log(res.payload)
-
             setUser(res.payload)
         })
         

@@ -8,6 +8,13 @@ export async function getBlog(id) {
 }
 
 
+export async function getBlogs(query) {
+
+  const url = '/api/blog'
+
+  return await restAPI.get(url, query)
+}
+
 /*
 export async function postBlog(jwt, payload){
 

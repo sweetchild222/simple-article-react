@@ -7,6 +7,8 @@ import { RiMenuUnfold3Line } from "react-icons/ri";
 import { RiMenuFold3Line } from "react-icons/ri";
 import {useNavigate} from 'react-router-dom';
 import * as AlarmAPI from '@rest/AlarmAPI.js'
+import * as SubscribeAPI from '@rest/SubscribeAPI.js'
+import * as BlogAPI from '@rest/BlogAPI.js'
 import ProfileImage from "@gui/ProfileImage.js";
 import AlarmModal from "./AlarmModal.js";
 import { VscBellDot } from "react-icons/vsc";
@@ -28,6 +30,7 @@ export default function Sidebar() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [alarms, setAlarms] = useState(null)
+    const [subscribes, setSubscribes] = useState(null)
     const [isOpenAlarmModal, setIsOpenAlarmModal] = useState(false)
 
     const [isOpen, setIsOpen] = useState(true);
@@ -43,8 +46,15 @@ export default function Sidebar() {
                     setAlarms(alarms)
             })
 
+            loadSubscribe().then(subscribes =>{
+
+                if(subscribes != null){
+                    setSubscribes(subscribes)
+                }
+            })
         }
         else{
+
             setAlarms(null)
             setIsOpenAlarmModal(false)
         }
@@ -54,6 +64,9 @@ export default function Sidebar() {
 
     const loadAlarms = async()=>{
 
+        if(!validAuth(auth))
+            return null
+        
         const resAlarms = await AlarmAPI.getAlarm(auth.jwt, auth.user_id)
 
         if(resAlarms.success == false)
@@ -82,6 +95,48 @@ export default function Sidebar() {
             alarm.user = users.find(user => user.id == alarm.from_user_id)
                 
         return alarms
+    }
+
+
+    const loadSubscribe = async() => {
+
+        if(!validAuth(auth))
+            return null
+
+        const query = 'user_id=' + auth.user_id
+
+        const resSubscribe = await SubscribeAPI.getSubscribe(query)
+
+        if(resSubscribe.success == false)
+            return null
+
+        const blogIdList = resSubscribe.payload.map(item => item.blog_id)
+
+        const resBlog = await BlogAPI.getBlogs('id=' + blogIdList)
+
+        if(resBlog.success == false)
+            return null
+        
+        resSubscribe.payload.forEach((item, index) =>{
+            item.blog = resBlog.payload.find(blog => (blog.id == item.blog_id))
+        })
+
+        const userIdList = resSubscribe.payload.filter(item => item.blog !== null).map(item => item.blog.user_id)
+    
+        const resUsers = await UserRepository.getByIDList([...new Set(userIdList)])
+
+        if(resUsers == null)
+            return
+
+
+        resSubscribe.payload.forEach((item, index) =>{
+            item.user = resUsers.find(user => (user.id == item.blog.user_id))
+        })
+
+        console.log(resSubscribe.payload)
+
+        
+        return resSubscribe.payload
     }
 
 
@@ -173,6 +228,21 @@ export default function Sidebar() {
         navigate("/blog/" + auth.blog_id)
     }
 
+    const subscribeMoreCount = 2
+    const [subscribeCount, setSubscribeCount] = useState(subscribeMoreCount)
+
+    const onClickMore = async () => {
+
+        
+
+        if(subscribeCount >= subscribes.length)
+            return
+              
+        setSubscribeCount(item => item + subscribeMoreCount)
+    }
+
+    
+
     return (
         <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`} style={{padding:'8px'}}>
             <Horizental style={{justifyContent:'space-between'}}>
@@ -192,13 +262,26 @@ export default function Sidebar() {
                 </PrettyButton>
             </Horizental>
 
-            { validAuth(auth) && <div style={{borderBottom: '1px solid #2d2d44', borderTop: '1px solid #2d2d44'}}>
+            {validAuth(auth) && <div style={{borderBottom: '1px solid #2d2d44', borderTop: '1px solid #2d2d44'}}>
                     <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%'}} onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
                 </div>
-            }
+            }            
+        
+            {validAuth(auth) && subscribes && <Vertical>
+                <label style={{color:'white'}}>{'구독한 블로그'}</label>
+            
+                {subscribes.slice(0, subscribeCount).map((data, index) => 
+                    <Horizental key={data.id} style={{alignItems:'center'}}>
+                        <ProfileImage user={data.user} size={32}></ProfileImage>
+                        <div style={{width:'16px', maxWidth:'16px', minWidth:'16px'}}/>
+                        <div  className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}}>{data.blog.title}</div>
+                    </Horizental>
+                )}
+                {subscribes.length > subscribeCount && <PrettyButton onClick={onClickMore}>{'더 보기'}</PrettyButton>}
 
-            <label style={{color:'white', fontWeight:'bold', fontStyle:'italic'}}>구독한 블로그</label>
-            <nav className="sidebar-nav">
+            </Vertical>}
+
+            {/* <nav className="sidebar-nav">
                 <ul>
                 {NAV_ITEMS.map((item, index) => (
                     <li key={index} className="nav-item">
@@ -209,8 +292,8 @@ export default function Sidebar() {
                     </li>
                 ))}
                 </ul>
-            </nav>
-            <label style={{color:'white', fontWeight:'bold', fontStyle:'italic'}}>북마크</label>
+            </nav> */}
+            <label style={{color:'white'}}>북마크</label>
 
         <div style={{flex:'1'}}/>
         <Horizental style={{justifyContent:'center'}}>

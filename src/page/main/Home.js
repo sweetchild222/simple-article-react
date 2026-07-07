@@ -61,7 +61,7 @@ export default function() {
 
             resArtices.payload.forEach((item, index) =>{
 
-              item.user = resUsers.find(user => (user.id == item.user_id))                                  
+              item.user = resUsers.find(user => (user.id == item.user_id))
             })
 
             setIsOverlayProgress(false)

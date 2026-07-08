@@ -607,7 +607,7 @@ export default function({article_id, article_user_id}) {
                                 <Horizental style={{marginBottom:'5px'}}>
                                     <ProfileImage shape={'circle'} size={32} userId={auth.user_id} onClick={()=> onClickNavigateBlog(auth.blog_id)}/>
                                     <div style={{width:'10px'}}></div>
-                                    <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>                                    
+                                    <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
                                 </Horizental>
                             }
 

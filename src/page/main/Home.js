@@ -28,18 +28,19 @@ export default function() {
   const [reloadKey, setReloadKey] = useState(0)
   const [offset, setOffset] = useState(0)
   const [blogIds, setBlogIds] = useState(null)
-  const [currentType, setCurrentType] = useState(0) //0:최신순, 1:인기순, 2:댓글 많은 순, 3:구독한 글
+  const [currentType, setCurrentType] = useState(0) //0:최신순, 1:인기순, 2:댓글 많은 순, 3:구독한 글, 4:검색
+  const [keyword, setKeyword] = useState(null)
   
   const countPerPage = 6
 
   useEffect(() => {
     
-    const query = getQueryByType(currentType, offset)
+    const query = getQueryByType(currentType, offset, keyword)
 
     if(query == null)
       return
 
-    setIsOverlayProgress(true)
+    setIsOverlayProgress(true)    
 
       loadArticles(query).then((articles) => {
 
@@ -50,10 +51,10 @@ export default function() {
           return
         }
         
-        setArticles(articles.length > 0 ? articles : null)
+        setArticles(articles)
     })
 
-  }, [currentType, offset])
+  }, [currentType, offset, keyword])
   
 
   useEffect(()=>{
@@ -84,7 +85,7 @@ export default function() {
     const articles = resArticles.payload
       
     const userIDList = articles.map(article => article.user_id)
-        
+
     const resUsers = await UserRepository.getByIDList([...new Set(userIDList)])
                           
     if(resUsers == null)
@@ -98,7 +99,7 @@ export default function() {
   }
 
 
-  const getQueryByType = (currentType, offset) => {
+  const getQueryByType = (currentType, offset, keyword) => {
 
     if(currentType == 0)
       return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1'
@@ -113,9 +114,9 @@ export default function() {
         
       return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1&blog_id=' + blogIds
     }
+    else if(currentType == 4)
+      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1&keyword=' + keyword
   }
-
-
 
 
   const onClickNewest = async()=> {
@@ -160,15 +161,31 @@ export default function() {
 
   const onKeyDown = (e) => {
 
-      if(e.key === 'Enter')
-          onClickSearch(inputElement.value)
+      if(e.key === 'Enter'){
+
+        if(search.value.length > 0){
+          const keyword = search.value
+          search.value = ''
+          setKeyword(keyword)
+          setCurrentType(4)
+          
+        }
+      }
   }
 
   
-  const onClickSearch = (e) => {
+  const onClickSearch = (e) => {    
 
+    if(search.value.length > 0){
+      const keyword = search.value
+      search.value = ''
+      setKeyword(keyword)
+      setCurrentType(4)
+      
+    }
   }
 
+  
 
 
   return (
@@ -196,7 +213,7 @@ export default function() {
               {articles.map((data, index) => <ArticleItem key={data.id} article={data} />)}
             </div>
           </Vertical>) : 
-          (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px'}}>
+          (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%'}}>
             {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
             {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 더 이상 없습니다.'}</div>}
           </Vertical>)

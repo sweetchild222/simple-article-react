@@ -42,7 +42,6 @@ export default function() {
   }, [isVerified])
 
 
-
   const onClickSendVerifyCode = async() => {
 
     const email = input_email.value
@@ -52,7 +51,6 @@ export default function() {
       window.showToast('잘못된 형식의 이메일입니다', 'error')
       return
     }
-    
 
     setIsLoadingSendCode(true)
     input_email.disabled = true
@@ -103,7 +101,6 @@ export default function() {
       return
     }
     
-
     setIsLoadingVerify(true)
     setIsLoadingSendCode(true)
     input_verifyCode.disabled = true

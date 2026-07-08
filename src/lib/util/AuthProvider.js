@@ -52,7 +52,7 @@ export default function({children}){
             return false
         
         if(Date.now() > auth.expire_time)
-            return false        
+            return false
 
         return true
     }

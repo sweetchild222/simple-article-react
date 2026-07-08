@@ -11,8 +11,8 @@ export default function(props) {
     const width = props.size == null ? 64 : props.size
     const height = width
     const borderRadius = shape == 'circle' ? parseInt(width / 2) : 3
-        
-    const [user, setUser] = useState(props.user)
+
+    const [user, setUser] = useState(null)
     const [isError, setIsError] = useState(false)
 
 
@@ -32,6 +32,13 @@ export default function(props) {
         })
         
     },  [props.userId])
+
+
+    useEffect(()=>{
+
+        setUser(props.user)
+
+    }, [props.user])
 
 
     const urlWithSize = (image, width, height) => {

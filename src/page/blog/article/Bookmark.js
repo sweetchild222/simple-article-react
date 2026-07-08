@@ -30,11 +30,8 @@ export default function({article_id, count}) {
             
             if(res.success == false)
                 return
-
-            if(res.payload.length > 0)
-                setIsBookmark(true)
-            else
-                setIsBookmark(false)
+                        
+            setIsBookmark(res.payload.length > 0)            
         })
 
     }, [auth, article_id])

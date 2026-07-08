@@ -49,7 +49,7 @@ export default function() {
 
     useEffect(()=>{        
 
-        ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, article_id).then((article) => {            
+        ArticleAPI.getArticle(validAuth(auth) ? auth.jwt : null, article_id).then((article) => {
 
             if(article.success == false){
                 navigate('/notFound')
@@ -74,19 +74,20 @@ export default function() {
                 }
 
                 setArticle(article.payload)
-                setCategory(category.payload)                
+                setCategory(category.payload)
 
                 ArticleAPI.postArticleShowed(article_id).then(showed => {
                     
                     if(showed.success == true){
                         article.payload.showed += 1
                         setArticle(structuredClone(article.payload))
-                    }                    
+                    }
                 })
             })
         })
 
     }, [auth, blog_id, article_id])
+    
 
     const isEditable = ()=> {
     

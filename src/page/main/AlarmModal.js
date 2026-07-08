@@ -100,7 +100,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
   
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
-              <Vertical style={{alignItems: 'start', width:'512px', minWidth:'512px', maxWidth:'512px', marginLeft:'8px', marginRight:'8px', marginTop:'4px', marginBottom:'4px'}}>
+              <Vertical style={{alignItems: 'start', width:'512px', minWidth:'512px', maxWidth:'512px', marginLeft:'16px', marginRight:'16px', marginTop:'8px', marginBottom:'8px'}}>
                   {newAlarms && newAlarms.slice(fromIndex, fromIndex + pageCount).map((data, index) => 
                       <Horizental key={data.id} style={{marginTop:'8px', marginBottom:'8px', width:'100%'}}>
                         <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} userId={data.from_user_id}/>
@@ -115,7 +115,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
                         <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'8px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<VscTrash size={25}/>}</PrettyButton>
                       </Horizental>
                   )}
-                <Horizental style={{alignItems: 'center', marginTop:'8px', justifyContent:'center', width:'100%', marginBottom:'16px'}}>
+                <Horizental style={{alignItems: 'center', marginTop:'8px', justifyContent:'center', width:'100%', marginBottom:'8px'}}>
                   <div style={{flex:'1'}}/>
                   {newAlarms.length > pageCount && <PrettyButton type='transparent' disabled={fromIndex - pageCount < 0} style={{color:'black'}} onClick={onClickPrev}><GrPrevious size={20}/></PrettyButton>}
                   <div style={{width:'16px'}}/>

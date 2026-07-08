@@ -137,7 +137,6 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
                 <div style={{width:'16px'}}/>
                 <PrettyButton onClick={onClickNo} type='warning' style={{width:'64px'}}>아니오</PrettyButton>
             </div>}
-
             </div>
         </dialog>,
         document.getElementById('modal-root')

@@ -70,7 +70,7 @@ export default function() {
             
             const query = 'blog_id=' + blog_id
 
-            const res = SubscribeAPI.getSubscribe(query).then(res => {
+            SubscribeAPI.getSubscribe(query).then(res => {
 
                 if(res.success == false)
                     return

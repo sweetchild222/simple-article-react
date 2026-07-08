@@ -28,7 +28,7 @@ export default function() {
   const [reloadKey, setReloadKey] = useState(0)
   const [offset, setOffset] = useState(0)
   const [blogIds, setBlogIds] = useState(null)
-  const [currentType, setCurrentType] = useState(0)
+  const [currentType, setCurrentType] = useState(0) //0:최신순, 1:인기순, 2:댓글 많은 순, 3:구독한 글
   
   const countPerPage = 6
 
@@ -41,56 +41,20 @@ export default function() {
 
     setIsOverlayProgress(true)
 
-      ArticleAPI.getArticles(query).then((resArtices) => {
+      loadArticles(query).then((articles) => {
+
+        setIsOverlayProgress(false)
         
-        if(resArtices.success == false){
-          setIsOverlayProgress(false)
+        if(articles == null){
           window.showToast('글을 가져오는데 실패 했습니다', 'error')
-          return 
+          return
         }
-
-        const userIDList = resArtices.payload.map(article => article.user_id);
         
-        UserRepository.getByIDList([...new Set(userIDList)]).then((resUsers)=>{
-                          
-            if(resUsers == null) {
-              setIsOverlayProgress(false)
-                window.showToast('사용자 목록을 가져 올 수 없습니다', 'error')
-                return
-            }
-
-            resArtices.payload.forEach((item, index) =>{
-
-              item.user = resUsers.find(user => (user.id == item.user_id))
-            })
-
-            setIsOverlayProgress(false)
-      
-            setArticles(resArtices.payload)
-        })
+        setArticles(articles.length > 0 ? articles : null)
     })
 
   }, [currentType, offset])
-
-
-  const getQueryByType = (currentType, offset) => {
-
-    
-    if(currentType == 0)
-      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1'
-    else if(currentType == 1)
-      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=like_count&order=1'
-    else if(currentType == 2)
-      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=comment_count&order=1'
-    else if(currentType == 3){
-
-      if(blogIds == null || blogIds.length == 0)
-          return null
-        
-      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1&blog_id=' + blogIds
-    }
-  }
-
+  
 
   useEffect(()=>{
 
@@ -110,11 +74,49 @@ export default function() {
   }, [auth])
 
 
-
   const loadArticles = async(query) => {
 
+    const resArticles = await ArticleAPI.getArticles(query)
+        
+    if(resArticles.success == false)
+      return null
 
+    const articles = resArticles.payload
+      
+    const userIDList = articles.map(article => article.user_id)
+        
+    const resUsers = await UserRepository.getByIDList([...new Set(userIDList)])
+                          
+    if(resUsers == null)
+      return null
+
+    articles.forEach((item, index) => {
+      item.user = resUsers.find(user => (user.id == item.user_id))
+    })
+
+    return articles
   }
+
+
+  const getQueryByType = (currentType, offset) => {
+
+    if(currentType == 0)
+      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1'
+    else if(currentType == 1)
+      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=like_count&order=1'
+    else if(currentType == 2)
+      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=comment_count&order=1'
+    else if(currentType == 3){
+
+      if(blogIds == null || blogIds.length == 0)
+          return null
+        
+      return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1&blog_id=' + blogIds
+    }
+  }
+
+
+
 
   const onClickNewest = async()=> {
         
@@ -166,6 +168,7 @@ export default function() {
   const onClickSearch = (e) => {
 
   }
+
 
 
   return (

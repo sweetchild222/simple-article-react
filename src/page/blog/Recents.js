@@ -17,29 +17,35 @@ export default function({ref, blogId, isEdit}) {
     
     useEffect(()=> {
         
-        loadArticles()
+        loadArticles(blogId).then(articles => {
+
+            if(articles == null){
+                window.showToast('최근 작성한 글을 가져 올 수 없습니다', 'error')
+                return
+            }
+        
+            setArticles(articles.length > 0 ? articles : null)
+        })
 
     }, [blogId])
 
 
-    const loadArticles = async() => {
+    const loadArticles = async(blog_id) => {
 
         const query = 'offset=0&limit=5&order=1'
 
-        const articles = await ArticleAPI.getBlogArticles(null, blogId, query)
+        const articles = await ArticleAPI.getBlogArticles(null, blog_id, query)
 
-        if(articles.success == false){
-            window.showToast('최근 작성한 글을 가져 올 수 없습니다', 'error')
-            return
-        }
-        
-        setArticles(articles.payload.length > 0 ? articles.payload : null)
+        if(articles.success == false)
+            return null
+
+        return articles.payload
     }
 
 
     const onClickArticle = (id) =>{
 
-        navigate('article/' + id)        
+        navigate('article/' + id)
     }
 
 

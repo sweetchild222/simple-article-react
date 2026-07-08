@@ -100,29 +100,28 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
   
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
-              <Vertical style={{alignItems: 'start', width:'500px', minWidth:'500px', maxWidth:'500px', marginLeft:'10px', marginRight:'10px', marginTop:'5px', marginBottom:'5px'}}>
+              <Vertical style={{alignItems: 'start', width:'512px', minWidth:'512px', maxWidth:'512px', marginLeft:'8px', marginRight:'8px', marginTop:'4px', marginBottom:'4px'}}>
                   {newAlarms && newAlarms.slice(fromIndex, fromIndex + pageCount).map((data, index) => 
-                      <Horizental key={data.id} style={{marginTop:'10px', marginBottom:'10px', width:'100%',}}>
+                      <Horizental key={data.id} style={{marginTop:'8px', marginBottom:'8px', width:'100%'}}>
                         <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} userId={data.from_user_id}/>
-                        <Vertical style={{marginLeft:'10px'}}>
-                          <Horizental style={{marginBottom:'5px'}}>
-                            <div style={{color:'gray', fontSize:'14px', marginRight:'10px'}}>{data.user.nickname}</div>
+                        <Vertical style={{marginLeft:'8px'}}>
+                          <Horizental style={{marginBottom:'4px'}}>
+                            <div style={{color:'gray', fontSize:'14px', marginRight:'8px'}}>{data.user.nickname}</div>
                             <div style={{color:'gray', fontSize:'14px', whiteSpace:'pre'}}>{ElapsedTime(data.create_at)}</div>
                           </Horizental>
                           <div className={'clamped-text underline-text'} style={{'--line-count':2, height:'2lh', color:(data.checked == 0 ? 'black' : 'darkgray')}} dangerouslySetInnerHTML={{ __html: data.seenComment}} onClick={()=> onClickAlarm(data)}></div>
                         </Vertical>
                         <Horizental style={{flex:'1'}} onClick={()=> onClickAlarm(data)}></Horizental>
-                        <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'10px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<VscTrash size={25}/>}</PrettyButton>
+                        <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'8px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<VscTrash size={25}/>}</PrettyButton>
                       </Horizental>
                   )}
-                <Horizental style={{alignItems: 'center', marginTop:'10px', justifyContent:'center', width:'100%'}}>
+                <Horizental style={{alignItems: 'center', marginTop:'8px', justifyContent:'center', width:'100%', marginBottom:'16px'}}>
                   <div style={{flex:'1'}}/>
                   {newAlarms.length > pageCount && <PrettyButton type='transparent' disabled={fromIndex - pageCount < 0} style={{color:'black'}} onClick={onClickPrev}><GrPrevious size={20}/></PrettyButton>}
-                  <div style={{width:'20px'}}/>
+                  <div style={{width:'16px'}}/>
                   {newAlarms.length > pageCount && <PrettyButton type='transparent' disabled={!(newAlarms.length > (fromIndex + pageCount))} style={{color:'black'}} onClick={onClickNext}><GrNext size={20}/></PrettyButton>}
                   <div style={{flex:'1'}}/>
-                  <PrettyButton type='danger' onClick={onClose}>닫기</PrettyButton>
-                                    
+                  <PrettyButton type='danger' onClick={onClose} style={{width:'64px'}}>닫기</PrettyButton>
                 </Horizental>
               </Vertical>
           </dialog>,

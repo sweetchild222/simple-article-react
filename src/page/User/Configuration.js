@@ -1,4 +1,5 @@
 import {useState, useContext, useEffect, useRef} from "react";
+import {useNavigate, useParams} from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
 
@@ -16,8 +17,8 @@ import ImageCropModal from '@gui/ImageCropModal.js'
 import ProfileImage from '@gui/ProfileImage.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
 import * as validator from './Validator.js'
-import {useNavigate} from 'react-router-dom';
 import { LuImageUp } from "react-icons/lu";
+import Integer from "@util/Integer.js";
 
 
 export default function() {
@@ -36,9 +37,18 @@ export default function() {
     const refImageCrop = useRef(null)
     const navigate = useNavigate() 
 
+    const { id } = useParams()
+
+    const user_id = Integer(id)
+        
     useEffect(()=> {
 
         if(!validAuth(auth)){
+            navigate('/')
+            return
+        }
+
+        if(user_id != auth.user_id){
             navigate('/')
             return
         }

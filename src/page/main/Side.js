@@ -20,13 +20,6 @@ import * as UserRepository from "@util/UserRepository.js";
 import { IoIosArrowDown } from "react-icons/io";
 
 
-const NAV_ITEMS = [
-
-  { name: 'Dashboard', icon: '📊', path: '#dashboard' },
-  { name: 'Analytics', icon: '📈', path: '#analytics' },
-  { name: 'Messages', icon: '✉️', path: '#messages' },
-  { name: 'Settings', icon: '⚙️', path: '#settings' },
-];
 
 export default function Sidebar() {
 
@@ -270,8 +263,10 @@ export default function Sidebar() {
         if(alarms == null)
             return
 
-        if(alarms.length == 0)
+        if(alarms.length == 0){
+            window.showToast('알람이 없습니다', 'info')
             return
+        }
 
         setIsOpenAlarmModal(true)
     }

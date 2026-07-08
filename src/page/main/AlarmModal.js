@@ -31,7 +31,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
   
   useEffect(() => {
       
-    if(isOpen){      
+    if(isOpen){
       setFromIndex(0)      
       refDialog.current.showModal()
     }

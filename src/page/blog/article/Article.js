@@ -36,7 +36,7 @@ export default function() {
     const { b_id, a_id } = useParams()
 
     const blog_id = Integer(b_id)
-    const article_id = Integer(a_id)    
+    const article_id = Integer(a_id)
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [article, setArticle] = useState(null)    
@@ -87,7 +87,7 @@ export default function() {
         })
 
     }, [auth, blog_id, article_id])
-    
+
 
     const isEditable = ()=> {
     

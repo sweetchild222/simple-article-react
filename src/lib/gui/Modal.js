@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import PrettyButton from './PrettyButton';
 
-
 export default ({type, title, description, isCloseOutsideClick=true, defaultValue, maxLength, isOpen, onResult, onClose, onInput, children}) => {
     
     const refDialog = useRef(null)
@@ -114,17 +113,31 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
     const randomId = random(0, 100000) // avoid warning Duplicate form field id in the same form 
           
     return ReactDOM.createPortal(
-        <dialog className={'modal'} ref={refDialog} onClick={onClickDialog} onKeyDown={onKeyDownDialog} style={{padding:'5px'}}>
-            <div ref={refDiv}>
-            {title != null && <p style={{fontWeight:'bold', fontSize:'18px'}}>{title}</p>}
-            {description != null && <p style={{whiteSpace: 'pre', fontStyle:'italic', color:'darkgrey'}}>{description}</p>}
+        
+        <dialog ref={refDialog} onClick={onClickDialog} onKeyDown={onKeyDownDialog} style={{padding:'16px'}}>
+            <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            {title != null && <p style={{fontWeight:'500', fontSize:'18px', margin:'0px'}}>{title}</p>}
+            {title != null && description != null && <div style={{height:'8px'}}/>}
+            {description != null && <p style={{whiteSpace:'pre', padding:'0px', color:'darkgrey', margin:'0px'}}>{description}</p>}
+            <div style={{height:'16px'}}/>
             {type == 'custom' && children}
-            {type == 'input' && <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength}/>}
-            {type == 'input' && <PrettyButton onClick={onClickInputYes} type='success'>확인</PrettyButton>}
-            {type == 'input' && < PrettyButton onClick={onClickNo} type='warning'>아니오</PrettyButton>}
-            {type == 'confirm' && <PrettyButton onClick={onClickConfirm} type='confirm'>확인</PrettyButton>}
-            {type == 'yesno' && < PrettyButton onClick={onClickYes} type='success'>예</PrettyButton>}
-            {type == 'yesno' && < PrettyButton onClick={onClickNo} type='warning'>아니오</PrettyButton>}
+
+            {type == 'input' && <div style={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignItems:'center'}}>
+                <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength}/>
+                <div style={{height:'16px'}}/>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
+                    <PrettyButton onClick={onClickInputYes} type='success' style={{width:'64px'}}>확인</PrettyButton>
+                    <div style={{width:'16px'}}/>
+                    <PrettyButton onClick={onClickNo} type='warning' style={{width:'64px'}}>아니오</PrettyButton>
+                </div>
+            </div>}
+            {type == 'confirm' && <PrettyButton onClick={onClickConfirm} style={{width:'64px'}} type='confirm'>확인</PrettyButton>}
+            {type == 'yesno' && <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
+                <PrettyButton onClick={onClickYes} type='success' style={{width:'64px'}}>예</PrettyButton>
+                <div style={{width:'16px'}}/>
+                <PrettyButton onClick={onClickNo} type='warning' style={{width:'64px'}}>아니오</PrettyButton>
+            </div>}
+
             </div>
         </dialog>,
         document.getElementById('modal-root')

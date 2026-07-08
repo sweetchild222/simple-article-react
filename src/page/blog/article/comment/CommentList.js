@@ -42,72 +42,78 @@ export default function({article_id, article_user_id}) {
 
     const navigate = useNavigate()
 
-    useEffect(()=>{        
+    useEffect(()=>{
 
-        CommentAPI.getArticleComments(article_id).then((comments) =>{
+        loadComments(article_id).then((comments) =>{
 
-            if(comments.success == false){
+            if(comments == null){
                 window.showToast('댓글을 가져 올 수 없습니다', 'error')
                 return
             }
+            
+            loadGreat(article_id).then(greats => {
 
-            comments.payload.sort((a, b) => { return b.create_at - a.create_at})
+                comments.forEach((item, index) => {
 
-            const userIDList = comments.payload.map(item => item.user_id)
-        
-            UserRepository.getByIDList([...new Set(userIDList)]).then((resUsers)=>{
-                
-                if(resUsers == null) {
-                    window.showToast('사용자 목록을 가져 올 수 없습니다', 'error')
-                    return
-                }
+                    const great = greats.find(great => (great.comment_id == item.id))
 
+                    if(great != null)
+                        item.greatSet = great
+                    else
+                        item.greatSet = {article_id:article_id, comment_id:item.id, great:0}
 
-                setAtCandidates(resUsers.filter(item => {
-                    
-                    if(validAuth(auth)) {
-
-                        if(item.id == auth.user_id)
-                            return false
-                    }
-
-                    return item.nickname != ''
-                }))
-                
-                comments.payload.forEach((item, index) =>{
-
-                    item.user = resUsers.find(user => (user.id == item.user_id))                    
+                    item.greatSet.like_count = item.like_count
+                    item.greatSet.dislike_count = item.dislike_count
                 })
 
-                getGreat(article_id).then(resGreat => {
+                const upperComments = comments.filter(comment => (comment.comment_id == null))
 
-                    comments.payload.forEach((item, index) => {
+                for(const upperComment of upperComments)
+                    upperComment.replies = comments.filter(reply => reply.comment_id == upperComment.id)
 
-                        const great = resGreat.find(great => (great.comment_id == item.id))
-
-                        if(great != null)
-                            item.greatSet = great
-                        else
-                            item.greatSet = {article_id:article_id, comment_id:item.id, great:0}
-
-                        item.greatSet.like_count = item.like_count
-                        item.greatSet.dislike_count = item.dislike_count
-                    })
-
-
-                    const upperComments = comments.payload.filter(comment => (comment.comment_id == null))
-
-                    for(const upperComment of upperComments)
-                        upperComment.replies = comments.payload.filter(reply => reply.comment_id == upperComment.id)
-
-                    setComments(upperComments)
-
-                    autoShowReplies(upperComments, scrollCommentId)
-                })
-            })
+                setComments(upperComments)
+                autoShowReplies(upperComments, scrollCommentId)
+            })            
         })
-        
+
     }, [article_id])
+
+
+    const loadComments = async(article_id) => {
+
+        const resComments = await CommentAPI.getArticleComments(article_id)
+
+        if(resComments.success == false)
+            return null
+        
+        const comments = resComments.payload
+
+        comments.sort((a, b) => { return b.create_at - a.create_at})
+
+        const userIDList = comments.map(item => item.user_id)
+        
+        const resUsers = await UserRepository.getByIDList([...new Set(userIDList)])
+                
+        if(resUsers == null)
+            return null
+
+        setAtCandidates(resUsers.filter(item => {
+
+            if(validAuth(auth)) {
+
+                if(item.id == auth.user_id)
+                    return false
+            }
+
+            return item.nickname != ''
+        }))
+                
+        comments.forEach((item, index) => {
+            item.user = resUsers.find(user => (user.id == item.user_id))
+        })
+
+        return comments
+    }
 
 
     const autoShowReplies = (comments, comment_id) =>{
@@ -145,7 +151,7 @@ export default function({article_id, article_user_id}) {
     }, [comments])
 
 
-    const getGreat = async(article_id) =>{
+    const loadGreat = async(article_id) =>{
 
         if(!validAuth(auth))
             return []

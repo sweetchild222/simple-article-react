@@ -73,7 +73,6 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
 
         return canvas
       }
-
     }
   }, [refCropper])
 
@@ -81,10 +80,13 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
           <dialog ref={refDialog} className={'imgCropDialog'} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
               <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#CECECE'}}>
                 {isOpen && file && <ImageCropper ref={refCropper} file={file} containerWidth={containerWidth} containerHeight={containerHeight} selectMinWidth={selectMinWidth} keepRatio={keepRatio}/>}
+                <div style={{height:'16px'}}/>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                  <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</PrettyButton>
-                  <PrettyButton type='cancel' onClick={onClose}>취소</PrettyButton>
+                  <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading} style={{width:'64px'}}>선택</PrettyButton>
+                  <div style={{width:'16px'}}/>
+                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>취소</PrettyButton>
                 </div>
+                <div style={{height:'16px'}}/>
               </div>
           </dialog>,
           document.getElementById('modal-root')

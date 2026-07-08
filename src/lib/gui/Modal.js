@@ -117,9 +117,9 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
         <dialog ref={refDialog} onClick={onClickDialog} onKeyDown={onKeyDownDialog} style={{padding:'16px'}}>
             <div ref={refDiv} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {title != null && <p style={{fontWeight:'500', fontSize:'18px', margin:'0px'}}>{title}</p>}
-            {title != null && description != null && <div style={{height:'8px'}}/>}
+            {(title != null && description != null) && <div style={{height:'8px'}}/>}
             {description != null && <p style={{whiteSpace:'pre', padding:'0px', color:'darkgrey', margin:'0px'}}>{description}</p>}
-            <div style={{height:'16px'}}/>
+            {(title != null || description != null) && <div style={{height:'16px'}}/>}
             {type == 'custom' && children}
 
             {type == 'input' && <div style={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignItems:'center'}}>

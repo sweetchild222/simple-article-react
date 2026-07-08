@@ -258,7 +258,7 @@ export default function() {
             <Modal title={'로그아웃 하시겠습니까?'} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
             <div style={{height:'16px'}}/>
             <PrettyButton onClick={onClickPassword} type='default'>비밀번호 변경</PrettyButton>
-            <Modal type={'custom'} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)}>
+            <Modal type={'custom'} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)} isCloseOutsideClick={false}>
                 <Password onClose={() => setIsModalPassword(false)}/>
             </Modal>
             <div style={{height:'16px'}}/>

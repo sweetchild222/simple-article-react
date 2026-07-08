@@ -131,18 +131,28 @@ export default function({onClose}) {
 
 
     return (
-        <Vertical style={{flex:1, backgroundColor:'rgba(255,255,0,0.3)', alignItems: 'center'}}>
+        <Vertical style={{alignItems: 'start'}}>
             {isOverlayProgress && <OverlayProgress type={'relative'}/>}
             <label htmlFor='input_current_password'>기존 비밀번호</label>
-            <input ref={refCurPassword} id='input_current_password' type='text' maxLength={20} onKeyDown={onKeyDownCurrent}/>
-            <label>비밀번호 조건: 8자 ~ 20자 사이 문자열로 영어소문자, 영어대문자, 숫자, 특수문자 포함</label>
+            <div style={{height:'4px'}}/>
+            <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>
+            <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
+            <div style={{height:'16px'}}/>
             <label htmlFor='input_new_password'>새 비밀번호</label>
-            <input ref={refNewPassword} id='input_new_password' type='text' maxLength={20} onKeyDown={onKeyDownNew}/>
+            <div style={{height:'4px'}}/>
+            <input ref={refNewPassword} id='input_new_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownNew}/>
+            <div style={{height:'16px'}}/>
             <label htmlFor='input_repeat_password'>비밀번호 확인</label>
-            <input ref={refRepeatPassword} id='input_repeat_password' type='text' maxLength={20} onKeyDown={onKeyDownRepeat}/>
-            <PrettyButton type="confirm" onClick={onClickPasswordChange}>비밀번호 변경</PrettyButton>
-            <PrettyButton type="confirm" onClick={onClose} type='danger'>취소</PrettyButton>
+            <div style={{height:'4px'}}/>
+            <input ref={refRepeatPassword} id='input_repeat_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownRepeat}/>
+            <div style={{height:'16px'}}/>
+            <Horizental style={{justifyContent:'end', width:'100%'}}>
+                <PrettyButton type="confirm" onClick={onClickPasswordChange} style={{width:'64px'}}>변경</PrettyButton>
+                <div style={{width:'16px'}}/>
+                <PrettyButton type="confirm" onClick={onClose} type='danger' style={{width:'64px'}}>취소</PrettyButton>
+            </Horizental>
         </Vertical>
+
     )
 }
 

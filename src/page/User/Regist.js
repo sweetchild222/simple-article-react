@@ -191,13 +191,11 @@ export default function() {
       window.showToast('이미 존재하는 사용자입니다', 'error')
       return null
     }
-
     
-    const random = randomProfile()
-    const timestamp = Date.now()
+    const random = randomProfile()    
     
     const image = process.env.API_TARGET + '/api/blob/profile/' + random + '.webp'
-    const nickname = random + ' ' + timestamp
+    const nickname = random + ' ' +  Math.floor(Math.random() * 1001)
 
     const resUser = await RegistAPI.postUser(email, password, image, nickname)
 

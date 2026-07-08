@@ -15,7 +15,7 @@ export default function(props) {
 
       setStart(true)
 
-    }, 500)
+    }, 0)
 
   }, [])
 

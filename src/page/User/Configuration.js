@@ -17,6 +17,7 @@ import ProfileImage from '@gui/ProfileImage.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
 import * as validator from './Validator.js'
 import {useNavigate} from 'react-router-dom';
+import { LuImageUp } from "react-icons/lu";
 
 
 export default function() {
@@ -232,7 +233,14 @@ export default function() {
     
     return user ? (
       <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
-        <ProfileImage user={user} onClick={onClickProfile} size={256}/>
+
+        <div style={{position:'relative'}} onClick={onClickProfile}>
+            <ProfileImage user={user} size={256}/>
+            <Horizental style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px', justifyContent:'end', alignItems:'end'}}>
+                <LuImageUp size={64}/>
+            </Horizental>
+        </div>
+        
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <div style={{height:'16px'}}/>
         <Vertical>

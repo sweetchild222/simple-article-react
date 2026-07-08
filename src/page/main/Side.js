@@ -64,11 +64,10 @@ export default function Sidebar() {
             loadBookmarks().then(bookmarks =>{
 
                 if(bookmarks != null)
-                    setBookmarks(bookmarks)                
+                    setBookmarks(bookmarks)
             })
         }
-        else{
-
+        else {
             setAlarms(null)
             setIsOpenAlarmModal(false)
         }
@@ -122,7 +121,7 @@ export default function Sidebar() {
         
         bookmarks.forEach((item, index) => {
             item.article.user = users.find(user => (user.id == item.article.user_id))
-        })            
+        })
                 
         return bookmarks
     }
@@ -219,7 +218,7 @@ export default function Sidebar() {
 
         navigate('/')
     }
-        
+    
 
     const onKeyDown = (e) => {
 

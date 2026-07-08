@@ -8,16 +8,18 @@ import { RiMenuFold3Line } from "react-icons/ri";
 import {useNavigate} from 'react-router-dom';
 import * as AlarmAPI from '@rest/AlarmAPI.js'
 import * as SubscribeAPI from '@rest/SubscribeAPI.js'
+import * as BookmarkAPI from '@rest/BookmarkAPI.js'
+import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
 import ProfileImage from "@gui/ProfileImage.js";
 import AlarmModal from "./AlarmModal.js";
 import { VscBellDot } from "react-icons/vsc";
 import { VscBell } from "react-icons/vsc";
 import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
-
 import * as UserRepository from "@util/UserRepository.js";
+import { IoIosArrowDown } from "react-icons/io";
 
-// 1. Define navigation links array
+
 const NAV_ITEMS = [
 
   { name: 'Dashboard', icon: '📊', path: '#dashboard' },
@@ -31,7 +33,14 @@ export default function Sidebar() {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [alarms, setAlarms] = useState(null)
     const [subscribes, setSubscribes] = useState(null)
+    const [bookmarks, setBookmarks] = useState(null)
     const [isOpenAlarmModal, setIsOpenAlarmModal] = useState(false)
+
+    const subscribeMoreCount = 6
+    const [subscribeCount, setSubscribeCount] = useState(subscribeMoreCount)
+
+    const bookmarkMoreCount = 6
+    const [bookmarkCount, setBookmarkCount] = useState(bookmarkMoreCount)
 
     const [isOpen, setIsOpen] = useState(true);
     const navigate = useNavigate()
@@ -48,9 +57,14 @@ export default function Sidebar() {
 
             loadSubscribe().then(subscribes =>{
 
-                if(subscribes != null){
+                if(subscribes != null)
                     setSubscribes(subscribes)
-                }
+            })
+
+            loadBookmarks().then(bookmarks =>{
+
+                if(bookmarks != null)
+                    setBookmarks(bookmarks)                
             })
         }
         else{
@@ -60,6 +74,58 @@ export default function Sidebar() {
         }
 
     }, [auth])
+
+    
+    const loadBookmarks = async() => {
+
+        if(!validAuth(auth))
+            return null
+
+        const resBookmarks = await BookmarkAPI.getUserBookmark(auth.jwt, auth.user_id, null)
+
+        if(resBookmarks.success == false)
+            return null
+
+        const bookmarks = resBookmarks.payload
+
+        bookmarks.sort((a, b)=> b.id - a.id)
+
+        const articleIdList = bookmarks.map(item => item.article_id);
+
+        const articles = []
+
+        const limit = 100
+        let startIndex = 0
+
+        while(articleIdList.length > startIndex){
+
+            const list = articleIdList.slice(startIndex, startIndex + limit)
+
+            const resArticles = await ArticleAPI.getArticles('id=' + list)
+
+            if(resArticles.success == true)
+                resArticles.payload.map(item=>articles.push(item))
+
+            startIndex += limit
+        }
+
+        bookmarks.forEach((item, index) => {
+            item.article = articles.find(article => (article.id == item.article_id))
+        })
+
+        const user_ids = bookmarks.map(({article}) => article.user_id)
+        
+        const users = await UserRepository.getByIDList([...new Set(user_ids)])
+
+        if(users == null)
+            return null
+        
+        bookmarks.forEach((item, index) => {
+            item.article.user = users.find(user => (user.id == item.article.user_id))
+        })            
+                
+        return bookmarks
+    }
     
 
     const loadAlarms = async()=>{
@@ -90,7 +156,7 @@ export default function Sidebar() {
         const user_ids = alarms.map(({from_user_id}) => from_user_id)
 
         const users = await UserRepository.getByIDList([...new Set(user_ids)])
-                            
+
         for(const alarm of alarms)
             alarm.user = users.find(user => user.id == alarm.from_user_id)
                 
@@ -109,16 +175,29 @@ export default function Sidebar() {
 
         if(resSubscribe.success == false)
             return null
-
+                
+        resSubscribe.payload.sort((a, b)=> b.id - a.id)
+        
         const blogIdList = resSubscribe.payload.map(item => item.blog_id)
 
-        const resBlog = await BlogAPI.getBlogs('id=' + blogIdList)
+        const limit = 100
+        let startIndex = 0
+        const blogs = []
 
-        if(resBlog.success == false)
-            return null
+        while(blogIdList.length > startIndex){
+
+            const list = blogIdList.slice(startIndex, startIndex + limit)
+
+            const resBlog = await BlogAPI.getBlogs('id=' + list)
+
+            if(resBlog.success == true)
+                resBlog.payload.forEach(item=>blogs.push(item))
+            
+            startIndex += limit
+        }
         
         resSubscribe.payload.forEach((item, index) =>{
-            item.blog = resBlog.payload.find(blog => (blog.id == item.blog_id))
+            item.blog = blogs.find(blog => (blog.id == item.blog_id))
         })
 
         const userIdList = resSubscribe.payload.filter(item => item.blog !== null).map(item => item.blog.user_id)
@@ -128,14 +207,10 @@ export default function Sidebar() {
         if(resUsers == null)
             return
 
-
         resSubscribe.payload.forEach((item, index) =>{
             item.user = resUsers.find(user => (user.id == item.blog.user_id))
         })
-
-        console.log(resSubscribe.payload)
-
-        
+                
         return resSubscribe.payload
     }
 
@@ -144,10 +219,7 @@ export default function Sidebar() {
 
         navigate('/')
     }
-    
-
-
-    
+        
 
     const onKeyDown = (e) => {
 
@@ -227,13 +299,9 @@ export default function Sidebar() {
     
         navigate("/blog/" + auth.blog_id)
     }
+    
 
-    const subscribeMoreCount = 2
-    const [subscribeCount, setSubscribeCount] = useState(subscribeMoreCount)
-
-    const onClickMore = async () => {
-
-        
+    const onClickMoreSubscribe = async () => {
 
         if(subscribeCount >= subscribes.length)
             return
@@ -241,8 +309,28 @@ export default function Sidebar() {
         setSubscribeCount(item => item + subscribeMoreCount)
     }
 
-    
+    const onClickNavigateBlog = (blog_id) =>{
 
+        navigate('/blog/' + blog_id)
+    }
+
+
+    const onClickNavigateArticle = (article) => {
+    
+        navigate('/blog/' + article.blog_id  + '/article/' + article.id)            
+    }
+
+
+
+    const onClickMoreBookmark = async () => {
+
+        if(bookmarkCount >= bookmarks.length)
+            return
+
+        setBookmarkCount(item => item + bookmarkMoreCount)
+    }
+
+    
     return (
         <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`} style={{padding:'8px'}}>
             <Horizental style={{justifyContent:'space-between'}}>
@@ -265,35 +353,41 @@ export default function Sidebar() {
             {validAuth(auth) && <div style={{borderBottom: '1px solid #2d2d44', borderTop: '1px solid #2d2d44'}}>
                     <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%'}} onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
                 </div>
-            }            
+            }
         
-            {validAuth(auth) && subscribes && <Vertical>
-                <label style={{color:'white'}}>{'구독한 블로그'}</label>
-            
+            {validAuth(auth) && subscribes && subscribes.length > 0 && <Vertical style={{marginTop:'16px', marginBottom:'8px', paddingBottom:'8px', borderBottom: '1px solid #2d2d44'}}>
+                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{'구독한 블로그'}</label>
+                <div style={{height:'8px'}}></div>
                 {subscribes.slice(0, subscribeCount).map((data, index) => 
-                    <Horizental key={data.id} style={{alignItems:'center'}}>
-                        <ProfileImage user={data.user} size={32}></ProfileImage>
-                        <div style={{width:'16px', maxWidth:'16px', minWidth:'16px'}}/>
-                        <div  className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', marginTop:'10px', marginBottom:'10px', whiteSpace: 'nowrap'}}>{data.blog.title}</div>
+                    <Horizental key={data.id} style={{alignItems:'center', marginTop:'8px', marginBottom:'8px'}} onClick={() => onClickNavigateBlog(data.blog_id)}>
+                        <ProfileImage shape={'circle'} user={data.user} size={32}></ProfileImage>
+                        <div style={{width:'8px', maxWidth:'8px', minWidth:'8px'}}/>
+                        <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap', color:'ghostwhite'}}>{data.blog.title}</div>
                     </Horizental>
                 )}
-                {subscribes.length > subscribeCount && <PrettyButton onClick={onClickMore}>{'더 보기'}</PrettyButton>}
-
+                {subscribes.length > subscribeCount && <Horizental style={{alignItems:'center', cursor:'pointer'}} onClick={onClickMoreSubscribe}>
+                    <IoIosArrowDown size={32}/>
+                    <div className={'clamped-text'} style={{'--line-count':1, whiteSpace: 'nowrap', color:'ghostwhite', marginLeft:'8px'}}>{'더 보기'}</div>
+                    </Horizental>
+                }
             </Vertical>}
 
-            {/* <nav className="sidebar-nav">
-                <ul>
-                {NAV_ITEMS.map((item, index) => (
-                    <li key={index} className="nav-item">
-                    <a href={item.path} className="nav-link">
-                        <span className="nav-icon">{item.icon}</span>
-                        {isOpen && <span className="nav-text">{item.name}</span>}
-                    </a>
-                    </li>
-                ))}
-                </ul>
-            </nav> */}
-            <label style={{color:'white'}}>북마크</label>
+            {validAuth(auth) && bookmarks && bookmarks.length > 0 && <Vertical style={{marginTop:'8px', marginBottom:'8px', paddingBottom:'8px', borderBottom: '1px solid #2d2d44'}}>
+                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{'북마크'}</label>
+                <div style={{height:'8px'}}></div>
+                {bookmarks.slice(0, bookmarkCount).map((data, index) =>
+                    <Horizental key={data.id} style={{alignItems:'center', marginTop:'8px', marginBottom:'8px'}} onClick={() => onClickNavigateArticle(data.article)}>
+                        <ProfileImage shape={'circle'} user={data.article.user} size={32}></ProfileImage>
+                        <div style={{width:'8px', maxWidth:'8px', minWidth:'8px'}}/>
+                        <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap', color:'ghostwhite'}}>{data.article.title}</div>
+                    </Horizental>
+                )}
+                {bookmarks.length > bookmarkCount && <Horizental style={{alignItems:'center', cursor:'pointer'}} onClick={onClickMoreBookmark}>
+                    <IoIosArrowDown size={32}/>
+                    <div className={'clamped-text'} style={{'--line-count':1, whiteSpace: 'nowrap', color:'ghostwhite', marginLeft:'8px'}}>{'더 보기'}</div>
+                    </Horizental>
+                }
+            </Vertical>}
 
         <div style={{flex:'1'}}/>
         <Horizental style={{justifyContent:'center'}}>

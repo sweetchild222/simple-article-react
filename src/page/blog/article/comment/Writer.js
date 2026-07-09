@@ -52,12 +52,12 @@ export default function(props) {
 
     return  (<Vertical style={{position:'relative', justifyContent:'end', width:'100%'}}>
                 <TextArea ref={refArea} atCandidates={atCandidates} onInput={onInput} maxCharLength={maxCharLength}></TextArea>
-                <div style={{height:'5px'}}></div>
+                <div style={{height:'4px'}}></div>
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
-                    <div style={{width:'10px'}}/>
+                    <div style={{width:'8px'}}/>
                     <PrettyButton isLoading={isPostLoading} onClick={()=>onClickPost()}>{'올리기'}</PrettyButton>
-                    <div style={{width:'10px'}}/>
+                    <div style={{width:'8px'}}/>
                     <PrettyButton disabled={isPostLoading ? true : false} onClick={()=>onClickCancel()}>{'취소'}</PrettyButton>
                 </div>
             </Vertical>

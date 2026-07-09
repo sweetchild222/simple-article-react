@@ -554,15 +554,15 @@ export default function({article_id, article_user_id}) {
 
 
     return comments ? (
-        <Vertical style={{marginTop:'20px', width:'100%'}}>
+        <Vertical style={{marginTop:'16px', width:'100%'}}>
             {isOpenCommentEdit && <Writer onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
-            <Horizental style={{justifyContent:'end', alignItems:'center', marginBottom:'10px'}}>
+            <Horizental style={{justifyContent:'end', alignItems:'center', marginBottom:'8px'}}>
                 {comments.length > 0 && 
                     <PrettyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> setIsShowComments(item => !item)}>
                         <Horizental>
                             {'댓글 (' + comments.length + ')'}
                         </Horizental>
-                        <div style={{width:'10px'}}/>
+                        <div style={{width:'8px'}}/>
                         {isShowComments ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
                     </PrettyButton>
                 }
@@ -572,41 +572,41 @@ export default function({article_id, article_user_id}) {
             </Horizental>
             
             {isShowComments && comments.map((data, index) => 
-                <Vertical key={data.id} style={{marginBottom:'20px'}}
+                <Vertical key={data.id} style={{marginBottom:'16px'}}
                     ref={(node) => { node ? commentRef.current.set(data.id, node) : commentRef.current.delete(data.id)}}
                 >
                     <Horizental>
-                        <Vertical style={{marginRight:'10px'}}>
+                        <Vertical style={{marginRight:'8px'}}>
                             <ProfileImage shape={'circle'} size={48} user={data.user} onClick={()=> onClickNavigateBlog(data.user.blog_id)}/>
                             <ReplyLine isShowReplies={isShowReplies(data.id)} editableId={modifyModeCommentId}/>
                         </Vertical>
                         
                         <Vertical style={{width:'100%'}}>
                             <Horizental>
-                                <div style={{fontSize:'14px', marginRight:'10px', color:'gray'}}>{data.user != null ? data.user.nickname : '알수없음'}</div>
+                                <div style={{fontSize:'14px', marginRight:'8px', color:'gray'}}>{data.user != null ? data.user.nickname : '알수없음'}</div>
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </Horizental>
                             
-                            <div style={{height:'5px'}}/>
+                            <div style={{height:'4px'}}/>
 
                             <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                 <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)} backgroundSmooth={scrollCommentId == data.id}/>
                                 <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </Horizental>
 
-                            <div style={{height:'5px'}}/>
+                            <div style={{height:'4px'}}/>
                             
                             {!(modifyModeCommentId == data.id) && 
-                                <Horizental style={{justifyContent:'space-between', marginBottom:'5px'}}>
+                                <Horizental style={{justifyContent:'space-between', marginBottom:'4px'}}>
                                     <Great comment_id={data.id} greatSet={data.greatSet}></Great>
                                     <PrettyButton type={'success'} tooltip={'답글 작성'} onClick={() => onClickReplyEditOpen(data.id)}>{'답글 작성'}</PrettyButton>
                                 </Horizental>
                             }
 
                             {data.id == openReplyEditCommentId && 
-                                <Horizental style={{marginBottom:'5px'}}>
+                                <Horizental style={{marginBottom:'4px'}}>
                                     <ProfileImage shape={'circle'} size={32} userId={auth.user_id} onClick={()=> onClickNavigateBlog(auth.blog_id)}/>
-                                    <div style={{width:'10px'}}></div>
+                                    <div style={{width:'8px'}}></div>
                                     <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
                                 </Horizental>
                             }
@@ -614,7 +614,7 @@ export default function({article_id, article_user_id}) {
                             {data.replies.length > 0 &&
                                 <PrettyButton id={'replyButton'} type={'transparent'} style={{marginBottom:'10px', color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
                                     {'답글 (' + data.replies.length + ')'}
-                                    <div style={{width:'10px'}}/>
+                                    <div style={{width:'8px'}}/>
                                     {isShowReplies(data.id) ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
                                 </PrettyButton>
                             }
@@ -623,26 +623,26 @@ export default function({article_id, article_user_id}) {
                                 <Horizental key={reply.id} id={'replyDiv'}
                                     ref={(node) => { node ? commentRef.current.set(reply.id, node) : commentRef.current.delete(reply.id)}}
                                 >
-                                    <Vertical style={{marginRight:'10px'}}>
+                                    <Vertical style={{marginRight:'8px'}}>
                                         <ProfileImage shape={'circle'} id={'replyUser'} size={32} user={reply.user} onClick={()=> onClickNavigateBlog(reply.user.blog_id)}/>
                                         <div style={{flex:'1'}}/>
                                     </Vertical>
                                     <Vertical style={{width:'100%'}}>
                                         <Horizental>
-                                            <div style={{fontSize:'14px', marginRight:'10px', color:'gray'}}>{reply.user != null ? data.user.nickname : '알수없음'}</div>
+                                            <div style={{fontSize:'14px', marginRight:'8px', color:'gray'}}>{reply.user != null ? data.user.nickname : '알수없음'}</div>
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
                                         </Horizental>
 
-                                        <div style={{height:'5px'}}/>
+                                        <div style={{height:'4px'}}/>
 
                                         <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                             <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)} backgroundSmooth={scrollCommentId == reply.id}/>
                                             <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
                                         </Horizental>
 
-                                        <div style={{height:'5px'}}/>
+                                        <div style={{height:'4px'}}/>
 
-                                        {!(modifyModeCommentId == reply.id) && <Horizental style={{marginBottom:'5px'}}>
+                                        {!(modifyModeCommentId == reply.id) && <Horizental style={{marginBottom:'4px'}}>
                                             <Great comment_id={reply.id} greatSet={reply.greatSet}></Great>
                                         </Horizental>
                                         }

@@ -94,7 +94,7 @@ export default function({ref, blogId, categoryId}) {
 
     return (
         <Vertical style={{alignItems:'right'}}>
-            <PrettyButton type={'confirm'} tooltip='새글 작성' style={{marginTop:'10px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}>{'새글 작성'}</PrettyButton>
+            <PrettyButton type={'confirm'} tooltip='새글 작성' style={{marginTop:'8px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}>{'새글 작성'}</PrettyButton>
         </Vertical>
     )
 }

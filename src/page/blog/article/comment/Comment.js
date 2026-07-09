@@ -104,17 +104,17 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
     return seenComment ? (
             <Vertical className={backgroundSmooth == true ? 'background-smooth' : ''} style={{position:'relative', justifyContent:'end', alignItems:'start', width:editable ? '100%' : 'auto'}}>
                 {editable && <TextArea ref={refArea} comment={editingComment} atCandidates={atCandidates} onInput={onInput} maxCharLength={maxCharLength}></TextArea>}
-                {!editable && <div ref={refComment} dangerouslySetInnerHTML={{ __html: seenComment}} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', width:'auto', padding:'5px'}}/>}
+                {!editable && <div ref={refComment} dangerouslySetInnerHTML={{ __html: seenComment}} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', width:'auto', padding:'4px'}}/>}
                 
                 {!editable && isClamped && !isExpand && <div style={{position: 'absolute', alignSelf:'end'}}>
                     <PrettyButton type={'transparent'} style={{color:'orange', backgroundColor:'lavender'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={16}/></PrettyButton>
                 </div>}
 
-                {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center', marginTop:'5px'}}>
+                {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center', marginTop:'4px'}}>
                     <label>{inputLength}</label>
-                    <div style={{width:'10px'}}/>
+                    <div style={{width:'8px'}}/>
                     <PrettyButton tooltip={'수정'} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner} >{'수정'}</PrettyButton>
-                    <div style={{width:'10px'}}></div>
+                    <div style={{width:'8px'}}></div>
                     <PrettyButton tooltip={'취소'} disabled={isModifyLoading} onClick={onClickModifyCancelInner}>{'취소'}</PrettyButton>
                 </Horizental>
                 }

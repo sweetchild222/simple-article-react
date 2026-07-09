@@ -53,7 +53,7 @@ export default function(props) {
 
         const ctx = canvas.getContext("2d")
 
-        const margin = 5
+        const margin = 4
         const color = 'darkgray'
         const lineWidth = 2
 

@@ -17,8 +17,8 @@ export default function({totalPageCount, displayPageCount, onClickPage}) {
 
     const pageNumWidth = 100
 
-    const movingBarMarginLeft = 10
-    const movingBarMarginRight = 10
+    const movingBarMarginLeft = 8
+    const movingBarMarginRight = 8
     
     const getCurPageList = () => {
 

@@ -274,21 +274,21 @@ export default function() {
     return blog ? (
             <div style={{backgroundColor:' #24262F', height:'168px', minHeight:'168px', backgroundImage: blog.image != '' && ('url(' + blog.image + '?size=1920x168)'), backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black',  position: 'relative'}}>
                 <div style={{backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%', top:'0', left:'0', zIndex:'10'}}>
-                <Horizental style={{alignItems: 'center', height:'100%', padding:'0px 10px 0px 32px'}}>
+                <Horizental style={{alignItems: 'center', height:'100%', padding:'0px 8px 0px 32px'}}>
                     <ProfileImage size={96} shape={'circle'} userId={blog.user_id} onClick={onClickNavigateBlog}/>
                     <Vertical style={{marginLeft:'32px', marginRight:'32px'}}>
                         <Horizental style={{alignItems: 'center'}}>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{nickname != null ? '@' + nickname: ' ' }</label>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'  •  '}</label>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'구독자 ' + (subscribeCount != null ? CountWithUnit(subscribeCount) : '')}</label>
-                            <div style={{width:'10px'}}></div>
+                            <div style={{width:'8px'}}></div>
                             {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
                         </Horizental>
                         <Horizental style={{alignItems: 'center'}}>
                             <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1,  backgroundColor:'#00000000', color:'white', fontSize:'24px', borderColor:'white', textOverflow:'ellipsis'}}>{blog.title}</label>
                             {isEditable() && <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>}
                             <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
-                            {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}                            
+                            {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}
                             {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
                         </Horizental>
                     </Vertical>

@@ -138,7 +138,7 @@ export default function() {
                 </Vertical>) : 
                 (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px'}}>
                   {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
-                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}                  
+                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}
                   {isEditable() && <CreateArticle blogId={blog_id} categoryId={selectedCategory.id}/>}
                 </Vertical>)
               )}

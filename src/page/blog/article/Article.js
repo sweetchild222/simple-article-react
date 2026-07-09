@@ -187,9 +187,9 @@ export default function() {
         <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', minWidth:'960px', maxWidth:'960px'}}>
             
             {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>}
-            {article.thumbnail != '' && <div style={{height:'30px'}}></div>}
+            {article.thumbnail != '' && <div style={{height:'32px'}}></div>}
             
-            <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px', padding:'0px 0px 20px 0px'}}>{article.title}</div>
+            <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px', padding:'0px 0px 16px 0px'}}>{article.title}</div>
             <Horizental style={{width:'100%', alignItems:'center'}}>
                 {category &&
                     <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap'}} onClick={onClickNavigateCategory}>{category.name}</div>
@@ -205,7 +205,7 @@ export default function() {
                 <div style={{width:'8px'}}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('right')}><FaAlignRight size={22}/></PrettyButton>
 
-                <Horizental style={{whiteSpace: 'nowrap', color:'gray', flex:'1', justifyContent:'end', marginRight:'10px'}}>
+                <Horizental style={{whiteSpace: 'nowrap', color:'gray', flex:'1', justifyContent:'end', marginRight:'8px'}}>
                     {article.post_at ? ElapsedTime(article.post_at) + '': ''}
                 </Horizental>
 
@@ -216,18 +216,18 @@ export default function() {
                     </div>
                 }
             </Horizental>
-            <div style={{height:'1px', backgroundColor:'lightgray', width:'100%', borderRadius:'1px', marginTop:'5px'}}></div>
-            <div style={{height:'20px'}}></div>
+            <div style={{height:'1px', backgroundColor:'lightgray', width:'100%', borderRadius:'1px', marginTop:'4px'}}></div>
+            <div style={{height:'16px'}}></div>
             <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', textAlign:textAlign, width:'100%'}}/>
-            <div style={{height:'20px'}}></div>
-            <Horizental style={{justifyContent:'space-between', alignItems:'center', marginBottom:'5px', width:'100%'}}>
+            <div style={{height:'16px'}}></div>
+            <Horizental style={{justifyContent:'space-between', alignItems:'center', marginBottom:'4px', width:'100%'}}>
                 <Bookmark article_id={article.id} count={article.bookmark_count}/>
                 <Great style={{marginLeft: 'auto'}} article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
             </Horizental>
 
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
             <CommentList article_id={article.id} article_user_id={article.user_id}/>
-            <div style={{height:'20px'}}/>
+            <div style={{height:'16px'}}/>
             <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>
         </Vertical>
     ) : <OverlayProgress/>

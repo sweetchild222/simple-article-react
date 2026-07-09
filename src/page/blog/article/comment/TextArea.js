@@ -105,9 +105,9 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
 
                 const rect = element.getBoundingClientRect()
 
-                const menuHeight = 30 * atCandidates.length
+                const menuHeight = 32 * atCandidates.length
 
-                const topMargin = 30
+                const topMargin = 32
             
                 const menuBottom = rect.y + top - element.scrollTop + menuHeight + topMargin
 
@@ -265,7 +265,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
             <div style={{width:'100%'}}>
                 {<div style={{display:'grid', gridTemplateColumns:'1fr', width:'100%'}}>
                     <textarea ref={refTextArea} className={'area'}  placeholder={'글을 입력하세요'} defaultValue={comment} suppressContentEditableWarning={true} maxLength={maxCharLength}
-                    style={{width:'100%',  minHeight: '4lh', maxHeight:'6lh', resize:'none',  border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'5px', borderRadius:'3px'}} onInput={onInputInner}/>
+                    style={{width:'100%',  minHeight: '4lh', maxHeight:'6lh', resize:'none',  border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'4px', borderRadius:'3px'}} onInput={onInputInner}/>
                 </div>
                 }
 
@@ -273,7 +273,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
                     <ul ref={refMenu} className={'atCandidates'} style={{left:menuPosition.x, top:menuPosition.y}}>
                         {atCandidates.map((user, index) =>
                             user.nickname != '' ? 
-                                <PrettyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%', height:'30px'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</PrettyButton>
+                                <PrettyButton key={user.id} type={'transparent'}  style={{color:'black', width:'100%', height:'32px'}} onClick={() => onClickUser(user)}>{'@' + user.nickname}</PrettyButton>
                             :null)
                         }
                     </ul>

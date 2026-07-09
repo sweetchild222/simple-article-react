@@ -16,4 +16,3 @@ export default function(id) {
 
     return int_id
 }
-        

@@ -5,6 +5,7 @@ import PrettyButton from "@gui/PrettyButton.js"
 import ReactDOM from 'react-dom';
 import { VscTrash } from "react-icons/vsc";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import { CiSquarePlus } from "react-icons/ci";
 
 export default function({ref, isOpen, onClose, onClickApply, categories}) {
       
@@ -166,16 +167,19 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
 
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
-              <Vertical ref={refListDiv} style={{alignItems: 'center'}}>                
+              <Vertical ref={refListDiv} style={{alignItems: 'center', marginLeft:'16px', marginRight:'16px', marginTop:'8px', marginBottom:'8px'}}>  
                   {newCategories && newCategories.map((data, index) => 
-                    <Horizental key={data.id} style={{ display: 'flex', flexDirection: 'row'}}>
-                      <input key={data.id} style={{color:'black', width:'150px'}} maxLength={16} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
-                      <PrettyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.article_count > 0) ? 'gray' : 'black')}}size={15}/></PrettyButton>
+                    <Horizental key={data.id} style={{ display: 'flex', flexDirection: 'row', marginTop:'8px', marginBottom:'8px'}}>
+                      <input key={data.id} style={{color:'black', width:'256px'}} maxLength={16} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
+                      <div style={{width:'8px'}}></div>
+                      <PrettyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.article_count > 0) ? 'gray' : 'black')}} size={25}/></PrettyButton>
                     </Horizental>
                   )}
-                <Horizental style={{alignItems: 'center', alignSelf:'end'}}>
-                  <PrettyButton type='confirm' onClick={onCliCkAdd}>추가</PrettyButton>
+                <Horizental style={{alignItems: 'center', alignSelf:'center', marginBottom:'8px', marginTop:'8px', width:'100%'}}>
+                  <PrettyButton type='transparent' style={{color:'black'}} onClick={onCliCkAdd}><CiSquarePlus size={25}></CiSquarePlus></PrettyButton>
+                  <div style={{flex:'1'}}></div>
                   <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</PrettyButton>
+                  <div style={{width:'8px'}}></div>
                   <PrettyButton type='cancel' onClick={onClose}>취소</PrettyButton>
                 </Horizental>
               </Vertical>

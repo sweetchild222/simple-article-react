@@ -41,10 +41,10 @@ export default function({article, categoryName}) {
     }
     
     return (
-        <Horizental onClick={onClickNavigateArticle} style={{flex:'1', padding:'10px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5', marginBottom:'16px', marginTop:'16px'}}>
-            <Vertical style={{ flex:'1', marginLeft:'5px', marginRight:'5px'}}>
-                <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'500', marginBottom:'10px', color:'#1A1A1A'}}>{article.title != '' ? article.title: '...'}</div>
-                <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'10px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head : '내용 없음')}</div>
+        <Horizental onClick={onClickNavigateArticle} style={{flex:'1', padding:'8px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5', marginBottom:'16px', marginTop:'16px'}}>
+            <Vertical style={{ flex:'1', marginLeft:'4px', marginRight:'4px'}}>
+                <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'500', marginBottom:'8px', color:'#1A1A1A'}}>{article.title != '' ? article.title: '...'}</div>
+                <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'8px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head : '내용 없음')}</div>
                 <div style={{flex:'1'}}></div>
                 <Horizental style={{alignItems:'center', color:'#888888'}}>
                     {article.posted == 1 &&
@@ -64,7 +64,7 @@ export default function({article, categoryName}) {
                         </Horizental>
                     }
                     {article.posted == 0 && <Horizental style={{marginRight:'32px'}}>
-                            <div className={'clamped-text'} style={{'--line-count':1, width:'160px'}}>{categoryName}</div>
+                            <div className={'clamped-text'} style={{'--line-count':1}}>{categoryName}</div>
                         </Horizental>
                     }
                     <Horizental style={{flex:'1', whiteSpace: 'nowrap', justifyContent:'flex-end'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</Horizental>

@@ -136,7 +136,7 @@ export default function({onClose}) {
             <label htmlFor='input_current_password'>기존 비밀번호</label>
             <div style={{height:'4px'}}/>
             <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>
-            <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
+            <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
             <div style={{height:'16px'}}/>
             <label htmlFor='input_new_password'>새 비밀번호</label>
             <div style={{height:'4px'}}/>

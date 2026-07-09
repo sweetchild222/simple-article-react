@@ -20,6 +20,8 @@ export default function() {
     const { id } = useParams()
 
     const user_id = Integer(id)
+
+    
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
     const [user, setUser] = useState(null)    
@@ -73,7 +75,7 @@ export default function() {
 
 
     return user ? (
-      <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
+      <Vertical style={{margin:'auto', height:'100%', alignItems:'center', justifyContent:'center'}}>
         <ProfileImage size={256} shape={'rect'} user={user}/>
         <div style={{height:'16px'}}/>
         <label style={{fontSize:'24px', fontWeight:'bold'}}>{user.nickname}</label>

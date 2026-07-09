@@ -111,7 +111,7 @@ export default function() {
         }
 
         setImageFile(imageFile.file)
-        setIsModalImageCrop(true)        
+        setIsModalImageCrop(true)
     }
 
 
@@ -242,8 +242,7 @@ export default function() {
 
     
     return user ? (
-      <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
-
+      <Vertical style={{margin:'auto', height:'100%', alignItems:'center', justifyContent:'center'}}>
         <div style={{position:'relative'}} onClick={onClickProfile}>
             <ProfileImage user={user} size={256}/>
             <Horizental style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px', justifyContent:'end', alignItems:'end'}}>

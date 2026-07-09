@@ -16,14 +16,11 @@ export default function() {
 
   const [passwordValid, setPasswordValid] = useState(false);
   const [isVerified, setIsVerified] = useState(false)
+
   const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)
   const [isDisabledSendCode, setIsDisabledSendCode] = useState(false)
-
-  const [isLoadingVerify, setIsLoadingVerify] = useState(false)
-  const [isDisabledVerify, setIsDisabledVerify] = useState(false)
-
-  const [isLoadingRegist, setIsLoadingRegist] = useState(false)
-  const [isDisabledRegist, setIsDisabledRegist] = useState(false)
+  const [isLoadingVerify, setIsLoadingVerify] = useState(false)  
+  const [isLoadingRegist, setIsLoadingRegist] = useState(false)  
 
   const location = useLocation()
   const comback = location.state != null && location.state.comback == true
@@ -32,13 +29,10 @@ export default function() {
 
     if(isVerified == true){
       input_email.disabled = true
-      input_verifyCode.disabled = true
-      setIsDisabledVerify(true)
+      input_verifyCode.disabled = true      
       setIsDisabledSendCode(true)
     }
-    else
-      setIsDisabledRegist(true)
-
+  
   }, [isVerified])
 
 
@@ -174,7 +168,7 @@ export default function() {
 
     const staticProfile = ['bear', 'tiger', 'sheep', 'boar', 'elephant', 'lion', 'sheep', 'rhino', 'cat']
     
-    const randomIndex = getRandomUnsignedInt(0, staticProfile.length - 1)
+    const randomIndex = getRandomUnsignedInt(0, staticProfile.length - 1)    
 
     return staticProfile[randomIndex]
   }
@@ -220,16 +214,6 @@ export default function() {
   }
 
 
-  const onChangeVerifyCode = (event) => {
-
-    const verifyCode = event.target.value
-
-    const valid = validator.verifyCode(verifyCode)
-
-    setIsDisabledVerify(!valid)
-  }
-
-
   const onChangePassword = (event) => {
 
     const password =  event.target.value
@@ -238,11 +222,7 @@ export default function() {
     
     const valid = (validator.password(password) && confirm_password === password)
 
-    setPasswordValid(valid)
-
-    if(isVerified == true)
-      setIsDisabledRegist(!valid)
-      
+    setPasswordValid(valid)    
   }
 
 
@@ -255,30 +235,32 @@ export default function() {
     const valid = (validator.password(password) && confirm_password === password)
 
     setPasswordValid(valid)
-  
-    if(isVerified == true)
-      setIsDisabledRegist(!valid)
   }
 
   return !validAuth(auth) ? (
-    <Vertical style={{alignItems: 'center' }}>
-      <Horizental style={{ alignItems: 'center' }}>
-        <input id='input_email' type="text" maxLength="254" onChange={onChangeEmail} placeholder="이메일" maxLength={254}/>
+    <Vertical style={{alignItems: 'center', justifyContent:'center', margin:'auto', padding:'16px'}}>
+      <Horizental style={{ alignItems: 'center', width:'100%'}}>
+        <input id={'input_email'} type={'text'} onChange={onChangeEmail} placeholder="이메일" maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
+        <div style={{width:'8px'}}/>
         <PrettyButton isLoading={isLoadingSendCode} disabled={isDisabledSendCode} onClick={onClickSendVerifyCode}>인증 번호 발송</PrettyButton>
       </Horizental>
+      <div style={{height:'8px'}}/>
+      <Horizental style={{ alignItems: 'center', width:'100%'}}>
+        <input id={'input_verifyCode'} type={'number'} placeholder="인증 코드" style={{flex:'1', boxSizing:'border-box'}}/>
+        <div style={{width:'8px'}}/>
+        <PrettyButton isLoading={isLoadingVerify} disabled={isVerified} onClick={onClickRequestVerify}>인증 번호 확인</PrettyButton>
+      </Horizental>      
 
-      <input id='input_verifyCode' type="number" maxLength="6" onChange={onChangeVerifyCode} placeholder="인증 코드"/>
-      <PrettyButton isLoading={isLoadingVerify} disabled={isDisabledVerify} onClick={onClickRequestVerify}>인증 번호 확인</PrettyButton>
-      <label>{isVerified ? '인증 완료' : '미 인증'}</label>
+      <div style={{height:'16px'}}/>
 
-      <div style={{height:100}}></div>
-      <Horizental style={{alignItems: 'center' }}>
-        <input id='input_password' type="text" onChange={onChangePassword} placeholder="비밀번호 (8~20자)" maxLength={20}/>
-      </Horizental>
-      <input id='input_confirm_password' type="text" onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20}/>
-      <label>비밀번호 조건: 소문자, 대문자, 숫자, 특수문자 각 1개 이상 포함</label>
-      <label>{passwordValid ? '유효한 패스워드' : '무효한 패스워드'}</label>
-      <PrettyButton isLoading={isLoadingRegist} disabled={isDisabledRegist} onClick={onClickRegist} type='confirm'>회원 가입</PrettyButton>
+      <Vertical style={{ alignItems: 'center', width:'100%'}}>
+        <input id='input_password' type="text" disabled={!isVerified} onChange={onChangePassword} placeholder="비밀번호 (8~20자)" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
+        <div style={{height:'8px'}}/>
+        <input id='input_confirm_password' type="text" disabled={!isVerified} onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
+        <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
+      </Vertical>      
+      <div style={{height:'16px'}}/>
+      <PrettyButton isLoading={isLoadingRegist} disabled={!(isVerified && passwordValid)} onClick={onClickRegist} type='confirm' style={{width:'100%', boxSizing:'border-box'}}>회원 가입</PrettyButton>
     </Vertical>
   ) : (<GoBack value={'로그인된 사용자는 접근 할 수 없습니다'}/>)
 }

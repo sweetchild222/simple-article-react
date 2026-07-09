@@ -313,36 +313,34 @@ export default function() {
 
     const memoMDXEditor = useMemo(() => {
 
-        console.log(state.content)
-
         return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} markdown={state.content}
                     onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                             
     }, [])
 
     return validAuth(auth) ? (
-        <div style={{flex:1, position: 'relative', margin:'20px 20px 20px 20px'}}>
+        <div style={{flex:1, position: 'relative', marginLeft:'16px', marginRight:'16px'}}>
             {isOverlayProgress && <OverlayProgress/>}
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
-                <Split visible={true} style={{maxHeight:'calc(100vh - 192px)', width:'100%'}}>
-                    <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'6px'}}>
+                <Split visible={true} style={{maxHeight:'calc(100vh - 292px)', width:'100%'}}>
+                    <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'8px'}}>
                         {memoMDXEditor}
                     </div>
-                
-                    {isPreview && <div style={{overflowY:'auto', minWidth:'10%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'6px'}}>
-                        <div ref={refPreview} style={{margin:'10px', wordBreak:'break-all'}}/>
+
+                    {isPreview && <div style={{overflowY:'auto', minWidth:'10%', width: '50%', flex: 1, border:'1px solid lightgray', borderRadius:'8px'}}>
+                        <div ref={refPreview} style={{margin:'8px', wordBreak:'break-all'}}/>
                     </div>
                     }
                 </Split>
-                <label ref={refLength} style={{marginLeft:'auto', fontSize:'12px', color:'gray'}}>{state.content.length + '/65535'}</label>
-                <Horizental style={{flex: 0, alignItems: 'center', marginTop:'10px'}}>
-                    <PrettyButton type='danger' style={{marginRight:'10px'}} onClick={onClickDelete}>삭제</PrettyButton>
-                    <PrettyButton type='danger' style={{marginRight:'10px'}} onClick={onClickLeave}>나가기</PrettyButton>
+                <label ref={refLength} style={{marginLeft:'auto', fontSize:'16px', color:'gray'}}>{state.content.length + '/65535'}</label>
+                <Horizental style={{flex: 0, alignItems: 'center', marginTop:'16px'}}>
+                    <PrettyButton type='danger' style={{marginRight:'8px'}} onClick={onClickDelete}>삭제</PrettyButton>
+                    <PrettyButton type='danger' style={{marginRight:'8px'}} onClick={onClickLeave}>나가기</PrettyButton>
                     <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
-                    <PrettyButton type='confirm' style={{marginRight:'10px'}} onClick={onClickPost}>{state.source_id != null ? '수정하기': '올리기'}</PrettyButton>
-                    <PrettyButton type='success' style={{marginRight:'10px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</PrettyButton>
+                    <PrettyButton type='confirm' style={{marginRight:'8px'}} onClick={onClickPost}>{state.source_id != null ? '수정하기': '올리기'}</PrettyButton>
+                    <PrettyButton type='success' style={{marginRight:'8px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</PrettyButton>
                     <Modal title={'나가기 전에 임시 저장 하시겠습니까?'} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
-                    <div style={{flex:'1', backgroundColor:'red'}}></div>
+                    <div style={{flex:'1'}}/>
                     <PrettyButton type='success' onClick={onClickPreview}>미리보기</PrettyButton>
                 </Horizental>
             </div>

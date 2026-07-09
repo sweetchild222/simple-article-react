@@ -34,11 +34,11 @@ export default function() {
   const countPerPage = 6
 
   useEffect(() => {
-    
+        
     const query = getQueryByType(currentType, offset, keyword)
 
     if(query == null)
-      return
+      return    
 
     setIsOverlayProgress(true)    
 
@@ -59,8 +59,10 @@ export default function() {
 
   useEffect(()=>{
 
-    if(!validAuth(auth))
+    if(!validAuth(auth)){
+      setBlogIds(null)
       return
+    }
     
     SubscribeAPI.getSubscribe('user_id=' + auth.user_id).then(res=>{
 
@@ -197,8 +199,8 @@ export default function() {
         <PrettyButton onClick={onClickFavorite}>{'인기순'}</PrettyButton>
         <div style={{width:'8px'}}/>
         <PrettyButton onClick={onClickManyComment}>{'댓글 많은 순'}</PrettyButton>
-        <div style={{width:'8px'}}/>
-        <PrettyButton onClick={onClickSubscribe}>{'구독한 블로그'}</PrettyButton>
+        {blogIds && <div style={{width:'8px'}}/>}
+        {blogIds && <PrettyButton onClick={onClickSubscribe}>{'구독한 블로그'}</PrettyButton>}
         <Horizental style={{flex:'1'}}></Horizental>
         <div style={{width:'8px'}}/>
         <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'80px', maxWidth:'300px'}} onKeyDown={onKeyDown}></input>

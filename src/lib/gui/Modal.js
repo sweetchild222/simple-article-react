@@ -20,7 +20,7 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
                 refInput.current.setSelectionRange(refInput.current.value.length, refInput.current.value.length)
             }            
         }
-        else{            
+        else{
             refDialog.current.close()
         }
 
@@ -122,8 +122,8 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
             {(title != null || description != null) && <div style={{height:'16px'}}/>}
             {type == 'custom' && children}
 
-            {type == 'input' && <div style={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignItems:'center'}}>
-                <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength}/>
+            {type == 'input' && <div style={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignItems:'center', width:'100%'}}>
+                <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength} style={{width:'100%', minWidth:'300px', boxSizing:'border-box'}}/>
                 <div style={{height:'16px'}}/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
                     <PrettyButton onClick={onClickInputYes} type='success' style={{width:'64px'}}>확인</PrettyButton>

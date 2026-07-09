@@ -223,9 +223,9 @@ export default function() {
         {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
       </div>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
-        <PrettyButton disabled={offset == 0} onClick={onClickPrev}> {<GrPrevious size={16}/>}</PrettyButton>
+        <PrettyButton disabled={offset == 0} onClick={onClickPrev} style={{width:'64px'}}> {<GrPrevious size={16}/>}</PrettyButton>
         <div style={{width:'64px'}}></div>
-        <PrettyButton disabled={articles.length == 0} onClick={onClickNext}> {<GrNext size={16}/>}</PrettyButton>
+        <PrettyButton disabled={articles.length == 0} onClick={onClickNext} style={{width:'64px'}}> {<GrNext size={16}/>}</PrettyButton>
       </Horizental>}
       <div style={{height:'32px', minHeight:'32px', maxHeight:'32px'}}/>
     </Vertical>

@@ -123,7 +123,7 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
             {type == 'custom' && children}
 
             {type == 'input' && <div style={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignItems:'center', width:'100%'}}>
-                <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength} style={{width:'100%', minWidth:'300px', boxSizing:'border-box'}}/>
+                <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength} style={{width:'100%', minWidth:'256px', boxSizing:'border-box'}}/>
                 <div style={{height:'16px'}}/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
                     <PrettyButton onClick={onClickInputYes} type='success' style={{width:'64px'}}>확인</PrettyButton>

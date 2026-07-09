@@ -36,10 +36,6 @@ export default function() {
         const username = input_username.value
         const password = input_password.value
         
-        //const username = 'crazygun22@nate.com'
-        //const username = 'sweetchild22.ik@gmail.com'
-        //const password = 'Sweetchild@22'
-
         if(username === ''){
             input_username.focus()
             return
@@ -88,17 +84,34 @@ export default function() {
         if (event.key === 'Enter')
             input_password.focus()
     }
+
+
+    const onClickFindPassword = async(event) =>{
+
+        console.log('sadfsd')
+
+    }
     
 
-    return (
-        <Vertical style={{alignItems: 'center'}}>
-            <label htmlFor='input_username'>사용자 이름</label>
-            <input id='input_username' type='text' defaultValue={'crazygun22@nate.com'} onKeyDown={onKeyDownUserName} maxLength={254}/>
-            <label htmlFor='input_password'>비밀번호</label>
-            <input id='input_password' type='password' defaultValue={'Sweetchild@22'} onKeyDown={onKeyDownPassword} maxLength={254}/>
-            <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</PrettyButton>
-            <PrettyButton onClick={() => {navigate('regist', {state:{comback:comback}, replace:true})}}>회원가입</PrettyButton>
-        </Vertical>
+    return (        
+        <Horizental style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}> 
+            <Vertical>
+                <label htmlFor='input_username'>사용자 이름</label>
+                <div style={{height:'4px'}}/>
+                <input id='input_username' type='text' defaultValue={'crazygun22@nate.com'} onKeyDown={onKeyDownUserName} maxLength={254} style={{width:'256px'}}/>
+                <div style={{height:'16px'}}/>
+                <label htmlFor='input_password'>비밀번호</label>
+                <div style={{height:'4px'}}/>
+                <input id='input_password' type='password' defaultValue={'Sweetchild@22'} onKeyDown={onKeyDownPassword} maxLength={254} style={{width:'256px'}}/>
+                <div style={{height:'16px'}}/>
+                <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</PrettyButton>
+                <div style={{height:'16px'}}/>
+                <PrettyButton onClick={() => {navigate('regist', {state:{comback:comback}, replace:true})}}>회원가입</PrettyButton>
+                <div style={{height:'16px'}}/>
+                <PrettyButton onClick={onClickFindPassword}>비밀번호 찾기</PrettyButton>
+            </Vertical>
+            
+        </Horizental>
     )
 }
 

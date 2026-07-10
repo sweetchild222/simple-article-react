@@ -285,7 +285,7 @@ export default function() {
                             {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
                         </Horizental>
                         <Horizental style={{alignItems: 'center'}}>
-                            <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1,  backgroundColor:'#00000000', color:'white', fontSize:'24px', borderColor:'white', textOverflow:'ellipsis'}}>{blog.title}</label>
+                            <div className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1, color:'white', fontSize:'24px', borderColor:'white'}}>{blog.title}</div>
                             {isEditable() && <Horizental>
                                 <div style={{width:'8px'}}></div>
                                 <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>

@@ -286,10 +286,14 @@ export default function() {
                         </Horizental>
                         <Horizental style={{alignItems: 'center'}}>
                             <label className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1,  backgroundColor:'#00000000', color:'white', fontSize:'24px', borderColor:'white', textOverflow:'ellipsis'}}>{blog.title}</label>
-                            {isEditable() && <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>}
-                            <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
-                            {isEditable() && <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}> <RiImageAiFill size={30}/></PrettyButton>}
-                            {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
+                            {isEditable() && <Horizental>
+                                <div style={{width:'8px'}}></div>
+                                <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>
+                                <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
+                                <div style={{width:'8px'}}></div>
+                                <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}><RiImageAiFill size={30}/></PrettyButton>
+                                {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
+                            </Horizental>}
                         </Horizental>
                     </Vertical>
                     <div style={{flex:1}}/>

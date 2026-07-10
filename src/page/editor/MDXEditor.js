@@ -4,6 +4,7 @@ import { usePublisher } from '@mdxeditor/gurx'
 import i18next from 'i18next'
 import ko from './ko.json'
 import PrettyButton from '@gui/PrettyButton.js'
+import {Vertical, Horizental} from '@gui/Flex.js'
 import Modal from '@gui/Modal.js'
 import '@mdxeditor/editor/style.css'
 import { CiYoutube } from "react-icons/ci";
@@ -330,13 +331,19 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
       <div>
         <ButtonWithTooltip style={{height:'100%'}} onClick={openModal} title="이미지 링크 삽입"><LuImagePlus size={23}/></ButtonWithTooltip>
         <Modal title={'이미지 링크를 입력하세요'} type={'custom'} maxLength={2048} isCloseOutsideClick={false} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <input ref={refInputUrl} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
-          <input ref={refInputTitle} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
-          <input ref={refInputAlt} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>
-          <PrettyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm}>확인</PrettyButton>
-          <PrettyButton type='cancel' onClick={()=>setIsImageModalOpen(false)}>취소</PrettyButton>
-        </div>
+          <Vertical style={{alignItems: 'center'}}>
+            <input ref={refInputUrl} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
+            <div style={{height:'16px'}}/>
+            <input ref={refInputTitle} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
+            <div style={{height:'16px'}}/>
+            <input ref={refInputAlt} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>
+            <div style={{height:'16px'}}/>
+            <Horizental style={{JustifyContent: 'center'}}>
+              <PrettyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm} style={{width:'64px'}}>확인</PrettyButton>
+              <div style={{width:'16px'}}/>
+              <PrettyButton type='cancel' onClick={()=>setIsImageModalOpen(false)} style={{width:'64px'}}>취소</PrettyButton>
+            </Horizental>
+          </Vertical>
         </Modal>
       </div>
     )

@@ -281,7 +281,7 @@ export default function() {
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'  •  '}</label>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'구독자 ' + (subscribeCount != null ? CountWithUnit(subscribeCount) : '')}</label>
                             <div style={{width:'8px'}}></div>
-                            {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
+                            {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe} style={{minWidth:'64px'}}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
                         </Horizental>
                         <Horizental style={{alignItems: 'center'}}>
                             <div className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1, color:'white', fontSize:'24px', borderColor:'white'}}>{blog.title}</div>

@@ -194,18 +194,18 @@ export default function() {
     <Vertical style={{width:'100%', marginLeft:'16px', marginRight:'16px'}}>
       <div style={{height:'16px', minHeight:'16px', maxHeight:'16px'}}/>
       <Horizental>
-        <PrettyButton onClick={onClickNewest}>{'최신순'}</PrettyButton>
+        <PrettyButton onClick={onClickNewest} style={{minWidth:'64px'}}>{'최신순'}</PrettyButton>
         <div style={{width:'8px'}}/>
-        <PrettyButton onClick={onClickFavorite}>{'인기순'}</PrettyButton>
+        <PrettyButton onClick={onClickFavorite} style={{minWidth:'64px'}}>{'인기순'}</PrettyButton>
         <div style={{width:'8px'}}/>
-        <PrettyButton onClick={onClickManyComment}>{'댓글 많은 순'}</PrettyButton>
+        <PrettyButton onClick={onClickManyComment} style={{minWidth:'64px'}}>{'댓글 많은 순'}</PrettyButton>
         {blogIds && <div style={{width:'8px'}}/>}
-        {blogIds && <PrettyButton onClick={onClickSubscribe}>{'구독한 블로그'}</PrettyButton>}
+        {blogIds && <PrettyButton onClick={onClickSubscribe} style={{minWidth:'64px'}}>{'구독한 블로그'}</PrettyButton>}
         <Horizental style={{flex:'1'}}></Horizental>
         <div style={{width:'8px'}}/>
         <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'80px', maxWidth:'300px'}} onKeyDown={onKeyDown}></input>
         <div style={{width:'8px'}}/>
-        <PrettyButton  type='success' onClick={onClickSearch}>검색</PrettyButton>
+        <PrettyButton  type='success' onClick={onClickSearch} style={{minWidth:'64px'}}>검색</PrettyButton>
       </Horizental>      
       <div style={{flex:'1', position:'relative'}}>
         {articles && (

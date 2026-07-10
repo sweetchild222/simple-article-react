@@ -178,9 +178,9 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
                 <Horizental style={{alignItems: 'center', alignSelf:'center', marginBottom:'8px', marginTop:'8px', width:'100%'}}>
                   <PrettyButton type='transparent' style={{color:'black'}} onClick={onCliCkAdd}><CiSquarePlus size={25}></CiSquarePlus></PrettyButton>
                   <div style={{flex:'1'}}></div>
-                  <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading}>적용</PrettyButton>
+                  <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading} style={{width:'64px'}}>적용</PrettyButton>
                   <div style={{width:'8px'}}></div>
-                  <PrettyButton type='cancel' onClick={onClose}>취소</PrettyButton>
+                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>취소</PrettyButton>
                 </Horizental>
               </Vertical>
           </dialog>,

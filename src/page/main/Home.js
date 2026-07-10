@@ -217,7 +217,7 @@ export default function() {
           </Vertical>) : 
           (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%'}}>
             {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
-            {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 더 이상 없습니다.'}</div>}
+            {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}
           </Vertical>)
         )}        
         {isOverlayProgress && <OverlayProgress type={'absolute'}/>}

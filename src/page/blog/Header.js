@@ -270,7 +270,6 @@ export default function() {
         }
     }
 
-
     return blog ? (
             <div style={{backgroundColor:' #24262F', height:'168px', minHeight:'168px', backgroundImage: blog.image != '' && ('url(' + blog.image + '?size=1920x168)'), backgroundSize:'cover', backgroundPosition:'center',  boxShadow: '0 4px 3px -3px black',  position: 'relative'}}>
                 <div style={{backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%', top:'0', left:'0', zIndex:'10'}}>

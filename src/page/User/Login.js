@@ -6,6 +6,8 @@ import {useContext, useEffect, useState} from 'react';
 import * as UserAPI from '@rest/UserAPI.js'
 import { useNavigate, useLocation} from 'react-router-dom';
 import PrettyButton from '@gui/PrettyButton.js';
+import Modal from '@gui/Modal.js';
+import PasswordReset from './PasswordReset';
 import {Vertical, Horizental} from "@gui/Flex.js";
 
 
@@ -13,6 +15,7 @@ export default function() {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
     const [isLoading, setIsLoading] = useState(false)
+    const [isModalPasswordReset, setIsModalPasswordReset] = useState(false)
     
     const navigate = useNavigate()
 
@@ -86,10 +89,9 @@ export default function() {
     }
 
 
-    const onClickFindPassword = async(event) =>{
+    const onClickFindPassword = async(event) => {
 
-        console.log('sadfsd')
-
+        setIsModalPasswordReset(true)
     }
     
 
@@ -108,6 +110,11 @@ export default function() {
                 <PrettyButton onClick={() => {navigate('regist', {state:{comback:comback}, replace:true})}} style={{width:'100%'}}>회원가입</PrettyButton>
                 <div style={{height:'16px'}}/>
                 <PrettyButton onClick={onClickFindPassword} style={{width:'100%'}}>비밀번호 찾기</PrettyButton>
+
+                {isModalPasswordReset && <Modal type={'custom'} isOpen={isModalPasswordReset} onClose={()=>setIsModalPasswordReset(false)} isCloseOutsideClick={false}>
+                    <PasswordReset onClose={() => setIsModalPasswordReset(false)}/>
+                </Modal>
+                }
             </Vertical>
             
         

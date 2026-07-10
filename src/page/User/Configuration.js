@@ -40,7 +40,7 @@ export default function() {
     const { id } = useParams()
 
     const user_id = Integer(id)
-        
+
     useEffect(()=> {
 
         if(!validAuth(auth)){

@@ -121,14 +121,6 @@ export default function() {
     }
 
 
-
-    const onClickLeave=()=> {
-        
-        navigate(-1)
-    }
-
-
-
     const onClickThumbnail = async() => {
 
         const imageFile = await ImagePicker()
@@ -282,7 +274,7 @@ export default function() {
         const content = state.content
         const category_id = categories[selectedCategoryIndex].id
         const posted = 0
-            
+        
         const res = await putArticle(article_id, title, head, content, thumbnail, posted, category_id)
 
         if(res.success == false){
@@ -295,22 +287,31 @@ export default function() {
 
 
     return validAuth(auth) ? (
-        <Vertical style={{alignItems: 'center'}}>
+        <Vertical style={{margin:'auto', height:'100%', alignItems:'start'}}>
             {isOverlayProgress && <OverlayProgress/>}
             <label htmlFor='input_title'>제목</label>
-            <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title}/>
-
-            <select style={{width:'100px'}} value={categories ? categories[selectedCategoryIndex].name : ''} onChange={onChangeCategory}>
+            <div style={{height:'4px'}}></div>
+            <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title} style={{width:'100%', boxSizing:'border-box'}}/>
+            <div style={{height:'16px'}}></div>
+            <label htmlFor='input_category'>카테고리</label>
+            <div style={{height:'4px'}}></div>
+            <select style={{width:'100%'}} id='input_category' value={categories ? categories[selectedCategoryIndex].name : ''} onChange={onChangeCategory}>
                 {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}
             </select>
-
-            <StateProgsImage src={thumbnail} onClick={onClickThumbnail} width={512} height={512}/>
+            <div style={{height:'16px'}}></div>
+            <label onClick={onClickThumbnail}>대표 이미지</label>
+            <div style={{height:'4px'}}></div>
+            <StateProgsImage src={thumbnail} onClick={onClickThumbnail} width={384} height={384} style={{alignSelf:'center'}}/>
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}
-            <PrettyButton type='success' onClick={onClickPost}>{state.source_id != null ? '수정하기': '올리기'}</PrettyButton>
-            <PrettyButton type='danger' onClick={onClickDelete}>삭제하기</PrettyButton>
-            <PrettyButton type='success' onClick={onClickSave}>임시 저장</PrettyButton>
-            <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
-            <PrettyButton type='danger' onClick={onClickLeave}>뒤로가기</PrettyButton>
+            <div style={{height:'16px'}}></div>
+            <Horizental style={{width:'100%'}}>
+                <PrettyButton type='danger' onClick={onClickDelete} style={{width:'64px'}}>삭제</PrettyButton>
+                <div style={{width:'64px'}}></div>
+                <PrettyButton type='success' onClick={onClickSave} style={{flex:'1'}}>임시 저장</PrettyButton>
+                <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
+                <div style={{width:'16px'}}></div>
+                <PrettyButton type='success' onClick={onClickPost} style={{flex:'1'}}>{state.source_id != null ? '수정 완료': '올리기'}</PrettyButton>
+            </Horizental>
         </Vertical>
         ) : (<GoLogin/>)
 }

@@ -31,7 +31,7 @@ export default function(props) {
         }
 
         if(props.onPostText)
-            props.onPostText(value)        
+            props.onPostText(value)
 
         setIsPostLoading(false)
     }

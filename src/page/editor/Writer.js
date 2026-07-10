@@ -1,4 +1,3 @@
-
 import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
 
 import Split from '@uiw/react-split';
@@ -334,13 +333,13 @@ export default function() {
                 </Split>
                 <label ref={refLength} style={{marginLeft:'auto', fontSize:'16px', color:'gray'}}>{state.content.length + '/65535'}</label>
                 <Horizental style={{flex: 0, alignItems: 'center', marginTop:'16px'}}>
-                    <PrettyButton type='danger' style={{marginRight:'8px'}} onClick={onClickDelete}>삭제</PrettyButton>
                     <PrettyButton type='danger' style={{marginRight:'8px'}} onClick={onClickLeave}>나가기</PrettyButton>
+                    <PrettyButton type='danger' style={{marginRight:'8px'}} onClick={onClickDelete}>삭제</PrettyButton>
                     <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
-                    <PrettyButton type='confirm' style={{marginRight:'8px'}} onClick={onClickPost}>{state.source_id != null ? '수정하기': '올리기'}</PrettyButton>
+                    <div style={{flex:'1'}}/>
                     <PrettyButton type='success' style={{marginRight:'8px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</PrettyButton>
                     <Modal title={'나가기 전에 임시 저장 하시겠습니까?'} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
-                    <div style={{flex:'1'}}/>
+                    <PrettyButton type='confirm' style={{marginRight:'8px'}} onClick={onClickPost}>{state.source_id != null ? '수정완료': '올리기'}</PrettyButton>
                     <PrettyButton type='success' onClick={onClickPreview}>미리보기</PrettyButton>
                 </Horizental>
             </div>

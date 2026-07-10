@@ -15,11 +15,11 @@ export default function() {
   const {auth, updateAuth, validAuth} = useContext(AuthContext)  
 
   const [passwordValid, setPasswordValid] = useState(false);
-  const [isVerified, setIsVerified] = useState(false)
+  const [isCertified, setIsCertified] = useState(false)
 
   const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)
   const [isDisabledSendCode, setIsDisabledSendCode] = useState(false)
-  const [isLoadingVerify, setIsLoadingVerify] = useState(false)  
+  const [isLoadingCertify, setIsLoadingCertify] = useState(false)  
   const [isLoadingRegist, setIsLoadingRegist] = useState(false)  
 
   const location = useLocation()
@@ -27,16 +27,16 @@ export default function() {
 
   useEffect(() => {
 
-    if(isVerified == true){
+    if(isCertified == true){
       input_email.disabled = true
-      input_verifyCode.disabled = true      
+      input_certifyCode.disabled = true      
       setIsDisabledSendCode(true)
     }
   
-  }, [isVerified])
+  }, [isCertified])
 
 
-  const onClickSendVerifyCode = async() => {
+  const onClickSendCertifyCode = async() => {
 
     const email = input_email.value
     
@@ -48,7 +48,7 @@ export default function() {
 
     setIsLoadingSendCode(true)
     input_email.disabled = true
-    const success = await sendVerifyCodeCore(email);
+    const success = await sendCertifyCodeCore(email);
     setIsLoadingSendCode(false)
     input_email.disabled = false
 
@@ -59,7 +59,7 @@ export default function() {
   }
 
 
-  const sendVerifyCodeCore = async(email) => {
+  const sendCertifyCodeCore = async(email) => {
     
     const resExist = await RegistAPI.getExistUser(email)
 
@@ -71,13 +71,13 @@ export default function() {
       return false
     }
 
-    const resVerifyEmail =  await RegistAPI.postVerifyEmail(email)
+    const resCerify =  await RegistAPI.postCertifyUserJoin(email)
 
-    return resVerifyEmail.success
+    return resCerify.success
   }
 
 
-  const onClickRequestVerify = async() => {
+  const onClickRequestCertify = async() => {
     
     const email = input_email.value
     
@@ -87,41 +87,41 @@ export default function() {
       return
     }
 
-    const verifyCode = input_verifyCode.value
+    const certifyCode = input_certifyCode.value
 
-    if(!validator.verifyCode(verifyCode)){
-      input_verifyCode.focus()
-      window.showToast('인증 코드를 잘못 입력하였습니다', 'error')      
+    if(!validator.certifyCode(certifyCode)){
+      input_certifyCode.focus()
+      window.showToast('인증 코드를 잘못 입력하였습니다', 'error')
       return
     }
     
-    setIsLoadingVerify(true)
+    setIsLoadingCertify(true)
     setIsLoadingSendCode(true)
-    input_verifyCode.disabled = true
+    input_certifyCode.disabled = true
 
-    const success = await requestVerify(email, verifyCode)
+    const success = await requestCertify(email, certifyCode)
     
-    input_verifyCode.disabled = false
+    input_certifyCode.disabled = false
     setIsLoadingSendCode(false)
-    setIsLoadingVerify(false)
+    setIsLoadingCertify(false)
 
     if(success)
       window.showToast('인증에 성공하였습니다', 'success')
     else
       window.showToast('인증에 실패하였습니다', 'error')
     
-    setIsVerified(success)
+    setIsCertified(success)
   }
 
 
-  const requestVerify = async(email, verifyCode) => {
+  const requestCertify = async(email, certifyCode) => {
 
-    const resVerifyEmail = await RegistAPI.getVerifyEmail(email, verifyCode)
+    const resEmail = await RegistAPI.patchCertifyUserJoin(email, certifyCode)
 
-    if(resVerifyEmail.success == false)
+    if(resEmail.success == false)
       return false
         
-    return resVerifyEmail.payload.match
+    return resEmail.payload.match
   }
 
 
@@ -210,7 +210,7 @@ export default function() {
 
   const onChangeEmail = (event) => {
 
-    input_verifyCode.value = ''
+    input_certifyCode.value = ''
   }
 
 
@@ -242,25 +242,25 @@ export default function() {
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
         <input id={'input_email'} type={'text'} onChange={onChangeEmail} placeholder="이메일" maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
         <div style={{width:'8px'}}/>
-        <PrettyButton isLoading={isLoadingSendCode} disabled={isDisabledSendCode} onClick={onClickSendVerifyCode}>인증 번호 발송</PrettyButton>
+        <PrettyButton isLoading={isLoadingSendCode} disabled={isDisabledSendCode} onClick={onClickSendCertifyCode}>인증 번호 발송</PrettyButton>
       </Horizental>
       <div style={{height:'8px'}}/>
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
-        <input id={'input_verifyCode'} type={'number'} placeholder="인증 코드" style={{flex:'1', boxSizing:'border-box'}}/>
+        <input id={'input_certifyCode'} type={'number'} placeholder="인증 코드" style={{flex:'1', boxSizing:'border-box'}}/>
         <div style={{width:'8px'}}/>
-        <PrettyButton isLoading={isLoadingVerify} disabled={isVerified} onClick={onClickRequestVerify}>인증 번호 확인</PrettyButton>
+        <PrettyButton isLoading={isLoadingCertify} disabled={isCertified} onClick={onClickRequestCertify}>인증 번호 확인</PrettyButton>
       </Horizental>      
 
       <div style={{height:'16px'}}/>
 
       <Vertical style={{ alignItems: 'center', width:'100%'}}>
-        <input id='input_password' type="text" disabled={!isVerified} onChange={onChangePassword} placeholder="비밀번호 (8~20자)" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
+        <input id='input_password' type="text" disabled={!isCertified} onChange={onChangePassword} placeholder="비밀번호 (8~20자)" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
         <div style={{height:'8px'}}/>
-        <input id='input_confirm_password' type="text" disabled={!isVerified} onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
+        <input id='input_confirm_password' type="text" disabled={!isCertified} onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
         <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
       </Vertical>      
       <div style={{height:'16px'}}/>
-      <PrettyButton isLoading={isLoadingRegist} disabled={!(isVerified && passwordValid)} onClick={onClickRegist} type='confirm' style={{width:'100%', boxSizing:'border-box'}}>회원 가입</PrettyButton>
+      <PrettyButton isLoading={isLoadingRegist} disabled={!(isCertified && passwordValid)} onClick={onClickRegist} type='confirm' style={{width:'100%', boxSizing:'border-box'}}>회원 가입</PrettyButton>
     </Vertical>
   ) : (<GoBack value={'로그인된 사용자는 접근 할 수 없습니다'}/>)
 }

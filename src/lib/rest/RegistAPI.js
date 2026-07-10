@@ -18,19 +18,20 @@ export async function getExistUser(username){
 }
 
 
-export async function postVerifyEmail(email) {
+export async function postCertifyUserJoin(email) {
   
-  const url = '/api/verifyEmail'
+  const url = '/api/certify/user-join'
   const payload = {email: email}
     
   return await restAPI.post(url, payload)
 }
 
 
-export async function getVerifyEmail(email, code){
-    
-  const url = '/api/verifyEmail/' + email + '/' + code
+export async function patchCertifyUserJoin(email, code){
+      
+  const url = '/api/certify/user-join'
+  const payload = {email: email, code:code}
 
-  return await restAPI.get(url)
+  return await restAPI.patch(url, payload)
 }
 

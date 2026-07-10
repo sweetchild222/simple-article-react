@@ -27,7 +27,7 @@ export function email(email) {
 }
 
 
-export function verifyCode(code) {
+export function certifyCode(code) {
 
     if(code == null)
       return false

@@ -1,7 +1,7 @@
 import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
 
 import Split from '@uiw/react-split';
-import OverlayProgress from '@gui/OverlayProgress.js'
+import Spinner from '@gui/Spinner.js'
 import MDXEditor from './MDXEditor.js'
 import PrettyButton from '@gui/PrettyButton.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
@@ -319,7 +319,7 @@ export default function() {
 
     return validAuth(auth) ? (
         <div style={{flex:1, position: 'relative', marginLeft:'16px', marginRight:'16px'}}>
-            {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
+            {isOverlayProgress && <Spinner type={'absolute'}/>}
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
                 <Split visible={true} style={{maxHeight:'calc(100vh - 292px)', width:'100%'}}>
                     <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'8px'}}>

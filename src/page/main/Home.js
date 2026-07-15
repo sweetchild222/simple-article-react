@@ -9,7 +9,7 @@ import * as UserRepository from "@util/UserRepository.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import ArticleItem from "./ArticleItem.js";
 
-import OverlayProgress from "@gui/OverlayProgress.js";
+import Spinner from "@gui/Spinner.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import ToInteger from "@util/Integer.js";
 import { GrNext } from "react-icons/gr";
@@ -220,7 +220,7 @@ export default function() {
             {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}
           </Vertical>)
         )}
-        {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
+        {isOverlayProgress && <Spinner type={'absolute'}/>}
       </div>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
         <PrettyButton disabled={offset == 0} onClick={onClickPrev} style={{width:'64px'}}> {<GrPrevious size={16}/>}</PrettyButton>

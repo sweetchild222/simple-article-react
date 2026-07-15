@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import './OverlayProgress.css'
+import './Spinner.css'
 import { useFetcher } from 'react-router-dom';
 
 export default function({type='default', radius=256, spinnerWidth=26, spinnerColor='rgba(95, 158, 160, 0.5)'}) {

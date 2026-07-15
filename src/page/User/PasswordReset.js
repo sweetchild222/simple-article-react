@@ -7,7 +7,7 @@ import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
-import OverlayProgress from "@gui/OverlayProgress.js";
+import Spinner from "@gui/Spinner.js";
 
 
 export default function({onClose}) {

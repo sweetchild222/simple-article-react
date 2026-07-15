@@ -5,7 +5,7 @@ import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
-import OverlayProgress from "@gui/OverlayProgress.js";
+import Spinner from "@gui/Spinner.js";
 
 
 export default function({onClose}) {
@@ -132,7 +132,7 @@ export default function({onClose}) {
 
     return (
         <Vertical style={{alignItems: 'start', position:'relative'}}>
-            {isOverlayProgress && <OverlayProgress type={'absolute'} radius={100} spinnerWidth={15}/>}
+            {isOverlayProgress && <Spinner type={'absolute'} radius={100} spinnerWidth={15}/>}
             <label htmlFor='input_current_password'>기존 비밀번호</label>
             <div style={{height:'4px'}}/>
             <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>

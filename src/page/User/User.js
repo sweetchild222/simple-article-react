@@ -6,7 +6,7 @@ import * as BlogAPI from '@rest/BlogAPI.js'
 
 import Modal from "@gui/Modal.js"
 import PrettyButton from '@gui/PrettyButton.js';
-import OverlayProgress from '@gui/OverlayProgress.js';
+import Spinner from '@gui/Spinner.js';
 import ProfileImage from '@gui/ProfileImage.js';
 
 import Integer from "@util/Integer.js";
@@ -84,6 +84,6 @@ export default function() {
         {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'32px'}}>회원 정보 수정</PrettyButton>}
         {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</PrettyButton>}
     </Vertical>
-      ) : <OverlayProgress/>
+      ) : <Spinner/>
 }
 

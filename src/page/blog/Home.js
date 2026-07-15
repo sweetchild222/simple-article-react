@@ -6,7 +6,7 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import ArticleItem from "./ArticleItem.js";
 
-import OverlayProgress from "@gui/OverlayProgress.js";
+import Spinner from "@gui/Spinner.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import ToInteger from "@util/Integer.js";
 import Categories  from "./Categories.js";
@@ -143,7 +143,7 @@ export default function() {
                 </Vertical>)
               )}
           </Vertical>
-          {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
+          {isOverlayProgress && <Spinner type={'absolute'}/>}
         </div>
         <div style={{backgroundColor:'lightgray', width:'2px', height:'100%', marginLeft:'32px', marginRight:'32px'}}/>
         <div style={{minWidth:'256px', width:'256px',maxWidth:'256px', display: 'block'}}>

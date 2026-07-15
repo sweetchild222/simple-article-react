@@ -16,7 +16,7 @@ import Modal from "@gui/Modal.js";
 import StateProgsImage from "@gui/StateProgsImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
-import OverlayProgress from "@gui/OverlayProgress.js";
+import Spinner from "@gui/Spinner.js";
 
 
 import Great from "./Great.js"
@@ -230,5 +230,5 @@ export default function() {
             <div style={{height:'16px'}}/>
             <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>
         </Vertical>
-    ) : <OverlayProgress/>
+    ) : <Spinner/>
 }

@@ -9,7 +9,7 @@ import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 import ImagePicker from "@util/ImagePicker.js";
 import PrettyButton from '@gui/PrettyButton.js';
-import OverlayProgress from '@gui/OverlayProgress.js';
+import Spinner from '@gui/Spinner.js';
 import Modal from '@gui/Modal.js';
 import Password from './Password.js';
 import {blobFromCanvas} from "@util/ImageUtil.js";
@@ -268,6 +268,6 @@ export default function() {
             <Modal title={'패스워드를 입력하세요'} description={user.blog_id ? '회원을 탈퇴하더라도 블로그는 남습니다' : null} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPasswordForUser}/>
             <PrettyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</PrettyButton>
         </Vertical>
-      </Vertical>) : <OverlayProgress/>
+      </Vertical>) : <Spinner/>
 }
 

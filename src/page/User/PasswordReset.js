@@ -11,9 +11,7 @@ import Spinner from "@gui/Spinner.js";
 
 
 export default function({onClose}) {
-        
-    const [isOverlayProgress, setIsOverlayProgress] = useState(false)
-
+    
     const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)    
     const [isLoadingCertify, setIsLoadingCertify] = useState(false)
     const [isLoadingPasswordReset, setIsLoadingPasswordReset] = useState(false)

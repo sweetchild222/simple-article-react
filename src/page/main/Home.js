@@ -24,7 +24,7 @@ export default function() {
   
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const [articles, setArticles] = useState(null)
-  const [isOverlayProgress, setIsOverlayProgress] = useState(false)
+  const [isSpinner, setIsSpinner] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
   const [offset, setOffset] = useState(0)
   const [blogIds, setBlogIds] = useState(null)
@@ -40,11 +40,11 @@ export default function() {
     if(query == null)
       return    
 
-    setIsOverlayProgress(true)    
+    setIsSpinner(true)    
 
       loadArticles(query).then((articles) => {
 
-        setIsOverlayProgress(false)
+        setIsSpinner(false)
         
         if(articles == null){
           window.showToast('글을 가져오는데 실패 했습니다', 'error')
@@ -220,7 +220,7 @@ export default function() {
             {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}
           </Vertical>)
         )}
-        {isOverlayProgress && <Spinner type={'absolute'}/>}
+        {isSpinner && <Spinner type={'absolute'}/>}
       </div>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
         <PrettyButton disabled={offset == 0} onClick={onClickPrev} style={{width:'64px'}}> {<GrPrevious size={16}/>}</PrettyButton>

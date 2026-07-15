@@ -33,7 +33,7 @@ export default function() {
     const refPreview = useRef(null)
     const refImageCrop = useRef(null)
 
-    const [isOverlayProgress, setIsOverlayProgress] = useState(false)
+    const [isSpinner, setIsSpinner] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     
     const [thumbnail, setThumbnail] = useState(state.thumbnail != '' ? state.thumbnail : '')
@@ -229,11 +229,11 @@ export default function() {
             category_id:category_id
         }
 
-        setIsOverlayProgress(true)
+        setIsSpinner(true)
         
         const res = await ArticleAPI.putArticle(auth.jwt, article_id, payload)
 
-        setIsOverlayProgress(false)
+        setIsSpinner(false)
 
         return res
     }
@@ -287,7 +287,7 @@ export default function() {
 
     return validAuth(auth) ? (
         <Vertical style={{margin:'auto', height:'100%', alignItems:'start', position:'relative'}}>
-            {isOverlayProgress && <Spinner type={'absolute'}/>}
+            {isSpinner && <Spinner type={'absolute'}/>}
             <label htmlFor='input_title'>제목</label>
             <div style={{height:'4px'}}></div>
             <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title} style={{width:'100%', boxSizing:'border-box'}}/>

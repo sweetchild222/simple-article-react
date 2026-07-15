@@ -30,7 +30,7 @@ export default function() {
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [articles, setArticles] = useState(null)
-  const [isOverlayProgress, setIsOverlayProgress] = useState(true)
+  const [isSpinner, setIsSpinner] = useState(true)
   const [reloadKey, setReloadKey] = useState(0)
 
   const countPerPage = 6
@@ -64,7 +64,7 @@ export default function() {
 
   const onClickCategory = async(category) => {
     
-    setIsOverlayProgress(true)
+    setIsSpinner(true)
 
     setSelectedCategory(category)
 
@@ -76,7 +76,7 @@ export default function() {
     if(articles.success == true)
       setArticles(articles.payload)
 
-    setIsOverlayProgress(false)
+    setIsSpinner(false)
     
     setReloadKey(prev => prev + 1)
 
@@ -102,7 +102,7 @@ export default function() {
 
   const onClickPage = async(page) => {
 
-    setIsOverlayProgress(true)
+    setIsSpinner(true)
 
     const category_id = selectedCategory.id != 0 ? selectedCategory.id : null
     const posted = selectedCategory.id != 0 ? null : 0
@@ -113,7 +113,7 @@ export default function() {
       setArticles(articles.payload)
     }
 
-    setIsOverlayProgress(false)
+    setIsSpinner(false)
   }
 
   
@@ -143,7 +143,7 @@ export default function() {
                 </Vertical>)
               )}
           </Vertical>
-          {isOverlayProgress && <Spinner type={'absolute'}/>}
+          {isSpinner && <Spinner type={'absolute'}/>}
         </div>
         <div style={{backgroundColor:'lightgray', width:'2px', height:'100%', marginLeft:'32px', marginRight:'32px'}}/>
         <div style={{minWidth:'256px', width:'256px',maxWidth:'256px', display: 'block'}}>

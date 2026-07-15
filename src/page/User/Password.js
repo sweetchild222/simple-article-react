@@ -11,7 +11,7 @@ import Spinner from "@gui/Spinner.js";
 export default function({onClose}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [isOverlayProgress, setIsOverlayProgress] = useState(false)
+    const [isSpinner, setIsSpinner] = useState(false)
 
     const refCurPassword = useRef(null)
     const refNewPassword = useRef(null)
@@ -69,11 +69,11 @@ export default function({onClose}) {
             return
         }
 
-        setIsOverlayProgress(true)
+        setIsSpinner(true)
         
         const result = await passwordChange(current_password, new_password)
         
-        setIsOverlayProgress(false)
+        setIsSpinner(false)
 
         if(result == null){
             window.showToast('비밀번호 변경이 실패하였습니다', 'error')            
@@ -132,7 +132,7 @@ export default function({onClose}) {
 
     return (
         <Vertical style={{alignItems: 'start', position:'relative'}}>
-            {isOverlayProgress && <Spinner type={'absolute'} radius={100} spinnerWidth={15}/>}
+            {isSpinner && <Spinner type={'absolute'} radius={100} spinnerWidth={15}/>}
             <label htmlFor='input_current_password'>기존 비밀번호</label>
             <div style={{height:'4px'}}/>
             <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>

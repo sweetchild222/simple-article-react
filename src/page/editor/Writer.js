@@ -33,7 +33,7 @@ export default function() {
     const [isPreview, setIsPreview] = useState(false)
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-    const [isOverlayProgress, setIsOverlayProgress] = useState(false)
+    const [isSpinner, setIsSpinner] = useState(false)
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
 
     const navigate = useNavigate()
@@ -104,12 +104,12 @@ export default function() {
 
         if(isTouched == true){
         
-            setIsOverlayProgress(true)
+            setIsSpinner(true)
             setIsTempSaveLoading(true)
 
             const res = await tempSave()
 
-            setIsOverlayProgress(false)
+            setIsSpinner(false)
             setIsTempSaveLoading(false)
             
             if(res != null)
@@ -319,7 +319,7 @@ export default function() {
 
     return validAuth(auth) ? (
         <div style={{flex:1, position: 'relative', marginLeft:'16px', marginRight:'16px'}}>
-            {isOverlayProgress && <Spinner type={'absolute'}/>}
+            {isSpinner && <Spinner type={'absolute'}/>}
             <div style={{position: 'absolute', width:'100%', height:'100%', display: 'flex', flexDirection: 'column'}}>
                 <Split visible={true} style={{maxHeight:'calc(100vh - 292px)', width:'100%'}}>
                     <div style={{overflowY:'auto', minWidth:'10%', width: isPreview ? '50%' : '100%', border:'1px solid lightgray', borderRadius:'8px'}}>

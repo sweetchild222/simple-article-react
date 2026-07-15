@@ -1,29 +1,28 @@
 import {useEffect, useState} from 'react'
 
 import './OverlayProgress.css'
+import { useFetcher } from 'react-router-dom';
 
-export default function(props) {
-
-  const size = props.size != null ? props.size + 'px' : '256px'    
-  const type = props.type != null ? props.type : 'overall' // 'overall', 'relative', 'absolute'
-
-  const [start, setStart] = useState(false)
-
-  useEffect(()=> {
-
-    setTimeout(()=>{
-
-      setStart(true)
-
-    }, 0)
-
-  }, [])
-
-
-  return (type == 'overall' ? <div className={start ? 'overlayProgress' : ''} style={{'--width--':size, '--height--':size, position: 'fixed', top:'0', left:0, width:'100vw', height:'100vh', zIndex:'1000'}}/> : 
+export default function({type='default', radius=256, spinnerWidth=26, spinnerColor='rgba(95, 158, 160, 0.5)'}) {
     
-      ( type  == 'absolute' ? <div className={start ? 'overlayProgress' : ''} style={{'--width--':size, '--height--':size}}/>
+  const calcTop = () =>{
+        
+    return 'calc((100% - ' + radius + 'px - '+ (spinnerWidth*2) + 'px)/2)'
+  }
+
+
+  const calcLeft = () =>{
+    
+    return 'calc((100% - ' + radius + 'px - '+ (spinnerWidth*2) + 'px)/2)'
+  }
+
+  //border: 26px solid rgba(0, 0, 0, 0);
+  //border-top: 26px solid rgba(95, 158, 160, 0.5);
+
+  return type == 'absolute' ? 
+          (<div className={'spinnerProgress'} style={{position:'absolute', width:radius+'px', height:radius+'px', top:calcTop(), left:calcLeft(), zIndex:'1000', border:spinnerWidth + 'px solid rgba(0, 0, 0, 0)', borderTop: spinnerWidth + 'px solid ' + spinnerColor}}/>)
           :
-          <div style={{position:'relative', width:'100%', height:'100%'}}><div className={start ? 'overlayProgress' : ''} style={{'--width--':size, '--height--':size}}/></div>
-      ))
+          (<div style={{display:'flex', margin:'auto', height:'100%', alignItems:'center'}}>
+            <div className={'spinnerProgress'} style={{width:radius+'px', height:radius+'px', border: spinnerWidth + 'px solid rgba(0, 0, 0, 0)', borderTop:spinnerWidth + 'px solid ' + spinnerColor}}/>
+          </div>)          
 }

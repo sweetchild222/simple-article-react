@@ -219,7 +219,7 @@ export default function() {
             {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
             {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}
           </Vertical>)
-        )}        
+        )}
         {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
       </div>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>

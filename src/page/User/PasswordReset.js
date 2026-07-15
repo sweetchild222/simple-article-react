@@ -161,28 +161,7 @@ export default function({onClose}) {
             </Horizental>
             <div style={{height:'16px'}}/>
             <PrettyButton isLoading={isLoadingPasswordReset} disabled={!isCertified} onClick={onClickPasswordReset} style={{width:'100%'}}>임시 비밀 번호 발송</PrettyButton>
-
-            {/* {isOverlayProgress && <OverlayProgress type={'relative'}/>}
-            <label htmlFor='input_current_password'>기존 비밀번호</label>
-            <div style={{height:'4px'}}/>
-            <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>
-            <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
-            <div style={{height:'16px'}}/>
-            <label htmlFor='input_new_password'>새 비밀번호</label>
-            <div style={{height:'4px'}}/>
-            <input ref={refNewPassword} id='input_new_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownNew}/>
-            <div style={{height:'16px'}}/>
-            <label htmlFor='input_repeat_password'>비밀번호 확인</label>
-            <div style={{height:'4px'}}/>
-            <input ref={refRepeatPassword} id='input_repeat_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownRepeat}/>
-            <div style={{height:'16px'}}/>
-            <Horizental style={{justifyContent:'end', width:'100%'}}>
-                <PrettyButton type="confirm" onClick={onClickPasswordChange} style={{width:'64px'}}>변경</PrettyButton>
-                <div style={{width:'16px'}}/>
-                <PrettyButton type="confirm" onClick={onClose} type='danger' style={{width:'64px'}}>취소</PrettyButton>
-            </Horizental> */}
         </Vertical>
-
     )
 }
 

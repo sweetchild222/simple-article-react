@@ -131,8 +131,8 @@ export default function({onClose}) {
 
 
     return (
-        <Vertical style={{alignItems: 'start'}}>
-            {isOverlayProgress && <OverlayProgress type={'relative'}/>}
+        <Vertical style={{alignItems: 'start', position:'relative'}}>
+            {isOverlayProgress && <OverlayProgress type={'absolute'} radius={100} spinnerWidth={15}/>}
             <label htmlFor='input_current_password'>기존 비밀번호</label>
             <div style={{height:'4px'}}/>
             <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>

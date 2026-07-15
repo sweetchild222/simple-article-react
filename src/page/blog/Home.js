@@ -102,7 +102,7 @@ export default function() {
 
   const onClickPage = async(page) => {
 
-    setIsOverlayProgress(true)    
+    setIsOverlayProgress(true)
 
     const category_id = selectedCategory.id != 0 ? selectedCategory.id : null
     const posted = selectedCategory.id != 0 ? null : 0

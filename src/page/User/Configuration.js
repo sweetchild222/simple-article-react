@@ -241,6 +241,7 @@ export default function() {
     }
 
     
+    
     return user ? (
       <Vertical style={{margin:'auto', height:'100%', alignItems:'center', justifyContent:'center'}}>
         <div style={{position:'relative'}} onClick={onClickProfile}>
@@ -267,6 +268,6 @@ export default function() {
             <Modal title={'패스워드를 입력하세요'} description={user.blog_id ? '회원을 탈퇴하더라도 블로그는 남습니다' : null} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPasswordForUser}/>
             <PrettyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</PrettyButton>
         </Vertical>
-      </Vertical>) : <OverlayProgress type={'relative'}/>
+      </Vertical>) : <OverlayProgress/>
 }
 

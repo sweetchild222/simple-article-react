@@ -84,6 +84,6 @@ export default function() {
         {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'32px'}}>회원 정보 수정</PrettyButton>}
         {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</PrettyButton>}
     </Vertical>
-      ) : <OverlayProgress type={'relative'}/>
+      ) : <OverlayProgress/>
 }
 

@@ -236,7 +236,6 @@ export default function() {
         setIsOverlayProgress(false)
 
         return res
-
     }
 
 
@@ -287,8 +286,8 @@ export default function() {
 
 
     return validAuth(auth) ? (
-        <Vertical style={{margin:'auto', height:'100%', alignItems:'start'}}>
-            {isOverlayProgress && <OverlayProgress/>}
+        <Vertical style={{margin:'auto', height:'100%', alignItems:'start', position:'relative'}}>
+            {isOverlayProgress && <OverlayProgress type={'absolute'}/>}
             <label htmlFor='input_title'>제목</label>
             <div style={{height:'4px'}}></div>
             <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title} style={{width:'100%', boxSizing:'border-box'}}/>

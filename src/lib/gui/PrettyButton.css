@@ -22,13 +22,13 @@
 }
 
 
-.beauty-button.circle > span {
+.beauty-button.spin > span {
   visibility: hidden;
   opacity: 0;
 }
 
 
-.beauty-button.circle::after {
+.beauty-button.spin::after {
   content: "";
   position: absolute;
   width: 16px;
@@ -88,7 +88,7 @@
 }
 
 
-.beauty-button.success.circle::after {
+.beauty-button.success.spin::after {
   
   border-top-color: #803321;
 }
@@ -126,7 +126,7 @@
 }
 
 
-.beauty-button.confirm.circle::after {
+.beauty-button.confirm.spin::after {
   
   border-top-color: #654080;
 }
@@ -166,7 +166,7 @@
 }
 
 
-.beauty-button.cancel.circle::after {
+.beauty-button.cancel.spin::after {
 
   border-top-color: #0F2D9B;
 }
@@ -205,7 +205,7 @@
 }
 
 
-.beauty-button.danger.circle::after {
+.beauty-button.danger.spin::after {
   border-top-color: #05A5A5;
 }
 
@@ -244,7 +244,7 @@
 }
 
 
-.beauty-button.warning.circle::after {
+.beauty-button.warning.spin::after {
   border-top-color: #34663A;
 }
 
@@ -284,7 +284,7 @@
 }
 
 
-.beauty-button.default.circle::after {
+.beauty-button.default.spin::after {
   border-top-color: #804E40;
 }
 
@@ -323,7 +323,7 @@
 }
 
 
-.beauty-button.transparent.circle::after {
+.beauty-button.transparent.spin::after {
   border-top-color: #34663A;
 }
 

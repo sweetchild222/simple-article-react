@@ -18,14 +18,10 @@ export default function({onClose}) {
 
     const [isCertified, setIsCertified] = useState(false)
 
-        
-    
     const onChangeEmail = (event) => {
 
         input_certifyCode.value = ''
     }
-
-
 
     const onClickSendCertifyCode = async() => {
 

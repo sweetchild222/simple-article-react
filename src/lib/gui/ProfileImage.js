@@ -1,7 +1,7 @@
 
 import {useState, useEffect} from "react";
 import StateProgsImage from "./StateProgsImage.js";
-import './RotateProgress.css';
+import './Spin.css';
 import * as UserAPI from '@rest/UserAPI.js'
 import { MdError } from "react-icons/md";
 
@@ -55,7 +55,7 @@ export default function(props) {
         : (isError ? 
             <div style={{position: 'relative', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width, backgroundImage:'url(/image/error-user.png)', backgroundSize:'contain', backgroundPosition:'center'}} onClick={props.onClickAtError}></div>
             : ( props.userId ? 
-                <div className={'rotateProgress'} style={{position: 'relative', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width}}/>
+                <div className={'spin'} style={{position: 'relative', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width}}/>
                 :
                 <div style={{position: 'relative', wdith:width, height:height, maxHeight:height, minHeight:height, maxWidth:width, minWidth:width, backgroundImage:'url(/image/no-user.png)', backgroundSize:'contain', backgroundPosition:'center'}}/>
             )

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './RotateProgress.css';
+import './Spin.css';
 
 
 export default function(props) {
@@ -37,8 +37,8 @@ export default function(props) {
     }
 
 
-    return props.src != null  ? (            
-            <div className={`${isProgressing ? 'rotateProgress': ''}`} title={props.tooltip} onClick={props.onClick} style={{width: props.width + 'px', height: props.height + 'px', position: 'relative', border: '1px solid gray', borderRadius:(props.borderRadius + 1) + 'px', borderWidth:props.borderWidth + 'px', display: 'flex', justifyContent: 'center', alignItems:'center', ...props.style}}>
+    return props.src != null  ? (
+            <div className={`${isProgressing ? 'spin': ''}`} title={props.tooltip} onClick={props.onClick} style={{width: props.width + 'px', height: props.height + 'px', position: 'relative', border: '1px solid gray', borderRadius:(props.borderRadius + 1) + 'px', borderWidth:props.borderWidth + 'px', display: 'flex', justifyContent: 'center', alignItems:'center', ...props.style}}>
                 {!isError && <img src={props.src == '' ? '/image/no-photo.png' : props.src} onLoad={onLoadInner} onError={onErrorInner} style={{borderRadius:(props.borderRadius) + 'px', width: props.width + 'px', height: props.height + 'px', objectFit: 'cover', filter:(props.gray == true ? 'grayscale(100%)' : null)}}/>}
                 {isError && <img src={'/image/broken-photo.png'} style={{borderRadius:(props.borderRadius) + 'px', width: props.width + 'px', height: props.height + 'px', objectFit: 'contain'}}/>}                
             </div>

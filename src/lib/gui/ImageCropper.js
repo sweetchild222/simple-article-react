@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect, useCallback, useImperativeHandle} from 'react';
 import './ImageCropper.css'
-import './RotateProgress.css'
+import './Spin.css'
 
 export default function({ref, file, containerWidth=768, containerHeight=768, selectMinWidth=128, keepRatio}) {
 
@@ -771,15 +771,15 @@ export default function({ref, file, containerWidth=768, containerHeight=768, sel
   }, [eventMouseMove, eventMouseUp])
 
   return (
-      <div id='container' className={`${isLoading ? 'rotateProgress': ''}`} ref={refContain} style={{width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
-      <canvas ref={refCover} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
-        {selectRect != null && 
-        <div id='select' ref={refSelect} onMouseDown={onMouseDown}
-          style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
-        >
-        <div id='selectEdge'></div>
+      <div id='container' className={`${isLoading ? 'spin': ''}`} ref={refContain} style={{'--radius--':'128px', '--spinWidth--':'32px', width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
+        <canvas ref={refCover} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
+          {selectRect != null && 
+          <div id='select' ref={refSelect} onMouseDown={onMouseDown}
+            style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, backgroundImage: `url(${transparent})`}}
+          >
+          <div id='selectEdge'></div>
         </div>
-        }      
-      </div>      
+        }
+      </div>
   )
 }

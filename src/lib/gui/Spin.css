@@ -1,15 +1,15 @@
-.rotateProgress::after {
+.spin::after {
   content: "";
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: var(--radius--, 16px);
+  height: var(--radius--, 16px);
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   margin: auto;
-  border: 4px solid transparent;
-  border-top-color: green;
+  border: var(--spinWidth--, 4px) solid transparent;
+  border-top-color: var(--spinColor--, rgba(95, 158, 160, 0.5));
   border-radius: 50%;
   animation: spin_animation 1s ease infinite;
 }

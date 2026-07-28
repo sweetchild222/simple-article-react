@@ -184,8 +184,9 @@ export default function() {
 
 
     return article ? (
-        <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', minWidth:'960px', maxWidth:'960px'}}>
-            
+        <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', minWidth:'960px', maxWidth:'960px'}}>           
+            {/* <title>asdfsadf</title>
+            <meta property="og:image" content="https://mimgnews.pstatic.net/image/upload/journalist/2017/07/10/%EA%B0%95%ED%9D%AC%EC%97%B0.jpg?type=nf180_214" /> */}
             {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>}
             {article.thumbnail != '' && <div style={{height:'32px'}}></div>}
             

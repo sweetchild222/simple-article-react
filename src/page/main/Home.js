@@ -38,9 +38,9 @@ export default function() {
     const query = getQueryByType(currentType, offset, keyword)
 
     if(query == null)
-      return    
+      return
 
-    setIsSpinner(true)    
+    setIsSpinner(true)
 
       loadArticles(query).then((articles) => {
 
@@ -183,7 +183,6 @@ export default function() {
       search.value = ''
       setKeyword(keyword)
       setCurrentType(4)
-      
     }
   }
 
@@ -191,7 +190,7 @@ export default function() {
 
 
   return (
-    <Vertical style={{width:'100%', marginLeft:'16px', marginRight:'16px'}}>
+    <Vertical style={{width:'100%', paddingLeft:'16px', paddingRight:'16px'}}>
       <div style={{height:'16px', minHeight:'16px', maxHeight:'16px'}}/>
       <Horizental>
         <PrettyButton onClick={onClickNewest} style={{minWidth:'64px'}}>{'최신순'}</PrettyButton>

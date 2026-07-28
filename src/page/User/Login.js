@@ -89,14 +89,9 @@ export default function() {
     }
 
 
-    const onClickFindPassword = async(event) => {
-
-        setIsModalPasswordReset(true)
-    }
-    
 
     return (
-            <Vertical style={{margin:'auto', height:'100%', alignItems:'start', justifyContent:'center'}}>
+            <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
                 <label htmlFor='input_username'>사용자 이름</label>
                 <div style={{height:'4px'}}/>
                 <input id='input_username' type='text' defaultValue={'crazygun22@nate.com'} onKeyDown={onKeyDownUserName} maxLength={254} style={{width:'256px'}}/>
@@ -105,19 +100,17 @@ export default function() {
                 <div style={{height:'4px'}}/>
                 <input id='input_password' type='password' defaultValue={'Sweetchild@22'} onKeyDown={onKeyDownPassword} maxLength={254} style={{width:'256px'}}/>
                 <div style={{height:'16px'}}/>
-                <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success' style={{width:'100%'}}>로그인</PrettyButton>
-                <div style={{height:'16px'}}/>
-                <PrettyButton onClick={() => {navigate('regist', {state:{comback:comback}, replace:true})}} style={{width:'100%'}}>회원가입</PrettyButton>
-                <div style={{height:'16px'}}/>
-                <PrettyButton onClick={onClickFindPassword} style={{width:'100%'}}>비밀번호 찾기</PrettyButton>
-
-                {isModalPasswordReset && <Modal type={'custom'} isOpen={isModalPasswordReset} onClose={()=>setIsModalPasswordReset(false)} isCloseOutsideClick={false}>
+                <Vertical>
+                    <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</PrettyButton>
+                    <div style={{height:'16px'}}/>
+                    <PrettyButton onClick={() => {navigate('regist', {state:{comback:comback}, replace:true})}}>회원가입</PrettyButton>
+                    <div style={{height:'16px'}}/>
+                    <PrettyButton onClick={() => setIsModalPasswordReset(true)} style={{width:'100%'}}>비밀번호 찾기</PrettyButton>
+                </Vertical>
+                {isModalPasswordReset && <Modal type={'custom'} isOpen={isModalPasswordReset} onClose={()=>setIsModalPasswordReset(false)} isCloseOutsideClick={true}>
                     <PasswordReset onClose={() => setIsModalPasswordReset(false)}/>
                 </Modal>
                 }
             </Vertical>
-            
-        
     )
 }
-

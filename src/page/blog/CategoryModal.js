@@ -69,15 +69,15 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
       const value = input.value
                   
       if(value == ''){
-        window.showToast('카테고리 이름을 입력하지 않았습니다', 'error')
+        window.showToast('카테고리 이름을 입력하세요', 'user-error')
         input.focus()
-        return true     
+        return true
       }
 
       const maxLength = 16
 
       if(value.length > maxLength) {
-        window.showToast('카테고리 이름은 최대 '+ maxLength + ' 자 입니다', 'error')
+        window.showToast('카테고리 이름은 최대 '+ maxLength + '자 입니다', 'user-error')
         input.focus()
         return true
       }      
@@ -117,7 +117,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
 
     if(newCategories.length == maxCount) {
 
-      window.showToast('카테고리는 최대 '+ maxCount + '개 까지만 만들 수 있습니다', 'error')
+      window.showToast('카테고리는 최대 '+ maxCount + '개 까지 만들 수 있습니다', 'user-error')
       return
     }
     
@@ -140,7 +140,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
       if(categorie.id === id) {
 
           if(categorie.article_count > 0) {
-            window.showToast('글이 있는 카테고리는 삭제 할 수 없습니다', 'error')
+            window.showToast('글이 있는 카테고리는 삭제 할 수 없습니다', 'user-error')
             return true
           }
           return false

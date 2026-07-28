@@ -32,7 +32,7 @@ export default function({article, categoryName}) {
                 const res = await ArticleAPI.getArticle(auth.jwt, article.id)
 
                 if(res.success == false){
-                    window.showToast('작성 중인 글을 가져 올 수 없습니다', 'error')
+                    window.showToast('작성 중인 글 가져오기가 실패하였습니다', 'system-error')
                     return
                 }
                 navigate('/blog/' + article.blog_id + '/write', {state:res.payload})

@@ -52,7 +52,7 @@ export default function({ref, blogId, categoryId}) {
         const res = await ArticleAPI.getBlogArticles(auth.jwt, blogId, query)
 
         if(res.success == false){
-            window.showToast('작성 중인 글을 가져 올 수 없습니다', 'error')
+            window.showToast('작성 중인 글 가져오기가 실패하였습니다', 'system-error')
             return
         }
 
@@ -60,14 +60,14 @@ export default function({ref, blogId, categoryId}) {
 
         if(res.payload.length >= maxWritingCount){
 
-            window.showToast('작성 중인 글이 너무 많습니다 (' + maxWritingCount + ' 이하)', 'error')
+            window.showToast('작성 중인 글이 너무 많습니다 (' + maxWritingCount + ' 이하)', 'user-error')
             return
         }
 
         const category_id = categoryId == 0 ? await findCategoryId(blogId) : categoryId
 
         if(category_id == -1){
-            window.showToast('카테고리를 찾을 수 없습니다', 'error')
+            window.showToast('카테고리를 찾을 수 없습니다', 'user-error')
             return
         }
 
@@ -81,9 +81,9 @@ export default function({ref, blogId, categoryId}) {
         }
                 
         const resArticle = await ArticleAPI.postArticle(auth.jwt, payload)
-                        
+        
         if(resArticle.success == false) {
-            window.showToast('새 글 생성에 실패 했습니다', 'error')
+            window.showToast('새 글 생성에 실패하였습니다', 'system-error')
             return
         }
 

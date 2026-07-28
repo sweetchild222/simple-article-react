@@ -52,7 +52,7 @@ export default function({article_id, count}) {
 
         if(res.success == false){
             setIsBookmarkLoading(false)
-            window.showToast('북마크를 가져 올 수 없습니다', 'error')
+            window.showToast('북마크를 가져오기에 싶패하였습니다', 'system-error')
             return
         }
 
@@ -67,7 +67,7 @@ export default function({article_id, count}) {
                 window.showToast('북마크를 취소하였습니다', 'info')
             }
             else
-                window.showToast('북마크를 취소에 실패 하였습니다', 'error')
+                window.showToast('북마크를 취소에 실패하였습니다', 'system-error')
         }
         else{
 
@@ -86,7 +86,7 @@ export default function({article_id, count}) {
                 window.showToast('북마크에 성공하였습니다', 'info')
             }
             else{
-                window.showToast('북마크에 실패 하였습니다', 'error')
+                window.showToast('북마크에 실패하였습니다', 'system-error')
             }
         }
     }

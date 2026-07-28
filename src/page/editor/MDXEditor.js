@@ -188,7 +188,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
             return
         
       if(imageFile.format == 'unknown'){
-          window.showToast('파일을 사용할 수 없습니다', 'error')
+          window.showToast('파일을 사용할 수 없습니다', 'user-error')
           return
       }
 

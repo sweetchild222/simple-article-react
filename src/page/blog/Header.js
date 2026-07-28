@@ -127,7 +127,7 @@ export default function() {
             return
         
         if(imageFile.format == 'unknown'){
-            window.showToast('파일을 사용할 수 없습니다', 'error')
+            window.showToast('파일을 사용할 수 없습니다', 'user-error')
             return
         }
         
@@ -159,7 +159,7 @@ export default function() {
 
         if(resImage.success == false){
             setIsModalImageCrop(false)
-            window.showToast('블로그 이미지 설정에 실패했습니다', 'error')
+            window.showToast('블로그 이미지 설정에 실패하였습니다', 'system-error')
             return
         }
 
@@ -168,7 +168,7 @@ export default function() {
         const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {image:url})
         
         if(res.success == false){
-            window.showToast('블로그 이미지 설정에 실패했습니다', 'error')
+            window.showToast('블로그 이미지 설정에 실패하였습니다', 'system-error')
             return
         }
         
@@ -176,7 +176,7 @@ export default function() {
 
         const blogClone = Object.assign({}, blog)
         blogClone.image = url
-        setBlog(blogClone)        
+        setBlog(blogClone)
     }
 
 
@@ -186,14 +186,14 @@ export default function() {
             return
                         
         if(title == null || title == ''){
-            window.showToast('제목이 없습니다', 'error')
+            window.showToast('제목이 없습니다', 'user-error')
             return
         }
                             
         const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {title:title})
         
         if(res.success == false){
-            window.showToast('블로그 제목 수정에 실패하였습니다', 'error')
+            window.showToast('블로그 제목 수정에 실패하였습니다', 'system-error')
             return
         }
 
@@ -230,7 +230,7 @@ export default function() {
 
         if(res.success == false){
             setIsSubscribeLoading(false)
-            window.showToast('구독 정보를 가져 올 수 없습니다', 'error')
+            window.showToast('구독 정보를 가져 올 수 없습니다', 'system-error')
             return
         }
 
@@ -246,7 +246,7 @@ export default function() {
                 window.showToast('구독을 취소하였습니다', 'info')
             }
             else
-                window.showToast('구독 취소에 실패 하였습니다', 'error')
+                window.showToast('구독 취소에 실패하였습니다', 'system-error')
         }
         else{
 
@@ -265,7 +265,7 @@ export default function() {
                 window.showToast('구독에 성공하였습니다', 'info')
             }
             else{
-                window.showToast('구독에 실패 하였습니다', 'error')
+                window.showToast('구독에 실패하였습니다', 'system-error')
             }
         }
     }

@@ -42,7 +42,7 @@ export default function() {
     
     if(!validator.email(email)){
       input_email.focus()
-      window.showToast('잘못된 형식의 이메일입니다', 'error')
+      window.showToast('잘못된 형식의 이메일입니다', 'user-error')
       return
     }
 
@@ -53,9 +53,9 @@ export default function() {
     input_email.disabled = false
 
     if(!success)
-      window.showToast('인증 코드 발송이 실패하였습니다', 'error')
+      window.showToast('인증 코드 발송이 실패하였습니다', 'system-error')
     else
-      window.showToast('인증 코드 발송이 성공하였습니다', 'success')
+      window.showToast('인증 코드 발송이 성공하였습니다', 'info')
   }
 
 
@@ -67,7 +67,7 @@ export default function() {
       return false
 
     if(resExist.payload.exist == 1){
-      window.showToast('이미 가입한 사용자입니다', 'error')
+      window.showToast('이미 가입한 사용자입니다', 'user-error')
       return false
     }
 
@@ -83,7 +83,7 @@ export default function() {
     
     if(!validator.email(email)){
       input_email.focus()
-      window.showToast('잘못된 형식의 이메일입니다', 'error')
+      window.showToast('잘못된 형식의 이메일입니다', 'user-error')
       return
     }
 
@@ -91,7 +91,7 @@ export default function() {
 
     if(!validator.certifyCode(certifyCode)){
       input_certifyCode.focus()
-      window.showToast('인증 코드를 잘못 입력하였습니다', 'error')
+      window.showToast('인증 코드를 잘못 입력하였습니다', 'user-error')
       return
     }
     
@@ -106,9 +106,9 @@ export default function() {
     setIsLoadingCertify(false)
 
     if(success)
-      window.showToast('인증에 성공하였습니다', 'success')
+      window.showToast('인증에 성공하였습니다', 'info')
     else
-      window.showToast('인증에 실패하였습니다', 'error')
+      window.showToast('인증에 실패하였습니다', 'system-error')
     
     setIsCertified(success)
   }
@@ -140,19 +140,19 @@ export default function() {
     setIsLoadingRegist(false)
         
     if(auth == null){      
-      window.showToast('회원 가입이 실패하였습니다', 'error')
+      window.showToast('회원 가입이 실패하였습니다', 'system-error')
       return
     }
 
     if(!(Object.hasOwn(auth, "jwt") && Object.hasOwn(auth, "user_id"))){
 
-      window.showToast('회원 가입이 실패하였습니다', 'error')
+      window.showToast('회원 가입이 실패하였습니다', 'system-error')
       return
     }
 
     updateAuth(auth)
     
-    window.showToast('회원 가입이 성공하였습니다', 'success')
+    window.showToast('회원 가입이 성공하였습니다', 'info')
     
     navigate(comback == true ? -1 : '/')
   }
@@ -182,7 +182,7 @@ export default function() {
       return null
 
     if(resExist.payload.exist == 1){
-      window.showToast('이미 존재하는 사용자입니다', 'error')
+      window.showToast('이미 존재하는 사용자입니다', 'user-error')
       return null
     }
     

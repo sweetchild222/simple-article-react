@@ -56,19 +56,19 @@ export default function() {
         setIsLoading(false)
         
         if(resAuth.success == false) {
-            window.showToast('로그인이 실패하였습니다', 'error')
+            window.showToast('로그인이 실패하였습니다', 'system-error')
             return
         }
         
         if(!(Object.hasOwn(resAuth.payload, "jwt") && Object.hasOwn(resAuth.payload, "user_id"))){
 
-            window.showToast('로그인이 실패하였습니다', 'error')
+            window.showToast('로그인이 실패하였습니다', 'system-error')
             return
         }
         
         updateAuth(resAuth.payload)
 
-        window.showToast('로그인이 성공하였습니다', 'success')
+        window.showToast('로그인이 성공하였습니다', 'info')
         
         if(comback)
             navigate(-1)

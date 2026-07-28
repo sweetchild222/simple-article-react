@@ -20,7 +20,7 @@ export default function({ref, blogId, isEdit}) {
         loadArticles(blogId).then(articles => {
 
             if(articles == null){
-                window.showToast('최근 작성한 글을 가져 올 수 없습니다', 'error')
+                window.showToast('최근 작성한 글을 가져오기에 실패하였습니다', 'system-error')
                 return
             }
         

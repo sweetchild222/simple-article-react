@@ -68,7 +68,7 @@ export default function() {
 
         if(result == true){
             removeAuth()
-            window.showToast('로그 아웃이 성공하였습니다', 'success')
+            window.showToast('로그 아웃이 성공하였습니다', 'info')
             navigate('/')
         }
     }
@@ -106,7 +106,7 @@ export default function() {
             return
         
         if(imageFile.format == 'unknown'){
-            window.showToast('파일을 사용할 수 없습니다', 'error')
+            window.showToast('파일을 사용할 수 없습니다', 'user-error')
             return
         }
 
@@ -137,7 +137,7 @@ export default function() {
 
         if(resProfile.success == false){
             setIsModalImageCrop(false)
-            window.showToast('프로필 설정에 실패했습니다', 'error')
+            window.showToast('프로필 설정에 실패하였습니다', 'system-error')
             return
         }
 
@@ -147,7 +147,7 @@ export default function() {
 
         if(resUser.success == false){
             setIsModalImageCrop(false)
-            window.showToast('프로필 설정에 실패했습니다', 'error')
+            window.showToast('프로필 설정에 실패하였습니다', 'system-error')
             return
         }        
     
@@ -166,19 +166,19 @@ export default function() {
             return
 
         if(input == ''){
-            window.showToast('현재 비밀번호를 입력하세요', 'error')
+            window.showToast('현재 비밀번호를 입력하세요', 'user-error')
             return
         }        
         
         if(validator.password(input) == false) {
-            window.showToast('비밀번호가 틀렸습니다', 'error')
+            window.showToast('비밀번호가 틀렸습니다', 'user-error')
             return
         }
 
         const res = await withdraw(input)
 
         if(res.success == false){
-            window.showToast('회원 탈퇴가 실패하였습니다', 'error')
+            window.showToast('회원 탈퇴가 실패하였습니다', 'system-error')
             return
         }
 
@@ -198,7 +198,7 @@ export default function() {
             return
 
         if(input == ''){
-            window.showToast('닉네임을 입력하세요', 'error')
+            window.showToast('닉네임을 입력하세요', 'user-error')
             return
         }
 
@@ -208,11 +208,11 @@ export default function() {
         const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {nickname: input})
 
         if(resUser.success == false) {
-            window.showToast('닉네임 수정에 실패 했습니다', 'error')
+            window.showToast('닉네임 수정에 실패하였습니다', 'system-error')
             return
         }        
 
-        window.showToast('닉네임 수정에 성공했습니다', 'info')
+        window.showToast('닉네임 수정 되었습니다', 'info')
 
         user.nickname = input
         setUser(structuredClone(user))

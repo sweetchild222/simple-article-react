@@ -41,31 +41,31 @@ export default function({onClose}) {
 
         if(current_password == ''){
             refCurPassword.current.focus()
-            window.showToast('기존 비밀번호를 입력하세요', 'error')
+            window.showToast('기존 비밀번호를 입력하세요', 'user-error')
             return
         }
 
         if(new_password == ''){
             refNewPassword.current.focus()
-            window.showToast('새 비밀번호를 입력하세요', 'error')
+            window.showToast('새 비밀번호를 입력하세요', 'user-error')
             return
         }
 
         if(repeat_password == ''){
             refRepeatPassword.current.focus()
-            window.showToast('비밀번호 확인을 입력하세요', 'error')
+            window.showToast('비밀번호 확인을 입력하세요', 'user-error')
             return
         }
 
         if(new_password != repeat_password){
-            window.showToast('새 비밀번호와 비밀번호 확인이 일치하지 않습니다', 'error')
+            window.showToast('새 비밀번호와 비밀번호 확인이 일치하지 않습니다', 'user-error')
             return
         }
 
         const valid = (validator.password(new_password))
 
         if(valid == false) {
-            window.showToast('새 비밀번호가 조건에 맞지 않습니다', 'error')
+            window.showToast('새 비밀번호가 조건에 맞지 않습니다', 'user-error')
             return
         }
 
@@ -76,11 +76,11 @@ export default function({onClose}) {
         setIsSpinner(false)
 
         if(result == null){
-            window.showToast('비밀번호 변경이 실패하였습니다', 'error')            
+            window.showToast('비밀번호 변경이 실패하였습니다', 'system-error')
             return
         }
         
-        window.showToast('비밀번호 변경이 성공하였습니다', 'success')
+        window.showToast('비밀번호 변경이 성공하였습니다', 'info')
         onClose()
     }
     

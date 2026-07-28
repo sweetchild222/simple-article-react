@@ -62,7 +62,7 @@ export default function() {
         getCategory().then((categories)=> {
             
             if(categories == null || categories.length == 0){
-                window.showToast('카테고리를 가져 올 수 없습니다', 'error')
+                window.showToast('카테고리 가져오기에 실패하였습니다', 'system-error')
                 return
             }
         
@@ -129,7 +129,7 @@ export default function() {
             return
         
         if(imageFile.format == 'unknown'){
-            window.showToast('파일을 사용할 수 없습니다', 'error')
+            window.showToast('파일을 사용할 수 없습니다', 'user-error')
             return
         }
 
@@ -157,7 +157,7 @@ export default function() {
         const res = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
 
         if(res.success == false){
-            window.showToast('대표 이미지 설정에 실패했습니다', 'error')
+            window.showToast('대표 이미지 설정에 실패하였습니다', 'system-error')
             return
         }
 
@@ -174,12 +174,12 @@ export default function() {
             return null
 
         if(categories == null) {
-            window.showToast('카테고리가 설정되지 않았습니다', 'error')
+            window.showToast('카테고리가 설정되지 않았습니다', 'user-error')
             return
         }
 
         if(refTitle.current.value.trim().length === 0){
-            window.showToast('제목을 입력하세요', 'error')
+            window.showToast('제목을 입력하세요', 'user-error')
             return
         }        
 
@@ -193,7 +193,7 @@ export default function() {
         const res = await putArticle(article_id, title, head, content, thumbnail, posted, category_id)
 
         if(res.success == false){
-            window.showToast(state.source_id != null ?  '글 수정에 실패 하였습니다' : '글 등록에 실패 하였습니다', 'error')
+            window.showToast(state.source_id != null ?  '글 수정에 실패하였습니다' : '글 등록에 실패하였습니다', 'system-error')
             return
         }
 
@@ -246,7 +246,7 @@ export default function() {
             const res = await ArticleAPI.deleteArticle(auth.jwt, state.id)
             
             if(res.success == false){
-                window.showToast('삭제가 실패 하였습니다', 'error')
+                window.showToast('삭제가 실패하였습니다', 'system-error')
                 return
             }
 
@@ -263,7 +263,7 @@ export default function() {
             return null
 
         if(categories == null) {
-            window.showToast('카테고리가 설정되지 않았습니다', 'error')
+            window.showToast('카테고리가 설정되지 않았습니다', 'user-error')
             return
         }
 
@@ -277,7 +277,7 @@ export default function() {
         const res = await putArticle(article_id, title, head, content, thumbnail, posted, category_id)
 
         if(res.success == false){
-            window.showToast('글의 임시 저장에 실패 하였습니다 ', 'error')
+            window.showToast('글의 임시 저장에 실패하였습니다 ', 'system-error')
             return
         }
 

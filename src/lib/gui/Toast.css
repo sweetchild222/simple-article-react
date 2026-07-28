@@ -16,11 +16,11 @@
   background-color: #9ABF7F;
 }
 
-.toast-success {   
-  background-color: #7FCCDE;
+.toast-user-error {
+  background-color: #bb9086;
 }
 
-.toast-error {
+.toast-system-error {
   background-color: #E04342; 
 }
 

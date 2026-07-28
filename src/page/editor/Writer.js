@@ -98,7 +98,7 @@ export default function() {
         const markdown = refMDX.current.getMarkdown()
 
         if(!markdown || markdown.trim().length === 0){
-            window.showToast('입력된 글이 없습니다', 'error')
+            window.showToast('입력된 글이 없습니다', 'user-error')
             return 
         }
 
@@ -113,9 +113,9 @@ export default function() {
             setIsTempSaveLoading(false)
             
             if(res != null)
-                window.showToast('임시 저장됨', 'info')
+                window.showToast('임시 저장 되었습니다', 'info')
             else{
-                window.showToast('임시 저장 실패', 'error')
+                window.showToast('임시 저장에 실패하였습니다', 'system-error')
                 return
             }
         }
@@ -156,7 +156,7 @@ export default function() {
 
     const onUserError = (error) =>{
     
-        window.showToast(error, 'error')
+        window.showToast(error, 'user-error')
     }
     
 
@@ -206,9 +206,9 @@ export default function() {
         setIsTempSaveLoading(false)
 
         if(success == true)
-            window.showToast('임시 저장됨', 'info')
+            window.showToast('임시 저장 되었습니다', 'info')
         else
-            window.showToast('임시 저장 실패', 'error')
+            window.showToast('임시 저장에 실패하였습니다', 'system-error')
 
         setIsTouched(success == true ? false : true)
     }
@@ -255,9 +255,9 @@ export default function() {
             setIsTempSaveLoading(false)
 
             if(success == true)
-                window.showToast('임시 저장 됨', 'info')
+                window.showToast('임시 저장 되었습니다', 'info')
             else
-                window.showToast('임시 저장 실패', 'error')
+                window.showToast('임시 저장에 실패하였습니다', 'system-error')
         }
 
         navigate(-1)
@@ -285,7 +285,7 @@ export default function() {
             const res = await ArticleAPI.deleteArticle(auth.jwt, state.id)
             
             if(res.success == false){
-                window.showToast('삭제가 실패 하였습니다', 'error')
+                window.showToast('삭제가 실패하였습니다', 'system-error')
                 return
             }
 

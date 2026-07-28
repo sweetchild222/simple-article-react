@@ -44,13 +44,12 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         const categories = await getCategories(blogId)
                 
         if(categories == null) {
-            window.showToast('카테고리를 가져 올 수 없습니다', 'error')
+            window.showToast('카테고리 가져오기가 실패하였습니다', 'system-error')
             return
         }
 
-
         if(categories.length == 0) {
-            window.showToast('카테고리가 없습니다', 'error')
+            window.showToast('카테고리가 없습니다', 'user-error')
             return
         }
         
@@ -143,7 +142,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
                 applyCount++
             }
             else
-                window.showToast(category.name + ' 삭제에 실패하였습니다.', 'error')
+                window.showToast(category.name + ' 삭제가 실패하였습니다', 'system-error')
         }
 
         return applyCount
@@ -168,7 +167,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
                 applyCount++
             }
             else
-                window.showToast(category.name + ' 추가에 실패하였습니다.', 'error')
+                window.showToast(category.name + ' 추가가 실패하였습니다', 'system-error')
         }
 
         return applyCount
@@ -190,7 +189,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
                 applyCount++
             }
             else
-                window.showToast(category.name + ' 로 이름 변경에 실패하였습니다.', 'error')
+                window.showToast(category.name + ' 로 이름 변경이 실패하였습니다', 'system-error')
         }
 
         return applyCount
@@ -226,7 +225,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         if(applyCount > 0)
             await loadCategory(blogId)
         else
-            window.showToast('카테고리가 변경되지 않았습니다', 'info')
+            window.showToast('카테고리가 변경되지 않았습니다', 'user-error')
     }
 
 

@@ -106,7 +106,7 @@ export default function() {
         
         if(res.success == false) {
             setIsControlLoading(false)
-            window.showToast('수정 본을 찾는데 실패했습니다', 'error')
+            window.showToast('수정 본을 찾는데 실패하였습니다', 'system-error')
             return
         }
 
@@ -129,7 +129,7 @@ export default function() {
             setIsControlLoading(false)
 
             if(resPost.success == false){
-                window.showToast('수정 본 생성에 실패 했습니다', 'error')
+                window.showToast('수정 본 생성에 실패하였습니다', 'system-error')
                 return
             }
             
@@ -166,7 +166,7 @@ export default function() {
             setIsControlLoading(false)
             
             if(res.success == false){
-                window.showToast('삭제가 실패 하였습니다', 'error')
+                window.showToast('삭제가 실패 하였습니다', 'system-error')
                 return
             }
 

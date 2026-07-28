@@ -47,7 +47,7 @@ export default function() {
         setIsSpinner(false)
         
         if(articles == null){
-          window.showToast('글을 가져오는데 실패 했습니다', 'error')
+          window.showToast('글을 가져오는데 실패하였습니다', 'system-error')
           return
         }
         

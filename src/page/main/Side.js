@@ -383,11 +383,10 @@ export default function Sidebar() {
                 }
             </Vertical>}
 
-        <div style={{flex:'1'}}/>
+        <div style={{height:'16px'}}/>
         <Horizental style={{justifyContent:'center'}}>
             <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
-        </Horizental>
-        <div style={{height:'16px'}}/>
+        </Horizental>        
         </div>
     );
 }

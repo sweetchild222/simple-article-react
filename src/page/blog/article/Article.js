@@ -166,7 +166,7 @@ export default function() {
             setIsControlLoading(false)
             
             if(res.success == false){
-                window.showToast('삭제가 실패 하였습니다', 'system-error')
+                window.showToast('삭제가 실패하였습니다', 'system-error')
                 return
             }
 

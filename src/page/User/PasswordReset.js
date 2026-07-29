@@ -51,10 +51,10 @@ export default function({onClose}) {
         setIsLoadingSendCode(false)
         input_email.disabled = false
 
-        if(!success)
-            window.showToast('인증 코드 발송이 실패하였습니다', 'system-error')
-        else
+        if(success)
             window.showToast('인증 코드 발송이 성공하였습니다', 'info')
+        else
+            window.showToast('인증 코드 발송이 실패하였습니다', 'system-error')
     }
     
 

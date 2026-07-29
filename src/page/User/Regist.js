@@ -25,17 +25,7 @@ export default function() {
   const location = useLocation()
   const comback = location.state != null && location.state.comback == true
 
-  useEffect(() => {
-
-    if(isCertified == true){
-      // input_email.disabled = true
-      // input_certifyCode.disabled = true
-      // setIsDisabledSendCode(true)
-    }
   
-  }, [isCertified])
-
-
   const onClickSendCertifyCode = async() => {
 
     const email = input_email.value
@@ -52,10 +42,10 @@ export default function() {
     setIsLoadingSendCode(false)
     input_email.disabled = false
 
-    if(!success)
-      window.showToast('인증 코드 발송이 실패하였습니다', 'system-error')
+    if(success)
+      window.showToast('인증 코드 발송이 성공하였습니다', 'info')    
     else
-      window.showToast('인증 코드 발송이 성공하였습니다', 'info')
+      window.showToast('인증 코드 발송이 실패하였습니다', 'system-error')      
   }
 
 

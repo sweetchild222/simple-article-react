@@ -13,7 +13,9 @@ package-lock.json
 coverage
 
 # production
-build
+react_dist
+react_dist.tar.gz
+Lightsail.pem
 
 # misc
 .DS_Store

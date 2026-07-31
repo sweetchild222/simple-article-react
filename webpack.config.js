@@ -29,8 +29,8 @@ export default {
   entry: path.join(__dirname, 'src/page/entry/Entry.js'),
 
   output: {
-    filename: 'bundle.js',
-    path: path.join(__dirname, '/build'),
+    filename: 'main.js',
+    path: path.join(__dirname, 'react_dist'),
     clean: true,
     publicPath: '/'
   },
@@ -69,6 +69,7 @@ export default {
     open: true,
     hot: true,
     // webSocketServer: true,
+    static:'./react_dist',
     historyApiFallback:true,
     proxy: [
       {

@@ -30,7 +30,7 @@ export async function postCertifyUserJoin(email) {
 export async function patchCertifyUserJoin(email, code){
       
   const url = '/api/certify/user-join'
-  const payload = {email: email, code:code}
+  const payload = {email: email, code:code}  
 
   return await restAPI.patch(url, payload)
 }

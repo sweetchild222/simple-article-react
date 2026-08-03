@@ -3,6 +3,7 @@ import path, { dirname } from 'path'
 import { fileURLToPath } from 'url';
 import HTMLWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from  'mini-css-extract-plugin';
+import  CopyWebpackPlugin from 'copy-webpack-plugin';
 import webpack from 'webpack';
 import dotenv from 'dotenv'
 import InterpolateHtmlPlugin from 'interpolate-html-plugin';
@@ -22,6 +23,19 @@ const HTMLWebpackPlug = new HTMLWebpackPlugin({
 const InterpolateHtmlPlug = new InterpolateHtmlPlugin({PUBLIC_URL: publicUrl})
 
 const ProcessEnvPlug = new webpack.DefinePlugin({'process.env':JSON.stringify(process.env)})
+
+const CopyPlug = new CopyWebpackPlugin(
+  {patterns: 
+    [
+      { 
+        from: path.resolve(__dirname, 'public'),
+        to: path.resolve(__dirname, 'react_dist'),
+        globOptions: {
+          ignore: ['**/index.html'],
+        },
+      },
+    ],
+  })
 
 
 export default {
@@ -62,14 +76,14 @@ export default {
     ],
   },
 
-  plugins: [HTMLWebpackPlug, InterpolateHtmlPlug, ProcessEnvPlug],
+
+  plugins: [HTMLWebpackPlug, InterpolateHtmlPlug, ProcessEnvPlug, CopyPlug],
   
   devServer: {    
     port:3001,
     open: true,
     hot: true,
     // webSocketServer: true,
-    static:'./react_dist',
     historyApiFallback:true,
     proxy: [
       {

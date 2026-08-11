@@ -121,7 +121,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
                   <div style={{width:'16px'}}/>
                   {newAlarms.length > pageCount && <PrettyButton type='transparent' disabled={!(newAlarms.length > (fromIndex + pageCount))} style={{color:'black'}} onClick={onClickNext}><GrNext size={20}/></PrettyButton>}
                   <div style={{flex:'1'}}/>
-                  <PrettyButton type='danger' onClick={onClose} style={{width:'64px'}}>닫기</PrettyButton>
+                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>닫기</PrettyButton>
                 </Horizental>
               </Vertical>
           </dialog>,

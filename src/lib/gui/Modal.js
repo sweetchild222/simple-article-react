@@ -126,16 +126,16 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
                 <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength} style={{width:'100%', minWidth:'256px', boxSizing:'border-box'}}/>
                 <div style={{height:'16px'}}/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
-                    <PrettyButton onClick={onClickInputYes} type='success' style={{width:'64px'}}>확인</PrettyButton>
+                    <PrettyButton onClick={onClickInputYes} type='confirm' style={{width:'64px'}}>확인</PrettyButton>
                     <div style={{width:'16px'}}/>
-                    <PrettyButton onClick={onClickNo} type='warning' style={{width:'64px'}}>아니오</PrettyButton>
+                    <PrettyButton onClick={onClickNo} type='cancel' style={{width:'64px'}}>아니오</PrettyButton>
                 </div>
             </div>}
             {type == 'confirm' && <PrettyButton onClick={onClickConfirm} style={{width:'64px'}} type='confirm'>확인</PrettyButton>}
             {type == 'yesno' && <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
                 <PrettyButton onClick={onClickYes} type='success' style={{width:'64px'}}>예</PrettyButton>
                 <div style={{width:'16px'}}/>
-                <PrettyButton onClick={onClickNo} type='warning' style={{width:'64px'}}>아니오</PrettyButton>
+                <PrettyButton onClick={onClickNo} type='cancel' style={{width:'64px'}}>아니오</PrettyButton>
             </div>}
             </div>
         </dialog>,

@@ -329,7 +329,7 @@ export default function Sidebar() {
         <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`} style={{padding:'8px'}}>
             <Horizental style={{justifyContent:'space-between'}}>
                 {isOpen && <Horizental style={{alignItems:'center'}}>
-                    {!validAuth(auth) && <PrettyButton type='confirm' onClick={onClickLogIn} style={{height:'fit-content'}}>로그인</PrettyButton>}
+                    {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>로그인</PrettyButton>}
                     {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
                         <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
                         {alarms != null && <div style={{width:'8px'}}/>}

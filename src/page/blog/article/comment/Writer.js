@@ -56,9 +56,9 @@ export default function(props) {
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'8px'}}/>
-                    <PrettyButton isLoading={isPostLoading} onClick={()=>onClickPost()} style={{width:'64px'}}>{'올리기'}</PrettyButton>
+                    <PrettyButton isLoading={isPostLoading} type={'success'} onClick={()=>onClickPost()} style={{width:'64px'}}>{'올리기'}</PrettyButton>
                     <div style={{width:'8px'}}/>
-                    <PrettyButton disabled={isPostLoading ? true : false} onClick={()=>onClickCancel()} style={{width:'64px'}}>{'취소'}</PrettyButton>
+                    <PrettyButton disabled={isPostLoading ? true : false} type={'cancel'} onClick={()=>onClickCancel()} style={{width:'64px'}}>{'취소'}</PrettyButton>
                 </div>
             </Vertical>
         )

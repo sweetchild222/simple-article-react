@@ -113,9 +113,9 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center', marginTop:'4px'}}>
                     <label>{inputLength}</label>
                     <div style={{width:'8px'}}/>
-                    <PrettyButton tooltip={'수정'} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner} style={{width:'64px'}}>{'수정'}</PrettyButton>
+                    <PrettyButton tooltip={'수정'} type={'success'} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner} style={{width:'64px'}}>{'수정'}</PrettyButton>
                     <div style={{width:'8px'}}></div>
-                    <PrettyButton tooltip={'취소'} disabled={isModifyLoading} onClick={onClickModifyCancelInner} style={{width:'64px'}}>{'취소'}</PrettyButton>
+                    <PrettyButton tooltip={'취소'} type={'cancel'} disabled={isModifyLoading} onClick={onClickModifyCancelInner} style={{width:'64px'}}>{'취소'}</PrettyButton>
                 </Horizental>
                 }
             </Vertical>

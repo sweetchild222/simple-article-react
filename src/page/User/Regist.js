@@ -232,13 +232,13 @@ export default function() {
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
         <input id={'input_email'} disabled={isCertified} type={'text'} onChange={onChangeEmail} placeholder="이메일" maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
         <div style={{width:'8px'}}/>
-        <PrettyButton isLoading={isLoadingSendCode} disabled={isCertified} onClick={onClickSendCertifyCode}>인증 번호 발송</PrettyButton>
+        <PrettyButton isLoading={isLoadingSendCode} type='success' disabled={isCertified} onClick={onClickSendCertifyCode}>인증 번호 발송</PrettyButton>
       </Horizental>
       <div style={{height:'8px'}}/>
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
         <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder="인증 코드" style={{flex:'1', boxSizing:'border-box'}}/>
         <div style={{width:'8px'}}/>
-        <PrettyButton isLoading={isLoadingCertify} disabled={isCertified} onClick={onClickRequestCertify}>인증 번호 확인</PrettyButton>
+        <PrettyButton isLoading={isLoadingCertify} type='success' disabled={isCertified} onClick={onClickRequestCertify}>인증 번호 확인</PrettyButton>
       </Horizental>
 
       <div style={{height:'16px'}}/>
@@ -250,7 +250,7 @@ export default function() {
         <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
       </Vertical>      
       <div style={{height:'16px'}}/>
-      <PrettyButton isLoading={isLoadingRegist} disabled={!(isCertified && passwordValid)} onClick={onClickRegist} type='confirm' style={{width:'100%', boxSizing:'border-box'}}>회원 가입</PrettyButton>
+      <PrettyButton isLoading={isLoadingRegist} disabled={!(isCertified && passwordValid)} onClick={onClickRegist} type='success' style={{width:'100%', boxSizing:'border-box'}}>회원 가입</PrettyButton>
     </Vertical>
   ) : (<GoBack value={'로그인된 사용자는 접근 할 수 없습니다'}/>)
 }

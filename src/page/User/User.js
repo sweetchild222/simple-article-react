@@ -74,13 +74,16 @@ export default function() {
 
     return user ? (
       <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
-        <ProfileImage size={256} shape={'rect'} user={user}/>
-        <div style={{height:'16px'}}/>
         <label style={{fontSize:'24px', fontWeight:'bold'}}>{user.nickname}</label>
+        <div style={{height:'8px'}}/>
+        <ProfileImage size={256} shape={'rect'} user={user}/>
+        <div style={{height:'4px'}}/>        
         <label style={{fontSize:'18px', color:'gray'}}>{user.username}</label>
         <div style={{height:'32px'}}/>
-        {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'32px'}}>회원 정보 수정</PrettyButton>}
-        {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='success'>블로그 구경하기</PrettyButton>}
+        <Vertical>
+            {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'32px'}}>회원 정보 수정</PrettyButton>}
+            {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='default'>블로그 구경하기</PrettyButton>}
+        </Vertical>
     </Vertical>
       ) : <Spinner/>
 }

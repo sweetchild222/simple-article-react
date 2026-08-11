@@ -568,7 +568,7 @@ export default function({article_id, article_user_id}) {
                 }
 
                 <div style={{flex:'1'}}></div>
-                {!isOpenCommentEdit && <PrettyButton type={'success'}  onClick={onOpenCommentEdit}>{'댓글 작성'}</PrettyButton>}
+                {!isOpenCommentEdit && <PrettyButton type={'default'}  onClick={onOpenCommentEdit}>{'댓글 작성'}</PrettyButton>}
             </Horizental>
             
             {isShowComments && comments.map((data, index) => 
@@ -599,7 +599,7 @@ export default function({article_id, article_user_id}) {
                             {!(modifyModeCommentId == data.id) && 
                                 <Horizental style={{justifyContent:'space-between', marginBottom:'4px'}}>
                                     <Great comment_id={data.id} greatSet={data.greatSet}></Great>
-                                    <PrettyButton type={'success'} tooltip={'답글 작성'} onClick={() => onClickReplyEditOpen(data.id)}>{'답글 작성'}</PrettyButton>
+                                    <PrettyButton type={'default'} tooltip={'답글 작성'} onClick={() => onClickReplyEditOpen(data.id)}>{'답글 작성'}</PrettyButton>
                                 </Horizental>
                             }
 

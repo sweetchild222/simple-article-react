@@ -82,7 +82,7 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
                 {isOpen && file && <ImageCropper ref={refCropper} file={file} containerWidth={containerWidth} containerHeight={containerHeight} selectMinWidth={selectMinWidth} keepRatio={keepRatio}/>}
                 <div style={{height:'16px'}}/>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                  <PrettyButton type='success' onClick={onClickApplyCore} isLoading={isApplyLoading} style={{width:'64px'}}>선택</PrettyButton>
+                  <PrettyButton type='confirm' onClick={onClickApplyCore} isLoading={isApplyLoading} style={{width:'64px'}}>선택</PrettyButton>
                   <div style={{width:'16px'}}/>
                   <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>취소</PrettyButton>
                 </div>

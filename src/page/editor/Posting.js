@@ -19,6 +19,7 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
+import {VPad, HPad} from "@gui/Pad.js";
 
 export default function() {
     
@@ -289,26 +290,26 @@ export default function() {
         <Vertical style={{margin:'auto', height:'100%', alignItems:'start', position:'relative'}}>
             {isSpinner && <Spinner type={'absolute'}/>}
             <label htmlFor='input_title'>제목</label>
-            <div style={{height:'4px'}}></div>
+            <VPad size={4}/>
             <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title} style={{width:'100%', boxSizing:'border-box'}}/>
-            <div style={{height:'16px'}}></div>
+            <VPad size={16}/>
             <label htmlFor='input_category'>카테고리</label>
-            <div style={{height:'4px'}}></div>
+            <VPad size={4}/>
             <select style={{width:'100%'}} id='input_category' value={categories ? categories[selectedCategoryIndex].name : ''} onChange={onChangeCategory}>
                 {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}
             </select>
-            <div style={{height:'16px'}}></div>
+            <VPad size={16}/>
             <label onClick={onClickThumbnail}>대표 이미지</label>
-            <div style={{height:'4px'}}></div>
+            <VPad size={4}/>
             <StateProgsImage src={thumbnail} onClick={onClickThumbnail} width={384} height={384} style={{alignSelf:'center'}}/>
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}
-            <div style={{height:'16px'}}></div>
+            <VPad size={16}/>
             <Horizental style={{width:'100%'}}>
                 <PrettyButton type='danger' onClick={onClickDelete} style={{width:'64px'}}>삭제</PrettyButton>
-                <div style={{width:'64px'}}></div>
+                <HPad size={64}/>
                 <PrettyButton type='success' onClick={onClickSave} style={{flex:'1'}}>임시 저장</PrettyButton>
                 <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
-                <div style={{width:'16px'}}></div>
+                <HPad size={16}/>
                 <PrettyButton type='success' onClick={onClickPost} style={{flex:'1'}}>{state.source_id != null ? '수정 완료': '올리기'}</PrettyButton>
             </Horizental>
         </Vertical>

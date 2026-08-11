@@ -8,6 +8,7 @@ import AuthContext from "@util/AuthContext.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import GoBack from "@page/common/GoBack.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 export default function() {
 
@@ -231,25 +232,23 @@ export default function() {
     <Vertical style={{alignItems: 'center', justifyContent:'center', margin:'auto', padding:'16px'}}>
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
         <input id={'input_email'} disabled={isCertified} type={'text'} onChange={onChangeEmail} placeholder="이메일" maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
-        <div style={{width:'8px'}}/>
+        <HPad size={8}/>
         <PrettyButton isLoading={isLoadingSendCode} type='success' disabled={isCertified} onClick={onClickSendCertifyCode}>인증 번호 발송</PrettyButton>
       </Horizental>
-      <div style={{height:'8px'}}/>
+      <VPad size={8}/>
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
         <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder="인증 코드" style={{flex:'1', boxSizing:'border-box'}}/>
-        <div style={{width:'8px'}}/>
+        <HPad size={8}/>
         <PrettyButton isLoading={isLoadingCertify} type='success' disabled={isCertified} onClick={onClickRequestCertify}>인증 번호 확인</PrettyButton>
       </Horizental>
-
-      <div style={{height:'16px'}}/>
-
+      <VPad size={16}/>
       <Vertical style={{ alignItems: 'center', width:'100%'}}>
         <input id='input_password' type="text" disabled={!isCertified} onChange={onChangePassword} placeholder="비밀번호 (8~20자)" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
-        <div style={{height:'8px'}}/>
+        <VPad size={8}/>
         <input id='input_confirm_password' type="text" disabled={!isCertified} onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
         <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
       </Vertical>      
-      <div style={{height:'16px'}}/>
+      <VPad size={16}/>
       <PrettyButton isLoading={isLoadingRegist} disabled={!(isCertified && passwordValid)} onClick={onClickRegist} type='success' style={{width:'100%', boxSizing:'border-box'}}>회원 가입</PrettyButton>
     </Vertical>
   ) : (<GoBack value={'로그인된 사용자는 접근 할 수 없습니다'}/>)

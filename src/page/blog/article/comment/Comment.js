@@ -12,6 +12,7 @@ import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
 import { RiArrowDownWideLine } from "react-icons/ri";
 import { MdOutlineDoneOutline } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
+import {VPad, HPad} from "@gui/Pad.js";
 import './Comment.css'
 
 
@@ -112,9 +113,9 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
 
                 {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center', marginTop:'4px'}}>
                     <label>{inputLength}</label>
-                    <div style={{width:'8px'}}/>
+                    <HPad size={8}/>
                     <PrettyButton tooltip={'수정'} type={'success'} isLoading={isModifyLoading} onClick={onClickModifyCompleteInner} style={{width:'64px'}}>{'수정'}</PrettyButton>
-                    <div style={{width:'8px'}}></div>
+                    <HPad size={8}/>
                     <PrettyButton tooltip={'취소'} type={'cancel'} disabled={isModifyLoading} onClick={onClickModifyCancelInner} style={{width:'64px'}}>{'취소'}</PrettyButton>
                 </Horizental>
                 }

@@ -9,6 +9,7 @@ import { FaPen } from "react-icons/fa6"
 
 import {Vertical, Horizental} from "@gui/Flex.js";
 
+
 export default function({ref, blogId, isEdit}) {
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
@@ -53,7 +54,7 @@ export default function({ref, blogId, isEdit}) {
         <Vertical>
             <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'8px'}}>최근 글</label>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'left', padding:'4px 8px 4px 8px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
-                {articles.map((data, index) => <div className={'clamped-text'} key={data.id} style={{'--line-count':1, color:'black', cursor:'pointer', marginTop:'4px', marginBottom:'4px', whiteSpace: 'nowrap'}} onClick={()=> onClickArticle(data.id)}>{data.title}</div>)}
+                {articles.map((data, index) => <div className={'clamped-text'} key={data.id} style={{'--line-count':1, color:'black', cursor:'pointer', marginTop:'8px', marginBottom:'8px', whiteSpace: 'nowrap'}} onClick={()=> onClickArticle(data.id)}>{data.title}</div>)}
             </div>
         </Vertical>
     ) : null

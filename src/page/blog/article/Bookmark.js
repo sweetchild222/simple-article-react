@@ -9,6 +9,7 @@ import CountWithUnit from "@util/CountWithUnit.js";
 
 import { IoMdHeart } from "react-icons/io";
 import { IoIosHeartEmpty } from "react-icons/io";
+import {VPad, HPad} from "@gui/Pad.js";
 
 export default function({article_id, count}) {
 
@@ -95,7 +96,7 @@ export default function({article_id, count}) {
     return ( isBookmark != null ? <Horizental style={{alignItems:'center'}}>
                 <PrettyButton type={'transparent'} isLoading={isBookmarkLoading} style={{color:'black'}} onClick={onClickBookmark}>
                     {isBookmark ? <IoMdHeart size={22}/> : <IoIosHeartEmpty size={22}/>}
-                    <div style={{width:'4px'}}></div>
+                    <HPad size={4}/>
                     <div>{CountWithUnit(bookmarkCount)}</div>
                 </PrettyButton>
             </Horizental>

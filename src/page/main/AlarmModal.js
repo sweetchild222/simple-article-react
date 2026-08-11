@@ -15,6 +15,7 @@ import { MdVisibility } from 'react-icons/md';
 
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
@@ -118,7 +119,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
                 <Horizental style={{alignItems: 'center', marginTop:'8px', justifyContent:'center', width:'100%', marginBottom:'8px'}}>
                   <div style={{flex:'1'}}/>
                   {newAlarms.length > pageCount && <PrettyButton type='transparent' disabled={fromIndex - pageCount < 0} style={{color:'black'}} onClick={onClickPrev}><GrPrevious size={20}/></PrettyButton>}
-                  <div style={{width:'16px'}}/>
+                  <HPad size={16}/>
                   {newAlarms.length > pageCount && <PrettyButton type='transparent' disabled={!(newAlarms.length > (fromIndex + pageCount))} style={{color:'black'}} onClick={onClickNext}><GrNext size={20}/></PrettyButton>}
                   <div style={{flex:'1'}}/>
                   <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>닫기</PrettyButton>

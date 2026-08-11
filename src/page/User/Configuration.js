@@ -19,6 +19,7 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import * as validator from './Validator.js'
 import { LuImageUp } from "react-icons/lu";
 import Integer from "@util/Integer.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function() {
@@ -252,22 +253,21 @@ export default function() {
         </div>
         
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
-        <div style={{height:'16px'}}/>
+        <VPad size={16}/>
         <Vertical>
             <Modal title={'닉네임을 입력하세요'} type={'input'} isCloseOutsideClick={false} defaultValue={user.nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
-            <PrettyButton onClick={onClickUserNickname} type='default'>닉네임 설정</PrettyButton>            
-            <div style={{height:'16px'}}/>
+            <PrettyButton onClick={onClickUserNickname} type='default'>닉네임 설정</PrettyButton>
+            <VPad size={16}/>
             <PrettyButton onClick={onClickPassword} type='default'>비밀번호 변경</PrettyButton>
             <Modal type={'custom'} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)} isCloseOutsideClick={false}>
                 <PasswordModal onClose={() => setIsModalPassword(false)}/>
-            </Modal>            
-            <div style={{height:'16px'}}/>
+            </Modal>
+            <VPad size={16}/>
             <PrettyButton onClick={onClickLogout} type='warning'>로그아웃</PrettyButton>
             <Modal title={'로그아웃 하시겠습니까?'} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
-            <div style={{height:'16px'}}/>            
+            <VPad size={16}/>
             <Modal title={'패스워드를 입력하세요'} description={user.blog_id ? '회원을 탈퇴하더라도 블로그는 남습니다' : null} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPasswordForUser}/>
             <PrettyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</PrettyButton>
         </Vertical>
       </Vertical>) : <Spinner/>
 }
-

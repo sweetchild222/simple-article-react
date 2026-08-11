@@ -12,6 +12,7 @@ import { MdThumbDownAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 import { IoMdHeart } from "react-icons/io";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import {VPad, HPad} from "@gui/Pad.js";
 import './ArticleItem.css'
 
 export default function({article}) {
@@ -35,15 +36,15 @@ export default function({article}) {
                 </div>
                 <Horizental style={{position:'absolute', zIndex:3, left:'0px', bottom:'0px', color:'lightgray', width:'100%', alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingBottom:'8px'}}>
                     <IoMdHeart size={22}/>
-                    <div style={{width:'4px'}}/>
+                    <HPad size={4}/>
                     {CountWithUnit(article.bookmark_count)}
-                    <div style={{width:'32px'}}/>
+                    <HPad size={32}/>
                     <MdThumbUpAlt size={22}/>
-                    <div style={{width:'4px'}}/>
+                    <HPad size={4}/>
                     {CountWithUnit(article.like_count)}
-                    <div style={{width:'32px'}}/>
+                    <HPad size={32}/>
                     <BiSolidComment size={22}/>
-                    <div style={{width:'5px'}}/>
+                    <HPad size={4}/>
                     {CountWithUnit(article.comment_count)}
                     <Horizental style={{display:'flex', flex:'1', whiteSpace: 'nowrap', justifyContent:'flex-end'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</Horizental>
                 </Horizental>
@@ -51,7 +52,7 @@ export default function({article}) {
             
             <Horizental style={{alignItems:'start', marginTop:'8px'}}>
                 <ProfileImage shape={'circle'} size={48} user={article.user}></ProfileImage>
-                <div style={{width:'16px'}}></div>
+                <HPad size={16}/>
                 <div className={'clamped-text'} style={{'--line-count':2, fontSize:'18px', color:'black', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>{article.title}</div>
             </Horizental>
 

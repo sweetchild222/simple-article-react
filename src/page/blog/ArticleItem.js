@@ -11,6 +11,7 @@ import { MdThumbDownAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 import { IoMdHeart } from "react-icons/io";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 export default function({article, categoryName}) {
 
@@ -50,17 +51,17 @@ export default function({article, categoryName}) {
                     {article.posted == 1 &&
                         <Horizental>
                             <IoMdHeart size={22}/>
-                            <div style={{width:'4px'}}/>
+                            <HPad size={4}/>
                             {CountWithUnit(article.bookmark_count)}
                             <div style={{width:'32px'}}/>
                             <MdThumbUpAlt size={22}/>
-                            <div style={{width:'4px'}}/>
+                            <HPad size={4}/>
                             {CountWithUnit(article.like_count)}
-                            <div style={{width:'32px'}}/>
+                            <HPad size={32}/>
                             <BiSolidComment size={22}/>
-                            <div style={{width:'3px'}}/>
+                            <HPad size={4}/>
                             {CountWithUnit(article.comment_count)}
-                            <div style={{width:'32px'}}/>
+                            <HPad size={32}/>
                         </Horizental>
                     }
                     {article.posted == 0 && <Horizental style={{marginRight:'32px'}}>

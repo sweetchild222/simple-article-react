@@ -25,6 +25,7 @@ import AuthProvider from '@util/AuthProvider.js'
 import ToastContainer from '@gui/ToastContainer.js'
 
 import {Vertical, Horizental} from "@gui/Flex.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 const Aplication = function() {
@@ -42,9 +43,9 @@ const Aplication = function() {
     
     <Vertical style={{width:'100%', height:'100%'}}>
       <BlogHeader/>
-      <div style={{height:'16px', maxHeight:'16px', minHeight:'16px'}}/>
+      <VPad size={16}/>      
       <Outlet/>
-      <div style={{height:'32px', maxHeight:'32px', minHeight:'32px'}}/>
+      <VPad size={32}/>      
     </Vertical>
   )
 

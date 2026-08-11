@@ -18,7 +18,7 @@ import { VscBell } from "react-icons/vsc";
 import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
 import * as UserRepository from "@util/UserRepository.js";
 import { IoIosArrowDown } from "react-icons/io";
-
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function Sidebar() {
@@ -351,11 +351,11 @@ export default function Sidebar() {
         
             {validAuth(auth) && subscribes && subscribes.length > 0 && <Vertical style={{marginTop:'16px', marginBottom:'8px', paddingBottom:'8px', borderBottom: '1px solid #2d2d44'}}>
                 <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{'구독한 블로그'}</label>
-                <div style={{height:'8px'}}></div>
+                <VPad size={8}/>
                 {subscribes.slice(0, subscribeCount).map((data, index) => 
                     <Horizental key={data.id} style={{alignItems:'center', marginTop:'8px', marginBottom:'8px'}} onClick={() => onClickNavigateBlog(data.blog_id)}>
                         <ProfileImage shape={'circle'} user={data.user} size={32}></ProfileImage>
-                        <div style={{width:'8px', maxWidth:'8px', minWidth:'8px'}}/>
+                        <HPad size={8}/>
                         <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap', color:'ghostwhite'}}>{data.blog.title}</div>
                     </Horizental>
                 )}
@@ -368,11 +368,11 @@ export default function Sidebar() {
 
             {validAuth(auth) && bookmarks && bookmarks.length > 0 && <Vertical style={{marginTop:'8px', marginBottom:'8px', paddingBottom:'8px', borderBottom: '1px solid #2d2d44'}}>
                 <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{'북마크'}</label>
-                <div style={{height:'8px'}}></div>
+                <VPad size={8}/>
                 {bookmarks.slice(0, bookmarkCount).map((data, index) =>
                     <Horizental key={data.id} style={{alignItems:'center', marginTop:'8px', marginBottom:'8px'}} onClick={() => onClickNavigateArticle(data.article)}>
                         <ProfileImage shape={'circle'} user={data.article.user} size={32}></ProfileImage>
-                        <div style={{width:'8px', maxWidth:'8px', minWidth:'8px'}}/>
+                        <HPad size={8}/>
                         <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap', color:'ghostwhite'}}>{data.article.title}</div>
                     </Horizental>
                 )}
@@ -386,8 +386,8 @@ export default function Sidebar() {
         <div style={{flex:'1'}}/>
         <Horizental style={{justifyContent:'center'}}>
             <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
-        </Horizental>        
-        <div style={{height:'32px'}}/>
+        </Horizental>
+        <VPad size={32}/>
         </div>
     );
 }

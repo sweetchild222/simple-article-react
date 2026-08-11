@@ -9,6 +9,7 @@ import PrettyButton from '@gui/PrettyButton.js';
 import Modal from '@gui/Modal.js';
 import PasswordReset from './PasswordReset';
 import {Vertical, Horizental} from "@gui/Flex.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function() {
@@ -93,18 +94,18 @@ export default function() {
     return (
             <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
                 <label htmlFor='input_username'>사용자 이름</label>
-                <div style={{height:'4px'}}/>
+                <VPad size={4}/>
                 <input id='input_username' type='text' defaultValue={'crazygun22@nate.com'} onKeyDown={onKeyDownUserName} maxLength={254} style={{width:'256px'}}/>
-                <div style={{height:'16px'}}/>
+                <VPad size={16}/>
                 <label htmlFor='input_password'>비밀번호</label>
-                <div style={{height:'4px'}}/>
+                <VPad size={4}/>
                 <input id='input_password' type='password' defaultValue={'Sweetchild@22'} onKeyDown={onKeyDownPassword} maxLength={254} style={{width:'256px'}}/>
-                <div style={{height:'16px'}}/>
+                <VPad size={16}/>
                 <Vertical>
                     <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</PrettyButton>
-                    <div style={{height:'16px'}}/>
+                    <VPad size={16}/>
                     <PrettyButton onClick={() => {navigate('regist', {state:{comback:comback}, replace:true})}}>회원가입</PrettyButton>
-                    <div style={{height:'16px'}}/>
+                    <VPad size={16}/>
                     <PrettyButton onClick={() => setIsModalPasswordReset(true)} style={{width:'100%'}}>비밀번호 찾기</PrettyButton>
                 </Vertical>
                 {isModalPasswordReset && <Modal type={'custom'} isOpen={isModalPasswordReset} onClose={()=>setIsModalPasswordReset(false)} isCloseOutsideClick={true}>

@@ -14,6 +14,7 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import ToInteger from "@util/Integer.js";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
+import {VPad, HPad} from "@gui/Pad.js";
 import './Home.css'
 
 export default function() {
@@ -187,25 +188,24 @@ export default function() {
   }
 
   
-
-
   return (
     <Vertical style={{width:'100%', paddingLeft:'16px', paddingRight:'16px'}}>
-      <div style={{height:'16px', minHeight:'16px', maxHeight:'16px'}}/>
+      <VPad size={16}/>
       <Horizental>
         <PrettyButton onClick={onClickNewest} style={{minWidth:'64px'}}>{'최신순'}</PrettyButton>
-        <div style={{width:'8px'}}/>
+        <HPad size={8}/>
         <PrettyButton onClick={onClickFavorite} style={{minWidth:'64px'}}>{'인기순'}</PrettyButton>
-        <div style={{width:'8px'}}/>
+        <HPad size={8}/>
         <PrettyButton onClick={onClickManyComment} style={{minWidth:'64px'}}>{'댓글 많은 순'}</PrettyButton>
-        {blogIds && <div style={{width:'8px'}}/>}
+        {blogIds && <HPad size={8}/>}
         {blogIds && <PrettyButton onClick={onClickSubscribe} style={{minWidth:'64px'}}>{'구독한 블로그'}</PrettyButton>}
         <Horizental style={{flex:'1'}}></Horizental>
-        <div style={{width:'8px'}}/>
+        <HPad size={8}/>
         <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'80px', maxWidth:'300px'}} onKeyDown={onKeyDown}></input>
-        <div style={{width:'8px'}}/>
+        <HPad size={8}/>
         <PrettyButton  type='success' onClick={onClickSearch} style={{minWidth:'64px'}}>검색</PrettyButton>
-      </Horizental>      
+      </Horizental> 
+      <VPad size={8}/>
       <div style={{flex:'1', position:'relative'}}>
         {articles && (
           articles.length > 0 ? 
@@ -223,10 +223,10 @@ export default function() {
       </div>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
         <PrettyButton disabled={offset == 0} onClick={onClickPrev} style={{width:'64px'}}> {<GrPrevious size={16}/>}</PrettyButton>
-        <div style={{width:'64px'}}></div>
+        <HPad size={64}/>
         <PrettyButton disabled={articles.length == 0} onClick={onClickNext} style={{width:'64px'}}> {<GrNext size={16}/>}</PrettyButton>
       </Horizental>}
-      <div style={{height:'32px', minHeight:'32px', maxHeight:'32px'}}/>
+      <VPad size={32}/>
     </Vertical>
   )
 }

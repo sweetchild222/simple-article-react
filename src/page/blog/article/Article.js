@@ -30,6 +30,7 @@ import { TiEye } from "react-icons/ti";
 import { FaAlignLeft } from "react-icons/fa6";
 import { FaAlignCenter } from "react-icons/fa6";
 import { FaAlignRight } from "react-icons/fa6";
+import {VPad, HPad} from "@gui/Pad.js";
 
 export default function() {
 
@@ -195,21 +196,19 @@ export default function() {
                 {category &&
                     <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap'}} onClick={onClickNavigateCategory}>{category.name}</div>
                 }
-                <div style={{width:'32px'}}/>
+                <HPad size={32}/>                
                 <TiEye size={22}/>
-                <div style={{width:'4px'}}/>
+                <HPad size={4}/>
                 <div>{CountWithUnit(article.showed)}</div>
-                <div style={{width:'32px'}}/>
+                <HPad size={32}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('left')}><FaAlignLeft size={22}/></PrettyButton>
-                <div style={{width:'8px'}}/>
+                <HPad size={8}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('center')}><FaAlignCenter size={22}/></PrettyButton>
-                <div style={{width:'8px'}}/>
+                <HPad size={8}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('right')}><FaAlignRight size={22}/></PrettyButton>
-
                 <Horizental style={{whiteSpace: 'nowrap', color:'gray', flex:'1', justifyContent:'end', marginRight:'8px'}}>
                     {article.post_at ? ElapsedTime(article.post_at) + '': ''}
                 </Horizental>
-
                 {isEditable() && 
                     <div>
                         <ControlMenu isLoading={isControlLoading} onRemove={onClickDelete} onModify={onClickEdit}></ControlMenu>
@@ -218,17 +217,16 @@ export default function() {
                 }
             </Horizental>
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%', borderRadius:'1px', marginTop:'4px'}}></div>
-            <div style={{height:'16px'}}></div>
+            <VPad size={16}/>
             <div dangerouslySetInnerHTML={{__html: MarkdownToHtml(article.content)}} style={{wordBreak:'break-all', textAlign:textAlign, width:'100%'}}/>
-            <div style={{height:'16px'}}></div>
+            <VPad size={16}/>
             <Horizental style={{justifyContent:'space-between', alignItems:'center', marginBottom:'4px', width:'100%'}}>
                 <Bookmark article_id={article.id} count={article.bookmark_count}/>
                 <Great style={{marginLeft: 'auto'}} article_id={article.id} like_count={article.like_count} dislike_count={article.dislike_count}/>
             </Horizental>
-
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
             <CommentList article_id={article.id} article_user_id={article.user_id}/>
-            <div style={{height:'16px'}}/>
+            <VPad size={16}/>
             <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>
         </Vertical>
     ) : <Spinner/>

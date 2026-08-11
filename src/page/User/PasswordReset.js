@@ -8,6 +8,7 @@ import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Spinner from "@gui/Spinner.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function({onClose}) {
@@ -144,16 +145,16 @@ export default function({onClose}) {
         <Vertical>
             <Horizental style={{ alignItems: 'center', width:'100%'}}>
                 <input id={'input_email'} type={'text'} onChange={onChangeEmail} disabled={isCertified} placeholder="이메일" maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
-                <div style={{width:'8px'}}/>
+                <HPad size={8}/>
                 <PrettyButton isLoading={isLoadingSendCode} disabled={isCertified} onClick={onClickSendCertifyCode} type={'success'}>인증 번호 발송</PrettyButton>
             </Horizental>
-            <div style={{height:'8px'}}/>
+            <VPad size={8}/>
             <Horizental style={{ alignItems: 'center', width:'100%'}}>
                 <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder="인증 코드" style={{flex:'1', boxSizing:'border-box'}}/>
-                <div style={{width:'8px'}}/>
+                <HPad size={8}/>
                 <PrettyButton isLoading={isLoadingCertify} disabled={isCertified} onClick={onClickRequestCertify} type={'success'}>인증 번호 확인</PrettyButton>
             </Horizental>
-            <div style={{height:'16px'}}/>
+            <VPad size={16}/>
             <PrettyButton isLoading={isLoadingPasswordReset} disabled={!isCertified} onClick={onClickPasswordReset} style={{width:'100%'}} type={'success'}>임시 비밀 번호 발송</PrettyButton>
         </Vertical>
     )

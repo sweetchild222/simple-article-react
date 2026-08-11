@@ -6,6 +6,7 @@ import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Spinner from "@gui/Spinner.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function({onClose}) {
@@ -134,21 +135,21 @@ export default function({onClose}) {
         <Vertical style={{alignItems: 'start', position:'relative'}}>
             {isSpinner && <Spinner type={'absolute'} radius={100} spinnerWidth={15}/>}
             <label htmlFor='input_current_password'>기존 비밀번호</label>
-            <div style={{height:'4px'}}/>
+            <VPad size={4}/>
             <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>
             <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
-            <div style={{height:'16px'}}/>
+            <VPad size={16}/>
             <label htmlFor='input_new_password'>새 비밀번호</label>
-            <div style={{height:'4px'}}/>
+            <VPad size={4}/>
             <input ref={refNewPassword} id='input_new_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownNew}/>
-            <div style={{height:'16px'}}/>
+            <VPad size={16}/>
             <label htmlFor='input_repeat_password'>비밀번호 확인</label>
-            <div style={{height:'4px'}}/>
+            <VPad size={4}/>
             <input ref={refRepeatPassword} id='input_repeat_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownRepeat}/>
-            <div style={{height:'16px'}}/>
+            <VPad size={16}/>
             <Horizental style={{justifyContent:'end', width:'100%'}}>
                 <PrettyButton type="confirm" onClick={onClickPasswordChange} type='confirm' style={{width:'64px'}}>변경</PrettyButton>
-                <div style={{width:'16px'}}/>
+                <HPad size={16}/>
                 <PrettyButton type="confirm" onClick={onClose} type='cancel' style={{width:'64px'}}>취소</PrettyButton>
             </Horizental>
         </Vertical>

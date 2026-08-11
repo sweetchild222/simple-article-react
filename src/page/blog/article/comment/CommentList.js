@@ -22,6 +22,8 @@ import { FaCommentMedical } from "react-icons/fa6";
 import { SlArrowDown } from "react-icons/sl";
 import { SlArrowUp } from "react-icons/sl";
 
+import {VPad, HPad} from "@gui/Pad.js";
+
 
 export default function({article_id, article_user_id}) {
 
@@ -587,14 +589,15 @@ export default function({article_id, article_user_id}) {
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </Horizental>
                             
-                            <div style={{height:'4px'}}/>
+                            <VPad size={4}/>
 
                             <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                 <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)} backgroundSmooth={scrollCommentId == data.id}/>
                                 <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </Horizental>
 
-                            <div style={{height:'4px'}}/>
+                            
+                            <VPad size={4}/>
                             
                             {!(modifyModeCommentId == data.id) && 
                                 <Horizental style={{justifyContent:'space-between', marginBottom:'4px'}}>
@@ -606,7 +609,7 @@ export default function({article_id, article_user_id}) {
                             {data.id == openReplyEditCommentId && 
                                 <Horizental style={{marginBottom:'4px'}}>
                                     <ProfileImage shape={'circle'} size={32} userId={auth.user_id} onClick={()=> onClickNavigateBlog(auth.blog_id)}/>
-                                    <div style={{width:'8px'}}></div>
+                                    <HPad size={8}/>
                                     <Writer onPostText={onPostReply} atCandidates={atCandidates} onCancel={() =>{setOpenReplyEditCommentId(-1)}}/>
                                 </Horizental>
                             }
@@ -614,7 +617,7 @@ export default function({article_id, article_user_id}) {
                             {data.replies.length > 0 &&
                                 <PrettyButton id={'replyButton'} type={'transparent'} style={{marginBottom:'10px', color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
                                     {'답글 (' + data.replies.length + ')'}
-                                    <div style={{width:'8px'}}/>
+                                    <HPad size={8}/>
                                     {isShowReplies(data.id) ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
                                 </PrettyButton>
                             }
@@ -633,14 +636,14 @@ export default function({article_id, article_user_id}) {
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
                                         </Horizental>
 
-                                        <div style={{height:'4px'}}/>
+                                        <VPad size={4}/>
 
                                         <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
                                             <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)} backgroundSmooth={scrollCommentId == reply.id}/>
                                             <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
                                         </Horizental>
 
-                                        <div style={{height:'4px'}}/>
+                                        <VPad size={4}/>
 
                                         {!(modifyModeCommentId == reply.id) && <Horizental style={{marginBottom:'4px'}}>
                                             <Great comment_id={reply.id} greatSet={reply.greatSet}></Great>

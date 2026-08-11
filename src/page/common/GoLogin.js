@@ -4,7 +4,7 @@ import { useContext, useEffect } from 'react'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton';
 import {Vertical, Horizental} from "@gui/Flex.js";
-
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function() {
@@ -27,7 +27,7 @@ export default function() {
     return (
         <Vertical style={{alignItems: 'center'}}>
             <label>세션이 만료 되었습니다. 다시 로그인 해주세요</label>
-            <div style={{height:'8px'}}></div>
+            <VPad size={8}/>
             <PrettyButton type='success' onClick={onClickNavigateLogin}>로그인 다시 하기</PrettyButton>
         </Vertical>
     )

@@ -3,6 +3,7 @@ import React, {useState, useContext, useRef} from "react";
 import TextArea from "./TextArea.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import PrettyButton from "@gui/PrettyButton.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 export default function(props) {
 
@@ -52,12 +53,12 @@ export default function(props) {
 
     return  (<Vertical style={{position:'relative', justifyContent:'end', width:'100%'}}>
                 <TextArea ref={refArea} atCandidates={atCandidates} onInput={onInput} maxCharLength={maxCharLength}></TextArea>
-                <div style={{height:'4px'}}></div>
+                <VPad size={4}/>
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
-                    <div style={{width:'8px'}}/>
+                    <HPad size={8}/>
                     <PrettyButton isLoading={isPostLoading} type={'success'} onClick={()=>onClickPost()} style={{width:'64px'}}>{'올리기'}</PrettyButton>
-                    <div style={{width:'8px'}}/>
+                    <HPad size={8}/>
                     <PrettyButton disabled={isPostLoading ? true : false} type={'cancel'} onClick={()=>onClickCancel()} style={{width:'64px'}}>{'취소'}</PrettyButton>
                 </div>
             </Vertical>

@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import { VscTrash } from "react-icons/vsc";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import { CiSquarePlus } from "react-icons/ci";
+import {VPad, HPad} from "@gui/Pad.js";
 
 export default function({ref, isOpen, onClose, onClickApply, categories}) {
       
@@ -171,7 +172,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
                   {newCategories && newCategories.map((data, index) => 
                     <Horizental key={data.id} style={{ display: 'flex', flexDirection: 'row', marginTop:'8px', marginBottom:'8px'}}>
                       <input key={data.id} style={{color:'black', width:'256px'}} maxLength={16} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
-                      <div style={{width:'8px'}}></div>
+                      <HPad size={8}/>                      
                       <PrettyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.article_count > 0) ? 'gray' : 'black')}} size={25}/></PrettyButton>
                     </Horizental>
                   )}
@@ -179,7 +180,7 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
                   <PrettyButton type='transparent' style={{color:'black'}} onClick={onCliCkAdd}><CiSquarePlus size={25}></CiSquarePlus></PrettyButton>
                   <div style={{flex:'1'}}></div>
                   <PrettyButton type='confirm' onClick={onClickApplyCore} isLoading={isApplyLoading} style={{width:'64px'}}>적용</PrettyButton>
-                  <div style={{width:'8px'}}></div>
+                  <HPad size={8}/>
                   <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>취소</PrettyButton>
                 </Horizental>
               </Vertical>

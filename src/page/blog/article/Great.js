@@ -12,6 +12,8 @@ import CountWithUnit from "@util/CountWithUnit.js";
 
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import {VPad, HPad} from "@gui/Pad.js";
+
 
 
 export default function({article_id, like_count, dislike_count, style}) {
@@ -207,14 +209,14 @@ export default function({article_id, like_count, dislike_count, style}) {
                 <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                     {currentGreat != null && currentGreat == 1 && <FaThumbsUp size={22}/>}
                     {currentGreat != null && (currentGreat != 1) && <FaRegThumbsUp size={22}/>}
-                    <div style={{width:'4px'}}/>
+                    <HPad size={4}/>                    
                     <div>{CountWithUnit(likeCount)}</div>
                 </PrettyButton>
-                <div style={{width:'16px'}}></div>
+                <HPad size={16}/>
                 <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
                     {currentGreat != null && currentGreat == -1 && <FaThumbsDown size={22}/>}
                     {currentGreat != null && (currentGreat != -1) && <FaRegThumbsDown size={22}/>}
-                    <div style={{width:'4px'}}/>
+                    <HPad size={4}/>
                     <div>{CountWithUnit(dislikeCount)}</div>
                 </PrettyButton>
             </Horizental>

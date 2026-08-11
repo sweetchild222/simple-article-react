@@ -12,7 +12,6 @@ import PrettyButton from "@gui/PrettyButton.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 import Integer from "@util/Integer.js";
 
-
 import { MdEdit } from "react-icons/md";
 import { RiImageAiFill } from "react-icons/ri";
 import ImagePicker from "@util/ImagePicker.js";
@@ -20,6 +19,7 @@ import {blobFromCanvas} from "@util/ImageUtil.js";
 import ImageCropModal from '@gui/ImageCropModal.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Modal from '@gui/Modal.js'
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function() {
@@ -280,16 +280,16 @@ export default function() {
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{nickname != null ? '@' + nickname: ' ' }</label>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'  •  '}</label>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'구독자 ' + (subscribeCount != null ? CountWithUnit(subscribeCount) : '')}</label>
-                            <div style={{width:'8px'}}></div>
+                            <HPad size={8}/>
                             {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe} style={{minWidth:'64px'}}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
                         </Horizental>
                         <Horizental style={{alignItems: 'center'}}>
                             <div className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1, color:'white', fontSize:'24px', borderColor:'white'}}>{blog.title}</div>
                             {isEditable() && <Horizental>
-                                <div style={{width:'8px'}}></div>
+                                <HPad size={8}/>
                                 <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>
                                 <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
-                                <div style={{width:'8px'}}></div>
+                                <HPad size={8}/>
                                 <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}><RiImageAiFill size={30}/></PrettyButton>
                                 {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
                             </Horizental>}

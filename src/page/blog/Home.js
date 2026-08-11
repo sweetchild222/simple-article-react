@@ -13,6 +13,7 @@ import Categories  from "./Categories.js";
 import Recents  from "./Recents.js";
 import CreateArticle  from "./CreateArticle.js";
 import Pagination from "./Pagination.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 export default function() {
 
@@ -119,7 +120,7 @@ export default function() {
   
   return blog_id ? (
       <Horizental style={{width:'100%'}}>
-        <div style={{width:'128px'}}/>
+        <HPad size={128}/>
         <div style={{flex:'1', position:'relative'}}>
           <Vertical>
               {selectedCategory && articles && (
@@ -148,10 +149,10 @@ export default function() {
         <div style={{backgroundColor:'lightgray', width:'2px', height:'100%', marginLeft:'32px', marginRight:'32px'}}/>
         <div style={{minWidth:'256px', width:'256px',maxWidth:'256px', display: 'block'}}>
           <Categories ref={refCategories} blogId={blog_id} initCategoryId={initCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
-          <div style={{height:'48px'}}></div>
+          <VPad size={48}/>
           <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
         </div>
-        <div style={{width:'128px'}}/>
+        <HPad size={128}/>
       </Horizental>
   ) : null
 }

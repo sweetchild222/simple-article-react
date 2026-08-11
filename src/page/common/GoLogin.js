@@ -28,7 +28,7 @@ export default function() {
         <Vertical style={{alignItems: 'center'}}>
             <label>세션이 만료 되었습니다. 다시 로그인 해주세요</label>
             <VPad size={8}/>
-            <PrettyButton type='success' onClick={onClickNavigateLogin}>로그인 다시 하기</PrettyButton>
+            <PrettyButton type='default' onClick={onClickNavigateLogin}>로그인 다시 하기</PrettyButton>
         </Vertical>
     )
 }

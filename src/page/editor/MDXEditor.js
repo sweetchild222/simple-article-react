@@ -491,8 +491,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
     codeMirrorPlugin({ codeMirrorExtensions: [dracula], codeBlockLanguages: {javascript: 'javascript', typescript: 'typescript', python: 'python', json:'json', xml:'html', css: 'css', txt: 'txt', csharp:'c#', c:'c'}}),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: markdown}),
-    markdownShortcutPlugin(),
-    maxLengthPlugin(65535),
+    markdownShortcutPlugin(),    
     toolbarPlugin({ toolbarClassName: 'toolbarRoot', toolbarContents: () => (<CustomToolbar />)})
   ]
 

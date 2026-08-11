@@ -25,9 +25,9 @@ export default function(timestamp){
         return minGap + '분 전'
     }
 
-    
+
     if(secGap >= 3600 && secGap < (3600 * 6)){
-        const hourGap = Math.round(secGap / 60 / 60)
+        const hourGap = Math.round(secGap / 3600)
         return hourGap + '시 전'
     }
 

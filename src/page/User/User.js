@@ -13,6 +13,7 @@ import Integer from "@util/Integer.js";
 import AuthContext from "@util/AuthContext.js";
 import NotFound from '@page/common/NotFound.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function() {
@@ -75,11 +76,11 @@ export default function() {
     return user ? (
       <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
         <label style={{fontSize:'24px', fontWeight:'bold'}}>{user.nickname}</label>
-        <div style={{height:'8px'}}/>
+        <VPad size={8}/>
         <ProfileImage size={256} shape={'rect'} user={user}/>
-        <div style={{height:'4px'}}/>        
+        <VPad size={4}/>
         <label style={{fontSize:'18px', color:'gray'}}>{user.username}</label>
-        <div style={{height:'32px'}}/>
+        <VPad size={32}/>
         <Vertical>
             {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'32px'}}>회원 정보 수정</PrettyButton>}
             {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='default'>블로그 구경하기</PrettyButton>}

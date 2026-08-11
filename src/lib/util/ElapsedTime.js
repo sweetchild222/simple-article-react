@@ -14,10 +14,23 @@ const calcDayBefore = (dateA, dateB)=> {
 
 export default function(timestamp){
         
-    const secGap = (Date.now() - timestamp) / 1000
-    
-    if(secGap < 3600)
+    const secGap = (Date.now() - timestamp) / 1000    
+        
+    if(secGap < 60 * 10)
         return '방금'
+    
+
+    if(secGap < 3600){
+        const minGap = Math.round(secGap / 60)
+        return minGap + '분 전'
+    }
+
+    
+    if(secGap >= 3600 && secGap < (3600 * 6)){
+        const hourGap = Math.round(secGap / 60 / 60)
+        return hourGap + '시 전'
+    }
+
     
     const date = new Date(timestamp)
     const current = new Date()

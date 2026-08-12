@@ -8,7 +8,8 @@ import BlogHeader from '@page/blog/Header.js'
 import BlogHome  from '@page/blog/Home.js'
 import Article  from '@page/blog/article/Article.js'
 
-import Side from '@page/main/Side.js'
+import SideBar from '@page/main/SideBar.js'
+import AppBar from '@page/main/AppBar.js'
 import MainHome from '@page/main/Home.js'
 
 import Configuration from '@page/user/Configuration.js'
@@ -22,6 +23,7 @@ import ErrorCatch from './ErrorCatch.js'
 import NotFound from '@page/common/NotFound.js'
 
 import AuthProvider from '@util/AuthProvider.js'
+import DeviceType from '@util/DeviceType.js'
 import ToastContainer from '@gui/ToastContainer.js'
 
 import {Vertical, Horizental} from "@gui/Flex.js";
@@ -30,13 +32,23 @@ import {VPad, HPad} from "@gui/Pad.js";
 
 const Aplication = function() {
 
-  const RootLayout = () => (
-
+  const DeskRootLayout = () => (
+    
     <Horizental style={{width:'100%', height:'100%'}}>
-      <Side/>
+      <SideBar/>
       <Outlet/>
     </Horizental>
   )
+
+
+  const MobileRootLayout = () => (
+    
+    <Vertical style={{width:'100%', height:'100%'}}>
+      <AppBar/>
+      <Outlet/>
+    </Vertical>
+  )
+
 
 
   const BlogLayout = () => (
@@ -53,7 +65,7 @@ const Aplication = function() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <RootLayout />,
+      element: (DeviceType() == 'mobile' ? <MobileRootLayout/> : <DeskRootLayout />),
       children: [
         { index: true, element: <MainHome/>},
         { path: 'account', children: [
@@ -93,13 +105,20 @@ const Aplication = function() {
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 root.render(
-  //<React.StrictMode>
-  <ErrorCatch>
-    <AuthProvider>
-      <ToastContainer />
-        <Aplication />
-    </AuthProvider>
-  </ErrorCatch>
-    
-  //</React.StrictMode>
-);
+//<React.StrictMode>
+<ErrorCatch>
+  <AuthProvider>
+    <ToastContainer />
+      <Aplication />
+  </AuthProvider>
+</ErrorCatch>
+  
+//</React.StrictMode>
+)
+
+
+
+
+
+
+

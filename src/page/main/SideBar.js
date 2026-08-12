@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect} from 'react';
-import './Side.css';
+import './SideBar.css';
 import AuthContext from "@util/AuthContext.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import PrettyButton from '@gui/PrettyButton.js';
@@ -21,7 +21,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import {VPad, HPad} from "@gui/Pad.js";
 
 
-export default function Sidebar() {
+export default function () {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [alarms, setAlarms] = useState(null)

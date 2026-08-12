@@ -89,8 +89,7 @@ export default function() {
             input_password.focus()
     }
 
-
-
+    
     return (
             <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
                 <label htmlFor='input_username'>사용자 이름</label>

@@ -229,7 +229,8 @@ export default function() {
   }
 
   return !validAuth(auth) ? (
-    <Vertical style={{alignItems: 'center', justifyContent:'center', margin:'auto', padding:'16px'}}>
+    <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
+      <Vertical>
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
         <input id={'input_email'} disabled={isCertified} type={'text'} onChange={onChangeEmail} placeholder="이메일" maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
         <HPad size={8}/>
@@ -250,6 +251,7 @@ export default function() {
       </Vertical>      
       <VPad size={16}/>
       <PrettyButton isLoading={isLoadingRegist} disabled={!(isCertified && passwordValid)} onClick={onClickRegist} type='success' style={{width:'100%', boxSizing:'border-box'}}>회원 가입</PrettyButton>
+    </Vertical>
     </Vertical>
   ) : (<GoBack value={'로그인된 사용자는 접근 할 수 없습니다'}/>)
 }

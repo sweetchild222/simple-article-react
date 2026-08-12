@@ -22,14 +22,14 @@ export default function({article}) {
     const navigate = useNavigate()    
     
     const onClickNavigateArticle = async() => {
-        
+
         navigate('/blog/' + article.blog_id + '/article/' + article.id)
     }
     
     
     return (
         <Vertical onClick={onClickNavigateArticle} style={{cursor:'pointer'}}>
-            <div className={'card'} style={{'--imgurl--': article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'none'}}>
+            <div className={'card'} style={{'--imgurl--': article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'url(/logo/logo128.png)'}}>
                 <div style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px'}}/>
                 <div className={'clamped-text'} style={{'--line-count':3, position:'absolute', zIndex:2, fontSize:'18px', color:'lightgray', left:'0px', top:'0px', marginTop:'16px', marginLeft:'16px', marginRight:'16px', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>
                     {article.head}

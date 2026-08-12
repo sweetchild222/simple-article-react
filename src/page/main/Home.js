@@ -189,8 +189,8 @@ export default function() {
 
   
   return (
-    <Vertical style={{width:'100%', paddingLeft:'16px', paddingRight:'16px'}}>
-      <VPad size={16}/>
+    <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px'}}>
+      <VPad size={8}/>
       <Horizental>
         <PrettyButton onClick={onClickNewest} style={{minWidth:'64px'}}>{'최신순'}</PrettyButton>
         <HPad size={8}/>
@@ -204,13 +204,13 @@ export default function() {
         <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'80px', maxWidth:'300px'}} onKeyDown={onKeyDown}></input>
         <HPad size={8}/>
         <PrettyButton  type='success' onClick={onClickSearch} style={{minWidth:'64px'}}>검색</PrettyButton>
-      </Horizental> 
+      </Horizental>
       <VPad size={8}/>
       <div style={{flex:'1', position:'relative'}}>
         {articles && (
           articles.length > 0 ? 
           (<Vertical style={{width:'100%'}}>
-            <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'8px', marginBottom:'16px'}}>
+            <div className={'dynamicColumnContainer'} style={{width:'100%', marginTop:'0px', marginBottom:'16px'}}>
               {articles.map((data, index) => <ArticleItem key={data.id} article={data} />)}
             </div>
           </Vertical>) : 

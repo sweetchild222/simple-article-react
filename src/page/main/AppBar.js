@@ -273,26 +273,18 @@ export default function Sidebar() {
     }
 
     
-    return (
-        <div>
-            <Vertical style={{justifyContent:'space-between'}}>
-                <Horizental style={{alignItems:'center'}}>
-                    {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>로그인</PrettyButton>}
-                    {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
-                        <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>                        
-                        {alarms != null && <div style={{width:'8px'}}/>}
-                        {alarms != null && <PrettyButton  type='transparent' style={{color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
-                        {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
-                        </Horizental>
-                    }
-                    </Horizental>
-            </Vertical>          
-
-        <div style={{flex:'1'}}/>
-        <Horizental style={{justifyContent:'center'}}>
-            <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
-        </Horizental>
-        <VPad size={32}/>
-        </div>
+    return (                    
+        <Horizental style={{alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingTop:'8px'}}>
+            <img src='/logo/logo.svg' alt='logo' height='48px' width='48px' onClick={onClickNavigateHome}/>
+            <div style={{flex:'1'}}/>
+            {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>로그인</PrettyButton>}
+            {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>                                
+                {alarms != null && <PrettyButton  type='transparent' style={{color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+                {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
+                {alarms != null && <div style={{width:'8px'}}/>}
+                <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
+                </Horizental>
+            }            
+        </Horizental>                                            
     );
 }

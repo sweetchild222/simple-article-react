@@ -26,14 +26,14 @@ export default function Sidebar() {
     const [alarms, setAlarms] = useState(null)
     const [isOpenAlarmModal, setIsOpenAlarmModal] = useState(false)
     const [subscribes, setSubscribes] = useState(null)
-    const [bookmarks, setBookmarks] = useState(null)        
+    const [bookmarks, setBookmarks] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
 
         if(validAuth(auth)) {
 
-            loadAlarms().then(alarms=>{                
+            loadAlarms().then(alarms=>{
 
                 if(alarms != null)
                     setAlarms(alarms)
@@ -52,7 +52,7 @@ export default function Sidebar() {
             })
         }
         else {
-            setAlarms(null)            
+            setAlarms(null)
         }
 
     }, [auth])
@@ -278,13 +278,13 @@ export default function Sidebar() {
             <img src='/logo/logo.svg' alt='logo' height='48px' width='48px' onClick={onClickNavigateHome}/>
             <div style={{flex:'1'}}/>
             {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>로그인</PrettyButton>}
-            {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>                                
+            {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
                 {alarms != null && <PrettyButton  type='transparent' style={{color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
                 {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
                 {alarms != null && <div style={{width:'8px'}}/>}
                 <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
                 </Horizental>
-            }            
-        </Horizental>                                            
+            }
+        </Horizental>
     );
 }

@@ -24,10 +24,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
 
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const [isApplyLoading, setIsApplyLoading] = useState(false)
-  const [newAlarms, setNewAlarms] = useState(structuredClone(alarms))
-
-
-  console.log(newAlarms)
+  const [newAlarms, setNewAlarms] = useState(structuredClone(alarms))  
 
   const [fromIndex, setFromIndex] = useState(0)
 

@@ -1,4 +1,6 @@
-import {useState, useContext, useRef} from "react";
+import {useState, useEffect, useContext, useRef} from "react";
+
+import ReactDOM from 'react-dom';
 
 import * as UserAPI from '@rest/UserAPI.js'
 import * as validator from './Validator.js'
@@ -9,7 +11,9 @@ import Spinner from "@gui/Spinner.js";
 import {VPad, HPad} from "@gui/Pad.js";
 
 
-export default function({onClose}) {
+export default function({ref, isOpen, onClose}) {
+
+    const refDialog = useRef(null)
     
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [isSpinner, setIsSpinner] = useState(false)
@@ -26,6 +30,28 @@ export default function({onClose}) {
 
     if(refRepeatPassword.current)
         refRepeatPassword.current.value = ''
+
+
+    useEffect(() => {
+
+        if(isOpen)
+            refDialog.current.showModal()
+        else
+            refDialog.current.close()
+
+    }, [isOpen])
+
+
+    const onKeyDownDialog=(event)=>{
+
+      if(event.nativeEvent.key == 'Escape'){
+          event.preventDefault()
+      }
+    }
+
+
+
+    
 
 
     const onClickPasswordChange = async()=>{
@@ -131,29 +157,31 @@ export default function({onClose}) {
     }
 
 
-    return (
-        <Vertical style={{alignItems: 'start', position:'relative'}}>
-            {isSpinner && <Spinner type={'absolute'} radius={100} spinnerWidth={15}/>}
-            <label htmlFor='input_current_password'>기존 비밀번호</label>
-            <VPad size={4}/>
-            <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>
-            <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
-            <VPad size={16}/>
-            <label htmlFor='input_new_password'>새 비밀번호</label>
-            <VPad size={4}/>
-            <input ref={refNewPassword} id='input_new_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownNew}/>
-            <VPad size={16}/>
-            <label htmlFor='input_repeat_password'>비밀번호 확인</label>
-            <VPad size={4}/>
-            <input ref={refRepeatPassword} id='input_repeat_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownRepeat}/>
-            <VPad size={16}/>
-            <Horizental style={{justifyContent:'end', width:'100%'}}>
-                <PrettyButton type="confirm" onClick={onClickPasswordChange} type='confirm' style={{width:'64px'}}>변경</PrettyButton>
-                <HPad size={16}/>
-                <PrettyButton type="confirm" onClick={onClose} type='cancel' style={{width:'64px'}}>취소</PrettyButton>
-            </Horizental>
-        </Vertical>
-
-    )
+    return ReactDOM.createPortal(
+            <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'8px'}}>
+                <Vertical style={{alignItems: 'start', position:'relative'}}>
+                    {isSpinner && <Spinner type={'absolute'} radius={100} spinnerWidth={15}/>}
+                    <label htmlFor='input_current_password'>기존 비밀번호</label>
+                    <VPad size={4}/>
+                    <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>
+                    <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
+                    <VPad size={16}/>
+                    <label htmlFor='input_new_password'>새 비밀번호</label>
+                    <VPad size={4}/>
+                    <input ref={refNewPassword} id='input_new_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownNew}/>
+                    <VPad size={16}/>
+                    <label htmlFor='input_repeat_password'>비밀번호 확인</label>
+                    <VPad size={4}/>
+                    <input ref={refRepeatPassword} id='input_repeat_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownRepeat}/>
+                    <VPad size={16}/>
+                    <Horizental style={{justifyContent:'end', width:'100%'}}>
+                        <PrettyButton type="confirm" onClick={onClickPasswordChange} type='confirm' style={{width:'64px'}}>변경</PrettyButton>
+                        <HPad size={16}/>
+                        <PrettyButton type="confirm" onClick={onClose} type='cancel' style={{width:'64px'}}>취소</PrettyButton>
+                    </Horizental>
+                </Vertical>
+            </dialog>,
+            document.getElementById('modal-root')
+        )
 }
 

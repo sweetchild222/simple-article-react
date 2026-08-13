@@ -259,9 +259,7 @@ export default function() {
             <PrettyButton onClick={onClickUserNickname} type='default'>닉네임 설정</PrettyButton>
             <VPad size={16}/>
             <PrettyButton onClick={onClickPassword} type='default'>비밀번호 변경</PrettyButton>
-            <Modal type={'custom'} isOpen={isModalPassword} onClose={()=>setIsModalPassword(false)} isCloseOutsideClick={false}>
-                <PasswordModal onClose={() => setIsModalPassword(false)}/>
-            </Modal>
+            <PasswordModal isOpen={isModalPassword} onClose={() => setIsModalPassword(false)}/>
             <VPad size={16}/>
             <PrettyButton onClick={onClickLogout} type='warning'>로그아웃</PrettyButton>
             <Modal title={'로그아웃 하시겠습니까?'} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>

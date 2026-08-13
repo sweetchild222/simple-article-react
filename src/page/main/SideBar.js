@@ -367,7 +367,7 @@ export default function () {
             </Vertical>}
 
             {validAuth(auth) && bookmarks && bookmarks.length > 0 && <Vertical style={{marginTop:'8px', marginBottom:'8px', paddingBottom:'8px', borderBottom: '1px solid #2d2d44'}}>
-                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{'북마크'}</label>
+                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{'북마크한 글'}</label>
                 <VPad size={8}/>
                 {bookmarks.slice(0, bookmarkCount).map((data, index) =>
                     <Horizental key={data.id} style={{alignItems:'center', marginTop:'8px', marginBottom:'8px'}} onClick={() => onClickNavigateArticle(data.article)}>

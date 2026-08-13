@@ -313,27 +313,29 @@ export default function Sidebar() {
     }
 
     
-    return (
-        <Horizental style={{alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingTop:'8px'}}>
+    return (        
+        <Horizental style={{alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingTop:'8px', paddingBottom:'8px', backgroundColor:'#494D5F'}}>
             <img src='/logo/logo.svg' alt='logo' height='48px' width='48px' onClick={onClickNavigateHome}/>
-            <div style={{flex:'1'}}/>
-            {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>로그인</PrettyButton>}
-            {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
-
-                {bookmarks != null && bookmarks.length > 0 && <PrettyButton type='transparent' style={{color:'black'}} onClick={onClickBookmark}>{<VscBellDot size={32}/>}</PrettyButton>}
+            {!validAuth(auth) &&
+                <Vertical style={{width:'100%'}}>
+                    <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content', alignSelf: 'end'}} >로그인</PrettyButton>
+                </Vertical>
+            }
+            {validAuth(auth) && <Horizental style={{alignItems: 'center', width:'100%'}}>
+                {bookmarks != null && bookmarks.length > 0 && subscribes != null && subscribes.length > 0 && <HPad size={16}/>}
+                {bookmarks != null && bookmarks.length > 0 && <PrettyButton type='default' onClick={onClickBookmark}>{'북마크한 글'}</PrettyButton>}
                 {bookmarks != null && bookmarks.length > 0 && <BookmarkModal isOpen={isOpenBookmarkModal} onClose={() => setIsOpenBookmarkModal(false)} bookmarks={bookmarks}></BookmarkModal>}
                 {bookmarks != null && bookmarks.length > 0 && <HPad size={8}/>}
-
-                {subscribes != null && subscribes.length > 0 && <PrettyButton type='transparent' style={{color:'black'}} onClick={onClickSubscribe}>{<VscBellDot size={32}/>}</PrettyButton>}
+                {subscribes != null && subscribes.length > 0 && <PrettyButton type='default' onClick={onClickSubscribe}>{'구독한 블로그'}</PrettyButton>}
                 {subscribes != null && subscribes.length > 0 && <SubscribeModal isOpen={isOpenSubscribeModal} onClose={() => setIsOpenSubscribeModal(false)} subscribes={subscribes}></SubscribeModal>}
                 {subscribes != null && subscribes.length > 0 && <HPad size={8}/>}
-
-                {alarms != null && <PrettyButton  type='transparent' style={{color:'black'}} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+                <div style={{flex:'1'}}/>
+                {alarms != null && <PrettyButton  type='transparent' onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
                 {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={() => setIsOpenAlarmModal(false)} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
                 {alarms != null && <HPad size={8}/>}
                 <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
-                </Horizental>
+            </Horizental>
             }
         </Horizental>
-    );
+    )
 }

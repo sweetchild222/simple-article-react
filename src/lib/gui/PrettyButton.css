@@ -327,5 +327,41 @@
   border-top-color: #34663A;
 }
 
-
 /*-------------------------------------------------------*/
+
+.beauty-button.transparent-touch{
+
+  background: #00000000;
+  color: #F7FFFF;
+}
+
+
+.beauty-button.transparent-touch:hover {
+
+  background: #00000000;
+  color: #F7FFFF;
+}
+
+
+.beauty-button.transparent-touch:enabled:active {
+
+  background: #00000080;
+  color: #F7FFFF;
+  transform: translateY(1px);
+  
+}
+
+
+.beauty-button.transparent-touch:disabled {
+
+  background: #00000000;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.5;  
+}
+
+
+.beauty-button.transparent-touch.spin::after {
+  border-top-color: #34663A;
+}
+

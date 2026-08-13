@@ -20,20 +20,19 @@ import {VPad, HPad} from "@gui/Pad.js";
 
 export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
       
-  const refDialog = useRef(null)  
+  const refDialog = useRef(null)
 
-  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
-  const [isApplyLoading, setIsApplyLoading] = useState(false)
-  const [newAlarms, setNewAlarms] = useState(structuredClone(alarms))  
+  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)  
+  const [newAlarms, setNewAlarms] = useState(structuredClone(alarms))
 
   const [fromIndex, setFromIndex] = useState(0)
 
   const navigate = useNavigate()
   
   useEffect(() => {
-      
+
     if(isOpen){
-      setFromIndex(0)      
+      setFromIndex(0)
       refDialog.current.showModal()
     }
     else
@@ -102,7 +101,7 @@ export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px', width:'90%', maxWidth:'512px'}}>
               <Vertical style={{alignItems: 'start', marginLeft:'16px', marginRight:'16px', marginTop:'8px', marginBottom:'8px'}}>
-                  {newAlarms && newAlarms.slice(fromIndex, fromIndex + pageCount).map((data, index) => 
+                  {newAlarms && newAlarms.slice(fromIndex, fromIndex + pageCount).map((data, index) =>
                       <Horizental key={data.id} style={{marginTop:'8px', marginBottom:'8px', width:'100%'}}>
                         <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} userId={data.from_user_id}/>
                         <Vertical style={{marginLeft:'8px'}}>

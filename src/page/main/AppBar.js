@@ -13,6 +13,7 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
 import ProfileImage from "@gui/ProfileImage.js";
 import AlarmModal from "./AlarmModal.js";
+import SubscribeModal from "./SubscribeModal.js";
 import { VscBellDot } from "react-icons/vsc";
 import { VscBell } from "react-icons/vsc";
 import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
@@ -25,6 +26,7 @@ export default function Sidebar() {
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     const [alarms, setAlarms] = useState(null)
     const [isOpenAlarmModal, setIsOpenAlarmModal] = useState(false)
+    const [isOpenSubscribeModal, setIsOpenSubscribeModal] = useState(false)
     const [subscribes, setSubscribes] = useState(null)
     const [bookmarks, setBookmarks] = useState(null)
     const navigate = useNavigate()
@@ -157,6 +159,8 @@ export default function Sidebar() {
 
         if(resSubscribe.success == false)
             return null
+
+        console.log(resSubscribe)
                 
         resSubscribe.payload.sort((a, b)=> b.id - a.id)
         
@@ -165,6 +169,8 @@ export default function Sidebar() {
         const limit = 100
         let startIndex = 0
         const blogs = []
+
+
 
         while(blogIdList.length > startIndex){
 
@@ -177,6 +183,8 @@ export default function Sidebar() {
             
             startIndex += limit
         }
+
+        console.log(resSubscribe)
         
         resSubscribe.payload.forEach((item, index) =>{
             item.blog = blogs.find(blog => (blog.id == item.blog_id))
@@ -189,10 +197,14 @@ export default function Sidebar() {
         if(resUsers == null)
             return
 
+        console.log(resSubscribe)
+
         resSubscribe.payload.forEach((item, index) =>{
             item.user = resUsers.find(user => (user.id == item.blog.user_id))
         })
-                
+
+        console.log(resSubscribe)
+
         return resSubscribe.payload
     }
 
@@ -225,9 +237,6 @@ export default function Sidebar() {
     }
 
 
-    const onClickSearch = (e) => {
-
-    }
 
     const onClickAtError= (e) => {
 
@@ -262,10 +271,26 @@ export default function Sidebar() {
     }
 
 
-    const onCloseAlarmModal = async() => {
-        
-        setIsOpenAlarmModal(false)
+
+    const onClickSubscribe = async(e) => {
+
+        if(!validAuth(auth)){
+            window.showToast('로그인 해주세요', 'info')
+            navigate('/account')
+            return
+        }
+
+        if(subscribes == null)
+            return
+
+        if(subscribes.length == 0){
+            window.showToast('구독한 블로그가 없습니다', 'info')
+            return
+        }
+
+        setIsOpenSubscribeModal(true)
     }
+
 
     const onUpdatedAlarms = async(alarms)=>{
 
@@ -273,14 +298,19 @@ export default function Sidebar() {
     }
 
     
-    return (                    
+    return (
         <Horizental style={{alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingTop:'8px'}}>
             <img src='/logo/logo.svg' alt='logo' height='48px' width='48px' onClick={onClickNavigateHome}/>
             <div style={{flex:'1'}}/>
             {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>로그인</PrettyButton>}
             {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
-                {alarms != null && <PrettyButton  type='transparent' style={{color:'black'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
-                {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
+
+                {subscribes != null && subscribes.length > 0 && <PrettyButton type='transparent' style={{color:'black'}} onClick={onClickSubscribe}>{<VscBellDot size={32}/>}</PrettyButton>}
+                {subscribes != null && subscribes.length > 0 && <SubscribeModal isOpen={isOpenSubscribeModal} onClose={() => setIsOpenSubscribeModal(false)} subscribes={subscribes}></SubscribeModal>}
+                {subscribes != null && subscribes.length > 0 && <div style={{width:'8px'}}/>}
+
+                {alarms != null && <PrettyButton  type='transparent' style={{color:'black'}} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+                {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={() => setIsOpenAlarmModal(false)} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
                 {alarms != null && <div style={{width:'8px'}}/>}
                 <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
                 </Horizental>

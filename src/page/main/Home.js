@@ -11,11 +11,14 @@ import ArticleItem from "./ArticleItem.js";
 
 import Spinner from "@gui/Spinner.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import Modal from "@gui/Modal.js";
 import ToInteger from "@util/Integer.js";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import {VPad, HPad} from "@gui/Pad.js";
+import DeviceType from '@util/DeviceType.js'
 import './Home.css'
+
 
 export default function() {
   
@@ -31,6 +34,8 @@ export default function() {
   const [blogIds, setBlogIds] = useState(null)
   const [currentType, setCurrentType] = useState(0) //0:최신순, 1:인기순, 2:댓글 많은 순, 3:구독한 글, 4:검색
   const [keyword, setKeyword] = useState(null)
+
+  const [isSearchModal, setIsSearchModal] = useState(null)
   
   const countPerPage = 6
 
@@ -177,7 +182,7 @@ export default function() {
   }
 
   
-  const onClickSearch = (e) => {    
+  const onClickSearch = (e) => {
 
     if(search.value.length > 0){
       const keyword = search.value
@@ -187,24 +192,52 @@ export default function() {
     }
   }
 
+
+  const onInputSearchText = async(keyword) => {
+
+    if(keyword.length > 0){
+        setKeyword(keyword)
+        setCurrentType(4)
+    }
+  }
+
   
   return (
     <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px'}}>
       <VPad size={8}/>
-      <Horizental>
-        <PrettyButton onClick={onClickNewest} style={{minWidth:'64px'}}>{'최신순'}</PrettyButton>
-        <HPad size={8}/>
-        <PrettyButton onClick={onClickFavorite} style={{minWidth:'64px'}}>{'인기순'}</PrettyButton>
-        <HPad size={8}/>
-        <PrettyButton onClick={onClickManyComment} style={{minWidth:'64px'}}>{'댓글 많은 순'}</PrettyButton>
-        {blogIds && <HPad size={8}/>}
-        {blogIds && <PrettyButton onClick={onClickSubscribe} style={{minWidth:'64px'}}>{'구독한 블로그'}</PrettyButton>}
-        <Horizental style={{flex:'1'}}></Horizental>
-        <HPad size={8}/>
-        <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'80px', maxWidth:'300px'}} onKeyDown={onKeyDown}></input>
-        <HPad size={8}/>
-        <PrettyButton  type='success' onClick={onClickSearch} style={{minWidth:'64px'}}>검색</PrettyButton>
-      </Horizental>
+      {DeviceType() != 'mobile' &&
+        <Horizental>
+          <PrettyButton onClick={onClickNewest} style={{width:'fit-content'}}>{'최신순'}</PrettyButton>
+          <HPad size={8}/>
+          <PrettyButton onClick={onClickFavorite} style={{width:'fit-content'}}>{'인기순'}</PrettyButton>
+          <HPad size={8}/>
+          <PrettyButton onClick={onClickManyComment} style={{width:'fit-content'}}>{'댓글 많은 순'}</PrettyButton>
+          {blogIds && <HPad size={8}/>}
+          {blogIds && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{'구독한 블로그'}</PrettyButton>}
+          <Horizental style={{flex:'1'}}></Horizental>
+          <HPad size={8}/>
+          <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>
+          <HPad size={8}/>
+          <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>검색</PrettyButton>
+        </Horizental>
+      }
+
+      {DeviceType() == 'mobile' &&
+        <Horizental>
+          <PrettyButton onClick={onClickNewest} style={{width:'fit-content'}}>{'최신순'}</PrettyButton>
+          <HPad size={8}/>
+          <PrettyButton onClick={onClickFavorite} style={{width:'fit-content'}}>{'인기순'}</PrettyButton>
+          <HPad size={8}/>
+          <PrettyButton onClick={onClickManyComment} style={{width:'fit-content'}}>{'댓글 많은 순'}</PrettyButton>
+          {blogIds && <HPad size={8}/>}
+          {blogIds && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{'구독한 블로그'}</PrettyButton>}
+          <HPad size={8}/>
+          <div style={{flex:'1'}}/>
+          <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{'검색'}</PrettyButton>
+          <Modal title= {'검색할 글을 입력하세요'} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>
+        </Horizental>
+      }
+
       <VPad size={8}/>
       <div style={{flex:'1', position:'relative'}}>
         {articles && (

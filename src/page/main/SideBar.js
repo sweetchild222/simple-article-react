@@ -345,7 +345,7 @@ export default function () {
             </Horizental>
 
             {validAuth(auth) && <div style={{borderBottom: '1px solid #2d2d44', borderTop: '1px solid #2d2d44'}}>
-                    <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%'}} onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
+                    <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%', minWidth:'fit-content'}} onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
                 </div>
             }
         

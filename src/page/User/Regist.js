@@ -101,7 +101,12 @@ export default function() {
     else
       window.showToast('인증에 실패하였습니다', 'system-error')
     
-    setIsCertified(success)
+    setIsCertified(true)
+
+    setTimeout(()=> {
+      input_password.focus()
+    }, 500)
+    
   }
 
 
@@ -130,7 +135,7 @@ export default function() {
 
     setIsLoadingRegist(false)
         
-    if(auth == null){      
+    if(auth == null){
       window.showToast('회원 가입이 실패하였습니다', 'system-error')
       return
     }
@@ -213,7 +218,7 @@ export default function() {
     
     const valid = (validator.password(password) && confirm_password === password)
 
-    setPasswordValid(valid)    
+    setPasswordValid(valid)
   }
 
 
@@ -248,7 +253,7 @@ export default function() {
         <VPad size={8}/>
         <input id='input_confirm_password' type="text" disabled={!isCertified} onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
         <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
-      </Vertical>      
+      </Vertical>
       <VPad size={16}/>
       <PrettyButton isLoading={isLoadingRegist} disabled={!(isCertified && passwordValid)} onClick={onClickRegist} type='success' style={{width:'100%', boxSizing:'border-box'}}>회원 가입</PrettyButton>
     </Vertical>

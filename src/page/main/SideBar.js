@@ -115,7 +115,7 @@ export default function () {
         bookmarks.forEach((item, index) => {
             item.article.user = users.find(user => (user.id == item.article.user_id))
         })
-                
+
         return bookmarks
     }
     
@@ -167,9 +167,9 @@ export default function () {
 
         if(resSubscribe.success == false)
             return null
-                
+
         resSubscribe.payload.sort((a, b)=> b.id - a.id)
-        
+
         const blogIdList = resSubscribe.payload.map(item => item.blog_id)
 
         const limit = 100
@@ -202,7 +202,7 @@ export default function () {
         resSubscribe.payload.forEach((item, index) =>{
             item.user = resUsers.find(user => (user.id == item.blog.user_id))
         })
-                
+
         return resSubscribe.payload
     }
 

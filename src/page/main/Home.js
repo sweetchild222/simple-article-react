@@ -202,8 +202,9 @@ export default function() {
   }
 
   
+  
   return (
-    <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px'}}>
+    <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px', marginTop:(DeviceType() == 'mobile' ? '64px' : '0px')}}>
       <VPad size={8}/>
       {DeviceType() != 'mobile' &&
         <Horizental>

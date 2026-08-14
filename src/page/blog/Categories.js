@@ -9,7 +9,8 @@ import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
 import DeviceType from "@util/DeviceType.js";
-import CategoryModal from './CategoryModal.js'
+import ModifyCategoryModal from './ModifyCategoryModal.js'
+import SelectCategoryModal from './SelectCategoryModal.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
 import {VPad, HPad} from "@gui/Pad.js";
 import { MdCategory } from "react-icons/md";
@@ -22,6 +23,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
     const [categories, setCategories] = useState(null)
     const [selectIndex, setSelectIndex] = useState(-1)
     const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
+    const [isOpenSelectCategoryModal, setIsOpenSelectCategoryModal] = useState(false)
 
     useEffect(()=> {
         
@@ -56,11 +58,11 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
             return
         }
 
-        const total = categories.reduce((acc, item) => acc + item.article_count, 0)        
+        const total = categories.reduce((acc, item) => acc + item.article_count, 0)
 
         categories.unshift({blog_id:blogId, article_count:total, name:'전체', id:'ALL', static:true})
 
-        if(isEditable()){
+        if(isEditable() && DeviceType() != 'mobile'){
 
             const count = await loadWrtingCount(blogId)
 
@@ -121,6 +123,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         
         return (validAuth(auth) && isEdit)
     }
+    
 
 
     const onClickCategoryInner = async(id) => {
@@ -248,14 +251,28 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         setIsOpenCategoryModal(true)
     }
 
+    const onSelectCategory = async (category) =>{
+
+        const index = categories.findIndex(item => item.id == category.id)
+
+        if(index == -1)
+            return
+
+        setSelectIndex(index)
+        
+        if(onClickCategory != null)
+            onClickCategory(category)
+    }
+
 
     if(DeviceType() == 'mobile') {
         return categories && selectIndex != -1 ? (
             <Horizental>
                 <HPad size={8}/>
-                <PrettyButton onClick={()=> onClickCategoryInner(categories[selectIndex].id)}>{categories[selectIndex].name + ' (' + categories[selectIndex].article_count + ')'}</PrettyButton>            
+                <PrettyButton style={{fontSize:'16px'}}onClick={()=>setIsOpenSelectCategoryModal(true)}>{categories[selectIndex].name + ' (' + categories[selectIndex].article_count + ')'}</PrettyButton>            
+                <SelectCategoryModal isOpen={isOpenSelectCategoryModal} onClose={()=>setIsOpenSelectCategoryModal(false)} categories={categories.filter(item => (item.id != 'WRITING'))} onSelect={onSelectCategory}></SelectCategoryModal>
             </Horizental>
-        ) : null        
+        ) : null
     }
     else{
         return categories ? (
@@ -264,7 +281,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
                 <Vertical style={{alignItems:'start', padding:'4px 8px 4px 8px', borderRadius:'3px', backgroundColor:'`#EDEFF4', border:'1px solid #E4E6EA'}}>
                     {categories.map((data, index) => <div key={data.id} className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', marginTop:'8px', marginBottom:'8px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</div>)}
                     {isEditable() && <div title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'16px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={26}/></div>}
-                    {isEditable() && isOpenCategoryModal && <CategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => (item.static == false))}></CategoryModal>}
+                    {isEditable() && isOpenCategoryModal && <ModifyCategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => (item.static == false))}></ModifyCategoryModal>}
                 </Vertical>
             </Vertical>
         ) : null

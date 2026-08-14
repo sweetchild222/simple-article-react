@@ -322,7 +322,7 @@ export default function Sidebar() {
                 </Vertical>
             }
             {validAuth(auth) && <Horizental style={{alignItems: 'center', width:'100%'}}>
-                {bookmarks != null && bookmarks.length > 0 && subscribes != null && subscribes.length > 0 && <HPad size={8}/>}
+                {((bookmarks != null && bookmarks.length > 0) || (subscribes != null && subscribes.length > 0)) && <HPad size={8}/>}
                 {bookmarks != null && bookmarks.length > 0 && <PrettyButton type='default' onClick={onClickBookmark}>{'북마크'}</PrettyButton>}
                 {bookmarks != null && bookmarks.length > 0 && <BookmarkModal isOpen={isOpenBookmarkModal} onClose={() => setIsOpenBookmarkModal(false)} bookmarks={bookmarks}></BookmarkModal>}
                 {bookmarks != null && bookmarks.length > 0 && <HPad size={8}/>}

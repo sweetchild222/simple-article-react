@@ -14,6 +14,7 @@ import Recents  from "./Recents.js";
 import CreateArticle  from "./CreateArticle.js";
 import Pagination from "./Pagination.js";
 import {VPad, HPad} from "@gui/Pad.js";
+import DeviceType from "@util/DeviceType.js";
 
 export default function() {
 
@@ -49,7 +50,7 @@ export default function() {
     query +=  '&limit=' + countPerPage
 
     query += '&order=1'
-
+    
     query += category_id != null ? ('&category_id=' + category_id) : ''
 
     query += posted != null ? ('&posted=' + posted) : ''
@@ -59,7 +60,6 @@ export default function() {
     const res = await ArticleAPI.getBlogArticles(jwt, blog_id, query)
 
     return res
-
   }
 
 
@@ -68,9 +68,9 @@ export default function() {
     setIsSpinner(true)
 
     setSelectedCategory(category)
-
-    const category_id = category.id != 0 ? category.id : null
-    const posted = category.id != 0 ? null : 0
+    
+    const category_id = (category.static == true) ? null : category.id
+    const posted = category.id == 'WRITING' ? 0 : null
     
     const articles = await getBlogArticles(0, category_id, posted)
 
@@ -105,8 +105,8 @@ export default function() {
 
     setIsSpinner(true)
 
-    const category_id = selectedCategory.id != 0 ? selectedCategory.id : null
-    const posted = selectedCategory.id != 0 ? null : 0
+    const category_id = (selectedCategory.static == true) ? null : selectedCategory.id
+    const posted = selectedCategory.id == 'WRITING' ? 0 : null
         
     const articles = await getBlogArticles(page, category_id, posted)
 
@@ -117,42 +117,97 @@ export default function() {
     setIsSpinner(false)
   }
 
-  
-  return blog_id ? (
-      <Horizental style={{width:'100%'}}>
-        <HPad size={128}/>
-        <div style={{flex:'1', position:'relative'}}>
+
+  const findCategoryId = (category) =>{
+    
+    if(category.static == true){      
+
+      if(refCategories.current == null)
+        return null
+
+      const categories = refCategories.current.categories()
+            
+      const newCategories = categories.filter(item => item.static == false)
+
+      if(newCategories.length == 0)
+        return null
+
+      return newCategories[0].id
+    }
+    
+    return category.id;
+  }
+
+
+
+  if(DeviceType() == 'mobile'){
+
+      return blog_id ? (
+        <Vertical style={{marginTop:'64px'}}>
+          <Categories ref={refCategories} blogId={blog_id} initCategoryId={initCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
+          <div style={{flex:'1', position:'relative'}}>
           <Vertical>
               {selectedCategory && articles && (
                 articles.length > 0 ? 
                 (<Vertical style={{width:'100%'}}>
-                  <div style={{width:'100%', marginTop:'8px', marginBottom:'16px'}}>
-                    {articles.map((data, index) => <ArticleItem key={data.id} article={data} categoryName={getCategoryName(data.category_id)}/>)}
+                  <div style={{width:'100%', marginTop:'8px', marginBottom:'8px'}}>
+                    {articles.map((data, index) => <ArticleItem key={data.id} article={data} categoryName={getCategoryName(data.category_id)} style={{margin:'8px'}}/>)}
                   </div>
-                  <Horizental style={{width:'100%'}}>
-                    <Horizental style={{flex:'1'}}>
-                      {isEditable() && <CreateArticle blogId={blog_id} categoryId={selectedCategory.id}/>}
-                    </Horizental>
-                    {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
-                    <div style={{flex:'1'}}></div>
+                  <Horizental style={{width:'100%', justifyContent:'center'}}>
+                    {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}                    
                   </Horizental>
                 </Vertical>) : 
-                (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px'}}>
-                  {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
-                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}
-                  {isEditable() && <CreateArticle blogId={blog_id} categoryId={selectedCategory.id}/>}
+                (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', marginTop:'64px'}}>
+                  {<img src={'/image/empty.png'} style={{width:'64px', height: '64px'}}/>}
+                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}                  
                 </Vertical>)
               )}
           </Vertical>
-          {isSpinner && <Spinner type={'absolute'}/>}
-        </div>
-        <div style={{backgroundColor:'lightgray', width:'2px', height:'100%', marginLeft:'32px', marginRight:'32px'}}/>
-        <div style={{minWidth:'256px', width:'256px',maxWidth:'256px', display: 'block'}}>
-          <Categories ref={refCategories} blogId={blog_id} initCategoryId={initCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
-          <VPad size={48}/>
-          <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
-        </div>
-        <HPad size={128}/>
-      </Horizental>
-  ) : null
+          {isSpinner && <Spinner/>}
+          </div>
+        </Vertical>
+        
+    ) : null
+
+  }
+  else{
+  
+    return blog_id ? (
+        <Horizental style={{width:'100%'}}>
+          <HPad size={128}/>
+          <div style={{flex:'1', position:'relative'}}>
+            <Vertical>
+                {selectedCategory && articles && (
+                  articles.length > 0 ? 
+                  (<Vertical style={{width:'100%'}}>
+                    <div style={{width:'100%', marginTop:'8px', marginBottom:'8px'}}>
+                      {articles.map((data, index) => <ArticleItem key={data.id} article={data} categoryName={getCategoryName(data.category_id)} style={{marginTop:'16px', marginBottom:'16px'}}/>)}
+                    </div>
+                    <Horizental style={{width:'100%', marginRight:'16px'}}>
+                      <Horizental style={{flex:'1'}}>
+                        {isEditable() && <CreateArticle blogId={blog_id} categoryId={findCategoryId(selectedCategory)}/>}
+                      </Horizental>
+                      {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
+                      <div style={{flex:'1'}}></div>
+                    </Horizental>
+                  </Vertical>) : 
+                  (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px', marginLeft:'16px'}}>
+                    {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
+                    {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}
+                    {isEditable() && <CreateArticle blogId={blog_id} categoryId={findCategoryId(selectedCategory)}/>}
+                  </Vertical>)
+                )}
+            </Vertical>
+            {isSpinner && <Spinner type={'absolute'}/>}
+          </div>
+          <div style={{backgroundColor:'lightgray', width:'2px', height:'100%', marginLeft:'32px', marginRight:'32px'}}/>
+          <div style={{minWidth:'256px', width:'256px',maxWidth:'256px', display: 'block'}}>
+            <Categories ref={refCategories} blogId={blog_id} initCategoryId={initCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
+            <VPad size={48}/>
+            <Recents blogId={blog_id} isEdit={isEditable()}></Recents>
+          </div>
+          <HPad size={128}/>
+        </Horizental>
+    ) : null
+  }
 }

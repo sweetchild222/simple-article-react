@@ -24,29 +24,11 @@ export default function({ref, blogId, categoryId}) {
     }
 
 
-    const findCategoryId = async(blogId) => {
-    
-        const res = await CategoryAPI.getCategories(blogId)
-        
-        if(res.success == false)
-            return -1
-
-        res.payload.sort((a, b)=> {
-            return a.id - b.id
-        })
-
-        if(res.payload.length == 0)
-            return -1
-
-        return res.payload[0].id
-    }
-
-
     const onClickNewArticle = async() =>{
 
         if(!isEditable())
             return
-
+        
         const query = 'posted=0'
 
         const res = await ArticleAPI.getBlogArticles(auth.jwt, blogId, query)
@@ -63,10 +45,8 @@ export default function({ref, blogId, categoryId}) {
             window.showToast('작성 중인 글이 너무 많습니다 (' + maxWritingCount + ' 이하)', 'user-error')
             return
         }
-
-        const category_id = categoryId == 0 ? await findCategoryId(blogId) : categoryId
-
-        if(category_id == -1){
+        
+        if(categoryId == null){
             window.showToast('카테고리를 찾을 수 없습니다', 'user-error')
             return
         }
@@ -77,7 +57,7 @@ export default function({ref, blogId, categoryId}) {
             head:'',
             posted:0,
             thumbnail:'',
-            category_id:category_id
+            category_id:categoryId
         }
                 
         const resArticle = await ArticleAPI.postArticle(auth.jwt, payload)

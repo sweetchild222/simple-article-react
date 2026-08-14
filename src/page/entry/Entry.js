@@ -5,6 +5,7 @@ import {BrowserRouter, createBrowserRouter, RouterProvider, Outlet } from 'react
 
 
 import BlogHeader from '@page/blog/Header.js'
+import BlogAppBar from '@page/blog/AppBar.js'
 import BlogHome  from '@page/blog/Home.js'
 import Article  from '@page/blog/article/Article.js'
 
@@ -51,13 +52,25 @@ const Aplication = function() {
 
 
 
-  const BlogLayout = () => (
+  const DeskBlogLayout = () => (
     
     <Vertical style={{width:'100%', height:'100%'}}>
       <BlogHeader/>
       <VPad size={16}/>      
       <Outlet/>
       <VPad size={32}/>      
+    </Vertical>
+  )
+
+
+
+  const MobileBlogLayout = () => (
+    
+    <Vertical style={{width:'100%', height:'100%'}}>
+      <BlogAppBar/>
+      <VPad size={16}/>
+      <Outlet/>
+      <VPad size={32}/>
     </Vertical>
   )
 
@@ -82,7 +95,7 @@ const Aplication = function() {
     },
     {
       path: "/blog/:b_id",
-      element: <BlogLayout />,
+      element: (DeviceType() == 'mobile' ? <MobileBlogLayout/> : <DeskBlogLayout />),
       children: [
         { index: true, element: <BlogHome/>},
         { path: 'article/:a_id', children: [

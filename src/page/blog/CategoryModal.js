@@ -13,6 +13,8 @@ export default function({ref, isOpen, onClose, onClickApply, categories}) {
   const refDialog = useRef(null)
   const refListDiv = useRef(null)
 
+  console.log(categories)
+
   const [isApplyLoading, setIsApplyLoading] = useState(false)
   const [newCategories, setNewCategories] = useState(structuredClone(categories))
 

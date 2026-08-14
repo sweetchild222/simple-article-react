@@ -15,12 +15,12 @@ export default function({totalPageCount, displayPageCount, onClickPage}) {
     const [animationKey, setAnimationKey] = useState(0)
     const [movingbarPos, setMovingbarPos] = useState({curIndex:0, start:0, end:0})
 
-    const pageNumWidth = 100
-
-    const movingBarMarginLeft = 8
-    const movingBarMarginRight = 8
+    const pageNumWidth = 64    
+    const movingBarMarginLeft = 4
+    const movingBarMarginRight = 4
+    const height = 32
     
-    const getCurPageList = () => {
+     const getCurPageList = () => {
 
         const subList = totalPageList.slice(curStartPage, curStartPage + displayPageCount)
 
@@ -73,15 +73,16 @@ export default function({totalPageCount, displayPageCount, onClickPage}) {
         setAnimationKey(prev => prev + 1)
     }
 
+
     return (
-        <Horizental style={{justifyContent:'center'}}>
-            <PrettyButton type={'transparent'} style={{color:'black', visibility:(curStartPage > 0 ? 'visible' : 'hidden')}} onClick={onClickForward}><FaBackward size={20}/></PrettyButton>
+        <Horizental style={{justifyContent:'center', alignItems:'start'}}>
+            <PrettyButton type={'transparent'} style={{color:'black', height:height + 'px', visibility:(curStartPage > 0 ? 'visible' : 'hidden')}} onClick={onClickForward}><FaBackward size={16}/></PrettyButton>
             <Vertical>
                 <div style={{display:'flex', flexDirection:'row', justifyContent:'start', width:((displayPageCount * pageNumWidth) + 'px')}}>
-                    {getCurPageList().map((data, index) => <PrettyButton key={index} type={'transparent'} style={{color:'black', width: pageNumWidth + 'px', fontSize:'20px'}} onClick={()=> onClickPageInner(index, data)}>{data}</PrettyButton>)}
+                    {getCurPageList().map((data, index) => <PrettyButton key={index} type={'transparent'} style={{height:height + 'px', color:'black', width: pageNumWidth + 'px', fontSize:'16px'}} onClick={()=> onClickPageInner(index, data)}>{data}</PrettyButton>)}
                 </div>
                 <div key={animationKey} className={'movingbar'} style={{marginLeft:(movingBarMarginLeft + 'px'), width:(pageNumWidth - movingBarMarginLeft - movingBarMarginRight + 'px'), height:'4px', borderRadius:'2px', backgroundColor:'gray', '--start--':movingbarPos.start + 'px', '--end--':movingbarPos.end + 'px', marginTop:'3px', marginRight:(movingBarMarginRight + 'px')}}></div>
             </Vertical>
-            <PrettyButton type={'transparent'} style={{color:'black', visibility:((curStartPage + displayPageCount < totalPageCount) ? 'visible' : 'hidden')}} onClick={onClickBackward}><FaForward size={20}/></PrettyButton>
+            <PrettyButton type={'transparent'} style={{color:'black', height:height + 'px', visibility:((curStartPage + displayPageCount < totalPageCount) ? 'visible' : 'hidden')}} onClick={onClickBackward}><FaForward size={16}/></PrettyButton>
         </Horizental> )
 }

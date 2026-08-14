@@ -15,7 +15,7 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import {VPad, HPad} from "@gui/Pad.js";
 import './ArticleItem.css'
 
-export default function({article}) {
+export default function({article, style}) {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     
@@ -28,10 +28,10 @@ export default function({article}) {
     
     
     return (
-        <Vertical onClick={onClickNavigateArticle} style={{cursor:'pointer'}}>
+        <Vertical onClick={onClickNavigateArticle} style={{cursor:'pointer', ...style}}>
             <div className={'card'} style={{'--imgurl--': article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'url(/logo/logo128.png)'}}>
                 <div style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px'}}/>
-                <div className={'clamped-text'} style={{'--line-count':3, position:'absolute', zIndex:2, fontSize:'18px', color:'lightgray', left:'0px', top:'0px', marginTop:'16px', marginLeft:'16px', marginRight:'16px', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>
+                <div className={'clamped-text'} style={{'--line-count':3, position:'absolute', zIndex:2, fontSize:'18px', color:'lightgray', left:'0px', top:'0px', marginTop:'8px', marginLeft:'8px', marginRight:'8px', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>
                     {article.head}
                 </div>
                 <Horizental style={{position:'absolute', zIndex:3, left:'0px', bottom:'0px', color:'lightgray', width:'100%', alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingBottom:'8px'}}>

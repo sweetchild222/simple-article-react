@@ -314,16 +314,16 @@ export default function Sidebar() {
 
     
     return (        
-        <Horizental style={{alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingTop:'8px', paddingBottom:'8px', backgroundColor:'#494D5F', width:'100%', boxShadow: '0 4px 2px -2px dimgray', position:'fixed', zIndex:100, height:'64px'}}>
+        <Horizental style={{alignItems:'center', padding:'8px', backgroundColor:'#494D5F', width:'100%', boxShadow: '0 4px 2px -2px dimgray', position:'fixed', zIndex:100, height:'64px'}}>
             <img src='/logo/logo.svg' alt='logo' height='48px' width='48px' onClick={onClickNavigateHome}/>
             {!validAuth(auth) &&
                 <Vertical style={{width:'100%'}}>
-                    <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content', alignSelf: 'end'}} >로그인</PrettyButton>
+                    <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content', alignSelf: 'end'}}>로그인</PrettyButton>
                 </Vertical>
             }
             {validAuth(auth) && <Horizental style={{alignItems: 'center', width:'100%'}}>
-                {bookmarks != null && bookmarks.length > 0 && subscribes != null && subscribes.length > 0 && <HPad size={16}/>}
-                {bookmarks != null && bookmarks.length > 0 && <PrettyButton type='default' onClick={onClickBookmark}>{'북마크한 글'}</PrettyButton>}
+                {bookmarks != null && bookmarks.length > 0 && subscribes != null && subscribes.length > 0 && <HPad size={8}/>}
+                {bookmarks != null && bookmarks.length > 0 && <PrettyButton type='default' onClick={onClickBookmark}>{'북마크'}</PrettyButton>}
                 {bookmarks != null && bookmarks.length > 0 && <BookmarkModal isOpen={isOpenBookmarkModal} onClose={() => setIsOpenBookmarkModal(false)} bookmarks={bookmarks}></BookmarkModal>}
                 {bookmarks != null && bookmarks.length > 0 && <HPad size={8}/>}
                 {subscribes != null && subscribes.length > 0 && <PrettyButton type='default' onClick={onClickSubscribe}>{'구독한 블로그'}</PrettyButton>}

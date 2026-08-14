@@ -11,9 +11,10 @@ import { MdThumbDownAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 import { IoMdHeart } from "react-icons/io";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import DeviceType from "@util/DeviceType.js";
 import {VPad, HPad} from "@gui/Pad.js";
 
-export default function({article, categoryName}) {
+export default function({article, categoryName, style}) {
 
     const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
     
@@ -40,12 +41,12 @@ export default function({article, categoryName}) {
             }
         }
     }
-    
+        
     return (
-        <Horizental onClick={onClickNavigateArticle} style={{flex:'1', padding:'8px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5', marginBottom:'16px', marginTop:'16px'}}>
-            <Vertical style={{ flex:'1', marginLeft:'4px', marginRight:'4px'}}>
-                <div className={'clamped-text underline-text'} style={{'--line-count':2, fontSize:'18px', fontWeight:'500', marginBottom:'8px', color:'#1A1A1A'}}>{article.title != '' ? article.title: '...'}</div>
-                <div className={'clamped-text underline-text'} style={{'--line-count':3, marginBottom:'8px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head : '내용 없음')}</div>
+        <Horizental onClick={onClickNavigateArticle} style={{flex:'1', padding:'8px', cursor:'pointer', borderRadius:'3px', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', backgroundColor:'#F5F5F5', ...style}}>
+            <Vertical style={{flex:'1', marginLeft:'4px', marginRight:'8px'}}>
+                <div className={'clamped-text underline-text'} style={{'--line-count':1, fontSize:'18px', fontWeight:'500', marginBottom:'4px', color:'#1A1A1A'}}>{article.title != '' ? article.title: '...'}</div>
+                <div className={'clamped-text underline-text'} style={{'--line-count':DeviceType() == 'mobile' ? 2 : 5, marginBottom:'8px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head + 'asfasfiljasfisdjisodjofiwjwoijoiejwfiojwfiofjwiosdfoijsdoifjsoifjsdoifjsdiojsdiosdjfoisdjosdfjoasfasfiljasfisdjisodjofiwjwoijoiejwfiojwfiofjwiosdfoijsdoifjsoifjsdoifjsdiojsdiosdjfoisdjosdfjoasfasfiljasfisdjisodjofiwjwoijoiejwfiojwfiofjwiosdfoijsdoifjsoifjsdoifjsdiojsdiosdjfoisdjosdfjoasfasfiljasfisdjisodjofiwjwoijoiejwfiojwfiofjwiosdfoijsdoifjsoifjsdoifjsdiojsdiosdjfoisdjosdfjo' : '내용 없음')}</div>
                 <div style={{flex:'1'}}></div>
                 <Horizental style={{alignItems:'center', color:'#888888'}}>
                     {article.posted == 1 &&
@@ -70,9 +71,9 @@ export default function({article, categoryName}) {
                     }
                     <Horizental style={{flex:'1', whiteSpace: 'nowrap', justifyContent:'flex-end'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</Horizental>
                 </Horizental>
-
             </Vertical>
-            {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
+            {DeviceType() == 'mobile' && article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=96x96'} width={96} height={96} borderWidth={0}/>}
+            {DeviceType() != 'mobile' && article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=170x170'} width={170} height={170} borderWidth={0}/>}
         </Horizental>
     )
 }

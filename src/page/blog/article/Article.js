@@ -45,7 +45,8 @@ export default function() {
     const [isControlLoading, setIsControlLoading] = useState(false)    
     const [category, setCategory] = useState(null)
     const [textAlign, setTextAlign] = useState('left')
-        
+    const [thumbnailSize, setThumbnailSize] = useState(null)
+
     const navigate = useNavigate()
 
     useEffect(()=>{        
@@ -76,10 +77,11 @@ export default function() {
 
                 setArticle(article.payload)
                 setCategory(category.payload)
+                setThumbnailSize(calcThumbnailSize())
 
                 ArticleAPI.postArticleShowed(article_id).then(showed => {
                     
-                    if(showed.success == true){
+                    if(showed.success == true) {
                         article.payload.showed += 1
                         setArticle(structuredClone(article.payload))
                     }
@@ -180,16 +182,36 @@ export default function() {
     const onClickNavigateCategory = async() =>{
 
         navigate('/blog/' + b_id, {state:{category_id:category.id}})
-    }    
+    }
 
+    const calcThumbnailSize = () => {
+
+        const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+
+        const sizeList = [[96, 96], [160, 128], [320, 256], [512, 320], [960, 540]]
+        const width = isLandscape ? window.screen.height : window.screen.width
+        
+        for(const i in sizeList){
+
+            const s = sizeList[i]
+
+            if(width < (s[0] + 8 + 8)){
+
+                if(i == 0)
+                    return sizeList[0]
+
+                return sizeList[i - 1] 
+            }
+        }
+
+        return sizeList.at(-1)
+    }
 
     return article ? (
         <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', maxWidth:'960px', marginTop:(DeviceType() == 'mobile' ? '64px' : '0px'), paddingLeft:'8px', paddingRight:'8px'}}>
-                        
-            {/* {DeviceType() == 'mobile' && article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>} */}
-            {isMobile() && article.thumbnail != '' && <StateProgsImage src={'https://mimgnews.pstatic.net/image/upload/journalist/2017/07/10/%EA%B0%95%ED%9D%AC%EC%97%B0.jpg?type=nf180_214'} width={96} height={96} borderWidth={0}/>}
-            {article.thumbnail != '' && <VPad size={16}/>}
-            
+            {thumbnailSize && article.thumbnail != '' && <VPad size={16}/>}
+            {thumbnailSize && article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=' + thumbnailSize[0] + 'x' + thumbnailSize[1]} width={thumbnailSize[0]} height={thumbnailSize[1]} borderWidth={0}/>}
+            {thumbnailSize && article.thumbnail != '' && <VPad size={16}/>}
             <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
             <VPad size={16}/>
             <Horizental style={{width:'100%', alignItems:'center'}}>

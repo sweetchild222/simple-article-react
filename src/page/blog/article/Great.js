@@ -187,7 +187,7 @@ export default function({article_id, like_count, dislike_count, style}) {
         }
         setIsLikeLoading(true)
         await updateGreat(1)
-        setIsLikeLoading(false)        
+        setIsLikeLoading(false)
     }
 
 
@@ -201,11 +201,9 @@ export default function({article_id, like_count, dislike_count, style}) {
 
         setIsDislikeLoading(true)
         await updateGreat(-1)
-        setIsDislikeLoading(false)        
+        setIsDislikeLoading(false)
     }
-
-    console.log(currentGreat)
-
+    
         
     return (
             <Horizental style={{justifyContent:'center', alignItems:'center', ...style}}>

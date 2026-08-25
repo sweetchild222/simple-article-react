@@ -184,12 +184,16 @@ export default function() {
         navigate('/blog/' + b_id, {state:{category_id:category.id}})
     }
 
+    
     const calcThumbnailSize = () => {
 
-        const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+
+        const deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        
+        // const isLandscape = window.matchMedia("(orientation: landscape)").matches;
 
         const sizeList = [[96, 96], [160, 128], [320, 256], [512, 320], [960, 540]]
-        const width = isLandscape ? window.screen.height : window.screen.width
+        const width = deviceWidth                
         
         for(const i in sizeList){
 

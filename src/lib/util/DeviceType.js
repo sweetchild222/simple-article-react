@@ -23,7 +23,7 @@ export const isMobile = () => {
 }
 
 
-export const IsNotMobile = () => {
+export const isNotMobile = () => {
 
     if(deviceType() != 'mobile')
       return true

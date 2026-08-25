@@ -108,7 +108,7 @@ export default function({article_id, like_count, dislike_count, style}) {
                 const res = await patchGreat(auth.jwt, resGreat.payload[0].id, great)
 
                 if(res.success == false){
-                    window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경에 실패하였습니다', 'system-error')
+                    window.showToast((great == 1 ? '좋아요 에서 싫어요' : '싫어요 에서 좋아요') + '로 변경에 실패하였습니다', 'system-error')
                     return false
                 }
 
@@ -125,7 +125,7 @@ export default function({article_id, like_count, dislike_count, style}) {
                 else 
                     return false
 
-                window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경하였습니다', 'info')
+                window.showToast((great == 1 ? '좋아요 에서 싫어요' : '싫어요 에서 좋아요') + '로 변경하였습니다', 'info')
                 return true
 
             }else {
@@ -201,21 +201,24 @@ export default function({article_id, like_count, dislike_count, style}) {
 
         setIsDislikeLoading(true)
         await updateGreat(-1)
-        setIsDislikeLoading(false)
+        setIsDislikeLoading(false)        
     }
 
+    console.log(currentGreat)
+
+        
     return (
             <Horizental style={{justifyContent:'center', alignItems:'center', ...style}}>
                 <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                     {currentGreat != null && currentGreat == 1 && <FaThumbsUp size={22}/>}
-                    {currentGreat != null && (currentGreat != 1) && <FaRegThumbsUp size={22}/>}
-                    <HPad size={4}/>                    
+                    {(currentGreat == null || (currentGreat != null && (currentGreat != 1))) && <FaRegThumbsUp size={22}/>}
+                    <HPad size={4}/>
                     <div>{CountWithUnit(likeCount)}</div>
                 </PrettyButton>
                 <HPad size={16}/>
                 <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
                     {currentGreat != null && currentGreat == -1 && <FaThumbsDown size={22}/>}
-                    {currentGreat != null && (currentGreat != -1) && <FaRegThumbsDown size={22}/>}
+                    {(currentGreat == null || (currentGreat != null && (currentGreat != -1))) && <FaRegThumbsDown size={22}/>}
                     <HPad size={4}/>
                     <div>{CountWithUnit(dislikeCount)}</div>
                 </PrettyButton>

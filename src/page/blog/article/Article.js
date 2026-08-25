@@ -4,13 +4,13 @@ import {useNavigate, useParams} from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
-import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
 import Integer from "@util/Integer.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
+import DeviceType, {isMobile, isNotMobile} from "@util/DeviceType.js";
 
 import Modal from "@gui/Modal.js";
 import StateProgsImage from "@gui/StateProgsImage.js";
@@ -92,7 +92,7 @@ export default function() {
 
     const isEditable = ()=> {
     
-        return (validAuth(auth) && auth.blog_id == blog_id)
+        return ((validAuth(auth) && auth.blog_id == blog_id) && DeviceType() != 'mobile')
     }
 
 
@@ -180,41 +180,38 @@ export default function() {
     const onClickNavigateCategory = async() =>{
 
         navigate('/blog/' + b_id, {state:{category_id:category.id}})
-    }
-
+    }    
 
 
     return article ? (
-        <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', minWidth:'960px', maxWidth:'960px'}}>           
-            {/* <title>asdfsadf</title>
-            <meta property="og:image" content="https://mimgnews.pstatic.net/image/upload/journalist/2017/07/10/%EA%B0%95%ED%9D%AC%EC%97%B0.jpg?type=nf180_214" /> */}
-            {article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>}
-            {article.thumbnail != '' && <div style={{height:'32px'}}></div>}
+        <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', maxWidth:'960px', marginTop:(DeviceType() == 'mobile' ? '64px' : '0px'), paddingLeft:'8px', paddingRight:'8px'}}>
+                        
+            {/* {DeviceType() == 'mobile' && article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=960x540'} width={960} height={540} borderWidth={0}/>} */}
+            {isMobile() && article.thumbnail != '' && <StateProgsImage src={'https://mimgnews.pstatic.net/image/upload/journalist/2017/07/10/%EA%B0%95%ED%9D%AC%EC%97%B0.jpg?type=nf180_214'} width={96} height={96} borderWidth={0}/>}
+            {article.thumbnail != '' && <VPad size={16}/>}
             
-            <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px', padding:'0px 0px 16px 0px'}}>{article.title}</div>
+            <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
+            <VPad size={16}/>
             <Horizental style={{width:'100%', alignItems:'center'}}>
-                {category &&
-                    <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap'}} onClick={onClickNavigateCategory}>{category.name}</div>
-                }
-                <HPad size={32}/>                
                 <TiEye size={22}/>
-                <HPad size={4}/>
+                <HPad size={isMobile() ? 4 : 8}/>
                 <div>{CountWithUnit(article.showed)}</div>
-                <HPad size={32}/>
+                <HPad size={isMobile() ? 8 : 16}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('left')}><FaAlignLeft size={22}/></PrettyButton>
-                <HPad size={8}/>
+                <HPad size={isMobile() ? 4 : 8}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('center')}><FaAlignCenter size={22}/></PrettyButton>
-                <HPad size={8}/>
+                <HPad size={isMobile() ? 4 : 8}/>
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('right')}><FaAlignRight size={22}/></PrettyButton>
-                <Horizental style={{whiteSpace: 'nowrap', color:'gray', flex:'1', justifyContent:'end', marginRight:'8px'}}>
-                    {article.post_at ? ElapsedTime(article.post_at) + '': ''}
+                <HPad size={isMobile() ? 8 : 16}/>                
+                <Horizental style={{whiteSpace: 'nowrap', color:'gray', flex:'1', justifyContent:'end', alignItems:'center', marginRight:'0px'}}>
+                    {category && <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', width:'auto', whiteSpace:'pre-line'}} onClick={onClickNavigateCategory}>{category.name}</div>}
+                    <HPad size={isMobile() ? 8 : 16}/>
+                    {article.post_at ? ElapsedTime(article.post_at): ''}
+                    {isEditable() && <HPad size={8}/>}
+                    {isEditable() && <ControlMenu isLoading={isControlLoading} onRemove={onClickDelete} onModify={onClickEdit}></ControlMenu>}
+                    {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
                 </Horizental>
-                {isEditable() && 
-                    <div>
-                        <ControlMenu isLoading={isControlLoading} onRemove={onClickDelete} onModify={onClickEdit}></ControlMenu>
-                        <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
-                    </div>
-                }
+
             </Horizental>
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%', borderRadius:'1px', marginTop:'4px'}}></div>
             <VPad size={16}/>

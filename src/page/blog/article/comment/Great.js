@@ -81,7 +81,7 @@ export default function({comment_id, greatSet, style}) {
                 const res = await patchGreat(auth.jwt, resGreat.payload[0].id, great)
 
                 if(res.success == false){
-                    window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + ' 변경에 실패하였습니다', 'system-error')
+                    window.showToast((great == 1 ? '좋아요 에서 싫어요' : '싫어요 에서 좋아요') + '로 변경에 실패하였습니다', 'system-error')
                     return false
                 }
 
@@ -100,7 +100,7 @@ export default function({comment_id, greatSet, style}) {
                 else 
                     return false
 
-                window.showToast((great == 1 ? '좋아요 에서 싫어요로' : '싫어요 에서 좋아요로') + '로 변경하였습니다', 'info')
+                window.showToast((great == 1 ? '좋아요 에서 싫어요' : '싫어요 에서 좋아요') + '로 변경하였습니다', 'info')
                 return true
 
             }else {

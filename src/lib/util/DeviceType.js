@@ -1,6 +1,12 @@
 
 export default function(){
 
+  return DeviceType()
+}
+
+
+const DeviceType = () =>{
+
   const ua = navigator.userAgent;
   
   if(/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua))
@@ -13,4 +19,17 @@ export default function(){
     return "mobile"
   
   return "desktop"
+}
+
+export const isMobile = () => {
+
+  if(DeviceType() == 'mobile')
+    return true
+}
+
+
+export const isNotMobile = () => {
+
+    if(DeviceType() != 'mobile')
+      return true
 }

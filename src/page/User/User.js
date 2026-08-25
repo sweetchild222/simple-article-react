@@ -75,7 +75,7 @@ export default function() {
 
     return user ? (
       <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
-        <label style={{fontSize:'24px', fontWeight:'bold'}}>{user.nickname}</label>
+        <div className={'clamped-text'} style={{'--line-count':2, fontSize:'24px', fontWeight:'bold', paddingLeft:'8px', paddingRight:'8px'}}>{user.nickname}</div>        
         <VPad size={8}/>
         <ProfileImage size={256} shape={'rect'} user={user}/>
         <VPad size={4}/>

@@ -248,7 +248,7 @@ export default function() {
       <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
         <div style={{position:'relative'}} onClick={isNotMobile() ? onClickProfile : null}>
             <ProfileImage user={user} size={256} style={{cursor:(isNotMobile() ? 'pointer' : 'auto')}}/>
-            {isMobile() && <Horizental style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px', justifyContent:'end', alignItems:'end'}}>
+            {isNotMobile() && <Horizental style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px', justifyContent:'end', alignItems:'end'}}>
                 <LuImageUp size={64}/>
             </Horizental>
             }

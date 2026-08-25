@@ -10,7 +10,7 @@ import Integer from "@util/Integer.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
-import DeviceType, {isMobile, isNotMobile} from "@util/DeviceType.js";
+import {isMobile, isNotMobile} from "@util/DeviceType.js";
 
 import Modal from "@gui/Modal.js";
 import StateProgsImage from "@gui/StateProgsImage.js";
@@ -94,7 +94,7 @@ export default function() {
 
     const isEditable = ()=> {
     
-        return ((validAuth(auth) && auth.blog_id == blog_id) && DeviceType() != 'mobile')
+        return ((validAuth(auth) && auth.blog_id == blog_id) && isNotMobile())
     }
 
 
@@ -212,7 +212,7 @@ export default function() {
     }
 
     return article ? (
-        <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', maxWidth:'960px', marginTop:(DeviceType() == 'mobile' ? '64px' : '0px'), paddingLeft:'8px', paddingRight:'8px'}}>
+        <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', maxWidth:'960px', marginTop:(isMobile() ? '64px' : '0px'), paddingLeft:'8px', paddingRight:'8px'}}>
             {thumbnailSize && article.thumbnail != '' && <VPad size={16}/>}
             {thumbnailSize && article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=' + thumbnailSize[0] + 'x' + thumbnailSize[1]} width={thumbnailSize[0]} height={thumbnailSize[1]} borderWidth={0}/>}
             {thumbnailSize && article.thumbnail != '' && <VPad size={16}/>}

@@ -16,7 +16,7 @@ import ToInteger from "@util/Integer.js";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import {VPad, HPad} from "@gui/Pad.js";
-import DeviceType from '@util/DeviceType.js'
+import {isMobile, isNotMobile} from "@util/DeviceType.js";
 import './Home.css'
 
 
@@ -204,7 +204,7 @@ export default function() {
   
   
   return (
-    <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px', marginTop:(DeviceType() == 'mobile' ? '64px' : '0px')}}>
+    <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px', marginTop:(isMobile() ? '64px' : '0px')}}>
       <VPad size={8}/>
         <Horizental>
           <PrettyButton onClick={onClickNewest} style={{width:'fit-content'}}>{'최신순'}</PrettyButton>
@@ -216,11 +216,11 @@ export default function() {
           {blogIds && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{'구독한 블로그 글'}</PrettyButton>}
           <HPad size={8}/>
           <div style={{flex:'1'}}/>
-          {DeviceType() == 'mobile' && <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{'검색'}</PrettyButton>}
-          {DeviceType() == 'mobile' && <Modal title= {'검색할 글을 입력하세요'} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
-          {DeviceType() != 'mobile' && <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>}
-          {DeviceType() != 'mobile' && <HPad size={8}/>}
-          {DeviceType() != 'mobile' && <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>검색</PrettyButton>}
+          {isMobile() && <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{'검색'}</PrettyButton>}
+          {isMobile() && <Modal title= {'검색할 글을 입력하세요'} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
+          {isNotMobile() && <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>}
+          {isNotMobile() && <HPad size={8}/>}
+          {isNotMobile() && <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>검색</PrettyButton>}
         </Horizental>
       <VPad size={8}/>
       <div style={{flex:'1', position:'relative'}}>

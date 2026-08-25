@@ -1,11 +1,6 @@
 
-export default function(){
 
-  return DeviceType()
-}
-
-
-const DeviceType = () =>{
+const deviceType = () =>{
 
   const ua = navigator.userAgent;
   
@@ -23,13 +18,13 @@ const DeviceType = () =>{
 
 export const isMobile = () => {
 
-  if(DeviceType() == 'mobile')
+  if(deviceType() == 'mobile')
     return true
 }
 
 
-export const isNotMobile = () => {
+export const IsNotMobile = () => {
 
-    if(DeviceType() != 'mobile')
+    if(deviceType() != 'mobile')
       return true
 }

@@ -8,7 +8,7 @@ import * as CategoryAPI from '@rest/CategoryAPI.js'
 
 
 import AuthContext from "@util/AuthContext.js";
-import DeviceType from "@util/DeviceType.js";
+import {isMobile, isNotMobile} from "@util/DeviceType.js";
 import ModifyCategoryModal from './ModifyCategoryModal.js'
 import SelectCategoryModal from './SelectCategoryModal.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
@@ -62,7 +62,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
         categories.unshift({blog_id:blogId, article_count:total, name:'전체', id:'ALL', static:true})
 
-        if(isEditable() && DeviceType() != 'mobile'){
+        if(isEditable() && isNotMobile()){
 
             const count = await loadWrtingCount(blogId)
 
@@ -265,7 +265,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
     }
 
 
-    if(DeviceType() == 'mobile') {
+    if(isMobile()) {
         return categories && selectIndex != -1 ? (
             <Horizental>
                 <HPad size={8}/>

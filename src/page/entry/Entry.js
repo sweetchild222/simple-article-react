@@ -24,7 +24,7 @@ import ErrorCatch from './ErrorCatch.js'
 import NotFound from '@page/common/NotFound.js'
 
 import AuthProvider from '@util/AuthProvider.js'
-import DeviceType from '@util/DeviceType.js'
+import {isMobile, isNotMobile} from "@util/DeviceType.js";
 import ToastContainer from '@gui/ToastContainer.js'
 
 import {Vertical, Horizental} from "@gui/Flex.js";
@@ -78,7 +78,7 @@ const Aplication = function() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: (DeviceType() == 'mobile' ? <MobileRootLayout/> : <DeskRootLayout />),
+      element: (isMobile() ? <MobileRootLayout/> : <DeskRootLayout />),
       children: [
         { index: true, element: <MainHome/>},
         { path: 'account', children: [
@@ -95,7 +95,7 @@ const Aplication = function() {
     },
     {
       path: "/blog/:b_id",
-      element: (DeviceType() == 'mobile' ? <MobileBlogLayout/> : <DeskBlogLayout />),
+      element: (isMobile() ? <MobileBlogLayout/> : <DeskBlogLayout />),
       children: [
         { index: true, element: <BlogHome/>},
         { path: 'article/:a_id', children: [

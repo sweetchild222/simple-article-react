@@ -14,7 +14,7 @@ import Recents  from "./Recents.js";
 import CreateArticle  from "./CreateArticle.js";
 import Pagination from "./Pagination.js";
 import {VPad, HPad} from "@gui/Pad.js";
-import DeviceType from "@util/DeviceType.js";
+import {isMobile, isNotMobile} from "@util/DeviceType.js";
 
 export default function() {
 
@@ -140,7 +140,7 @@ export default function() {
 
 
 
-  if(DeviceType() == 'mobile'){
+  if(isMobile()){
 
       return blog_id ? (
         <Vertical style={{marginTop:'64px'}}>

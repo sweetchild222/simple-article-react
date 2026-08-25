@@ -13,7 +13,7 @@ import { RiArrowDownWideLine } from "react-icons/ri";
 import { MdOutlineDoneOutline } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import {VPad, HPad} from "@gui/Pad.js";
-import './Comment.css'
+import './CommentEdit.css'
 
 
 export default function({ref, comment, editable, onClickModifyComplete, onClickModifyCancel, atCandidates, backgroundSmooth = false}) {

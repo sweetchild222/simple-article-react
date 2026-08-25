@@ -13,12 +13,11 @@ import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
 
 import Great from "./Great.js";
 import ReplyLine from "./ReplyLine.js";
-import Comment  from "./Comment.js";
+import CommentEdit  from "./CommentEdit.js";
 import Writer from "./Writer.js";
 import ControlMenu from "./ControlMenu.js";
 import * as UserRepository from "@util/UserRepository.js";
 
-import { FaCommentMedical } from "react-icons/fa6";
 import { SlArrowDown } from "react-icons/sl";
 import { SlArrowUp } from "react-icons/sl";
 
@@ -403,11 +402,11 @@ export default function({article_id, article_user_id}) {
         const res = await CommentAPI.postComment(auth.jwt, payload)
         
         if(res.success == false){
-            window.showToast('대댓글 작성에 실패하였습니다', 'system-error')
+            window.showToast('답글 작성에 실패하였습니다', 'system-error')
             return false
         }
 
-        window.showToast('대댓글이 작성 되었습니다', 'info')
+        window.showToast('답글이 작성 되었습니다', 'info')
 
         const greatSet = {article_id:article_id, comment_id:res.payload.id, great:0, like_count:0, dislike_count:0}
 
@@ -592,7 +591,7 @@ export default function({article_id, article_user_id}) {
                             <VPad size={4}/>
 
                             <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                <Comment atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)} backgroundSmooth={scrollCommentId == data.id}/>
+                                <CommentEdit atCandidates={atCandidates} key={data.id} comment={data} editable={modifyModeCommentId == data.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(data.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(data.id)} backgroundSmooth={scrollCommentId == data.id}/>
                                 <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == data.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveComment(data.id)} onModify={()=>onModifyComment(data.id)}/>
                             </Horizental>
 
@@ -639,7 +638,7 @@ export default function({article_id, article_user_id}) {
                                         <VPad size={4}/>
 
                                         <Horizental style={{justifyContent:'space-between', width:'100%', alignItems:'start'}}>
-                                            <Comment key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)} backgroundSmooth={scrollCommentId == reply.id}/>
+                                            <CommentEdit key={reply.id} comment={reply} atCandidates={atCandidates} editable={modifyModeCommentId == reply.id} onClickModifyComplete={(modifiedComment)=> onClickModifyComplete(reply.id, modifiedComment)} onClickModifyCancel={()=>onClickModifyCancel(reply.id)} backgroundSmooth={scrollCommentId == reply.id}/>
                                             <ControlMenu style={{visibility: (validAuth(auth) && auth.user_id == reply.user_id) ? 'visible' : 'hidden'}} onRemove={()=>onRemoveReply(reply.id)} onModify={()=>onModifyComment(reply.id)}/>
                                         </Horizental>
 

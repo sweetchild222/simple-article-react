@@ -164,10 +164,9 @@ export default function() {
                 </Vertical>)
               )}
           </Vertical>
-          {isSpinner && <Spinner/>}
+          {isSpinner && <div style={{marginTop:'36px'}}><Spinner/></div>}
           </div>
         </Vertical>
-        
     ) : null
 
   }
@@ -199,7 +198,7 @@ export default function() {
                   </Vertical>)
                 )}
             </Vertical>
-            {isSpinner && <Spinner type={'absolute'}/>}
+            {isSpinner && <div style={{marginTop:'36px'}}><Spinner/></div>}
           </div>
           <div style={{backgroundColor:'lightgray', width:'2px', height:'100%', marginLeft:'32px', marginRight:'32px'}}/>
           <div style={{minWidth:'256px', width:'256px',maxWidth:'256px', display: 'block'}}>

@@ -313,7 +313,7 @@ export default function Sidebar() {
     }
 
     
-    return (        
+    return (
         <Horizental style={{alignItems:'center', padding:'8px', backgroundColor:'#494D5F', width:'100%', boxShadow: '0 4px 2px -2px dimgray', position:'fixed', zIndex:100, height:'64px'}}>
             <img src='/logo/logo.svg' alt='logo' height='48px' width='48px' onClick={onClickNavigateHome}/>
             {!validAuth(auth) &&

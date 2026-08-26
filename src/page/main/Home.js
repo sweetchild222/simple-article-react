@@ -236,7 +236,7 @@ export default function() {
             {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}
           </Vertical>)
         )}
-        {isSpinner && <Spinner type={'absolute'}/>}
+        {isSpinner && <div style={{marginTop:'36px'}}><Spinner/></div>}
       </div>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
         <PrettyButton disabled={offset == 0} onClick={onClickPrev} style={{width:'64px'}}> {<GrPrevious size={16}/>}</PrettyButton>

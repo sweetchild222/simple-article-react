@@ -9,6 +9,7 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import * as CommentAPI from '@rest/CommentAPI.js'
 import * as AlarmAPI from '@rest/AlarmAPI.js'
 import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
+import {isMobile, isNotMobile} from "@util/DeviceType.js";
 
 
 import Great from "./Great.js";
@@ -39,7 +40,7 @@ export default function({article_id, article_user_id}) {
     const [isShowComments, setIsShowComments] = useState(true)
     const [scrollCommentId, setScrollCommentId] = useState(location.state != null ? location.state.comment_id : null)
 
-    const commentRef = useRef(new Map())    
+    const commentRef = useRef(new Map())
 
     const navigate = useNavigate()
 
@@ -172,7 +173,7 @@ export default function({article_id, article_user_id}) {
 
         const targetTop = targetElement.getBoundingClientRect().top
         const startPos = window.scrollY
-        const distance = targetTop
+        const distance = targetTop - (isMobile() ? 64 : 0)
         let startTime = null
 
         const animation = (currentTime) => {

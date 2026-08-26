@@ -14,6 +14,7 @@ import { MdOutlineDoneOutline } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import {VPad, HPad} from "@gui/Pad.js";
 import './CommentEdit.css'
+import { MdExpandCircleDown } from "react-icons/md";
 
 
 export default function({ref, comment, editable, onClickModifyComplete, onClickModifyCancel, atCandidates, backgroundSmooth = false}) {
@@ -108,7 +109,7 @@ export default function({ref, comment, editable, onClickModifyComplete, onClickM
                 {!editable && <div ref={refComment} dangerouslySetInnerHTML={{ __html: seenComment}} className={isExpand ? 'none-clamped-text' : 'clamped-text'} style={{boxSizing: 'border-box', '--line-count':5, whiteSpace: 'pre-line', width:'auto', padding:'4px'}}/>}
                 
                 {!editable && isClamped && !isExpand && <div style={{position: 'absolute', alignSelf:'end'}}>
-                    <PrettyButton type={'transparent'} style={{color:'orange', backgroundColor:'lavender'}} onClick={() => setIsExpand(true)}><RiArrowDownWideLine size={16}/></PrettyButton>
+                    <PrettyButton type={'transparent'} style={{color:'darkcyan', backgroundColor:'transparent'}} onClick={() => setIsExpand(true)}><MdExpandCircleDown size={24}/></PrettyButton>
                 </div>}
 
                 {editable && <Horizental style={{justifyContent:'end', width:'100%', alignItems:'center', marginTop:'4px'}}>

@@ -584,7 +584,7 @@ export default function({article_id, article_user_id}) {
                         
                         <Vertical style={{width:'100%'}}>
                             <Horizental>
-                                <div style={{fontSize:'14px', marginRight:'8px', color:'gray'}}>{data.user != null ? data.user.nickname : '알수없음'}</div>
+                                <div className={'clamped-text'} style={{'--line-count':1, fontSize:'14px', marginRight:'8px', color:'gray'}}>{data.user != null ? data.user.nickname : '알수없음'}</div>
                                 <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
                             </Horizental>
                             
@@ -630,8 +630,8 @@ export default function({article_id, article_user_id}) {
                                         <div style={{flex:'1'}}/>
                                     </Vertical>
                                     <Vertical style={{width:'100%'}}>
-                                        <Horizental>
-                                            <div style={{fontSize:'14px', marginRight:'8px', color:'gray'}}>{reply.user != null ? data.user.nickname : '알수없음'}</div>
+                                        <Horizental>                                            
+                                            <div className={'clamped-text'} style={{'--line-count':1, fontSize:'14px', marginRight:'8px', color:'gray'}}>{reply.user != null ? data.user.nickname : '알수없음'}</div>
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
                                         </Horizental>
 

@@ -218,13 +218,6 @@ export default function () {
     }
     
 
-    const onKeyDown = (e) => {
-
-        if(e.key === 'Enter')
-            onClickSearch(inputElement.value)
-    }
-
-
     const onClickLogIn = (e) =>{
 
         navigate("/account")
@@ -250,11 +243,6 @@ export default function () {
         navigate('/account')
     }
 
-
-    const onClickHome = (e) =>{
-
-        navigate('/')
-    }
 
 
     const onClickAlarm = async(e) => {

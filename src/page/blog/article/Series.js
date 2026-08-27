@@ -57,7 +57,7 @@ export default function({blog_id, article_id, category_id}) {
             <Vertical style={{alignItems:'left', padding:'8px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
                 {articles.map((data, index) => 
                     <Horizental key={data.id} style={{alignItems:'center'}}>
-                        <div className={data.id != article_id ? ('clamped-text underline-text') : ('clamped-text')} key={data.id} style={{'--line-count':1, color:'black', marginTop:'8px', marginBottom:'8px', fontWeight:(data.id == article_id  ? '600' : null)}} onClick={()=> onClickArticle(data.id)}>
+                        <div className={data.id != article_id ? ('clamped-text underline-text') : ('clamped-text')} key={data.id} style={{'--line-count':1, userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none', color:'black', marginTop:'8px', marginBottom:'8px', fontWeight:(data.id == article_id  ? '600' : null)}} onClick={()=> onClickArticle(data.id)}>
                             {data.title}
                         </div>
                         <HPad size={16}/>                        

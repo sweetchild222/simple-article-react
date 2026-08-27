@@ -169,9 +169,9 @@ export default function() {
                     {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}                    
                   </Horizental>
                 </Vertical>) : 
-                (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', marginTop:'64px'}}>
-                  {<img src={'/image/empty.png'} style={{width:'64px', height: '64px'}}/>}
-                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}
+                (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center'}}>
+                  {<img src={'/image/empty.png'} style={{width:'128px', height: '128px', height: '128px', marginTop:'64px', marginBottom:'16px'}}/>}
+                  {<div style={{fontSize:'18px'}}>{'카테고리에 글이 없습니다'}</div>}
                 </Vertical>)
               )}
               {!isSuccess && <Horizental style={{justifyContent:'center', alignItems:'center',  marginTop:'32px'}}>{'불러오기 실패'}</Horizental>}
@@ -203,11 +203,11 @@ export default function() {
                       <div style={{flex:'1'}}></div>
                     </Horizental>
                   </Vertical>) : 
-                  (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%', marginTop:'128px', marginLeft:'16px'}}>
-                    {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
-                    {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}
+                  (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%'}}>
+                    {<img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'64px', marginBottom:'16px'}}/>}
+                    {<div style={{fontSize:'18px', marginBottom:'16px'}}>{'카테고리에 글이 없습니다'}</div>}
                     {isEditable() && <CreateArticle blogId={blog_id} categoryId={findCategoryId(selectedCategory)}/>}
-                  </Vertical>)
+                  </Vertical>)                              
                 )}
                 {!isSuccess && <Horizental style={{justifyContent:'center', alignItems:'center',  marginTop:'32px'}}>{'불러오기 실패'}</Horizental>}
             </Vertical>

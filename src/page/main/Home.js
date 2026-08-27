@@ -232,8 +232,8 @@ export default function() {
             </div>
           </Vertical>) : 
           (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%'}}>
-            {<img src={'/image/empty.png'} style={{width:'128px', height: '128px'}}/>}
-            {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}
+            {<img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'64px', marginBottom:'16px'}}/>}
+            {<div style={{fontSize:'18px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}
           </Vertical>)
         )}
         {isSpinner && <Spinner type={'absolute'}/>}

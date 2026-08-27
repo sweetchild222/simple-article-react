@@ -4,6 +4,7 @@ import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
+import SmoothScroll from "@util/SmoothScroll.js";
 
 
 import Spinner from "@gui/Spinner.js";
@@ -37,7 +38,7 @@ export default function() {
   const [isSuccess, setIsSuccess] = useState(true)
   const [reloadKey, setReloadKey] = useState(0)
 
-  const countPerPage = 6
+  const countPerPage = isMobile() ? 10 : 6
 
   const isEditable = ()=> {
 
@@ -109,6 +110,9 @@ export default function() {
 
   const onClickPage = async(page) => {
     
+    if(isMobile())
+      SmoothScroll(0)
+
     setIsSpinner(true)
 
     const category_id = (selectedCategory.static == true) ? null : selectedCategory.id

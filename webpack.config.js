@@ -2,7 +2,6 @@ import path, { dirname } from 'path'
 
 import { fileURLToPath } from 'url';
 import HTMLWebpackPlugin from 'html-webpack-plugin'
-import MiniCssExtractPlugin from  'mini-css-extract-plugin';
 import  CopyWebpackPlugin from 'copy-webpack-plugin';
 import webpack from 'webpack';
 import dotenv from 'dotenv'

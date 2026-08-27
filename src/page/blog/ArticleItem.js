@@ -11,8 +11,8 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 
 import { MdThumbUpAlt } from "react-icons/md";
-import { BiSolidComment } from "react-icons/bi";
 import { IoMdHeart } from "react-icons/io";
+import { PiChatTeardropTextFill } from "react-icons/pi";
 
 
 export default function({article, categoryName, style}) {
@@ -48,29 +48,28 @@ export default function({article, categoryName, style}) {
             <Vertical style={{flex:'1', marginLeft:'4px', marginRight:'8px'}}>
                 <div className={'clamped-text underline-text'} style={{'--line-count':1, fontSize:'18px', fontWeight:'500', marginBottom:'4px', color:'#1A1A1A'}}>{article.title != '' ? article.title: '...'}</div>
                 <div className={'clamped-text underline-text'} style={{'--line-count':isMobile() ? 2 : 5, marginBottom:'8px', color:'#222222'}}>{article.head.length >= 255 ? article.head + '...' : (article.head != '' ? article.head : '내용 없음')}</div>
-                <div style={{flex:'1'}}></div>
+                <div style={{flex:'1'}}/>
                 <Horizental style={{alignItems:'center', color:'#888888'}}>
                     {article.posted == 1 &&
                         <Horizental>
                             <IoMdHeart size={22}/>
                             <HPad size={4}/>
                             {CountWithUnit(article.bookmark_count)}
-                            <div style={{width:'32px'}}/>
+                            <HPad size={32}/>
                             <MdThumbUpAlt size={22}/>
                             <HPad size={4}/>
                             {CountWithUnit(article.like_count)}
                             <HPad size={32}/>
-                            <BiSolidComment size={22}/>
+                            <PiChatTeardropTextFill size={22}/>
                             <HPad size={4}/>
                             {CountWithUnit(article.comment_count)}
-                            <HPad size={32}/>
                         </Horizental>
                     }
                     {article.posted == 0 && <Horizental style={{marginRight:'32px'}}>
                             <div className={'clamped-text'} style={{'--line-count':1}}>{categoryName}</div>
                         </Horizental>
                     }
-                    <Horizental style={{flex:'1', whiteSpace: 'nowrap', justifyContent:'flex-end'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</Horizental>
+                    {isNotMobile() &&<Horizental style={{flex:'1', whiteSpace: 'nowrap', justifyContent:'flex-end'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</Horizental>}
                 </Horizental>
             </Vertical>
             {isMobile() && article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=96x96'} width={96} height={96} borderWidth={0}/>}

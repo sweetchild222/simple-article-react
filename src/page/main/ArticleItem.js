@@ -7,8 +7,8 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import {HPad} from "@gui/Pad.js";
 
 import { MdThumbUpAlt } from "react-icons/md";
-import { BiSolidComment } from "react-icons/bi";
 import { IoMdHeart } from "react-icons/io";
+import { PiChatTeardropTextFill } from "react-icons/pi";
 
 import './ArticleItem.css'
 
@@ -38,7 +38,7 @@ export default function({article, style}) {
                     <HPad size={4}/>
                     {CountWithUnit(article.like_count)}
                     <HPad size={32}/>
-                    <BiSolidComment size={22}/>
+                    <PiChatTeardropTextFill size={22}/>
                     <HPad size={4}/>
                     {CountWithUnit(article.comment_count)}
                     <Horizental style={{display:'flex', flex:'1', whiteSpace: 'nowrap', justifyContent:'flex-end'}} >{article.post_at ? ElapsedTime(article.post_at) : ''}</Horizental>

@@ -34,6 +34,7 @@ export default function() {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [articles, setArticles] = useState(null)
   const [isSpinner, setIsSpinner] = useState(true)
+  const [isSuccess, setIsSuccess] = useState(true)
   const [reloadKey, setReloadKey] = useState(0)
 
   const countPerPage = 6
@@ -65,7 +66,7 @@ export default function() {
 
 
   const onClickCategory = async(category) => {
-    
+      
     setIsSpinner(true)
 
     setSelectedCategory(category)
@@ -75,9 +76,13 @@ export default function() {
     
     const articles = await getBlogArticles(0, category_id, posted)
 
-    if(articles.success == true)
+    if(articles.success == true){
       setArticles(articles.payload)
-
+      setIsSuccess(true)
+    }
+    else
+      setIsSuccess(false)
+      
     setIsSpinner(false)
     
     setReloadKey(prev => prev + 1)
@@ -103,17 +108,20 @@ export default function() {
   
 
   const onClickPage = async(page) => {
-
+    
     setIsSpinner(true)
 
     const category_id = (selectedCategory.static == true) ? null : selectedCategory.id
     const posted = selectedCategory.id == 'WRITING' ? 0 : null
-        
+
     const articles = await getBlogArticles(page, category_id, posted)
 
     if(articles.success == true){
       setArticles(articles.payload)
+      setIsSuccess(true)
     }
+    else
+      setIsSuccess(false)
 
     setIsSpinner(false)
   }
@@ -142,13 +150,12 @@ export default function() {
 
 
   if(isMobile()){
-
       return blog_id ? (
         <Vertical style={{marginTop:'64px'}}>
           <Categories ref={refCategories} blogId={blog_id} initCategoryId={initCategoryId} onClickCategory={onClickCategory} isEdit={isEditable()}></Categories>
           <div style={{flex:'1', position:'relative'}}>
           <Vertical>
-              {selectedCategory && articles && (
+              {isSuccess && selectedCategory && articles && (
                 articles.length > 0 ? 
                 (<Vertical style={{width:'100%'}}>
                   <div style={{width:'100%', marginTop:'8px', marginBottom:'8px'}}>
@@ -160,11 +167,12 @@ export default function() {
                 </Vertical>) : 
                 (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', marginTop:'64px'}}>
                   {<img src={'/image/empty.png'} style={{width:'64px', height: '64px'}}/>}
-                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}                  
+                  {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'카테고리에 글이 없습니다.'}</div>}
                 </Vertical>)
               )}
+              {!isSuccess && <Horizental style={{justifyContent:'center', alignItems:'center',  marginTop:'32px'}}>{'불러오기 실패'}</Horizental>}
           </Vertical>
-          {isSpinner && <div style={{marginTop:'36px'}}><Spinner/></div>}
+          {isSpinner && <Spinner type={'absolute'}/>}
           </div>
         </Vertical>
     ) : null
@@ -177,7 +185,7 @@ export default function() {
           <HPad size={128}/>
           <div style={{flex:'1', position:'relative'}}>
             <Vertical>
-                {selectedCategory && articles && (
+                {isSuccess && selectedCategory && articles && (
                   articles.length > 0 ? 
                   (<Vertical style={{width:'100%'}}>
                     <div style={{width:'100%', marginTop:'8px', marginBottom:'8px'}}>
@@ -197,8 +205,9 @@ export default function() {
                     {isEditable() && <CreateArticle blogId={blog_id} categoryId={findCategoryId(selectedCategory)}/>}
                   </Vertical>)
                 )}
+                {!isSuccess && <Horizental style={{justifyContent:'center', alignItems:'center',  marginTop:'32px'}}>{'불러오기 실패'}</Horizental>}
             </Vertical>
-            {isSpinner && <div style={{marginTop:'36px'}}><Spinner/></div>}
+            {isSpinner && <Spinner type={'absolute'}/>}
           </div>
           <div style={{backgroundColor:'lightgray', width:'2px', height:'100%', marginLeft:'32px', marginRight:'32px'}}/>
           <div style={{minWidth:'256px', width:'256px',maxWidth:'256px', display: 'block'}}>

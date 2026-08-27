@@ -771,7 +771,7 @@ export default function({ref, file, containerWidth=768, containerHeight=768, sel
   }, [eventMouseMove, eventMouseUp])
 
   return (
-      <div id='container' className={`${isLoading ? 'spin': ''}`} ref={refContain} style={{'--radius--':'128px', '--spinWidth--':'32px', width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
+      <div id='container' className={`${isLoading ? 'spin': ''}`} ref={refContain} style={{'--radius--':'128px', '--spinWidth--':'16px', width: `${containerWidth}px`, height: `${containerHeight}px`, backgroundImage: `url(${containerCanvasUrl})`, backgroundSize:`${isContain ? 'contain': 'cover'}`}}>
         <canvas ref={refCover} style={{width: `${coverSize.width}px`, height: `${coverSize.height}px`}}/>
           {selectRect != null && 
           <div id='select' ref={refSelect} onMouseDown={onMouseDown}

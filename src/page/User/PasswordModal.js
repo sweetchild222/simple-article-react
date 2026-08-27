@@ -175,9 +175,9 @@ export default function({ref, isOpen, onClose}) {
                     <input ref={refRepeatPassword} id='input_repeat_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownRepeat}/>
                     <VPad size={16}/>
                     <Horizental style={{justifyContent:'end', width:'100%'}}>
-                        <PrettyButton type="confirm" onClick={onClickPasswordChange} type='confirm' style={{width:'64px'}}>변경</PrettyButton>
+                        <PrettyButton type="confirm" onClick={onClickPasswordChange} style={{width:'64px'}}>변경</PrettyButton>
                         <HPad size={16}/>
-                        <PrettyButton type="confirm" onClick={onClose} type='cancel' style={{width:'64px'}}>취소</PrettyButton>
+                        <PrettyButton type="cancel" onClick={onClose} style={{width:'64px'}}>취소</PrettyButton>
                     </Horizental>
                 </Vertical>
             </dialog>,

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
+import SmoothScroll from "@util/SmoothScroll.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import ProfileImage from "@gui/ProfileImage.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
@@ -137,8 +138,8 @@ export default function({article_id, article_user_id}) {
 
             if(node){
                 setTimeout(()=>{
-
-                    slowScrollTo(node)
+                    
+                    SmoothScroll(node.getBoundingClientRect().top - (isMobile() ? 64 : 0))
 
                     setTimeout(()=>{
 
@@ -167,34 +168,6 @@ export default function({article_id, article_user_id}) {
 
         return res.payload
     }
-
-
-    const slowScrollTo = async(targetElement, duration = 500) => {
-
-        const targetTop = targetElement.getBoundingClientRect().top
-        const startPos = window.scrollY
-        const distance = targetTop - (isMobile() ? 64 : 0)
-        let startTime = null
-
-        const animation = (currentTime) => {
-
-            if (startTime === null) 
-                startTime = currentTime
-
-            const timeElapsed = currentTime - startTime
-                        
-            const progress = Math.min(timeElapsed / duration, 1)
-            const ease = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress
-
-            window.scrollTo(0, startPos + (distance * ease))
-
-            if(timeElapsed < duration)
-                requestAnimationFrame(animation);
-        }
-
-        requestAnimationFrame(animation)
-    }
-
 
 
     const removeComment = async(comment_id) => {

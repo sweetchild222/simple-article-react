@@ -5,6 +5,7 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as SubscribeAPI from '@rest/SubscribeAPI.js'
 
 import AuthContext from "@util/AuthContext.js";
+import SmoothScroll from "@util/SmoothScroll.js";
 import * as UserRepository from "@util/UserRepository.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import ArticleItem from "./ArticleItem.js";
@@ -28,8 +29,7 @@ export default function() {
   
   const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
   const [articles, setArticles] = useState(null)
-  const [isSpinner, setIsSpinner] = useState(false)
-  const [reloadKey, setReloadKey] = useState(0)
+  const [isSpinner, setIsSpinner] = useState(false)  
   const [offset, setOffset] = useState(0)
   const [blogIds, setBlogIds] = useState(null)
   const [currentType, setCurrentType] = useState(0) //0:최신순, 1:인기순, 2:댓글 많은 순, 3:구독한 글, 4:검색
@@ -150,7 +150,6 @@ export default function() {
 
     setCurrentType(3)
     setOffset(0)
-
   }
 
   const onClickPrev = async() =>{
@@ -159,11 +158,18 @@ export default function() {
       return
 
     setOffset(offset => offset - countPerPage)
+
+    if(isMobile())
+      SmoothScroll(0)
   }
+
 
   const onClickNext = async() => {
 
     setOffset(offset => offset + countPerPage)
+
+    if(isMobile())
+      SmoothScroll(0)
   }
 
 
@@ -236,7 +242,7 @@ export default function() {
             {<div style={{fontSize:'18px', marginTop:'32px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}
           </Vertical>)
         )}
-        {isSpinner && <div style={{marginTop:'36px'}}><Spinner/></div>}
+        {isSpinner && <Spinner type={'absolute'}/>}
       </div>
       {articles && <Horizental style={{alignSelf:'center', alignItems:'center'}}>
         <PrettyButton disabled={offset == 0} onClick={onClickPrev} style={{width:'64px'}}> {<GrPrevious size={16}/>}</PrettyButton>

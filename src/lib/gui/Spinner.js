@@ -1,7 +1,4 @@
-import {useEffect, useState} from 'react'
-
 import './Spinner.css'
-import { useFetcher } from 'react-router-dom';
 
 
 export default function({type='default', radius=128, spinnerWidth=13, spinnerColor='rgba(255, 25, 160, 0.5)', top = null}) {

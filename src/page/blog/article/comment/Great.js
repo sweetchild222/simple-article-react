@@ -1,10 +1,10 @@
-import {useState, useContext, useEffect} from "react";
+import {useState, useContext} from "react";
 import {useNavigate} from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import CountWithUnit from "@util/CountWithUnit.js";
-import {Vertical, Horizental} from "@gui/Flex.js";
+import {Horizental} from "@gui/Flex.js";
 
 import { FaRegThumbsDown } from "react-icons/fa";
 import { FaRegThumbsUp } from "react-icons/fa";
@@ -12,7 +12,7 @@ import { FaThumbsDown } from "react-icons/fa";
 import { FaThumbsUp } from "react-icons/fa";
 
 import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
-import {VPad, HPad} from "@gui/Pad.js";
+import {HPad} from "@gui/Pad.js";
 
 export default function({comment_id, greatSet, style}) {
     

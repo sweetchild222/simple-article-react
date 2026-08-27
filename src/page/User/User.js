@@ -1,19 +1,14 @@
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 
 import * as UserAPI from '@rest/UserAPI.js'
-import * as BlogAPI from '@rest/BlogAPI.js'
-
-import Modal from "@gui/Modal.js"
 import PrettyButton from '@gui/PrettyButton.js';
 import Spinner from '@gui/Spinner.js';
 import ProfileImage from '@gui/ProfileImage.js';
-
+import {Vertical} from "@gui/Flex.js";
+import {VPad} from "@gui/Pad.js";
 import Integer from "@util/Integer.js";
 import AuthContext from "@util/AuthContext.js";
-import NotFound from '@page/common/NotFound.js';
-import {Vertical, Horizental} from "@gui/Flex.js";
-import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function() {
@@ -22,7 +17,7 @@ export default function() {
 
     const user_id = Integer(id)
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const {auth, validAuth} = useContext(AuthContext)    
     const [user, setUser] = useState(null)    
         
     const navigate = useNavigate()

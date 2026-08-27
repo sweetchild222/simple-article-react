@@ -2,35 +2,33 @@ import {useState, useContext, useEffect, useRef} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
-
+import ImagePicker from "@util/ImagePicker.js";
 import * as UserAPI from '@rest/UserAPI.js'
 import * as BlobAPI from '@rest/BlobAPI.js'
-import * as CategoryAPI from '@rest/CategoryAPI.js'
-
-import ImagePicker from "@util/ImagePicker.js";
 import PrettyButton from '@gui/PrettyButton.js';
 import Spinner from '@gui/Spinner.js';
 import Modal from '@gui/Modal.js';
-import PasswordModal from './PasswordModal.js';
 import {blobFromCanvas} from "@util/ImageUtil.js";
-import {isMobile, isNotMobile} from "@util/DeviceType.js";
+import {isNotMobile} from "@util/DeviceType.js";
 import ImageCropModal from '@gui/ImageCropModal.js'
 import ProfileImage from '@gui/ProfileImage.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
-import * as validator from './Validator.js'
+import PasswordModal from './PasswordModal.js';
 import { LuImageUp } from "react-icons/lu";
 import Integer from "@util/Integer.js";
-import {VPad, HPad} from "@gui/Pad.js";
+import {VPad} from "@gui/Pad.js";
+
+import * as validator from './Validator.js'
 
 
 export default function() {
     
-    const {auth, updateAuth, validAuth, reloadAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth, reloadAuth, removeAuth} = useContext(AuthContext)
     const [isModalLogout, setIsModalLogout] = useState(false)
     const [isModalPassword, setIsModalPassword] = useState(false)
-    const [isModalWithdraw, setIsModalWithdraw] = useState(false)    
+    const [isModalWithdraw, setIsModalWithdraw] = useState(false)
     
-    const [isModalNickname, setIsModalNickname] = useState(false)    
+    const [isModalNickname, setIsModalNickname] = useState(false)
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     const [user, setUser] = useState(null)

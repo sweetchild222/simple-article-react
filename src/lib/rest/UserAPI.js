@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 import * as restAPI from './RestAPI'
 
 export async function getUser(user_id) {

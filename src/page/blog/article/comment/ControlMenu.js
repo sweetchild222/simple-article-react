@@ -2,11 +2,10 @@
 import {useState, useEffect, useRef } from "react";
 
 import PrettyButton from "@gui/PrettyButton.js";
-import { HiDotsVertical } from "react-icons/hi";
 import {isMobile} from "@util/DeviceType.js";
-import {VPad, HPad} from "@gui/Pad.js";
-import './ControlMenu.css'
+import { HiDotsVertical } from "react-icons/hi";
 
+import './ControlMenu.css'
 
 export default function(props) {
         

@@ -1,28 +1,19 @@
-import { useState, useRef, useEffect, useContext } from 'react'
+import { useState, useRef, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom';
-import PrettyButton from "@gui/PrettyButton.js"
-
-
 import ReactDOM from 'react-dom';
+
+import PrettyButton from "@gui/PrettyButton.js"
 import ProfileImage from "@gui/ProfileImage.js";
-import { VscTrash } from "react-icons/vsc";
+import { HPad } from "@gui/Pad.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
-import ElapsedTime from "@util/ElapsedTime.js";
-
-import * as AlarmAPI from '@rest/AlarmAPI.js'
-import AuthContext from "@util/AuthContext.js";
-import { MdVisibility } from 'react-icons/md';
-
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
-import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function({ref, isOpen, onClose, subscribes}) {
 
   const refDialog = useRef(null)
-
-  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)  
+  
   const [newSubscribes, setNewSubscribes] = useState(structuredClone(subscribes))
   const [fromIndex, setFromIndex] = useState(0)
 
@@ -50,14 +41,6 @@ export default function({ref, isOpen, onClose, subscribes}) {
   }
 
   
-  const onClickSubscribe = async(subscribe)=> {
-        
-    if(!validAuth(auth)) 
-      return
-    
-  }
-
-
   const pageCount = 5
 
   const onClickNext = () => {

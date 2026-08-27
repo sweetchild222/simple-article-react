@@ -3,18 +3,19 @@ import {useNavigate} from 'react-router-dom';
 
 import * as BookmarkAPI from '@rest/BookmarkAPI.js'
 import AuthContext from "@util/AuthContext.js";
-import {Vertical, Horizental} from "@gui/Flex.js";
-import PrettyButton from "@gui/PrettyButton.js";
 import CountWithUnit from "@util/CountWithUnit.js";
+import {Horizental} from "@gui/Flex.js";
+import PrettyButton from "@gui/PrettyButton.js";
+import {HPad} from "@gui/Pad.js";
 
 import { IoMdHeart } from "react-icons/io";
 import { IoIosHeartEmpty } from "react-icons/io";
-import {VPad, HPad} from "@gui/Pad.js";
+
 
 export default function({article_id, count}) {
 
     const [isBookmarkLoading, setIsBookmarkLoading] = useState(false)
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [isBookmark, setIsBookmark] = useState(null)
     const [bookmarkCount, setBookmarkCount] = useState(count)
 

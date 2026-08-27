@@ -1,20 +1,18 @@
+import {useContext, useEffect, useState} from 'react';
+import { useNavigate, useLocation} from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
-
-import {useContext, useEffect, useState} from 'react';
-
 import * as UserAPI from '@rest/UserAPI.js'
-import { useNavigate, useLocation} from 'react-router-dom';
 import PrettyButton from '@gui/PrettyButton.js';
 import Modal from '@gui/Modal.js';
-import PasswordReset from './PasswordReset';
-import {Vertical, Horizental} from "@gui/Flex.js";
-import {VPad, HPad} from "@gui/Pad.js";
+import {VPad} from "@gui/Pad.js";
+import {Vertical} from "@gui/Flex.js";
 
+import PasswordReset from './PasswordReset';
 
 export default function() {
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const {auth, updateAuth, validAuth} = useContext(AuthContext)    
     const [isLoading, setIsLoading] = useState(false)
     const [isModalPasswordReset, setIsModalPasswordReset] = useState(false)
     

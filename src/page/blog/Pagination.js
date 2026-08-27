@@ -2,9 +2,11 @@ import { useState } from "react";
 
 import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
-import './Pagination.css'
+
 import { FaForward } from "react-icons/fa";
 import { FaBackward } from "react-icons/fa6";
+
+import './Pagination.css'
 
 export default function({totalPageCount, displayPageCount, onClickPage}) {
         

@@ -1,29 +1,34 @@
-import React, { useState, useContext, useEffect} from 'react';
-import './SideBar.css';
-import AuthContext from "@util/AuthContext.js";
-import {Vertical, Horizental} from "@gui/Flex.js";
-import PrettyButton from '@gui/PrettyButton.js';
-import { RiMenuUnfold3Line } from "react-icons/ri";
-import { RiMenuFold3Line } from "react-icons/ri";
+import { useState, useContext, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
+
 import * as AlarmAPI from '@rest/AlarmAPI.js'
 import * as SubscribeAPI from '@rest/SubscribeAPI.js'
 import * as BookmarkAPI from '@rest/BookmarkAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
-import ProfileImage from "@gui/ProfileImage.js";
-import AlarmModal from "./AlarmModal.js";
-import { VscBellDot } from "react-icons/vsc";
-import { VscBell } from "react-icons/vsc";
+
+import AuthContext from "@util/AuthContext.js";
 import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
 import * as UserRepository from "@util/UserRepository.js";
+
+import PrettyButton from '@gui/PrettyButton.js';
+import {Vertical, Horizental} from "@gui/Flex.js";
+import ProfileImage from "@gui/ProfileImage.js";
+
+import { RiMenuUnfold3Line } from "react-icons/ri";
+import { RiMenuFold3Line } from "react-icons/ri";
+import { VscBellDot } from "react-icons/vsc";
+import { VscBell } from "react-icons/vsc";
 import { IoIosArrowDown } from "react-icons/io";
+import AlarmModal from "./AlarmModal.js";
 import {VPad, HPad} from "@gui/Pad.js";
+
+import './SideBar.css';
 
 
 export default function () {
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth, removeAuth} = useContext(AuthContext)
     const [alarms, setAlarms] = useState(null)
     const [subscribes, setSubscribes] = useState(null)
     const [bookmarks, setBookmarks] = useState(null)

@@ -1,9 +1,10 @@
-import React, {useState, useContext, useRef} from "react";
+import {useState, useRef} from "react";
 
-import TextArea from "./TextArea.js";
-import {Vertical, Horizental} from "@gui/Flex.js";
+import {Vertical} from "@gui/Flex.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {VPad, HPad} from "@gui/Pad.js";
+
+import TextArea from "./TextArea.js";
 
 export default function(props) {
 

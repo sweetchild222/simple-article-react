@@ -4,20 +4,23 @@ import {useNavigate, useParams} from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
-
 import AuthContext from "@util/AuthContext.js";
 import Integer from "@util/Integer.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
 import {isMobile, isNotMobile} from "@util/DeviceType.js";
-
 import Modal from "@gui/Modal.js";
 import StateProgsImage from "@gui/StateProgsImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Spinner from "@gui/Spinner.js";
+import {VPad, HPad} from "@gui/Pad.js";
 
+import { TiEye } from "react-icons/ti";
+import { FaAlignLeft } from "react-icons/fa6";
+import { FaAlignCenter } from "react-icons/fa6";
+import { FaAlignRight } from "react-icons/fa6";
 
 import Great from "./Great.js"
 import Series from "./Series.js"
@@ -26,12 +29,6 @@ import CommentList from "./comment/CommentList.js"
 import ControlMenu from "./comment/ControlMenu.js";
 
 
-import { TiEye } from "react-icons/ti";
-import { FaAlignLeft } from "react-icons/fa6";
-import { FaAlignCenter } from "react-icons/fa6";
-import { FaAlignRight } from "react-icons/fa6";
-import {VPad, HPad} from "@gui/Pad.js";
-
 export default function() {
 
     const { b_id, a_id } = useParams()
@@ -39,7 +36,7 @@ export default function() {
     const blog_id = Integer(b_id)
     const article_id = Integer(a_id)
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [article, setArticle] = useState(null)    
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
     const [isControlLoading, setIsControlLoading] = useState(false)    

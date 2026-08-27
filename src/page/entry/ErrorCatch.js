@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Vertical, Horizental} from "@gui/Flex.js";
+import {Vertical} from "@gui/Flex.js";
 
 class ErrorCatch extends React.Component {
   

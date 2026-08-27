@@ -1,16 +1,13 @@
 
-import {useState, useContext, useEffect} from "react";
+import {useState, useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
-import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
-import { MdEdit } from "react-icons/md";
-import { FaPen } from "react-icons/fa6"
 import {Vertical, Horizental} from "@gui/Flex.js";
-import {VPad, HPad} from "@gui/Pad.js";
+import {HPad} from "@gui/Pad.js";
 
-export default function({ref, blog_id, article_id, category_id}) {
+export default function({blog_id, article_id, category_id}) {
 
     const [articles, setArticles] = useState(null)
 

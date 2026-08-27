@@ -1,9 +1,10 @@
 import {useState, useRef, useEffect, useImperativeHandle} from 'react'
+import ReactDOM from 'react-dom';
+import PrettyButton from "@gui/PrettyButton.js"
+import ImageCropper from './ImageCropper.js'
 
 import './ImageCropModal.css'
-import ImageCropper from './ImageCropper.js'
-import PrettyButton from "@gui/PrettyButton.js"
-import ReactDOM from 'react-dom';
+
 
 export default function({ref, isOpen, onClose, file, onClickApply, containerWidth=768, containerHeight=768, selectMinWidth, keepRatio}) {
     

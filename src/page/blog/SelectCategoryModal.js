@@ -1,17 +1,14 @@
-
 import { useState, useRef, useEffect } from 'react'
-
 import PrettyButton from "@gui/PrettyButton.js"
+import {Vertical} from "@gui/Flex.js";
+import {VPad} from "@gui/Pad.js";
 import ReactDOM from 'react-dom';
-import { VscTrash } from "react-icons/vsc";
-import {Vertical, Horizental} from "@gui/Flex.js";
-import { CiSquarePlus } from "react-icons/ci";
-import {VPad, HPad} from "@gui/Pad.js";
 
-export default function({ref, isOpen, onClose, onSelect, categories}) {
+
+export default function({isOpen, onClose, onSelect, categories}) {
       
   const refDialog = useRef(null)
-  const refListDiv = useRef(null)  
+  const refListDiv = useRef(null)
   
   const [newCategories, setNewCategories] = useState(structuredClone(categories))
 

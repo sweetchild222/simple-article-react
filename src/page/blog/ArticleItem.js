@@ -1,22 +1,23 @@
 import {useContext} from "react";
 import {useNavigate} from 'react-router-dom';
+
 import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import CountWithUnit from "@util/CountWithUnit.js";
+import {isMobile, isNotMobile} from "@util/DeviceType.js";
 import StateProgsImage from "@gui/StateProgsImage.js";
+import {HPad} from "@gui/Pad.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 import * as ArticleAPI from '@rest/ArticleAPI.js'
-import { TiEye } from "react-icons/ti";
+
 import { MdThumbUpAlt } from "react-icons/md";
-import { MdThumbDownAlt } from "react-icons/md";
 import { BiSolidComment } from "react-icons/bi";
 import { IoMdHeart } from "react-icons/io";
-import {Vertical, Horizental} from "@gui/Flex.js";
-import {isMobile, isNotMobile} from "@util/DeviceType.js";
-import {VPad, HPad} from "@gui/Pad.js";
+
 
 export default function({article, categoryName, style}) {
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     
     const navigate = useNavigate()
     

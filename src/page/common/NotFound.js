@@ -1,4 +1,4 @@
-import {Vertical, Horizental} from "@gui/Flex.js";
+import {Vertical} from "@gui/Flex.js";
 
 export default function() {
 

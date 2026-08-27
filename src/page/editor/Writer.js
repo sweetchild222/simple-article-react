@@ -1,18 +1,19 @@
 import { useContext, useState, useRef, useEffect, useCallback, useMemo} from 'react'
+import { useNavigate, useLocation, useBlocker} from 'react-router-dom';
 
 import Split from '@uiw/react-split';
 import Spinner from '@gui/Spinner.js'
-import MDXEditor from './MDXEditor.js'
 import PrettyButton from '@gui/PrettyButton.js'
-import {Vertical, Horizental} from "@gui/Flex.js";
+import {Horizental} from "@gui/Flex.js";
 import Modal from '@gui/Modal.js'
 import * as BlobAPI from '@rest/BlobAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import AuthContext from "@util/AuthContext.js";
-import GoLogin from "@page/common/GoLogin.js";
-import ExtractHead from "./ExtractHead.js";
-import { useNavigate, useLocation, useBlocker} from 'react-router-dom';
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
+import GoLogin from "@page/common/GoLogin.js";
+
+import MDXEditor from './MDXEditor.js'
+import ExtractHead from "./ExtractHead.js";
 
 
 export default function() {
@@ -32,7 +33,7 @@ export default function() {
     const [isTouched, setIsTouched] = useState(false)
     const [isPreview, setIsPreview] = useState(false)
     const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [isSpinner, setIsSpinner] = useState(false)
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
 

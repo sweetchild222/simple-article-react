@@ -1,23 +1,17 @@
 import {useState, useEffect, useRef} from "react";
 
+import DOMPurify from 'dompurify';
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
-
-import * as UserRepository from "@util/UserRepository.js";
-import DOMPurify from 'dompurify';
-import TextArea from "./TextArea.js";
-
+import {HPad} from "@gui/Pad.js";
 import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
-
-import { RiArrowDownWideLine } from "react-icons/ri";
-import { MdOutlineDoneOutline } from "react-icons/md";
-import { MdCancel } from "react-icons/md";
-import {VPad, HPad} from "@gui/Pad.js";
-import './CommentEdit.css'
 import { MdExpandCircleDown } from "react-icons/md";
 
+import TextArea from "./TextArea.js";
+import './CommentEdit.css'
 
-export default function({ref, comment, editable, onClickModifyComplete, onClickModifyCancel, atCandidates, backgroundSmooth = false}) {
+
+export default function({comment, editable, onClickModifyComplete, onClickModifyCancel, atCandidates, backgroundSmooth = false}) {
 
     const [isClamped, setIsClamped] = useState(false)
     const [isExpand, setIsExpand] = useState(false)

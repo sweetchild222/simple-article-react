@@ -1,21 +1,21 @@
 import {useState, useEffect, useContext, useRef} from "react";
-
 import ReactDOM from 'react-dom';
 
 import * as UserAPI from '@rest/UserAPI.js'
-import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Spinner from "@gui/Spinner.js";
 import {VPad, HPad} from "@gui/Pad.js";
 
+import * as validator from './Validator.js'
 
-export default function({ref, isOpen, onClose}) {
+
+export default function({isOpen, onClose}) {
 
     const refDialog = useRef(null)
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [isSpinner, setIsSpinner] = useState(false)
 
     const refCurPassword = useRef(null)

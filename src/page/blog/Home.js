@@ -2,21 +2,21 @@ import {useState, useContext, useRef } from "react";
 import {useNavigate, useLocation, useParams} from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
-
 import AuthContext from "@util/AuthContext.js";
 import SmoothScroll from "@util/SmoothScroll.js";
-
+import ToInteger from "@util/Integer.js";
+import {isMobile} from "@util/DeviceType.js";
 
 import Spinner from "@gui/Spinner.js";
+import {VPad, HPad} from "@gui/Pad.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
-import ToInteger from "@util/Integer.js";
+
 import Categories  from "./Categories.js";
 import Recents  from "./Recents.js";
 import CreateArticle  from "./CreateArticle.js";
 import ArticleItem from "./ArticleItem.js";
 import Pagination from "./Pagination.js";
-import {VPad, HPad} from "@gui/Pad.js";
-import {isMobile, isNotMobile} from "@util/DeviceType.js";
+
 
 export default function() {
 
@@ -31,7 +31,7 @@ export default function() {
   const initCategoryId = location.state != null ? location.state.category_id : null
 
   const refCategories = useRef(null)  
-  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+  const {auth, validAuth} = useContext(AuthContext)
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [articles, setArticles] = useState(null)
   const [isSpinner, setIsSpinner] = useState(true)

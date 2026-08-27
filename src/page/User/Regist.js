@@ -1,14 +1,15 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useState} from 'react';
 import { useNavigate, useLocation} from 'react-router-dom';
 
 import * as RegistAPI from '@rest/RegistAPI.js'
 import * as UserAPI from '@rest/UserAPI.js'
-import * as validator from './Validator.js'
 import AuthContext from "@util/AuthContext.js";
-import PrettyButton from "@gui/PrettyButton.js";
 import GoBack from "@page/common/GoBack.js";
+import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import {VPad, HPad} from "@gui/Pad.js";
+
+import * as validator from './Validator.js'
 
 export default function() {
 
@@ -18,8 +19,7 @@ export default function() {
   const [passwordValid, setPasswordValid] = useState(false);
   const [isCertified, setIsCertified] = useState(false)
 
-  const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)
-  const [isDisabledSendCode, setIsDisabledSendCode] = useState(false)
+  const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)  
   const [isLoadingCertify, setIsLoadingCertify] = useState(false)
   const [isLoadingRegist, setIsLoadingRegist] = useState(false)  
 

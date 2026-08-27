@@ -1,33 +1,27 @@
-import {useState, useEffect, useContext, useRef } from "react";
-import {useNavigate, useLocation, useParams} from 'react-router-dom';
+import {useState, useEffect, useContext} from "react";
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as SubscribeAPI from '@rest/SubscribeAPI.js'
-
 import AuthContext from "@util/AuthContext.js";
 import SmoothScroll from "@util/SmoothScroll.js";
+import {isMobile, isNotMobile} from "@util/DeviceType.js";
 import * as UserRepository from "@util/UserRepository.js";
 import PrettyButton from "@gui/PrettyButton.js";
-import ArticleItem from "./ArticleItem.js";
-
 import Spinner from "@gui/Spinner.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Modal from "@gui/Modal.js";
-import ToInteger from "@util/Integer.js";
+import {VPad, HPad} from "@gui/Pad.js";
+
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
-import {VPad, HPad} from "@gui/Pad.js";
-import {isMobile, isNotMobile} from "@util/DeviceType.js";
+
 import './Home.css'
+import ArticleItem from "./ArticleItem.js";
 
 
-export default function() {
+export default function() {      
   
-  const navigate = useNavigate()
-  
-  const location = useLocation()
-  
-  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+  const {auth, validAuth} = useContext(AuthContext)
   const [articles, setArticles] = useState(null)
   const [isSpinner, setIsSpinner] = useState(false)  
   const [offset, setOffset] = useState(0)

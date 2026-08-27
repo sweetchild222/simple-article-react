@@ -90,8 +90,6 @@ const toUserNicknameGreenCore = async(matched)=>{
 
 
 
-    
-
 const toUserNicknameGrayCore = async(matched)=>{
 
   const match = matched.match(/\<user\>(.*?)\<\/user\>/)

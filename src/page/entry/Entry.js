@@ -1,35 +1,29 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './Entry.css'
-import {BrowserRouter, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
-
+import {createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
 
 import BlogHeader from '@page/blog/Header.js'
 import BlogAppBar from '@page/blog/AppBar.js'
 import BlogHome  from '@page/blog/Home.js'
 import Article  from '@page/blog/article/Article.js'
-
 import SideBar from '@page/main/SideBar.js'
 import AppBar from '@page/main/AppBar.js'
 import MainHome from '@page/main/Home.js'
-
 import Configuration from '@page/user/Configuration.js'
 import User from '@page/user/User.js'
 import Regist from '@page/user/Regist.js'
 import Login from '@page/user/Login.js'
-
 import Writer from '@page/editor/Writer.js'
 import Posting from '@page/editor/Posting.js'
-import ErrorCatch from './ErrorCatch.js'
 import NotFound from '@page/common/NotFound.js'
 
 import AuthProvider from '@util/AuthProvider.js'
-import {isMobile, isNotMobile} from "@util/DeviceType.js";
+import {isMobile} from "@util/DeviceType.js";
 import ToastContainer from '@gui/ToastContainer.js'
-
 import {Vertical, Horizental} from "@gui/Flex.js";
-import {VPad, HPad} from "@gui/Pad.js";
+import {VPad} from "@gui/Pad.js";
 
+import './Entry.css'
+import ErrorCatch from './ErrorCatch.js'
 
 const Aplication = function() {
 

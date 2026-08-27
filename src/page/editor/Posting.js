@@ -1,25 +1,24 @@
 
+import {useNavigate, useLocation} from 'react-router-dom';
 import { useContext, useState, useRef, useEffect} from 'react'
 
 import PrettyButton from '@gui/PrettyButton.js'
-import * as BlobAPI from '@rest/BlobAPI.js'
-import AuthContext from "@util/AuthContext.js";
-import ExtractHead from "./ExtractHead.js";
-import GoLogin from "@page/common/GoLogin.js";
 import Modal from "@gui/Modal.js";
-import ImagePicker from "@util/ImagePicker.js";
-import {useNavigate, useLocation} from 'react-router-dom';
-import * as ArticleAPI from '@rest/ArticleAPI.js'
-import * as CategoryAPI from '@rest/CategoryAPI.js'
-
 import ImageCropModal from '@gui/ImageCropModal.js'
 import StateProgsImage from "@gui/StateProgsImage.js";
 import Spinner from "@gui/Spinner.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
-
+import {VPad, HPad} from "@gui/Pad.js";
+import AuthContext from "@util/AuthContext.js";
+import ImagePicker from "@util/ImagePicker.js";
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
-import {VPad, HPad} from "@gui/Pad.js";
+import GoLogin from "@page/common/GoLogin.js";
+import * as BlobAPI from '@rest/BlobAPI.js'
+import * as ArticleAPI from '@rest/ArticleAPI.js'
+import * as CategoryAPI from '@rest/CategoryAPI.js'
+
+import ExtractHead from "./ExtractHead.js";
 
 export default function() {
     
@@ -30,8 +29,7 @@ export default function() {
     if(state == null)
         return (<div>접근 할 수 없습니다</div>)
     
-    const refTitle = useRef(null)
-    const refPreview = useRef(null)
+    const refTitle = useRef(null)    
     const refImageCrop = useRef(null)
 
     const [isSpinner, setIsSpinner] = useState(false)
@@ -39,10 +37,9 @@ export default function() {
     
     const [thumbnail, setThumbnail] = useState(state.thumbnail != '' ? state.thumbnail : '')
     const [title, setTitle] = useState(state.title)
-    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
-    const [isConfirmSaveModalOpen, setIsConfirmSaveModalOpen] = useState(false)
+    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)    
     const [categories, setCategories] = useState(null)
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
     
     const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0)

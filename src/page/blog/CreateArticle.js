@@ -1,20 +1,16 @@
 
 import { useContext } from "react";
-
 import { useNavigate } from 'react-router-dom';
 
-import * as BlobAPI from '@rest/BlobAPI.js'
-import * as BlogAPI from '@rest/BlogAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
-import * as CategoryAPI from '@rest/CategoryAPI.js'
-
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from "@gui/PrettyButton.js";
-import {Vertical, Horizental} from "@gui/Flex.js";
+import {Vertical} from "@gui/Flex.js";
 
-export default function({ref, blogId, categoryId}) {    
+
+export default function({blogId, categoryId}) {    
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
 
     const navigate = useNavigate()
 

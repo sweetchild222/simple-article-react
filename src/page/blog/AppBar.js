@@ -1,25 +1,15 @@
 import {useState, useContext, useEffect, useRef} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 
-import * as BlobAPI from '@rest/BlobAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
-import * as UserAPI from '@rest/UserAPI.js'
 import * as SubscribeAPI from '@rest/SubscribeAPI.js'
-
 import AuthContext from "@util/AuthContext.js";
+import Integer from "@util/Integer.js";
 import ProfileImage from "@gui/ProfileImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
-import CountWithUnit from "@util/CountWithUnit.js";
-import Integer from "@util/Integer.js";
 
-import { MdEdit } from "react-icons/md";
-import { RiImageAiFill } from "react-icons/ri";
-import ImagePicker from "@util/ImagePicker.js";
-import {blobFromCanvas} from "@util/ImageUtil.js";
-import ImageCropModal from '@gui/ImageCropModal.js'
-import {Vertical, Horizental} from "@gui/Flex.js";
-import Modal from '@gui/Modal.js'
-import {VPad, HPad} from "@gui/Pad.js";
+import {Horizental} from "@gui/Flex.js";
+import {HPad} from "@gui/Pad.js";
 
 
 export default function() {
@@ -31,15 +21,12 @@ export default function() {
     const navigate = useNavigate()
 
     const refLabelTitle = useRef(null)
-    const refImageCrop  = useRef(null)
-
+    
     const [blog, setBlog] = useState(null)
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [isSubscribe, setIsSubscribe] = useState(null)
     const [isSubscribeLoading, setIsSubscribeLoading] = useState(false)
-    const [nickname, setNickname] = useState(null)
-    const [subscribeCount, setSubscribeCount] = useState(null)
-
+    
     useEffect(()=>{
 
         if(!blog_id){
@@ -57,13 +44,6 @@ export default function() {
 
             setBlog(resBlog.payload)
 
-            UserAPI.getUser(resBlog.payload.user_id).then((resUser)=>{
-
-                if(resUser.success == false)
-                    return
-
-                setNickname(resUser.payload.nickname)
-            })
             
             const query = 'blog_id=' + blog_id
 
@@ -72,7 +52,7 @@ export default function() {
                 if(res.success == false)
                     return
 
-                setSubscribeCount(res.payload.length)
+                
 
                 if(!validAuth(auth)){
                     setIsSubscribe(false)
@@ -142,8 +122,7 @@ export default function() {
             setIsSubscribeLoading(false)
 
             if(resDelete.success == true){
-                setIsSubscribe(false)
-                setSubscribeCount(count => count - 1)
+                setIsSubscribe(false)                
                 window.showToast('구독을 취소하였습니다', 'info')
             }
             else
@@ -161,8 +140,7 @@ export default function() {
             setIsSubscribeLoading(false)
 
             if(resPost.success == true){
-                setIsSubscribe(true)
-                setSubscribeCount(count => count + 1)
+                setIsSubscribe(true)                
                 window.showToast('구독에 성공하였습니다', 'info')
             }
             else{

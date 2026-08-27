@@ -1,20 +1,17 @@
 import {useState, useContext, useEffect} from "react";
 import {useNavigate} from 'react-router-dom';
 
+import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
+import AuthContext from "@util/AuthContext.js";
+import CountWithUnit from "@util/CountWithUnit.js";
+import PrettyButton from "@gui/PrettyButton.js";
+import {Horizental} from "@gui/Flex.js";
+import {HPad} from "@gui/Pad.js";
+
 import { FaRegThumbsDown } from "react-icons/fa";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { FaThumbsDown } from "react-icons/fa";
 import { FaThumbsUp } from "react-icons/fa";
-
-import * as ArticleGreatAPI from '@rest/ArticleGreatAPI.js'
-import AuthContext from "@util/AuthContext.js";
-import CountWithUnit from "@util/CountWithUnit.js";
-
-import PrettyButton from "@gui/PrettyButton.js";
-import {Vertical, Horizental} from "@gui/Flex.js";
-import {VPad, HPad} from "@gui/Pad.js";
-
-
 
 export default function({article_id, like_count, dislike_count, style}) {
 
@@ -23,7 +20,7 @@ export default function({article_id, like_count, dislike_count, style}) {
     
     const [likeCount, setLikeCount] = useState(like_count)
     const [dislikeCount, setDislikeCount] = useState(dislike_count)    
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [currentGreat, setCurrentGreat] = useState(null)
     const navigate = useNavigate()
 

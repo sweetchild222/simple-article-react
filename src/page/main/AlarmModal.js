@@ -1,28 +1,25 @@
 import { useState, useRef, useEffect, useContext } from 'react'
 import {useNavigate} from 'react-router-dom';
-import PrettyButton from "@gui/PrettyButton.js"
-
-
 import ReactDOM from 'react-dom';
-import ProfileImage from "@gui/ProfileImage.js";
-import { VscTrash } from "react-icons/vsc";
-import {Vertical, Horizental} from "@gui/Flex.js";
+
+
 import ElapsedTime from "@util/ElapsedTime.js";
-
-import * as AlarmAPI from '@rest/AlarmAPI.js'
 import AuthContext from "@util/AuthContext.js";
-import { MdVisibility } from 'react-icons/md';
+import * as AlarmAPI from '@rest/AlarmAPI.js'
+import PrettyButton from "@gui/PrettyButton.js"
+import ProfileImage from "@gui/ProfileImage.js";
+import {HPad} from "@gui/Pad.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
 
+import { VscTrash } from "react-icons/vsc";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
-import {VPad, HPad} from "@gui/Pad.js";
 
-
-export default function({ref, isOpen, onClose, onUpdatedAlarms, alarms}) {
+export default function({isOpen, onClose, onUpdatedAlarms, alarms}) {
       
   const refDialog = useRef(null)
 
-  const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)  
+  const {auth, validAuth} = useContext(AuthContext)  
   const [newAlarms, setNewAlarms] = useState(structuredClone(alarms))
 
   const [fromIndex, setFromIndex] = useState(0)

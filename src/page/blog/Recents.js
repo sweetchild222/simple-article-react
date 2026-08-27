@@ -3,16 +3,11 @@ import {useState, useContext, useEffect} from "react";
 import { useNavigate} from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
-import AuthContext from "@util/AuthContext.js";
-import { MdEdit } from "react-icons/md";
-import { FaPen } from "react-icons/fa6"
-
-import {Vertical, Horizental} from "@gui/Flex.js";
+import {Vertical} from "@gui/Flex.js";
 
 
-export default function({ref, blogId, isEdit}) {
-    
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+export default function({blogId}) {
+
     const [articles, setArticles] = useState(null)
     const navigate = useNavigate()
     

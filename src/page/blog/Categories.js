@@ -1,25 +1,23 @@
 
 import {useState, useContext, useEffect, useImperativeHandle} from "react";
 
-import * as BlobAPI from '@rest/BlobAPI.js'
-import * as BlogAPI from '@rest/BlogAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
-
-
 import AuthContext from "@util/AuthContext.js";
 import {isMobile, isNotMobile} from "@util/DeviceType.js";
+import {Vertical, Horizental} from "@gui/Flex.js";
+import {HPad} from "@gui/Pad.js";
+import PrettyButton from "@gui/PrettyButton.js";
+import { MdCategory } from "react-icons/md";
+
 import ModifyCategoryModal from './ModifyCategoryModal.js'
 import SelectCategoryModal from './SelectCategoryModal.js'
-import {Vertical, Horizental} from "@gui/Flex.js";
-import {VPad, HPad} from "@gui/Pad.js";
-import { MdCategory } from "react-icons/md";
-import PrettyButton from "../../lib/gui/PrettyButton.js";
+
 
 
 export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) {
     
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [categories, setCategories] = useState(null)
     const [selectIndex, setSelectIndex] = useState(-1)
     const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
@@ -64,9 +62,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
         if(isEditable() && isNotMobile()){
 
-            const count = await loadWrtingCount(blogId)
-
-            const category = categories[0]
+            const count = await loadWrtingCount(blogId)            
 
             categories.push({blog_id:blogId, article_count:count, name:'작성 중인 글', id:'WRITING', static:true})
         }        

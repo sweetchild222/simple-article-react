@@ -1,36 +1,34 @@
-import {useState, useContext, useRef, useEffect, useLayoutEffect} from "react";
+import {useState, useContext, useRef, useEffect} from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import SmoothScroll from "@util/SmoothScroll.js";
+import * as UserRepository from "@util/UserRepository.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import ProfileImage from "@gui/ProfileImage.js";
+import {VPad, HPad} from "@gui/Pad.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import * as CommentAPI from '@rest/CommentAPI.js'
 import * as AlarmAPI from '@rest/AlarmAPI.js'
 import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
-import {isMobile, isNotMobile} from "@util/DeviceType.js";
+import {isMobile} from "@util/DeviceType.js";
 
+import { SlArrowDown } from "react-icons/sl";
+import { SlArrowUp } from "react-icons/sl";
 
 import Great from "./Great.js";
 import ReplyLine from "./ReplyLine.js";
 import CommentEdit  from "./CommentEdit.js";
 import Writer from "./Writer.js";
 import ControlMenu from "./ControlMenu.js";
-import * as UserRepository from "@util/UserRepository.js";
-
-import { SlArrowDown } from "react-icons/sl";
-import { SlArrowUp } from "react-icons/sl";
-
-import {VPad, HPad} from "@gui/Pad.js";
 
 
 export default function({article_id, article_user_id}) {
 
     const location = useLocation()
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [comments, setComments] = useState(null)
     const [greats, setGreats] = useState(null)
     const [openReplyEditCommentId, setOpenReplyEditCommentId] = useState(-1)

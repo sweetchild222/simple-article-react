@@ -5,21 +5,20 @@ import * as BlobAPI from '@rest/BlobAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
 import * as UserAPI from '@rest/UserAPI.js'
 import * as SubscribeAPI from '@rest/SubscribeAPI.js'
-
 import AuthContext from "@util/AuthContext.js";
 import ProfileImage from "@gui/ProfileImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 import Integer from "@util/Integer.js";
-
-import { MdEdit } from "react-icons/md";
-import { RiImageAiFill } from "react-icons/ri";
 import ImagePicker from "@util/ImagePicker.js";
 import {blobFromCanvas} from "@util/ImageUtil.js";
 import ImageCropModal from '@gui/ImageCropModal.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Modal from '@gui/Modal.js'
-import {VPad, HPad} from "@gui/Pad.js";
+import {HPad} from "@gui/Pad.js";
+
+import { MdEdit } from "react-icons/md";
+import { RiImageAiFill } from "react-icons/ri";
 
 
 export default function() {
@@ -37,7 +36,7 @@ export default function() {
     const [isBlogTitleModalOpen, setIsBlogTitleModalOpen] = useState(false)
     const [isModalImageCrop, setIsModalImageCrop] = useState(false)
     const [imageFile, setImageFile] = useState(null)
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth} = useContext(AuthContext)
     const [isSubscribe, setIsSubscribe] = useState(null)
     const [isSubscribeLoading, setIsSubscribeLoading] = useState(false)
     const [nickname, setNickname] = useState(null)

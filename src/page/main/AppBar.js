@@ -1,30 +1,30 @@
-import React, { useState, useContext, useEffect} from 'react';
+import { useState, useContext, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
+import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
+import * as UserRepository from "@util/UserRepository.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import PrettyButton from '@gui/PrettyButton.js';
-import { RiMenuUnfold3Line } from "react-icons/ri";
-import { RiMenuFold3Line } from "react-icons/ri";
-import {useNavigate} from 'react-router-dom';
+import ProfileImage from "@gui/ProfileImage.js";
+import {HPad} from "@gui/Pad.js";
 import * as AlarmAPI from '@rest/AlarmAPI.js'
 import * as SubscribeAPI from '@rest/SubscribeAPI.js'
 import * as BookmarkAPI from '@rest/BookmarkAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
-import ProfileImage from "@gui/ProfileImage.js";
+
+import { VscBellDot } from "react-icons/vsc";
+import { VscBell } from "react-icons/vsc";
+
 import AlarmModal from "./AlarmModal.js";
 import BookmarkModal from "./BookmarkModal.js";
 import SubscribeModal from "./SubscribeModal.js";
-import { VscBellDot } from "react-icons/vsc";
-import { VscBell } from "react-icons/vsc";
-import * as ReplaceUserTag from "@util/ReplaceUserTag.js";
-import * as UserRepository from "@util/UserRepository.js";
-import { IoIosArrowDown } from "react-icons/io";
-import {VPad, HPad} from "@gui/Pad.js";
+
 
 export default function Sidebar() {
 
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)
+    const {auth, validAuth, removeAuth} = useContext(AuthContext)
     const [alarms, setAlarms] = useState(null)
 
     const [isOpenAlarmModal, setIsOpenAlarmModal] = useState(false)
@@ -209,12 +209,6 @@ export default function Sidebar() {
     }
     
 
-    const onKeyDown = (e) => {
-
-        if(e.key === 'Enter')
-            onClickSearch(inputElement.value)
-    }
-
 
     const onClickLogIn = (e) =>{
 
@@ -236,12 +230,6 @@ export default function Sidebar() {
 
         removeAuth()
         navigate('/account')
-    }
-
-
-    const onClickHome = (e) =>{
-
-        navigate('/')
     }
 
 

@@ -1,15 +1,12 @@
-import {useState, useContext, useRef} from "react";
+import {useState} from "react";
 
-import * as UserAPI from '@rest/UserAPI.js'
 import * as RegistAPI from '@rest/RegistAPI.js'
 import * as PasswordResetAPI from '@rest/PasswordResetAPI.js'
-import * as validator from './Validator.js'
-import AuthContext from "@util/AuthContext.js";
 import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
-import Spinner from "@gui/Spinner.js";
 import {VPad, HPad} from "@gui/Pad.js";
 
+import * as validator from './Validator.js'
 
 export default function({onClose}) {
     
@@ -113,6 +110,7 @@ export default function({onClose}) {
             
         return resEmail.payload.match
     }
+    
 
     const onClickPasswordReset = async() => {
 

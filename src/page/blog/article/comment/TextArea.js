@@ -2,6 +2,7 @@ import {useState, useEffect, useRef, useImperativeHandle, useCallback} from "rea
 
 import getCaretCoordinates from 'textarea-caret';
 import PrettyButton from "@gui/PrettyButton.js";
+
 import './TextArea.css'
 
 export default function({ref, comment, atCandidates, onInput, maxCharLength = 1000}) {

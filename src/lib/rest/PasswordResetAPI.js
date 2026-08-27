@@ -8,9 +8,6 @@ export async function patchPasswordReset(email){
   return await restAPI.patch(url)
 }
 
-    // @PatchMapping("email/{email}/password-reset")
-    // public ResponseEntity<?> patchEmailPasswordReset(@PathVariable String email) {
-
 
 export async function postCertifyPasswordReset(email) {
   

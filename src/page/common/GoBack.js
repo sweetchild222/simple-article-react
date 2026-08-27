@@ -1,8 +1,8 @@
 
 import PrettyButton from '@gui/PrettyButton';
 import { useNavigate } from 'react-router-dom';
-import {Vertical, Horizental} from "@gui/Flex.js";
-import {VPad, HPad} from "@gui/Pad.js";
+import {Vertical} from "@gui/Flex.js";
+import {VPad} from "@gui/Pad.js";
 
 
 export default function({value}) {

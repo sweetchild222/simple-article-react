@@ -1,14 +1,15 @@
 
 import { useState, useRef, useEffect } from 'react'
+import ReactDOM from 'react-dom';
 
 import PrettyButton from "@gui/PrettyButton.js"
-import ReactDOM from 'react-dom';
-import { VscTrash } from "react-icons/vsc";
 import {Vertical, Horizental} from "@gui/Flex.js";
-import { CiSquarePlus } from "react-icons/ci";
-import {VPad, HPad} from "@gui/Pad.js";
+import {HPad} from "@gui/Pad.js";
 
-export default function({ref, isOpen, onClose, onClickApply, categories}) {
+import { CiSquarePlus } from "react-icons/ci";
+import { VscTrash } from "react-icons/vsc";
+
+export default function({isOpen, onClose, onClickApply, categories}) {
       
   const refDialog = useRef(null)
   const refListDiv = useRef(null)  

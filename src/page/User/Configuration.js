@@ -9,7 +9,7 @@ import PrettyButton from '@gui/PrettyButton.js';
 import Spinner from '@gui/Spinner.js';
 import Modal from '@gui/Modal.js';
 import {blobFromCanvas} from "@util/ImageUtil.js";
-import {isNotMobile} from "@util/DeviceType.js";
+import {isMobile, isNotMobile} from "@util/DeviceType.js";
 import ImageCropModal from '@gui/ImageCropModal.js'
 import ProfileImage from '@gui/ProfileImage.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
@@ -99,6 +99,11 @@ export default function() {
 
 
     const onClickProfile = async() =>{
+
+        if(isMobile()){
+            window.showToast('모바일에서는 프로필 설정을 지원하지 않습니다', 'user-error')
+            return
+        }
 
         const imageFile = await ImagePicker()
 
@@ -244,7 +249,7 @@ export default function() {
     
     return user ? (
       <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
-        <div style={{position:'relative'}} onClick={isNotMobile() ? onClickProfile : null}>
+        <div style={{position:'relative'}} onClick={onClickProfile}>
             <ProfileImage user={user} size={256} style={{cursor:(isNotMobile() ? 'pointer' : 'auto')}}/>
             {isNotMobile() && <Horizental style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px', justifyContent:'end', alignItems:'end'}}>
                 <LuImageUp size={64}/>

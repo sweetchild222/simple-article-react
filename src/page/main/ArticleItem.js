@@ -4,7 +4,7 @@ import ProfileImage from "@gui/ProfileImage.js";
 import ElapsedTime from "@util/ElapsedTime.js";
 import CountWithUnit from "@util/CountWithUnit.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
-import {HPad} from "@gui/Pad.js";
+import {HPad, VPad} from "@gui/Pad.js";
 
 import { MdThumbUpAlt } from "react-icons/md";
 import { IoMdHeart } from "react-icons/io";
@@ -14,21 +14,26 @@ import './ArticleItem.css'
 
 export default function({article, style}) {
     
-    const navigate = useNavigate()    
+    const navigate = useNavigate()
     
     const onClickNavigateArticle = async() => {
 
         navigate('/blog/' + article.blog_id + '/article/' + article.id)
     }
     
-    
     return (
         <Vertical onClick={onClickNavigateArticle} style={{cursor:'pointer', ...style}}>
-            <div className={'card'} style={{'--imgurl--': article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'url(/logo/logo128.png)'}}>
+            <div className={'card'} style={{position: 'relative', '--imgurl--': article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'url(/logo/logo128.png)'}}>
                 <div style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px'}}/>
-                <div className={'clamped-text'} style={{'--line-count':3, position:'absolute', zIndex:2, fontSize:'18px', color:'lightgray', left:'0px', top:'0px', marginTop:'8px', marginLeft:'8px', marginRight:'8px', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>
-                    {article.head}
-                </div>
+                <Vertical style={{position:'absolute', zIndex:2, left:'0px', top:'0px', marginTop:'8px', marginLeft:'8px', marginRight:'8px'}}>
+                    <div className={'clamped-text'} style={{'--line-count':2, fontSize:'24px', color:'white', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>
+                        {article.title}
+                    </div>
+                    <VPad size={16}/>
+                    <div className={'clamped-text'} style={{'--line-count':3, fontSize:'18px', color:'lightgray'}}>
+                        {article.head}
+                    </div>
+                </Vertical>
                 <Horizental style={{position:'absolute', zIndex:3, left:'0px', bottom:'0px', color:'lightgray', width:'100%', alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingBottom:'8px'}}>
                     <IoMdHeart size={22}/>
                     <HPad size={4}/>
@@ -45,10 +50,10 @@ export default function({article, style}) {
                 </Horizental>
             </div>
             
-            <Horizental style={{alignItems:'start', marginTop:'8px'}}>
+            <Horizental style={{alignItems:'center', marginTop:'8px'}}>
                 <ProfileImage shape={'circle'} size={48} user={article.user}></ProfileImage>
-                <HPad size={16}/>
-                <div className={'clamped-text'} style={{'--line-count':2, fontSize:'18px', color:'black', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>{article.title}</div>
+                <HPad size={8}/>
+                <div className={'clamped-text'} style={{'--line-count':1, fontSize:'18px', color:'black'}}>{article.user.nickname}</div>
             </Horizental>
 
         </Vertical>

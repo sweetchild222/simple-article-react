@@ -32,7 +32,7 @@
     "thememirror": "^2.0.1"
   },
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "npm version patch && webpack --mode production",
     "start": "webpack serve --config ./webpack.config.js --mode development"
   },
   "browserslist": {

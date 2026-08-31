@@ -1,3 +1,4 @@
+npm version patch
 call rmdir /s /q react_dist
 call del /q react_dist.tar.gz
 call npm run build

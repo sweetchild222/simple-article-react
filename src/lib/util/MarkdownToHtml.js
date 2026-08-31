@@ -138,14 +138,11 @@ const adjustStyle = (html) => {
         tag.style.borderCollapse='separate';
         tag.style.borderSpacing='0'
 
+        let isHead = false
+        
         tag.querySelectorAll('thead').forEach(tag => {
             
             const trList = tag.querySelectorAll('tr')
-
-            if(trList.length > 0){
-                trList[0].firstElementChild.style.borderRadius = '3px 0 0 0'
-                trList[0].lastElementChild.style.borderRadius = '0 3px 0 0'
-            }
 
             trList.forEach(tag => {
 
@@ -154,10 +151,18 @@ const adjustStyle = (html) => {
                 tag.style.textAlign = 'left'
 
                 tag.querySelectorAll('th').forEach(tag => {
+                    
                     tag.style.padding='6px 10px'
+
+                    if(tag.textContent.length > 0)
+                        isHead = true
                 })
             })
         })
+
+
+        if(isHead == false)
+            tag.querySelectorAll('thead').forEach(el => el.remove());
 
         let count = 0
 
@@ -165,27 +170,32 @@ const adjustStyle = (html) => {
 
             const trList = tag.querySelectorAll('tr')
 
-            if(trList.length > 0){
-                trList[trList.length-1].firstElementChild.style.borderRadius = '0px 0px 0px 3px'
-                trList[trList.length-1].lastElementChild.style.borderRadius = '0px 0px 3px 0px'
-            }
+            let first = true
 
             trList.forEach(tag => {
-
+                
                 tag.style.backgroundColor= (++count % 2) ? '#eaeaed' : '#FFFFFF';
 
                 const tdList = tag.querySelectorAll('td')
-
-                if(tdList.length > 1)
-                    tdList[0].style.borderLeft ='1px solid #c6c9cc';
-
+                
+                tdList[0].style.borderLeft ='1px solid #c6c9cc';
+                
                 tdList.forEach(tag => {
+
+                    if(first == true && isHead == false)
+                        tag.style.borderTop = '1px solid #c6c9cc'
+
                     tag.style.borderRight ='1px solid #c6c9cc';
                     tag.style.borderBottom = '1px solid #c6c9cc'
                     tag.style.padding='6px 10px'
                 })
+
+                first = false
             })
         })
+
+
+        
     })
 
     return doc.body.innerHTML

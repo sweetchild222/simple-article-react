@@ -63,11 +63,12 @@ const directiveFunc = directiveHtml({
 
         const width = shorts ? 315 : 560
         const height = shorts ? 560 : 315
+        const aspectRatio = shorts ? '1/1.77' : '1.77/1';
 
-        const iframe = '<iframe title="Youtube" ' + 'style="' + alignStyle + ' width:' + width + 'px; ' + 'height:' + height + 'px;'+ ' border:1px solid gray;" '
+        const iframe = '<iframe title="Youtube" ' + 'style="' + alignStyle + ' width:' + width + 'px; ' + ' border:1px solid gray;' + ' max-width:100%; ' + 'aspect-ratio:auto '+ aspectRatio + ';"'
                 + ' allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;" '
                 + ' src="' + url + '"></iframe>'
-    
+            
         this.tag(iframe)
     },
     info(directive){

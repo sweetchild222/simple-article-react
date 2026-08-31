@@ -155,7 +155,7 @@ export default function() {
         const res = await BlobAPI.postArticleThumbnail(auth.jwt, formData)
 
         if(res.success == false){
-            window.showToast('대표 이미지 설정에 실패하였습니다', 'system-error')
+            window.showToast('썸네일 설정에 실패하였습니다', 'system-error')
             return
         }
 
@@ -296,7 +296,7 @@ export default function() {
                 {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}
             </select>
             <VPad size={16}/>
-            <label onClick={onClickThumbnail}>대표 이미지</label>
+            <label onClick={onClickThumbnail}>썸네일</label>
             <VPad size={4}/>
             <StateProgsImage src={thumbnail} onClick={onClickThumbnail} width={384} height={384} style={{alignSelf:'center'}}/>
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}

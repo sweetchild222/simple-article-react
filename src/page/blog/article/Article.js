@@ -42,7 +42,7 @@ export default function() {
     const [isControlLoading, setIsControlLoading] = useState(false)    
     const [category, setCategory] = useState(null)
     const [textAlign, setTextAlign] = useState('left')
-    const [thumbnailSize, setThumbnailSize] = useState(null)
+    //const [thumbnailSize, setThumbnailSize] = useState(null)
 
     const navigate = useNavigate()
 
@@ -74,7 +74,7 @@ export default function() {
 
                 setArticle(article.payload)
                 setCategory(category.payload)
-                setThumbnailSize(calcThumbnailSize())
+                //setThumbnailSize(calcThumbnailSize())
 
                 ArticleAPI.postArticleShowed(article_id).then(showed => {
                     
@@ -184,7 +184,6 @@ export default function() {
     
     const calcThumbnailSize = () => {
 
-
         const deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         
         // const isLandscape = window.matchMedia("(orientation: landscape)").matches;
@@ -210,9 +209,9 @@ export default function() {
 
     return article ? (
         <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', maxWidth:'960px', marginTop:(isMobile() ? '64px' : '0px'), paddingLeft:'8px', paddingRight:'8px'}}>
-            {thumbnailSize && article.thumbnail != '' && <VPad size={16}/>}
-            {thumbnailSize && article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=' + thumbnailSize[0] + 'x' + thumbnailSize[1]} width={thumbnailSize[0]} height={thumbnailSize[1]} borderWidth={0}/>}
-            {thumbnailSize && article.thumbnail != '' && <VPad size={16}/>}
+            {/* {thumbnailSize && article.thumbnail != '' && <VPad size={16}/>}
+            {thumbnailSize && article.thumbnail != '' && <StateProgsImage src={article.thumbnail + '?size=' + thumbnailSize[0] + 'x' + thumbnailSize[1]} width={thumbnailSize[0]} height={thumbnailSize[1]} borderWidth={0} style={{boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.15)'}}/>}
+            {thumbnailSize && article.thumbnail != '' && <VPad size={16}/>} */}
             <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
             <VPad size={16}/>
             <Horizental style={{width:'100%', alignItems:'center'}}>

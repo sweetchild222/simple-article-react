@@ -50,8 +50,7 @@ const createAdmonition = (name, content) => {
 
 const directiveFunc = directiveHtml({
 
-
-    youtube(directive){            
+    youtube(directive){
 
         const url = directive.attributes.url
         const shorts = directive.attributes.shorts == 'y' ? true : false
@@ -121,6 +120,16 @@ const adjustStyle = (html) => {
         }
     })
 
+            
+    doc.querySelectorAll('img').forEach( tag => {
+
+        tag.style.display='block';
+        tag.style.maxWidth='100%';
+        tag.style.aspectRatio='auto 1/1';
+        tag.style.margin='0 auto'
+        tag.style.border = '1px solid gray';
+        
+    })
 
 
     doc.querySelectorAll('table').forEach(tag => {
@@ -328,7 +337,7 @@ sdf`
 
     const html = micromark(markdown, {extensions: extension, htmlExtensions: htmlExtension, allowDangerousHtml: true})
 
-    const styleHtml = adjustStyle(html)
+    const styleHtml = adjustStyle(html)    
     
     const sanitizedHTML = DOMPurify.sanitize(styleHtml, { ADD_TAGS: ["iframe"], ADD_ATTR: ['allow']});
 

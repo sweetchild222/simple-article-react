@@ -265,7 +265,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         return categories && selectIndex != -1 ? (
             <Horizental>
                 <HPad size={8}/>
-                <PrettyButton style={{fontSize:'16px'}} onClick={()=>setIsOpenSelectCategoryModal(true)}>{categories[selectIndex].name + ' (' + categories[selectIndex].article_count + ')'}</PrettyButton>
+                <PrettyButton style={{fontSize:'16px', backgroundColor:'#faebd7', color:'black'}} onClick={()=>setIsOpenSelectCategoryModal(true)}>{categories[selectIndex].name + ' (' + categories[selectIndex].article_count + ')'}</PrettyButton>
                 <SelectCategoryModal isOpen={isOpenSelectCategoryModal} onClose={()=>setIsOpenSelectCategoryModal(false)} categories={categories.filter(item => (item.id != 'WRITING'))} onSelect={onSelectCategory}></SelectCategoryModal>
             </Horizental>
         ) : <Horizental>

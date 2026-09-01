@@ -341,7 +341,7 @@ export default function() {
                     <PrettyButton type='success' style={{marginRight:'8px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</PrettyButton>
                     <Modal title={'나가기 전에 임시 저장 하시겠습니까?'} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     <PrettyButton type='confirm' style={{marginRight:'8px'}} onClick={onClickPreview}>미리 보기</PrettyButton>
-                    <PrettyButton type='default' onClick={onClickPost}>{state.source_id != null ? '수정 완료': '올리기'}</PrettyButton>                    
+                    <PrettyButton type='default' onClick={onClickPost}>{state.source_id != null ? '다음': '다음'}</PrettyButton>                    
                 </Horizental>
             </div>
         </div>

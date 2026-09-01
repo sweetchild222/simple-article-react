@@ -307,7 +307,7 @@ export default function() {
                 <PrettyButton type='success' onClick={onClickSave} style={{flex:'1'}}>임시 저장</PrettyButton>
                 <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
                 <HPad size={16}/>
-                <PrettyButton type='success' onClick={onClickPost} style={{flex:'1'}}>{state.source_id != null ? '수정 완료': '올리기'}</PrettyButton>
+                <PrettyButton type='success' onClick={onClickPost} style={{flex:'1'}}>{state.source_id != null ? '수정 완료': '작성 완료'}</PrettyButton>
             </Horizental>
         </Vertical>
         ) : (<GoLogin/>)

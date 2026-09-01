@@ -51,7 +51,7 @@ export default function({article, style}) {
             </div>
             
             <Horizental style={{alignItems:'center', marginTop:'8px'}}>
-                <ProfileImage shape={'circle'} size={48} user={article.user}></ProfileImage>
+                <ProfileImage shape={'circle'} size={48} user={article.user} style={{borderWidth:'1px'}}></ProfileImage>
                 <HPad size={8}/>
                 <div className={'clamped-text'} style={{'--line-count':1, fontSize:'18px', color:'black'}}>{article.user.nickname}</div>
             </Horizental>

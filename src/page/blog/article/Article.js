@@ -227,7 +227,7 @@ export default function() {
                 <PrettyButton type={'transparent'} style={{color:'black'}} onClick={()=> setTextAlign('right')}><FaAlignRight size={22}/></PrettyButton>
                 <HPad size={isMobile() ? 8 : 16}/>                
                 <Horizental style={{whiteSpace: 'nowrap', color:'gray', flex:'1', justifyContent:'end', alignItems:'center', marginRight:'0px'}}>
-                    {category && <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', width:'auto', whiteSpace:'pre-line'}} onClick={onClickNavigateCategory}>{category.name}</div>}
+                    {category && <div className={'clamped-text'} style={{backgroundColor:'#faebd7', borderRadius:'4px', padding:'4px', '--line-count':1, cursor:'pointer', width:'auto', whiteSpace:'pre-line', color:'black'}} onClick={onClickNavigateCategory}>{category.name}</div>}
                     <HPad size={isMobile() ? 8 : 16}/>
                     {article.post_at ? ElapsedTime(article.post_at): ''}
                     {isEditable() && <HPad size={8}/>}

@@ -1,6 +1,6 @@
 {
   "name": "simple-article-react",
-  "version": "0.1.11",
+  "version": "0.1.13",
   "private": true,
   "dependencies": {
     "@mdxeditor/editor": "^3.52.4",
@@ -32,7 +32,7 @@
     "thememirror": "^2.0.1"
   },
   "scripts": {
-    "build": "npm version patch && webpack --mode production",
+    "build": "npm --no-git-tag-version version patch && webpack --mode production",
     "start": "webpack serve --config ./webpack.config.js --mode development"
   },
   "browserslist": {

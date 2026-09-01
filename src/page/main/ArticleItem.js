@@ -24,13 +24,13 @@ export default function({article, style}) {
     return (
         <Vertical onClick={onClickNavigateArticle} style={{cursor:'pointer', ...style}}>
             <div className={'card'} style={{position: 'relative', '--imgurl--': article.thumbnail != '' ? `url(${article.thumbnail + '?size=960x540'})` : 'url(/logo/logo128.png)'}}>
-                <div style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.4)', color:'white', borderRadius:'3px'}}/>
+                <div style={{position:'absolute', zIndex:1, inset: 0, backgroundColor:'rgba(0, 0, 0, 0.3)', color:'white', borderRadius:'3px'}}/>
                 <Vertical style={{position:'absolute', zIndex:2, left:'0px', top:'0px', marginTop:'8px', marginLeft:'8px', marginRight:'8px'}}>
                     <div className={'clamped-text'} style={{'--line-count':2, fontSize:'24px', color:'white', textShadow:'2px 2px 2px rgba(0, 0, 0, 0.3)'}}>
                         {article.title}
                     </div>
                     <VPad size={16}/>
-                    <div className={'clamped-text'} style={{'--line-count':3, fontSize:'18px', color:'lightgray'}}>
+                    <div className={'clamped-text'} style={{'--line-count':3, fontSize:'18px', color:'whitesmoke'}}>
                         {article.head}
                     </div>
                 </Vertical>

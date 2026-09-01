@@ -207,6 +207,7 @@ export default function() {
         return sizeList.at(-1)
     }
 
+    
     return article ? (
         <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', maxWidth:'960px', marginTop:(isMobile() ? '64px' : '0px'), paddingLeft:'8px', paddingRight:'8px'}}>
             {/* {thumbnailSize && article.thumbnail != '' && <VPad size={16}/>}

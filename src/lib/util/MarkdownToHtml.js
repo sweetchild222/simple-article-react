@@ -174,7 +174,7 @@ const adjustStyle = (html) => {
 
             trList.forEach(tag => {
                 
-                tag.style.backgroundColor= (++count % 2) ? '#eaeaed' : '#FFFFFF';
+                tag.style.backgroundColor= (++count % 2) ? '#DAEEFF' : '#DAEEFF';
 
                 const tdList = tag.querySelectorAll('td')
                 
@@ -192,10 +192,7 @@ const adjustStyle = (html) => {
 
                 first = false
             })
-        })
-
-
-        
+        })        
     })
 
     return doc.body.innerHTML

@@ -72,7 +72,7 @@ export default function() {
       <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
         <div className={'clamped-text'} style={{'--line-count':2, fontSize:'24px', fontWeight:'bold', paddingLeft:'8px', paddingRight:'8px'}}>{user.nickname}</div>        
         <VPad size={8}/>
-        <ProfileImage size={256} shape={'rect'} user={user}/>
+        <ProfileImage size={256} shape={'rect'} user={user} style={{borderWidth:'1px', borderColor:'gray', borderRadius:'3px'}}/>
         <VPad size={4}/>
         <label style={{fontSize:'18px', color:'gray'}}>{user.username}</label>
         <VPad size={32}/>

@@ -34,7 +34,7 @@ export default function({article, style}) {
                         {article.head}
                     </div>
                 </Vertical>
-                <Horizental style={{position:'absolute', zIndex:3, left:'0px', bottom:'0px', color:'lightgray', width:'100%', alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingBottom:'8px'}}>
+                <Horizental style={{position:'absolute', zIndex:3, left:'0px', bottom:'0px', color:'whitesmoke', width:'100%', alignItems:'center', paddingLeft:'8px', paddingRight:'8px', paddingBottom:'8px'}}>
                     <IoMdHeart size={22}/>
                     <HPad size={4}/>
                     {CountWithUnit(article.bookmark_count)}

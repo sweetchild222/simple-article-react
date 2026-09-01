@@ -7,12 +7,12 @@ import ElapsedTime from "@util/ElapsedTime.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import {HPad} from "@gui/Pad.js";
 
-export default function({blog_id, article_id, category_id}) {
+export default function({blog_id, article_id, category_id, category_name}) {
 
     const [articles, setArticles] = useState(null)
 
     const navigate = useNavigate()
-        
+    
     useEffect(()=> {
 
         const limit = 4
@@ -54,6 +54,7 @@ export default function({blog_id, article_id, category_id}) {
 
     return articles ? (
         <Vertical style={{width:'100%'}}>
+            <div style={{marginBottom:'8px', fontSize:'14px', color:'dimgray'}}>{'\'' + category_name + '\' ≫ 카테고리의 다른 글'}</div>
             <Vertical style={{alignItems:'left', padding:'8px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
                 {articles.map((data, index) => 
                     <Horizental key={data.id} style={{alignItems:'center'}}>

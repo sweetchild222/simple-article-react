@@ -137,7 +137,7 @@ const adjustStyle = (html) => {
         tag.style.width='100%';
         tag.style.borderCollapse='separate';
         tag.style.borderSpacing='0'
-
+        
         let isHead = false
         
         tag.querySelectorAll('thead').forEach(tag => {

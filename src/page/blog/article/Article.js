@@ -247,7 +247,7 @@ export default function() {
             <div style={{height:'1px', backgroundColor:'lightgray', width:'100%'}}></div>
             <CommentList article_id={article.id} article_user_id={article.user_id}/>
             <VPad size={16}/>
-            <Series blog_id={article.blog_id} article_id={article.id} category_id={article.category_id}/>
+            {category && <Series blog_id={article.blog_id} article_id={article.id} category_id={category.id} category_name={category.name}/>}
         </Vertical>
     ) : <Spinner/>
 }

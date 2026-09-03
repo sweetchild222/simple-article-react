@@ -92,11 +92,11 @@ export default function() {
             <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
                 <label htmlFor='input_username'>사용자 이름</label>
                 <VPad size={4}/>
-                <input id='input_username' type='text' defaultValue={'crazygun22@nate.com'} onKeyDown={onKeyDownUserName} maxLength={254} style={{width:'256px'}}/>
+                <input id='input_username' type='text' onKeyDown={onKeyDownUserName} maxLength={254} style={{width:'256px'}}/>
                 <VPad size={16}/>
                 <label htmlFor='input_password'>비밀번호</label>
                 <VPad size={4}/>
-                <input id='input_password' type='password' defaultValue={'Sweetchild@22'} onKeyDown={onKeyDownPassword} maxLength={254} style={{width:'256px'}}/>
+                <input id='input_password' type='password' onKeyDown={onKeyDownPassword} maxLength={254} style={{width:'256px'}}/>
                 <VPad size={16}/>
                 <Vertical>
                     <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</PrettyButton>

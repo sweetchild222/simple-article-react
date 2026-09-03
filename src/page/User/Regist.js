@@ -249,9 +249,9 @@ export default function() {
       </Horizental>
       <VPad size={16}/>
       <Vertical style={{ alignItems: 'center', width:'100%'}}>
-        <input id='input_password' type="text" disabled={!isCertified} onChange={onChangePassword} placeholder="비밀번호 (8~20자)" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
+        <input id='input_password' type="password" disabled={!isCertified} onChange={onChangePassword} placeholder="비밀번호 (8~20자)" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
         <VPad size={8}/>
-        <input id='input_confirm_password' type="text" disabled={!isCertified} onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
+        <input id='input_confirm_password' type="password" disabled={!isCertified} onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
         <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
       </Vertical>
       <VPad size={16}/>

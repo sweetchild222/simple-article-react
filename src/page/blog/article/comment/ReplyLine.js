@@ -29,12 +29,12 @@ const useResize = (ref) => {
 export default function(props) {
         
     const refDiv = useRef(null)
-    const {width, height} = useResize(refDiv)    
+    const {width, height} = useResize(refDiv)
 
     const [containerCanvasUrl, setContainerCanvasUrl] = useState(null)
 
     useEffect(() =>{
-                
+        
         if(!(width > 0 && height > 0))
             return
 

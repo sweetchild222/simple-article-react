@@ -51,9 +51,6 @@ export default function({isOpen, onClose}) {
 
 
 
-    
-
-
     const onClickPasswordChange = async()=>{
 
         if(!validAuth(auth))

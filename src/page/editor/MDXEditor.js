@@ -242,7 +242,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
   const ImageLinkButton = () =>{
 
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
-    const [imageUrl, setImageUrl] = useState('')    
+    const [imageUrl, setImageUrl] = useState('')
     const [isDisabledConfirm, setIsDisabledConfirm] = useState(true)
     
     const refInputUrl = useRef(null)
@@ -283,9 +283,6 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
 
       setIsImageModalOpen(false)
     }
-
-    //const aa = '<img style="display:block; margin:auto;" src="http://localhost:9981/api/blob/article/20260629092705-68ee5ee9-8167-4219-9218-290b0655c0f5.webp" />'
-    //const aa = '<img style="display:block; margin-left:auto;" src="http://localhost:9981/api/blob/article/20260629092705-68ee5ee9-8167-4219-9218-290b0655c0f5.webp" />'
 
 
     const onChangeUrl = (event) => {
@@ -498,6 +495,6 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
   return (
       <MDXEditor placeholder={placeHolder} suppressHtmlProcessing={false} ref={refEditor} markdown={markdown} onChange={onChange}
         plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
-        translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>    
+        translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
   )
 }

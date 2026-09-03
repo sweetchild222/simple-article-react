@@ -37,7 +37,7 @@ export default function() {
     
     const [thumbnail, setThumbnail] = useState(state.thumbnail != '' ? state.thumbnail : '')
     const [title, setTitle] = useState(state.title)
-    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)    
+    const [isImageCropModalOpen, setIsImageCropModalOpen] = useState(false)
     const [categories, setCategories] = useState(null)
     const {auth, validAuth} = useContext(AuthContext)
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
@@ -133,7 +133,7 @@ export default function() {
 
         setImageFile(imageFile.file)
 
-        setIsImageCropModalOpen(true)        
+        setIsImageCropModalOpen(true)
     }
 
 

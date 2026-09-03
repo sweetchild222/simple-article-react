@@ -142,7 +142,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
         for(const category of categories) {
 
-            const res = await CategoryAPI.deleteCategory(auth.jwt, category.id)            
+            const res = await CategoryAPI.deleteCategory(auth.jwt, category.id)
 
             if(res.success == true){
                 window.showToast(category.name + ' 이 삭제 되었습니다', 'info')

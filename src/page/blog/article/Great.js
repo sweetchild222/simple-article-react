@@ -44,17 +44,17 @@ export default function({article_id, like_count, dislike_count, style}) {
     },[article_id])
 
 
-    
+
 
     const postGreat = async(jwt, user_id, article_id, like) =>{
 
         const payload = {
-            user_id:auth.user_id,
+            user_id:user_id,
             article_id:article_id,
             great:like
-        }        
+        }
 
-        const res = await ArticleGreatAPI.postArticleGreat(auth.jwt, payload)
+        const res = await ArticleGreatAPI.postArticleGreat(jwt, payload)
 
         return res
     }
@@ -72,7 +72,7 @@ export default function({article_id, like_count, dislike_count, style}) {
 
     const deleteGreat = async(jwt, id) =>{
 
-        const res = await ArticleGreatAPI.deleteArticleGreat(auth.jwt, id)
+        const res = await ArticleGreatAPI.deleteArticleGreat(jwt, id)
 
         return res
     }
@@ -84,7 +84,7 @@ export default function({article_id, like_count, dislike_count, style}) {
             great:great
         }
         
-        const res = await ArticleGreatAPI.patchArticleGreat(auth.jwt, id, payload)
+        const res = await ArticleGreatAPI.patchArticleGreat(jwt, id, payload)
 
         return res
 
@@ -96,9 +96,9 @@ export default function({article_id, like_count, dislike_count, style}) {
         const resGreat = await getGreat(auth.user_id, article_id)
 
         if(resGreat.success == false)
-            return false        
+            return false
 
-        if(resGreat.payload.length > 0){            
+        if(resGreat.payload.length > 0){
 
             if(resGreat.payload[0].great != great) {
                 

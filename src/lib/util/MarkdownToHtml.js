@@ -192,7 +192,7 @@ const adjustStyle = (html) => {
 
                 first = false
             })
-        })        
+        })
     })
 
     return doc.body.innerHTML
@@ -344,7 +344,7 @@ sdf`
 
     const html = micromark(markdown, {extensions: extension, htmlExtensions: htmlExtension, allowDangerousHtml: true})
 
-    const styleHtml = adjustStyle(html)    
+    const styleHtml = adjustStyle(html)
     
     const sanitizedHTML = DOMPurify.sanitize(styleHtml, { ADD_TAGS: ["iframe"], ADD_ATTR: ['allow']});
 

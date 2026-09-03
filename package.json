@@ -1,6 +1,6 @@
 {
   "name": "simple-article-react",
-  "version": "0.1.20",
+  "version": "0.1.22",
   "private": true,
   "dependencies": {
     "@mdxeditor/editor": "^3.52.4",

@@ -10,7 +10,7 @@ import * as validator from './Validator.js'
 
 export default function({onClose}) {
     
-    const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)    
+    const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)
     const [isLoadingCertify, setIsLoadingCertify] = useState(false)
     const [isLoadingPasswordReset, setIsLoadingPasswordReset] = useState(false)
 

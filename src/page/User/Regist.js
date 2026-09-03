@@ -21,7 +21,7 @@ export default function() {
 
   const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)  
   const [isLoadingCertify, setIsLoadingCertify] = useState(false)
-  const [isLoadingRegist, setIsLoadingRegist] = useState(false)  
+  const [isLoadingRegist, setIsLoadingRegist] = useState(false)
 
   const location = useLocation()
   const comback = location.state != null && location.state.comback == true
@@ -44,9 +44,9 @@ export default function() {
     input_email.disabled = false
 
     if(success)
-      window.showToast('인증 코드 발송이 성공하였습니다', 'info')    
+      window.showToast('인증 코드 발송이 성공하였습니다', 'info')
     else
-      window.showToast('인증 코드 발송이 실패하였습니다', 'system-error')      
+      window.showToast('인증 코드 발송이 실패하였습니다', 'system-error')
   }
 
 

@@ -18,20 +18,20 @@ export default function({comment_id, greatSet, style}) {
     
     const [isLikeLoading, setIsLikeLoading] = useState(false)
     const [isDislikeLoading, setIsDislikeLoading] = useState(false)
-    const [reloadKey, setReloadKey] = useState(0)            
-    const {auth, updateAuth, validAuth, removeAuth} = useContext(AuthContext)    
+    const [reloadKey, setReloadKey] = useState(0)
+    const {auth, validAuth} = useContext(AuthContext)
 
-    const navigate = useNavigate()        
+    const navigate = useNavigate()
 
     const postGreat = async(jwt, user_id, comment_id, like) =>{
 
         const payload = {
-            user_id:auth.user_id,
+            user_id:user_id,
             comment_id:comment_id,
             great:like
         }
         
-        const res = await CommentGreatAPI.postCommentGreat(auth.jwt, payload)
+        const res = await CommentGreatAPI.postCommentGreat(jwt, payload)
 
         return res
     }
@@ -49,7 +49,7 @@ export default function({comment_id, greatSet, style}) {
 
     const deleteGreat = async(jwt, id) =>{
 
-        const res = await CommentGreatAPI.deleteCommentGreat(auth.jwt, id)
+        const res = await CommentGreatAPI.deleteCommentGreat(jwt, id)
 
         return res
     }
@@ -61,7 +61,7 @@ export default function({comment_id, greatSet, style}) {
             great:great
         }
         
-        const res = await CommentGreatAPI.patchCommentGreat(auth.jwt, id, payload)
+        const res = await CommentGreatAPI.patchCommentGreat(jwt, id, payload)
 
         return res
     }

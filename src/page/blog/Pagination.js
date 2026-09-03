@@ -10,7 +10,7 @@ import './Pagination.css'
 
 export default function({totalPageCount, displayPageCount, onClickPage}) {
         
-    const [curStartPage, setStartPage] = useState(0)    
+    const [curStartPage, setStartPage] = useState(0)
         
     const totalPageList = Array.from({ length: totalPageCount }, (_, i) => i)
 

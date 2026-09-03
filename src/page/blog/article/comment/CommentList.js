@@ -465,7 +465,7 @@ export default function({article_id, article_user_id}) {
             comment:modifiedComment
         }        
 
-        const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)        
+        const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)
 
         if(res.success == false){
             window.showToast('수정에 실패하였습니다', 'system-error')
@@ -496,7 +496,7 @@ export default function({article_id, article_user_id}) {
         if(greats == null)
             return 0
 
-        const find = greats.find(great => great.comment_id == comment_id)        
+        const find = greats.find(great => great.comment_id == comment_id)
 
         if(find == null)
             return 0
@@ -602,7 +602,7 @@ export default function({article_id, article_user_id}) {
                                         <div style={{flex:'1'}}/>
                                     </Vertical>
                                     <Vertical style={{width:'100%'}}>
-                                        <Horizental>                                            
+                                        <Horizental>
                                             <div className={'clamped-text'} style={{'--line-count':1, fontSize:'14px', marginRight:'8px', color:'gray'}}>{reply.user != null ? data.user.nickname : '알수없음'}</div>
                                             <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
                                         </Horizental>

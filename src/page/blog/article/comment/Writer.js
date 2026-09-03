@@ -8,7 +8,7 @@ import TextArea from "./TextArea.js";
 
 export default function(props) {
 
-    const atCandidates = props.atCandidates    
+    const atCandidates = props.atCandidates
 
     const [isPostLoading, setIsPostLoading] = useState(false)
     const [inputLength, setInputLength] = useState('0/1000')

@@ -12,7 +12,7 @@ import { VscTrash } from "react-icons/vsc";
 export default function({isOpen, onClose, onClickApply, categories}) {
       
   const refDialog = useRef(null)
-  const refListDiv = useRef(null)  
+  const refListDiv = useRef(null)
 
   const [isApplyLoading, setIsApplyLoading] = useState(false)
   const [newCategories, setNewCategories] = useState(structuredClone(categories))

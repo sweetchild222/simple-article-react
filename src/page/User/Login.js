@@ -25,7 +25,7 @@ export default function() {
     useEffect(() => {
 
         if(validAuth(auth)){
-            
+        
             if(!comback)
                 navigate('/')
         }

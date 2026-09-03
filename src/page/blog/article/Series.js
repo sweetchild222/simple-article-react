@@ -24,7 +24,7 @@ export default function({blog_id, article_id, category_id, category_name}) {
 
             if(minRes.success == false)
                 return
-                        
+
             ArticleAPI.getBlogArticles(null, blog_id, max_query).then(maxRes => {
 
                 if(maxRes.success == false)
@@ -37,7 +37,7 @@ export default function({blog_id, article_id, category_id, category_name}) {
                 unique.sort((a, b)=> a.post_at - b.post_at)
 
                 if(unique.length > 1)
-                    setArticles(unique)                
+                    setArticles(unique)
             })
         })
         
@@ -61,7 +61,7 @@ export default function({blog_id, article_id, category_id, category_name}) {
                         <div className={data.id != article_id ? ('clamped-text underline-text') : ('clamped-text')} key={data.id} style={{'--line-count':1, userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none', color:'black', marginTop:'8px', marginBottom:'8px', fontWeight:(data.id == article_id  ? '600' : null)}} onClick={()=> onClickArticle(data.id)}>
                             {data.title}
                         </div>
-                        <HPad size={16}/>                        
+                        <HPad size={16}/>
                         <div style={{color:'gray'}}>{ElapsedTime(data.post_at)}</div>
                     </Horizental>
                     )

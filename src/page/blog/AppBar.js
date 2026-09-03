@@ -140,7 +140,7 @@ export default function() {
             setIsSubscribeLoading(false)
 
             if(resPost.success == true){
-                setIsSubscribe(true)                
+                setIsSubscribe(true)
                 window.showToast('구독에 성공하였습니다', 'info')
             }
             else{

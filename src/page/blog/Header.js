@@ -183,12 +183,12 @@ export default function() {
 
         if(!isEditable())
             return
-                        
+
         if(title == null || title == ''){
             window.showToast('제목이 없습니다', 'user-error')
             return
         }
-                            
+
         const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {title:title})
         
         if(res.success == false){

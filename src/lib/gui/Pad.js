@@ -2,7 +2,7 @@ export function VPad(props){
 
     const size = props.size == null ? 8 : props.size
     
-    return (        
+    return (
         <div style={{height: size + 'px', minHeight: size + 'px', maxHeight: size + 'px', ...props.style}}/>
     )        
 }

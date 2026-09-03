@@ -8,7 +8,7 @@ import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical} from "@gui/Flex.js";
 
 
-export default function({blogId, categoryId}) {    
+export default function({blogId, categoryId}) {
     
     const {auth, validAuth} = useContext(AuthContext)
 

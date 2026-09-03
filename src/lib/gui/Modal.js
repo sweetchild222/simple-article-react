@@ -9,7 +9,7 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
     const refDiv = useRef(null)
 
     useEffect(() => {
-                        
+
         if(isOpen){
 
             refDialog.current.showModal()
@@ -77,7 +77,7 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
         }
     }
 
-    const onKeyDownInput=(event) =>{        
+    const onKeyDownInput=(event) =>{
             
         if (event.key === 'Enter'){
 
@@ -87,7 +87,7 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
                 onInput(refInput.current.value)
             }
 
-            if(onClose != null){                                
+            if(onClose != null){
                 onClose()
             }
         }

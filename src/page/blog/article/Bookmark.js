@@ -32,8 +32,8 @@ export default function({article_id, count}) {
             
             if(res.success == false)
                 return
-                        
-            setIsBookmark(res.payload.length > 0)            
+
+            setIsBookmark(res.payload.length > 0)
         })
 
     }, [auth, article_id])
@@ -63,7 +63,7 @@ export default function({article_id, count}) {
             const resDelete = await BookmarkAPI.deleteBookmark(auth.jwt, res.payload[0].id)
             setIsBookmarkLoading(false)
 
-            if(resDelete.success == true){                
+            if(resDelete.success == true){
                 setIsBookmark(false)
                 setBookmarkCount(count => count - 1)
                 window.showToast('북마크를 취소하였습니다', 'info')

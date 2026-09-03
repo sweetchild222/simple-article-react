@@ -133,7 +133,7 @@ export default function() {
 
   const findCategoryId = (category) =>{
     
-    if(category.static == true){      
+    if(category.static == true){
 
       if(refCategories.current == null)
         return null

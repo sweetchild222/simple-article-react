@@ -270,7 +270,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
             </Horizental>
         ) : <Horizental>
                 <HPad size={8}/>
-                <PrettyButton style={{fontSize:'16px'}}>{'로딩중'}</PrettyButton>
+                <PrettyButton style={{fontSize:'16px', backgroundColor:'#faebd7', color:'black'}}>{'로딩중'}</PrettyButton>
             </Horizental>
     }
     else{

@@ -62,7 +62,7 @@ export default function({blog_id, article_id, category_id, category_name}) {
                             {data.title}
                         </div>
                         <HPad size={16}/>
-                        <div style={{color:'gray'}}>{ElapsedTime(data.post_at)}</div>
+                        <div style={{color:'gray',  whiteSpace:'nowrap'}}>{ElapsedTime(data.post_at)}</div>
                     </Horizental>
                     )
                 }

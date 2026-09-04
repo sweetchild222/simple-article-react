@@ -64,7 +64,7 @@ export default function({ref, file, containerWidth=768, containerHeight=768, sel
     canvas.width = dWidth
     canvas.height = dHeight
     const ctx = canvas.getContext('2d')
-    ctx.imageSmoothingEnabled = false
+    ctx.imageSmoothingEnabled = true
     
     ctx.drawImage(image, sX, sY, sWidth, sHeight, 0, 0, dWidth, dHeight)    
 

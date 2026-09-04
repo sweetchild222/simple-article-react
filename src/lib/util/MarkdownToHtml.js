@@ -198,8 +198,7 @@ const adjustStyle = (html) => {
     return doc.body.innerHTML
 }
 
-export default (markdown) => {
-          
+export default (markdown) => {              
     
     const text = `
 

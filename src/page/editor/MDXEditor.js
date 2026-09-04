@@ -483,7 +483,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
     maxLengthPlugin(65535),
     codeBlockPlugin({ defaultCodeBlockLanguage: 'typescript'}),
     // sandpackPlugin({ sandpackConfig: sandpackConfig }),
-    codeMirrorPlugin({ codeMirrorExtensions: [dracula], codeBlockLanguages: {javascript: 'javascript', typescript: 'typescript', python: 'python', json:'json', xml:'html', css: 'css', txt: 'txt', csharp:'c#', c:'c'}}),
+    codeMirrorPlugin({ codeMirrorExtensions: [dracula], codeBlockLanguages: {javascript: 'javascript', typescript: 'typescript', python: 'python', json:'json', xml:'html', css: 'css', txt: 'txt', csharp:'c#', c:'c', java:'java'}}),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: markdown}),
     markdownShortcutPlugin(),    

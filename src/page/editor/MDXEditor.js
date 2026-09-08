@@ -14,10 +14,14 @@ import { LuImageUp } from "react-icons/lu";
 import { dracula } from 'thememirror';
 import { EditorView } from '@codemirror/view'
 
+
 import '@mdxeditor/editor/style.css'
 import { usePublisher } from '@mdxeditor/gurx'
-import i18next from 'i18next'
-import ko from '@locale/ko.json'
+
+import { useTranslation } from 'react-i18next';
+
+//import i18next from 'i18next'
+//import ko from '@locale/ko.json'
 import './MDXEditor.css'
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
@@ -31,14 +35,16 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
 export default function({ref, placeHolder, postImage, markdown, onChange, onParsingError, onUserError}){
 
   const refEditor = useRef(null);
+  const { t } = useTranslation();
+
     
   useEffect(()=>{
 
-    i18next.init({
-      lng: 'ko',
-      fallbackLng: 'ko',
-      resources: {ko: {translation: ko}}
-    })
+    // i18next.init({
+    //   lng: 'ko',
+    //   fallbackLng: 'ko',
+    //   resources: {ko: {translation: ko}}
+    // })
 
     if (refEditor.current) {
       refEditor.current.focus();
@@ -130,7 +136,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
         const match = regex.exec(input)
 
         if(match.length < 4){
-          userErrorHandle('URL이 잘못되었습니다')
+          userErrorHandle(t('mdxEditor.youtube.invalidUrl'))
           return
         }
         const videoId = match[3]
@@ -148,13 +154,13 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
           })
         }
         else{
-          userErrorHandle('URL이 잘못되었습니다')
+          userErrorHandle(t('mdxEditor.youtube.invalidUrl'))
           return
         }
       }
       catch(e){
 
-        userErrorHandle('URL이 잘못되었습니다')
+        userErrorHandle(t('mdxEditor.youtube.invalidUrl'))
         return
       }
     }
@@ -162,8 +168,8 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
       
     return (
       <div>  
-        <ButtonWithTooltip style={{height:'100%'}} onClick={() => {setIsModalOpen(true)}} title="유튜브 삽입"><FiYoutube size={23}/></ButtonWithTooltip>
-        <Modal title= {'유튜브 URL을 입력하세요'} type={'input'} isCloseOutsideClick={false} isOpen={isModalOpen} maxLength={2048} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
+        <ButtonWithTooltip style={{height:'100%'}} onClick={() => {setIsModalOpen(true)}} title={t('mdxEditor.toolbar.youtube')}><FiYoutube size={23}/></ButtonWithTooltip>
+        <Modal title= {t('mdxEditor.youtube.pasteUrl')} type={'input'} isCloseOutsideClick={false} isOpen={isModalOpen} maxLength={2048} onInput={onYoutubeInput} onClose={()=>setIsModalOpen(false)}></Modal>
       </div>
     )
   }
@@ -186,7 +192,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
             return
         
       if(imageFile.format == 'unknown'){
-          window.showToast('파일을 사용할 수 없습니다', 'user-error')
+          window.showToast(t('mdxEditor.imagefile.abnormalFile'), 'user-error')
           return
       }
 
@@ -215,7 +221,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
       const url = await postImage(await blobFromCanvas(canvas))
 
       if(url == null){
-        userErrorHandle('파일을 업로드할 수 없습니다')
+        userErrorHandle(t('mdxEditor.imagefile.cannotUpload'))
         setIsImageCropModalOpen(false)
         return
       }
@@ -232,7 +238,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
 
     return (
       <div>
-        <ButtonWithTooltip style={{height:'100%'}} onClick={onClickPickFile} title="이미지 파일 삽입"><LuImageUp size={23}/></ButtonWithTooltip>
+        <ButtonWithTooltip style={{height:'100%'}} onClick={onClickPickFile} title={t('mdxEditor.toolbar.imagefile')}><LuImageUp size={23}/></ButtonWithTooltip>
         {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} selectMinWidth={64} onClickApply={onClickApply}/>}
       </div>
     )
@@ -268,7 +274,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
       if(!urlRegex.test(url)){
 
         setIsImageModalOpen(false)
-        userErrorHandle('URL 형식이 잘못되었습니다')
+        userErrorHandle(t('mdxEditor.imagelink.wrongUrl'))
         return
       }
 
@@ -322,16 +328,17 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
       setIsImageModalOpen(true)
     }  
 
+    
     return (
       <div>
-        <ButtonWithTooltip style={{height:'100%'}} onClick={openModal} title="이미지 링크 삽입"><LuImagePlus size={23}/></ButtonWithTooltip>
-        <Modal title={'이미지 링크를 입력하세요'} type={'custom'} maxLength={2048} isCloseOutsideClick={false} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
+        <ButtonWithTooltip style={{height:'100%'}} onClick={openModal} title={t('mdxEditor.toolbar.imagelink')}><LuImagePlus size={23}/></ButtonWithTooltip>
+        <Modal title={t('mdxEditor.imagelink.pasteLink')} type={'custom'} maxLength={2048} isCloseOutsideClick={false} isOpen={isImageModalOpen} onClose={()=>setIsImageModalOpen(false)}>
           <Vertical style={{alignItems: 'center'}}>
             <input ref={refInputUrl} id='input_url' maxLength="2048" type='text' placeholder="https://example.com/flying_bird.png" onKeyDown={onKeyDownUrl} onChange={onChangeUrl} value={imageUrl}></input>
             <div style={{height:'16px'}}/>
-            <input ref={refInputTitle} id='input_title' maxLength="256" type='text' placeholder="이미지 제목" onKeyDown={onKeyDownTitle}/>
+            <input ref={refInputTitle} id='input_title' maxLength="256" type='text' placeholder={t('mdxEditor.imagelink.title')} onKeyDown={onKeyDownTitle}/>
             <div style={{height:'16px'}}/>
-            <input ref={refInputAlt} id='input_alt' maxLength="256" type='text' placeholder="이미지가 없을 경우 대체 이름"/>
+            <input ref={refInputAlt} id='input_alt' maxLength="256" type='text' placeholder={t('mdxEditor.imagelink.alternative')}/>
             <div style={{height:'16px'}}/>
             <Horizental style={{justifyContent: 'center'}}>
               <PrettyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm} style={{width:'64px'}}>확인</PrettyButton>
@@ -486,7 +493,7 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
     codeMirrorPlugin({ codeMirrorExtensions: [dracula], codeBlockLanguages: {javascript: 'javascript', typescript: 'typescript', python: 'python', json:'json', xml:'html', css: 'css', txt: 'txt', csharp:'c#', c:'c', java:'java'}}),
     directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: markdown}),
-    markdownShortcutPlugin(),    
+    markdownShortcutPlugin(),
     toolbarPlugin({ toolbarClassName: 'toolbarRoot', toolbarContents: () => (<CustomToolbar />)})
   ]
 
@@ -494,6 +501,6 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
   return (
       <MDXEditor placeholder={placeHolder} suppressHtmlProcessing={false} ref={refEditor} markdown={markdown} onChange={onChange}
         plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
-        translation={(key, defaultValue, interpolations) => i18next.t('mdxEditor.' + key, defaultValue, interpolations)}/>
+        translation={(key, defaultValue, interpolations) => t('mdxEditor.' + key, defaultValue, interpolations)}/>
   )
 }

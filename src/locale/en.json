@@ -1,0 +1,136 @@
+{
+  "mdxEditor":{
+    "frontmatterEditor": {
+      "title": "Edit frontmatter",
+      "key": "Key",
+      "value": "Value",
+      "addEntry": "Add entry"
+    },
+    "dialogControls": {
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "uploadImage": {
+      "dialogTitle": "Upload image",
+      "uploadInstructions": "Upload image from local:",
+      "addViaUrlInstructions": "Image url:",
+      "autoCompletePlaceholder": "Select or paste an image source.",
+      "alt": "Alt:",
+      "title": "Title:",
+      "width": "Width:",
+      "height": "Height:"
+    },
+    "imageEditor": {
+      "deleteImage": "Delete image",
+      "editImage": "Edit image"
+    },
+    "createLink": {
+      "url": "URL",
+      "urlPlaceholder": "Paste the URL",
+      "text": "text",
+      "textTooltip": "Text to be displayed on the link",
+      "title": "Title",
+      "titleTooltip": "The title tooltip on mouse hover",
+      "saveTooltip": "Save tooltip",
+      "cancelTooltip": "Cancel tooltip"
+    },
+    "linkPreview": {
+      "open": "Open {{url}} in a new window",
+      "edit": "Edit link URL",
+      "copyToClipboard": "Copy to clipboard",
+      "copied": "Copied!",
+      "remove": "Delete link"
+    },
+    "table": {
+      "deleteTable": "Delete table",
+      "columnMenu": "Column menu",
+      "textAlignment": "Text alignment",
+      "alignLeft": "Left alignment",
+      "alignCenter": "Center alignment",
+      "alignRight": "Right alignment",
+      "insertColumnLeft": "Add column to the left",
+      "insertColumnRight": "Add column to the right",
+      "deleteColumn": "Delete this column",
+      "rowMenu": "Row menu",
+      "insertRowAbove": "Insert row above",
+      "insertRowBelow": "Insert row below",
+      "deleteRow": "Delete this row"
+    },
+    "toolbar": {
+      "blockTypes": {
+        "paragraph": "Paragraph",
+        "quote": "Quote",
+        "heading": "Heading {{level}}"
+      },
+      "blockTypeSelect": {
+        "selectBlockTypeTooltip": "Select block type",
+        "placeholder": "Block type"
+      },    
+      "toggleGroup": "Toggle group",
+      "removeBold": "Remove bold",
+      "bold": "Bold",
+      "removeItalic": "Remove italic",
+      "italic": "Italic",
+      "underline": "Underline",
+      "removeUnderline": "Remove underline",
+      "removeInlineCode": "Remove inline code",
+      "inlineCode": "Inline code",
+      "link": "link",
+      "richText": "Rich text",
+      "diffMode": "Diff mode",
+      "source": "Source mode",
+      "admonition": "Admonition",
+      "codeBlock": "Code block",
+      "editFrontmatter": "Edit frontmatter",
+      "insertFrontmatter": "Insert frontmatter",
+      "image": "Insert image",
+      "insertSandpack": "Insert sandpack",
+      "table": "table",
+      "thematicBreak": "Thematic break",
+      "bulletedList": "Bulleted list",
+      "numberedList": "Numbered list",
+      "checkList": "Check list",
+      "deleteSandpack": "Delete sandpack",
+      "undo": "Undo {{shortcut}}",
+      "redo": "Redo {{shortcut}}",
+      "highlight": "Highlight",
+      "removeHighlight": "Remove highligt",
+      "strikethrough": "Strikethrough",
+      "subscript":"Subscript",
+      "superscript":"Superscript",
+      "youtube":"Insert youtube",
+      "imagefile":"Insert image file",
+      "imagelink":"Insert image link"
+    },
+    "youtube":{
+      "invalidUrl":"Invalid url",
+      "pasteUrl":"Paste youtube url"
+    },
+    "imagefile":{
+      "cannotUpload":"Can not upload file",
+      "abnormalFile":"Abnormal file!"
+    },
+    "imagelink":{
+      "pasteLink":"Paste image link",
+      "title":"Image title",
+      "alternative":"Alternative name if image is unavailable",
+      "wrongUrl":"Wrong url"
+    },
+    "admonitions": {
+      "note": "note",
+      "tip": "tip",
+      "danger": "danger",
+      "info": "info",
+      "caution": "caution",
+      "changeType": "Change type",
+      "placeholder": "Placeholder"
+    },
+    "codeBlock": {
+      "language": "Codeblock language",
+      "selectLanguage": "Select codeblock language"
+    },
+    "contentArea": {
+      "editableMarkdown": "Editable markdown"
+    }
+  }
+}

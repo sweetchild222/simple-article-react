@@ -1,5 +1,6 @@
 {
   "mdxEditor":{
+    
     "frontmatterEditor": {
       "title": "문서 프론트매터 편집",
       "key": "키",
@@ -66,7 +67,6 @@
         "selectBlockTypeTooltip": "블록 유형 선택",
         "placeholder": "블록 유형"
       },
-    
       "toggleGroup": "그룹 전환",
       "removeBold": "굵은 글씨 제거",
       "bold": "굵게",
@@ -96,9 +96,26 @@
       "redo": "다시 {{shortcut}}",
       "highlight": "강조",
       "removeHighlight": "강조 제거",
-    "strikethrough": "취소선",
-    "subscript":"서브스크립트",
-    "superscript":"슈서스크립트"	
+      "strikethrough": "취소선",
+      "subscript":"서브스크립트",
+      "superscript":"슈서스크립트",
+      "youtube":"유튜브 삽입",
+      "imagefile":"이미지 파일 삽입",
+      "imagelink":"이미지 링크 삽입"
+    },
+    "youtube":{
+      "invalidUrl":"URL이 잘못되었습니다",
+      "pasteUrl":"유튜브 URL을 입력하세요"
+    },
+    "imagefile":{
+      "cannotUpload":"파일을 업로할 수 없습니다",
+      "abnormalFile":"파일을 사용할 수 없습니다"
+    },
+    "imagelink":{
+      "pasteLink":"이미지 링크를 입력하세요",
+      "title":"이미지 제목",
+      "alternative":"이미지가 없을 경우 대체 이름",
+      "wrongUrl":"URL 형식이 잘못되었습니다"
     },
     "admonitions": {
       "note": "메모",

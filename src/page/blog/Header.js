@@ -24,7 +24,6 @@ import { useTranslation } from 'react-i18next';
 
 export default function() {
 
-
     const { t } = useTranslation()
 
     const { b_id } = useParams()    
@@ -130,7 +129,7 @@ export default function() {
             return
         
         if(imageFile.format == 'unknown'){
-            window.showToast('파일을 사용할 수 없습니다', 'user-error')
+            window.showToast(t('toast.header.unavailableFile'), 'user-error')
             return
         }
         
@@ -162,7 +161,7 @@ export default function() {
 
         if(resImage.success == false){
             setIsModalImageCrop(false)
-            window.showToast('블로그 이미지 설정에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.header.failedSettingBlogImage'), 'system-error')
             return
         }
 
@@ -171,7 +170,7 @@ export default function() {
         const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {image:url})
         
         if(res.success == false){
-            window.showToast('블로그 이미지 설정에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.header.failedSettingBlogImage'), 'system-error')
             return
         }
         
@@ -189,21 +188,21 @@ export default function() {
             return
 
         if(title == null || title == ''){
-            window.showToast('제목이 없습니다', 'user-error')
+            window.showToast(t('toast.header.noTitle'), 'user-error')
             return
         }
 
         const res = await BlogAPI.patchBlog(auth.jwt, auth.blog_id, {title:title})
         
         if(res.success == false){
-            window.showToast('블로그 제목 수정에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.header.failedModifyBlogTitle'), 'system-error')
             return
         }
 
         const blogClone = Object.assign({}, blog)
         blogClone.title = title
         setBlog(blogClone)
-        window.showToast('블로그 제목 수정에 성공하였습니다', 'info')
+        window.showToast(t('toast.header.successModifyBlogTitle'), 'info')
     }
 
 
@@ -220,7 +219,7 @@ export default function() {
         //event.stopPropagation()
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.header.requireLogin'), 'info')
             navigate('/', {state:{comback:true}})
             return
         }
@@ -233,7 +232,7 @@ export default function() {
 
         if(res.success == false){
             setIsSubscribeLoading(false)
-            window.showToast('구독 정보를 가져 올 수 없습니다', 'system-error')
+            window.showToast(t('toast.header.failedGettingSubscribe'), 'system-error')
             return
         }
 
@@ -246,10 +245,10 @@ export default function() {
             if(resDelete.success == true){
                 setIsSubscribe(false)
                 setSubscribeCount(count => count - 1)
-                window.showToast('구독을 취소하였습니다', 'info')
+                window.showToast(t('toast.header.cancelSubscribed'), 'info')
             }
             else
-                window.showToast('구독 취소에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.header.failedCancelSubscribed'), 'system-error')
         }
         else{
 
@@ -265,10 +264,10 @@ export default function() {
             if(resPost.success == true){
                 setIsSubscribe(true)
                 setSubscribeCount(count => count + 1)
-                window.showToast('구독에 성공하였습니다', 'info')
+                window.showToast(t('toast.header.successSubscribe'), 'info')
             }
             else{
-                window.showToast('구독에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.header.failedSubscribe'), 'system-error')
             }
         }
     }

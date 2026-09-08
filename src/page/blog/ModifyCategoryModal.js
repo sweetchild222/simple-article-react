@@ -68,7 +68,7 @@ export default function({isOpen, onClose, onClickApply, categories}) {
   const setFocusInvalidName = () => {
 
     const inputList = getInputList()
-
+    
     for(const input of inputList) {
 
       const value = input.value
@@ -82,7 +82,8 @@ export default function({isOpen, onClose, onClickApply, categories}) {
       const maxLength = 16
 
       if(value.length > maxLength) {
-        window.showToast('카테고리 이름은 최대 '+ maxLength + '자 입니다', 'user-error')
+
+        window.showToast(t('toast.category.nameMaxLength', {maxLength:maxLength}), 'user-error')
         input.focus()
         return true
       }      

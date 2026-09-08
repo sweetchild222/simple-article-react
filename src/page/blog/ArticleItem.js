@@ -13,9 +13,13 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import { MdThumbUpAlt } from "react-icons/md";
 import { IoMdHeart } from "react-icons/io";
 import { PiChatTeardropTextFill } from "react-icons/pi";
+import { useTranslation } from 'react-i18next';
 
 
 export default function({article, categoryName, style}) {
+
+
+    const { t } = useTranslation()
 
     const {auth, validAuth} = useContext(AuthContext)
     
@@ -35,7 +39,7 @@ export default function({article, categoryName, style}) {
                 const res = await ArticleAPI.getArticle(auth.jwt, article.id)
 
                 if(res.success == false){
-                    window.showToast('작성 중인 글 가져오기가 실패하였습니다', 'system-error')
+                    window.showToast(t('toast.articleItem.failedWritingArticle'), 'system-error')
                     return
                 }
                 navigate('/blog/' + article.blog_id + '/write', {state:res.payload})

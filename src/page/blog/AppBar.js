@@ -102,7 +102,7 @@ export default function() {
         //event.stopPropagation()
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.appBar.requireLogin'), 'info')
             navigate('/', {state:{comback:true}})
             return
         }
@@ -115,7 +115,7 @@ export default function() {
 
         if(res.success == false){
             setIsSubscribeLoading(false)
-            window.showToast('구독 정보를 가져 올 수 없습니다', 'system-error')
+            window.showToast(t('toast.appBar.cannotSubscribeInfo'), 'system-error')
             return
         }
 
@@ -127,10 +127,10 @@ export default function() {
 
             if(resDelete.success == true){
                 setIsSubscribe(false)                
-                window.showToast('구독을 취소하였습니다', 'info')
+                window.showToast(t('toast.appBar.cancelSubscribed'), 'info')
             }
             else
-                window.showToast('구독 취소에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.appBar.failedCancelSubscribed'), 'system-error')
         }
         else{
 
@@ -145,10 +145,10 @@ export default function() {
 
             if(resPost.success == true){
                 setIsSubscribe(true)
-                window.showToast('구독에 성공하였습니다', 'info')
+                window.showToast(t('toast.appBar.successSubscribe'), 'info')
             }
             else{
-                window.showToast('구독에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.appBar.failedSubscribe'), 'system-error')
             }
         }
     }

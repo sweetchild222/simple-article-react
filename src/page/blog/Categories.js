@@ -9,6 +9,7 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import {HPad} from "@gui/Pad.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import { MdCategory } from "react-icons/md";
+import { useTranslation } from 'react-i18next';
 
 import ModifyCategoryModal from './ModifyCategoryModal.js'
 import SelectCategoryModal from './SelectCategoryModal.js'
@@ -22,6 +23,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
     const [selectIndex, setSelectIndex] = useState(-1)
     const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
     const [isOpenSelectCategoryModal, setIsOpenSelectCategoryModal] = useState(false)
+    const { t } = useTranslation()
 
     useEffect(()=> {
         
@@ -47,12 +49,12 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         const categories = await getCategories(blogId)
 
         if(categories == null) {
-            window.showToast('카테고리 가져오기가 실패하였습니다', 'system-error')
+            window.showToast(t('toast.categories.failedGettingCategory'), 'system-error')
             return
         }
 
         if(categories.length == 0) {
-            window.showToast('카테고리가 없습니다', 'user-error')
+            window.showToast(t('toast.categories.noCategory'), 'user-error')
             return
         }
 
@@ -145,11 +147,11 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
             const res = await CategoryAPI.deleteCategory(auth.jwt, category.id)
 
             if(res.success == true){
-                window.showToast(category.name + ' 이 삭제 되었습니다', 'info')
+                window.showToast(t('toast.categories.successDeletingCategory', {name:category.name}), 'info')
                 applyCount++
             }
             else
-                window.showToast(category.name + ' 삭제가 실패하였습니다', 'system-error')
+                window.showToast(t('toast.categories.failedDeletingCategory', {name:category.name}), 'system-error')
         }
 
         return applyCount
@@ -170,11 +172,11 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
             const res = await CategoryAPI.postCategory(auth.jwt, payload)
 
             if(res.success == true){
-                window.showToast(category.name + ' 이 추가 되었습니다', 'info')
+                window.showToast(t('toast.categories.successAddingCategory', {name:category.name}), 'info')
                 applyCount++
             }
             else
-                window.showToast(category.name + ' 추가가 실패하였습니다', 'system-error')
+                window.showToast(t('toast.categories.failedAddingCategory', {name:category.name}), 'system-error')
         }
 
         return applyCount
@@ -192,11 +194,11 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
             const res = await CategoryAPI.patchCategory(auth.jwt, category.id, payload)
 
             if(res.success == true){
-                window.showToast(category.name + ' 로 이름이 변경 되었습니다', 'info')
+                window.showToast(t('toast.categories.successChangingName', {name:category.name}), 'info')
                 applyCount++
             }
             else
-                window.showToast(category.name + ' 로 이름 변경이 실패하였습니다', 'system-error')
+                window.showToast(t('toast.categories.failedChangingName', {name:category.name}), 'system-error')
         }
 
         return applyCount
@@ -232,7 +234,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         if(applyCount > 0)
             await loadCategory(blogId)
         else
-            window.showToast('카테고리가 변경되지 않았습니다', 'user-error')
+            window.showToast(t('toast.categories.noChanged'), 'user-error')
     }
 
 

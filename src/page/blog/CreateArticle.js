@@ -6,11 +6,13 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical} from "@gui/Flex.js";
-
+import { useTranslation } from 'react-i18next';
 
 export default function({blogId, categoryId}) {
     
     const {auth, validAuth} = useContext(AuthContext)
+
+    const { t } = useTranslation()
 
     const navigate = useNavigate()
 
@@ -30,7 +32,7 @@ export default function({blogId, categoryId}) {
         const res = await ArticleAPI.getBlogArticles(auth.jwt, blogId, query)
 
         if(res.success == false){
-            window.showToast('작성 중인 글 가져오기가 실패하였습니다', 'system-error')
+            window.showToast(t('toast.createArticle.failedWritingArticle'), 'system-error')
             return
         }
 
@@ -38,12 +40,12 @@ export default function({blogId, categoryId}) {
 
         if(res.payload.length >= maxWritingCount){
 
-            window.showToast('작성 중인 글이 너무 많습니다 (' + maxWritingCount + ' 이하)', 'user-error')
+            window.showToast(t('toast.createArticle.tooMuchWritingArticle', {maxWritingCount:maxWritingCount}), 'user-error')
             return
         }
         
         if(categoryId == null){
-            window.showToast('카테고리를 찾을 수 없습니다', 'user-error')
+            window.showToast(t('toast.createArticle.failedSearchCategory'), 'user-error')
             return
         }
 
@@ -59,7 +61,7 @@ export default function({blogId, categoryId}) {
         const resArticle = await ArticleAPI.postArticle(auth.jwt, payload)
         
         if(resArticle.success == false) {
-            window.showToast('새 글 생성에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.createArticle.failedCreatingArticle'), 'system-error')
             return
         }
 

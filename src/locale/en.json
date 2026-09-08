@@ -17,6 +17,13 @@
     "subscribe":"Subscribe",
     "subscribed":"Subscribed",
     "goback":"Go back"
+  },
+  "toast":{
+
+
+    "category":{
+      "nameMaxLength": "카테고리 이름은 최대 {{maxLength}}자 입니다"
+    }
 
   },
   "mdxEditor":{

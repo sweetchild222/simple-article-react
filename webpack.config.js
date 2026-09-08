@@ -55,6 +55,7 @@ export default {
       '@rest': path.resolve(__dirname, 'src/lib/rest'),
       '@gui': path.resolve(__dirname, 'src/lib/gui'),
       '@page': path.resolve(__dirname, 'src/page'),
+      '@locale': path.resolve(__dirname, 'src/locale'),
     },
   },
 

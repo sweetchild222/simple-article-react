@@ -1,6 +1,6 @@
 {
   "name": "simple-article-react",
-  "version": "0.1.23",
+  "version": "0.1.25",
   "private": true,
   "dependencies": {
     "@mdxeditor/editor": "^3.52.4",
@@ -12,6 +12,7 @@
     "dotenv": "^17.3.1",
     "highlight.js": "^11.11.1",
     "http-proxy-middleware": "^3.0.5",
+    "i18next": "^26.4.2",
     "i18next-parser": "^9.0.2",
     "install": "^0.13.0",
     "micromark": "^4.0.2",
@@ -24,6 +25,7 @@
     "npm": "^11.12.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-i18next": "^17.0.13",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.12.0",
     "react-scripts": "^0.0.0",

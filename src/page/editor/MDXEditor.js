@@ -17,7 +17,7 @@ import { EditorView } from '@codemirror/view'
 import '@mdxeditor/editor/style.css'
 import { usePublisher } from '@mdxeditor/gurx'
 import i18next from 'i18next'
-import ko from './ko.json'
+import ko from '@locale/ko.json'
 import './MDXEditor.css'
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
@@ -490,11 +490,10 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
     toolbarPlugin({ toolbarClassName: 'toolbarRoot', toolbarContents: () => (<CustomToolbar />)})
   ]
 
-  
 
   return (
       <MDXEditor placeholder={placeHolder} suppressHtmlProcessing={false} ref={refEditor} markdown={markdown} onChange={onChange}
         plugins={plugins} contentEditableClassName="prose" onError={onParsingError}
-        translation={(key, defaultValue, interpolations) => i18next.t(key, defaultValue, interpolations)}/>
+        translation={(key, defaultValue, interpolations) => i18next.t('mdxEditor.' + key, defaultValue, interpolations)}/>
   )
 }

@@ -22,9 +22,12 @@ import ReplyLine from "./ReplyLine.js";
 import CommentEdit  from "./CommentEdit.js";
 import Writer from "./Writer.js";
 import ControlMenu from "./ControlMenu.js";
+import { useTranslation } from 'react-i18next';
 
 
 export default function({article_id, article_user_id}) {
+
+    const { t } = useTranslation()
 
     const location = useLocation()
 
@@ -48,7 +51,7 @@ export default function({article_id, article_user_id}) {
         loadComments(article_id).then((comments) =>{
 
             if(comments == null){
-                window.showToast('댓글을 가져오기에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.commentList.failedGettingComment'), 'system-error')
                 return
             }
             
@@ -181,11 +184,11 @@ export default function({article_id, article_user_id}) {
         const res = await CommentAPI.deleteComment(auth.jwt, comment_id)
         
         if(res.success == false){
-            window.showToast('댓글 삭제에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.commentList.failedDeletingComment'), 'system-error')
             return false
         }
 
-        window.showToast('댓글 삭제에 성공하였습니다', 'info')
+        window.showToast(t('toast.commentList.successDeletingComment'), 'info')
 
         return true
     }
@@ -236,7 +239,7 @@ export default function({article_id, article_user_id}) {
     const onOpenCommentEdit = async() =>{
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.commentList.requireLogin'), 'info')
             navigate('/account', {state:{comback:true}})
             return
         }
@@ -274,7 +277,7 @@ export default function({article_id, article_user_id}) {
             return false
 
         if(comment.length == 0) {
-            window.showToast('입력된 글이 없습니다', 'user-error')
+            window.showToast(t('toast.commentList.noText'), 'user-error')
             return false
         }
         
@@ -289,11 +292,11 @@ export default function({article_id, article_user_id}) {
         const res = await CommentAPI.postComment(auth.jwt, payload)
 
         if(res.success == false){
-            window.showToast('댓글 작성에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.commentList.failedWrtingComment'), 'system-error')
             return false
         }
 
-        window.showToast('댓글이 작성 되었습니다', 'info')
+        window.showToast(t('toast.commentList.successWritingComment'), 'info')
 
         const user = await UserRepository.getByID(auth.user_id)
 
@@ -338,7 +341,7 @@ export default function({article_id, article_user_id}) {
     const onClickReplyEditOpen = async(id) =>{
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.commentList.requireLogin'), 'info')
             navigate('/account', {state:{comback:true}})
             return
         }
@@ -355,7 +358,7 @@ export default function({article_id, article_user_id}) {
             return false
 
         if(comment.length == 0) {
-            window.showToast('입력된 글이 없습니다', 'user-error')
+            window.showToast(t('toast.commentList.noText'), 'user-error')
             return false
         }
 
@@ -374,11 +377,11 @@ export default function({article_id, article_user_id}) {
         const res = await CommentAPI.postComment(auth.jwt, payload)
         
         if(res.success == false){
-            window.showToast('답글 작성에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.commentList.failedWrtingReply'), 'system-error')
             return false
         }
 
-        window.showToast('답글이 작성 되었습니다', 'info')
+        window.showToast(t('toast.commentList.sucessWritingReply'), 'info')
 
         const greatSet = {article_id:article_id, comment_id:res.payload.id, great:0, like_count:0, dislike_count:0}
 
@@ -452,12 +455,12 @@ export default function({article_id, article_user_id}) {
             return false
         
         if(modifiedComment.length == 0) {
-            window.showToast('입력된 글이 없습니다', 'user-error')
+            window.showToast(t('toast.commentList.noText'), 'user-error')
             return
         }
 
         if(modifiedComment == comment.comment){
-            window.showToast('수정된 내용이 없습니다', 'user-error')
+            window.showToast(t('toast.commentList.noModified'), 'user-error')
             return
         }
 
@@ -468,11 +471,11 @@ export default function({article_id, article_user_id}) {
         const res = await CommentAPI.putComment(auth.jwt, comment.id, payload)
 
         if(res.success == false){
-            window.showToast('수정에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.commentList.failedModifying'), 'system-error')
             return
         }
     
-        window.showToast('수정에 성공하였습니다', 'info')
+        window.showToast(t('toast.commentList.successModifying'), 'info')
     
         setModifyModeCommentId(-1)
         comment.comment = modifiedComment

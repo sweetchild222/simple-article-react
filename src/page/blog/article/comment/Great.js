@@ -10,11 +10,14 @@ import { FaRegThumbsDown } from "react-icons/fa";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { FaThumbsDown } from "react-icons/fa";
 import { FaThumbsUp } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
 
 import * as CommentGreatAPI from '@rest/CommentGreatAPI.js'
 import {HPad} from "@gui/Pad.js";
 
 export default function({comment_id, greatSet, style}) {
+
+    const { t } = useTranslation()
     
     const [isLikeLoading, setIsLikeLoading] = useState(false)
     const [isDislikeLoading, setIsDislikeLoading] = useState(false)
@@ -68,6 +71,9 @@ export default function({comment_id, greatSet, style}) {
 
 
     const updateGreat = async(great) =>{
+
+        const transGreat = t('toast.commentGreat.great')
+        const transDisgreat = t('toast.commentGreat.disgreat')
                 
         const resGreat = await getGreat(auth.user_id, comment_id)
 
@@ -81,7 +87,7 @@ export default function({comment_id, greatSet, style}) {
                 const res = await patchGreat(auth.jwt, resGreat.payload[0].id, great)
 
                 if(res.success == false){
-                    window.showToast((great == 1 ? '좋아요에서 싫어요' : '싫어요에서 좋아요') + '로 변경에 실패하였습니다', 'system-error')
+                    window.showToast(t('toast.commentGreat.failedChanging', {great:(great == 1 ? transDisgreat : transGreat)}), 'system-error')
                     return false
                 }
 
@@ -100,7 +106,7 @@ export default function({comment_id, greatSet, style}) {
                 else 
                     return false
 
-                window.showToast((great == 1 ? '좋아요에서 싫어요' : '싫어요에서 좋아요') + '로 변경하였습니다', 'info')
+                window.showToast(t('toast.commentGreat.successChanging', {great:(great == 1 ? transDisgreat : transGreat)}), 'info')
                 return true
 
             }else {
@@ -108,7 +114,7 @@ export default function({comment_id, greatSet, style}) {
                 const res = await deleteGreat(auth.jwt, resGreat.payload[0].id)
 
                 if(res.success == false){
-                    window.showToast((great == 1 ? '좋아요' : '싫어요') + ' 취소를 실패하였습니다', 'system-error')
+                    window.showToast(t('toast.commentGreat.failedCancel', {great:(great == 1 ? transGreat : transDisgreat)}), 'system-error')
                     return false
                 }
 
@@ -125,7 +131,7 @@ export default function({comment_id, greatSet, style}) {
                 else 
                     return false
 
-                window.showToast((great == 1 ? '좋아요' : '싫어요') + ' 취소를 성공하였습니다', 'info')
+                window.showToast(t('toast.commentGreat.successCancel', {great:(great == 1 ? transGreat : transDisgreat)}), 'info')
                 return true
             }
         }
@@ -134,7 +140,7 @@ export default function({comment_id, greatSet, style}) {
             const res = await postGreat(auth.jwt, auth.user_id, comment_id, great)
 
             if(res.success == false){
-                window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.commentGreat.failedGreat', {great:(great == 1 ? transGreat : transDisgreat)}), 'system-error')
                 return false
             }
             
@@ -151,7 +157,7 @@ export default function({comment_id, greatSet, style}) {
             else
                 return false
 
-            window.showToast((great == 1 ? '좋아요' : '싫어요') + '에 성공하였습니다', 'info')
+            window.showToast(t('toast.commentGreat.successGreat', {great:(great == 1 ? transGreat : transDisgreat)}), 'info')
             return true
         }
     }
@@ -160,7 +166,7 @@ export default function({comment_id, greatSet, style}) {
     const onClickGreatLike = async() => {
         
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.commentGreat.requireLogin'), 'info')
             navigate('/account', {state:{comback:true}})
             return
         }
@@ -173,7 +179,7 @@ export default function({comment_id, greatSet, style}) {
     const onClickGreatDislike = async() => {
         
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.commentGreat.requireLogin'), 'info')
             navigate('/account', {state:{comback:true}})
             return
         }

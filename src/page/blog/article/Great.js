@@ -95,11 +95,11 @@ export default function({article_id, like_count, dislike_count, style}) {
 
 
     const updateGreat = async(great) =>{
-        
-        const resGreat = await getGreat(auth.user_id, article_id)
 
         const transGreat = t('toast.articleGreat.great')
         const transDisgreat = t('toast.articleGreat.disgreat')
+        
+        const resGreat = await getGreat(auth.user_id, article_id)
 
         if(resGreat.success == false)
             return false

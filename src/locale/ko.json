@@ -95,6 +95,46 @@
 		    "requireLogin": "로그인 해주세요",
         "great":"좋아요",
         "disgreat":"싫어요"
+      },
+      "commentList":{
+        "failedGettingComment": "댓글을 가져오기에 실패하였습니다",
+        "failedDeletingComment": "댓글 삭제에 실패하였습니다",
+        "successDeletingComment": "댓글 삭제에 성공하였습니다",
+        "requireLogin": "로그인 해주세요",
+        "noText": "입력된 글이 없습니다",
+        "failedWrtingComment": "댓글 작성에 실패하였습니다",
+        "failedWrtingReply": "답글 작성에 실패하였습니다",
+        "successWritingComment": "댓글이 작성 되었습니다",
+        "noModified": "수정된 내용이 없습니다",
+        "failedModifying": "수정에 실패하였습니다",
+        "sucessWritingReply": "답글이 작성 되었습니다",
+        "successModifying": "수정에 성공하였습니다"
+      },
+      "commentGreat":{
+        "failedChanging": "{{great}}로 변경에 실패하였습니다",
+		    "successChanging": "{{great}}로 변경하였습니다",
+		    "failedCancel": "{{great}} 취소를 실패하였습니다",
+		    "successCancel": "{{great}} 취소를 성공하였습니다",
+		    "failedGreat": "{{great}}에 실패하였습니다",
+		    "successGreat": "{{great}}에 성공하였습니다",
+		    "requireLogin": "로그인 해주세요",
+        "great":"좋아요",
+        "disgreat":"싫어요"
+      },
+      "posting":{
+        "failedGettingCategory": "카테고리 가져오기에 실패하였습니다",
+		    "unavailableFile": "파일을 사용할 수 없습니다",
+		    "failedSettingThumbnail": "썸네일 설정에 실패하였습니다",
+		    "noCategory": "카테고리가 설정되지 않았습니다",
+		    "pasteTitle": "제목을 입력하세요",
+		    "failedModifyingArticle": "글 수정에 실패하였습니다",
+		    "failedPostingArticle": "글 등록에 실패하였습니다",
+		    "modifiedArticle": "글이 수정 되었습니다",
+        "postedArticle":"글이 등록 되었습니다",
+        "failedDeleting":"삭제가 실패하였습니다",
+		    "successDeleting":"삭제 되었습니다",
+		    "failedDraftedSavingArticle":"글의 임시 저장에 실패하였습니다",
+		    "successDraftedSavingArticle":"글이 임시 저장 되었습니다"
       }
   },
   "mdxEditor":{

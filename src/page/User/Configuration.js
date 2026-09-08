@@ -17,11 +17,14 @@ import PasswordModal from './PasswordModal.js';
 import { LuImageUp } from "react-icons/lu";
 import Integer from "@util/Integer.js";
 import {VPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 import * as validator from './Validator.js'
 
 
 export default function() {
+
+    const { t } = useTranslation()
     
     const {auth, validAuth, reloadAuth, removeAuth} = useContext(AuthContext)
     const [isModalLogout, setIsModalLogout] = useState(false)
@@ -68,7 +71,7 @@ export default function() {
 
         if(result == true){
             removeAuth()
-            window.showToast('로그 아웃이 성공하였습니다', 'info')
+            window.showToast(t('toast.configuration.successLogout'), 'info')
             navigate('/')
         }
     }
@@ -101,7 +104,7 @@ export default function() {
     const onClickProfile = async() =>{
 
         if(isMobile()){
-            window.showToast('모바일에서는 프로필 설정을 지원하지 않습니다', 'user-error')
+            window.showToast(t('toast.configuration.notSupportMobile'), 'user-error')
             return
         }
 
@@ -111,7 +114,7 @@ export default function() {
             return
         
         if(imageFile.format == 'unknown'){
-            window.showToast('파일을 사용할 수 없습니다', 'user-error')
+            window.showToast(t('toast.configuration.unavailableFile'), 'user-error')
             return
         }
 
@@ -142,7 +145,7 @@ export default function() {
 
         if(resProfile.success == false){
             setIsModalImageCrop(false)
-            window.showToast('프로필 설정에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.configuration.failedProfile'), 'system-error')
             return
         }
 
@@ -152,7 +155,7 @@ export default function() {
 
         if(resUser.success == false){
             setIsModalImageCrop(false)
-            window.showToast('프로필 설정에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.configuration.failedProfile'), 'system-error')
             return
         }        
     
@@ -171,23 +174,23 @@ export default function() {
             return
 
         if(input == ''){
-            window.showToast('현재 비밀번호를 입력하세요', 'user-error')
+            window.showToast(t('toast.configuration.pasteCurrentPassword'), 'user-error')
             return
         }        
         
         if(validator.password(input) == false) {
-            window.showToast('비밀번호가 틀렸습니다', 'user-error')
+            window.showToast(t('toast.configuration.wrongPassword'), 'user-error')
             return
         }
 
         const res = await withdraw(input)
 
         if(res.success == false){
-            window.showToast('회원 탈퇴가 실패하였습니다', 'system-error')
+            window.showToast(t('toast.configuration.failedWithdrawal'), 'system-error')
             return
         }
 
-        window.showToast('회원 탈퇴가 성공하였습니다', 'info')
+        window.showToast(t('toast.configuration.successWithdrawal'), 'info')
 
         removeAuth()
 
@@ -203,7 +206,7 @@ export default function() {
             return
 
         if(input == ''){
-            window.showToast('닉네임을 입력하세요', 'user-error')
+            window.showToast(t('toast.configuration.pasteNickname'), 'user-error')
             return
         }
 
@@ -213,11 +216,11 @@ export default function() {
         const resUser = await UserAPI.patchUser(auth.jwt, auth.user_id, {nickname: input})
 
         if(resUser.success == false) {
-            window.showToast('닉네임 수정에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.configuration.failedModifyingNickname'), 'system-error')
             return
         }        
 
-        window.showToast('닉네임 수정 되었습니다', 'info')
+        window.showToast(t('toast.configuration.successModifyingNickname'), 'info')
 
         user.nickname = input
         setUser(structuredClone(user))

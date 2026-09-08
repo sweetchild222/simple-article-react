@@ -22,11 +22,15 @@ import { VscBell } from "react-icons/vsc";
 import { IoIosArrowDown } from "react-icons/io";
 import AlarmModal from "./AlarmModal.js";
 import {VPad, HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 import './SideBar.css';
 
 
 export default function () {
+
+    
+    const { t } = useTranslation()
 
     const {auth, validAuth, removeAuth} = useContext(AuthContext)
     const [alarms, setAlarms] = useState(null)
@@ -248,7 +252,7 @@ export default function () {
     const onClickAlarm = async(e) => {
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.sidebar.requireLogin'), 'info')
             navigate('/account')
             return
         }
@@ -257,7 +261,7 @@ export default function () {
             return
 
         if(alarms.length == 0){
-            window.showToast('알람이 없습니다', 'info')
+            window.showToast(t('toast.sidebar.noAlarm'), 'info')
             return
         }
 
@@ -279,7 +283,7 @@ export default function () {
     const onClickNavigateMyBlog = async() =>{
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.sidebar.requireLogin'), 'info')
             navigate('/', {state:{comback:true}})
             return
         }

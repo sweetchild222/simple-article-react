@@ -11,6 +11,7 @@ import Spinner from "@gui/Spinner.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Modal from "@gui/Modal.js";
 import {VPad, HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
@@ -19,7 +20,9 @@ import './Home.css'
 import ArticleItem from "./ArticleItem.js";
 
 
-export default function() {      
+export default function() { 
+
+  const { t } = useTranslation()
   
   const {auth, validAuth} = useContext(AuthContext)
   const [articles, setArticles] = useState(null)
@@ -47,7 +50,7 @@ export default function() {
         setIsSpinner(false)
         
         if(articles == null){
-          window.showToast('글을 가져오는데 실패하였습니다', 'system-error')
+          window.showToast(t('toast.home.failedGettingArticle'), 'system-error')
           return
         }
         

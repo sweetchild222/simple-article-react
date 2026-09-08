@@ -7,6 +7,7 @@ import CountWithUnit from "@util/CountWithUnit.js";
 import {Horizental} from "@gui/Flex.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 import { IoMdHeart } from "react-icons/io";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -18,6 +19,7 @@ export default function({article_id, count}) {
     const {auth, validAuth} = useContext(AuthContext)
     const [isBookmark, setIsBookmark] = useState(null)
     const [bookmarkCount, setBookmarkCount] = useState(count)
+    const { t } = useTranslation()
 
     const navigate = useNavigate()
 
@@ -43,7 +45,7 @@ export default function({article_id, count}) {
     const onClickBookmark = async() => {
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.bookmark.requireLogin'), 'info')
             navigate('/account', {state:{comback:true}})
             return
         }
@@ -54,7 +56,7 @@ export default function({article_id, count}) {
 
         if(res.success == false){
             setIsBookmarkLoading(false)
-            window.showToast('북마크를 가져오기에 싶패하였습니다', 'system-error')
+            window.showToast(t('toast.bookmark.failedGettingBookmark'), 'system-error')
             return
         }
 
@@ -66,10 +68,10 @@ export default function({article_id, count}) {
             if(resDelete.success == true){
                 setIsBookmark(false)
                 setBookmarkCount(count => count - 1)
-                window.showToast('북마크를 취소하였습니다', 'info')
+                window.showToast(t('toast.bookmark.cancelBookmark'), 'info')
             }
             else
-                window.showToast('북마크를 취소에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.bookmark.failedCancelBookmark'), 'system-error')
         }
         else{
 
@@ -85,10 +87,10 @@ export default function({article_id, count}) {
             if(resPost.success == true){
                 setIsBookmark(true)
                 setBookmarkCount(count => count + 1)
-                window.showToast('북마크에 성공하였습니다', 'info')
+                window.showToast(t('toast.bookmark.successBookmark'), 'info')
             }
             else{
-                window.showToast('북마크에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.bookmark.failedBookmark'), 'system-error')
             }
         }
     }

@@ -4,19 +4,21 @@ import { useNavigate} from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import {Vertical} from "@gui/Flex.js";
-
+import { useTranslation } from 'react-i18next';
 
 export default function({blogId}) {
 
     const [articles, setArticles] = useState(null)
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
     
     useEffect(()=> {
         
         loadArticles(blogId).then(articles => {
 
             if(articles == null){
-                window.showToast('최근 작성한 글을 가져오기에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.recents.failedGettingNewArticle'), 'system-error')
                 return
             }
         

@@ -15,6 +15,7 @@ import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Spinner from "@gui/Spinner.js";
 import {VPad, HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 import { TiEye } from "react-icons/ti";
 import { FaAlignLeft } from "react-icons/fa6";
@@ -28,7 +29,10 @@ import CommentList from "./comment/CommentList.js"
 import ControlMenu from "./comment/ControlMenu.js";
 
 
+
 export default function() {
+
+    const { t } = useTranslation()
 
     const { b_id, a_id } = useParams()
 
@@ -103,7 +107,7 @@ export default function() {
         
         if(res.success == false) {
             setIsControlLoading(false)
-            window.showToast('수정 본을 찾는데 실패하였습니다', 'system-error')
+            window.showToast(t('toast.article.failedModifyingArticle'), 'system-error')
             return
         }
 
@@ -126,18 +130,18 @@ export default function() {
             setIsControlLoading(false)
 
             if(resPost.success == false){
-                window.showToast('수정 본 생성에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.article.failedCreatingModifyingArticle'), 'system-error')
                 return
             }
             
-            window.showToast('수정 본 생성에 성공하였습니다', 'info')
+            window.showToast(t('toast.article.successCreatingModifyingArticle'), 'info')
             const state = {id:resPost.payload.id, ...payload}
 
             navigate('/blog/' + auth.blog_id + '/write', {state:state})
         }
         else{
             setIsControlLoading(false)
-            window.showToast('이미 수정 중인 글로 이동합니다', 'info')
+            window.showToast(t('toast.article.moveModifyingArticle'), 'info')
             const state = {id:copiedArticle.id, ...payload}
             navigate('/blog/' + auth.blog_id + '/write', {state:state})
         }    
@@ -163,11 +167,11 @@ export default function() {
             setIsControlLoading(false)
             
             if(res.success == false){
-                window.showToast('삭제가 실패하였습니다', 'system-error')
+                window.showToast(t('toast.article.failedDeleteArticle'), 'system-error')
                 return
             }
 
-            window.showToast('삭제 되었습니다', 'info')
+            window.showToast(t('toast.article.successDeleteArticle'), 'info')
             navigate(-1)
         }
     }

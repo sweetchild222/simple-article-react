@@ -74,7 +74,7 @@ export default function({isOpen, onClose, onClickApply, categories}) {
       const value = input.value
                   
       if(value == ''){
-        window.showToast('카테고리 이름을 입력하세요', 'user-error')
+        window.showToast(t('toast.configurationCategoryModal.pasteCategoryName'), 'user-error')
         input.focus()
         return true
       }
@@ -83,7 +83,7 @@ export default function({isOpen, onClose, onClickApply, categories}) {
 
       if(value.length > maxLength) {
 
-        window.showToast(t('toast.category.nameMaxLength', {maxLength:maxLength}), 'user-error')
+        window.showToast(t('toast.configurationCategoryModal.nameMaxLength', {maxLength:maxLength}), 'user-error')
         input.focus()
         return true
       }      
@@ -123,7 +123,7 @@ export default function({isOpen, onClose, onClickApply, categories}) {
 
     if(newCategories.length == maxCount) {
 
-      window.showToast('카테고리는 최대 '+ maxCount + '개 까지 만들 수 있습니다', 'user-error')
+      window.showToast(t('toast.configurationCategoryModal.pasteCategoryName', {maxCount:maxCount}), 'user-error')
       return
     }
     
@@ -146,7 +146,7 @@ export default function({isOpen, onClose, onClickApply, categories}) {
       if(categorie.id === id) {
 
           if(categorie.article_count > 0) {
-            window.showToast('글이 있는 카테고리는 삭제 할 수 없습니다', 'user-error')
+            window.showToast(t('toast.configurationCategoryModal.cannotDeleteCategory'), 'user-error')
             return true
           }
           return false

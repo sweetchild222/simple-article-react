@@ -11,7 +11,7 @@ import PrettyButton from "@gui/PrettyButton.js";
 import { MdCategory } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
 
-import ModifyCategoryModal from './ModifyCategoryModal.js'
+import ConfigurationCategoryModal from './ConfigurationCategoryModal.js'
 import SelectCategoryModal from './SelectCategoryModal.js'
 
 
@@ -282,7 +282,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
                 <Vertical style={{alignItems:'start', padding:'4px 8px 4px 8px', borderRadius:'3px', backgroundColor:'`#EDEFF4', border:'1px solid #E4E6EA'}}>
                     {categories.map((data, index) => <div key={data.id} className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', marginTop:'8px', marginBottom:'8px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</div>)}
                     {isEditable() && <div title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'16px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={26}/></div>}
-                    {isEditable() && isOpenCategoryModal && <ModifyCategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => (item.static == false))}></ModifyCategoryModal>}
+                    {isEditable() && isOpenCategoryModal && <ConfigurationCategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => (item.static == false))}></ConfigurationCategoryModal>}
                 </Vertical>
             </Vertical>
         ) : null

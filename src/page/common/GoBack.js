@@ -10,6 +10,8 @@ export default function({value}) {
 
     const navigate = useNavigate()
 
+    const { t } = useTranslation()
+
     const onClickGoBack = () => {
 
         navigate(-1)

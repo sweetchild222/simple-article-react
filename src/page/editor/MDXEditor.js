@@ -19,9 +19,6 @@ import '@mdxeditor/editor/style.css'
 import { usePublisher } from '@mdxeditor/gurx'
 
 import { useTranslation } from 'react-i18next';
-
-//import i18next from 'i18next'
-//import ko from '@locale/ko.json'
 import './MDXEditor.css'
 
 import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdmonitionType, imagePlugin, headingsPlugin, listsPlugin,
@@ -34,17 +31,11 @@ import { MDXEditor, codeMirrorPlugin, InsertSandpack, ShowSandpackInfo,ChangeAdm
 
 export default function({ref, placeHolder, postImage, markdown, onChange, onParsingError, onUserError}){
 
-  const refEditor = useRef(null);
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
-    
+  const refEditor = useRef(null)
+  
   useEffect(()=>{
-
-    // i18next.init({
-    //   lng: 'ko',
-    //   fallbackLng: 'ko',
-    //   resources: {ko: {translation: ko}}
-    // })
 
     if (refEditor.current) {
       refEditor.current.focus();

@@ -7,11 +7,14 @@ import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
 import Spinner from "@gui/Spinner.js";
 import {VPad, HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 import * as validator from './Validator.js'
 
 
 export default function({isOpen, onClose}) {
+
+    const { t } = useTranslation()
 
     const refDialog = useRef(null)
     

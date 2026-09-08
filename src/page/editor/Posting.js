@@ -17,12 +17,15 @@ import GoLogin from "@page/common/GoLogin.js";
 import * as BlobAPI from '@rest/BlobAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as CategoryAPI from '@rest/CategoryAPI.js'
+import { useTranslation } from 'react-i18next';
 
 import ExtractHead from "./ExtractHead.js";
 
 export default function() {
     
     const location = useLocation()
+
+    const { t }  = useTranslation()
 
     const state = location.state
 
@@ -302,7 +305,7 @@ export default function() {
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}
             <VPad size={16}/>
             <Horizental style={{width:'100%'}}>
-                <PrettyButton type='danger' onClick={onClickDelete} style={{width:'64px'}}>삭제</PrettyButton>
+                <PrettyButton type='danger' onClick={onClickDelete} style={{width:'64px'}}>{t('system.delete')}</PrettyButton>
                 <HPad size={64}/>
                 <PrettyButton type='success' onClick={onClickSave} style={{flex:'1'}}>임시 저장</PrettyButton>
                 <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>

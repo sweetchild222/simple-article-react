@@ -19,11 +19,15 @@ import {HPad} from "@gui/Pad.js";
 
 import { MdEdit } from "react-icons/md";
 import { RiImageAiFill } from "react-icons/ri";
+import { useTranslation } from 'react-i18next';
 
 
 export default function() {
 
-    const { b_id } = useParams()
+
+    const { t } = useTranslation()
+
+    const { b_id } = useParams()    
     
     const blog_id = Integer(b_id)
 
@@ -280,7 +284,7 @@ export default function() {
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'  •  '}</label>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'구독자 ' + (subscribeCount != null ? CountWithUnit(subscribeCount) : '')}</label>
                             <HPad size={8}/>
-                            {!isEditable() && isSubscribe != null && <PrettyButton tooltip='구독' type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe} style={{minWidth:'64px'}}>{isSubscribe ? '구독중' : '블로그 구독'}</PrettyButton>}
+                            {!isEditable() && isSubscribe != null && <PrettyButton tooltip={t('system.subscribe')} type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe} style={{minWidth:'64px'}}>{isSubscribe ? t('system.subscribed') : t('system.subscribe')}</PrettyButton>}
                         </Horizental>
                         <Horizental style={{alignItems: 'center'}}>
                             <div className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1, color:'white', fontSize:'24px', borderColor:'white'}}>{blog.title}</div>

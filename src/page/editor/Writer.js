@@ -11,12 +11,15 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
 import GoLogin from "@page/common/GoLogin.js";
+import { useTranslation } from 'react-i18next';
 
 import MDXEditor from './MDXEditor.js'
 import ExtractHead from "./ExtractHead.js";
 
 
 export default function() {
+
+    const { t } = useTranslation()
     
     const location = useLocation()
 
@@ -334,14 +337,14 @@ export default function() {
                 </Split>
                 <label ref={refLength} style={{marginLeft:'auto', fontSize:'16px', color:'gray'}}>{state.content.length + '/65535'}</label>
                 <Horizental style={{flex: 0, alignItems: 'center', marginTop:'16px'}}>
-                    <PrettyButton type='cancel' style={{marginRight:'8px'}} onClick={onClickLeave}>나가기</PrettyButton>
-                    <PrettyButton type='danger' style={{marginRight:'8px'}} onClick={onClickDelete}>삭제</PrettyButton>
+                    <PrettyButton type='cancel' style={{marginRight:'8px'}} onClick={onClickLeave}>{t('system.leave')}</PrettyButton>
+                    <PrettyButton type='danger' style={{marginRight:'8px'}} onClick={onClickDelete}>{t('system.delete')}</PrettyButton>
                     <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
                     <div style={{flex:'1'}}/>
                     <PrettyButton type='success' style={{marginRight:'8px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</PrettyButton>
                     <Modal title={'나가기 전에 임시 저장 하시겠습니까?'} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
                     <PrettyButton type='confirm' style={{marginRight:'8px'}} onClick={onClickPreview}>미리 보기</PrettyButton>
-                    <PrettyButton type='default' onClick={onClickPost}>{'다음'}</PrettyButton>
+                    <PrettyButton type='default' onClick={onClickPost}>{t('system.next')}</PrettyButton>
                 </Horizental>
             </div>
         </div>

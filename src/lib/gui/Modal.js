@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import PrettyButton from './PrettyButton';
+import { useTranslation } from 'react-i18next';
 
 export default ({type, title, description, isCloseOutsideClick=true, defaultValue, maxLength, isOpen, onResult, onClose, onInput, children}) => {
     
     const refDialog = useRef(null)
     const refInput = useRef(null)
     const refDiv = useRef(null)
+    const { t } = useTranslation()
 
     useEffect(() => {
 
@@ -126,16 +128,16 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
                 <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} maxLength={maxLength} style={{width:'100%', minWidth:'256px', boxSizing:'border-box'}}/>
                 <div style={{height:'16px'}}/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
-                    <PrettyButton onClick={onClickInputYes} type='confirm' style={{width:'64px'}}>확인</PrettyButton>
+                    <PrettyButton onClick={onClickInputYes} type='confirm' style={{width:'64px'}}>{t('system.confirm')}</PrettyButton>
                     <div style={{width:'16px'}}/>
-                    <PrettyButton onClick={onClickNo} type='cancel' style={{width:'64px'}}>아니오</PrettyButton>
+                    <PrettyButton onClick={onClickNo} type='cancel' style={{width:'64px'}}>{t('system.cancel')}</PrettyButton>
                 </div>
             </div>}
-            {type == 'confirm' && <PrettyButton onClick={onClickConfirm} style={{width:'64px'}} type='confirm'>확인</PrettyButton>}
+            {type == 'confirm' && <PrettyButton onClick={onClickConfirm} style={{width:'64px'}} type='confirm'>{t('system.confirm')}</PrettyButton>}
             {type == 'yesno' && <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
-                <PrettyButton onClick={onClickYes} type='success' style={{width:'64px'}}>예</PrettyButton>
+                <PrettyButton onClick={onClickYes} type='success' style={{width:'64px'}}>{t('system.yes')}</PrettyButton>
                 <div style={{width:'16px'}}/>
-                <PrettyButton onClick={onClickNo} type='cancel' style={{width:'64px'}}>아니오</PrettyButton>
+                <PrettyButton onClick={onClickNo} type='cancel' style={{width:'64px'}}>{t('system.no')}</PrettyButton>
             </div>}
             </div>
         </dialog>,

@@ -2,6 +2,7 @@ import {useState, useRef, useEffect, useImperativeHandle} from 'react'
 import ReactDOM from 'react-dom';
 import PrettyButton from "@gui/PrettyButton.js"
 import ImageCropper from './ImageCropper.js'
+import { useTranslation } from 'react-i18next';
 
 import './ImageCropModal.css'
 
@@ -11,6 +12,8 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
   const refCropper = useRef(null)
   const refDialog = useRef(null)
   const refDiv = useRef(null)
+
+  const {t} = useTranslation()
 
   const [isApplyLoading, setIsApplyLoading] = useState(false)
     
@@ -83,9 +86,9 @@ export default function({ref, isOpen, onClose, file, onClickApply, containerWidt
                 {isOpen && file && <ImageCropper ref={refCropper} file={file} containerWidth={containerWidth} containerHeight={containerHeight} selectMinWidth={selectMinWidth} keepRatio={keepRatio}/>}
                 <div style={{height:'16px'}}/>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                  <PrettyButton type='confirm' onClick={onClickApplyCore} isLoading={isApplyLoading} style={{width:'64px'}}>선택</PrettyButton>
+                  <PrettyButton type='confirm' onClick={onClickApplyCore} isLoading={isApplyLoading} style={{width:'64px'}}>{t('system.select')}</PrettyButton>
                   <div style={{width:'16px'}}/>
-                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>취소</PrettyButton>
+                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>{t('system.cancel')}</PrettyButton>
                 </div>
                 <div style={{height:'16px'}}/>
               </div>

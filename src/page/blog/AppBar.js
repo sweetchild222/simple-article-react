@@ -7,12 +7,16 @@ import AuthContext from "@util/AuthContext.js";
 import Integer from "@util/Integer.js";
 import ProfileImage from "@gui/ProfileImage.js";
 import PrettyButton from "@gui/PrettyButton.js";
+import { useTranslation } from 'react-i18next';
 
 import {Horizental} from "@gui/Flex.js";
 import {HPad} from "@gui/Pad.js";
 
 
 export default function() {
+
+
+    const { t } = useTranslation()
 
     const { b_id } = useParams()
     
@@ -156,7 +160,7 @@ export default function() {
                 <div className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1, color:'white', fontSize:'16px', borderColor:'white'}}>{blog.title}</div>
                 <div style={{flex:'1'}}/>
                 {!isOwner() && isSubscribe != null && <HPad size={8}/>}
-                {!isOwner() && isSubscribe != null && <PrettyButton tooltip='구독' type={isSubscribe ? 'cancel' : 'default'} isLoading={isSubscribeLoading} onClick={onClickSubscribe} style={{width:'fit-content'}}>{isSubscribe ? '구독중' : '구독함'}</PrettyButton>}
+                {!isOwner() && isSubscribe != null && <PrettyButton tooltip={t('system.subscribe')} type={isSubscribe ? 'cancel' : 'default'} isLoading={isSubscribeLoading} onClick={onClickSubscribe} style={{width:'fit-content'}}>{isSubscribe ? t('system.subscribed') : t('system.subscribe')}</PrettyButton>}
                 <HPad size={8}/>
                 <img src='/logo/logo.svg' alt='logo' style={{height:'48px', width:'48px'}} onClick={onClickNavigateHome}/>
             </Horizental>

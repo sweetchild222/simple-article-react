@@ -1,4 +1,24 @@
 {
+  "system":{
+    "yes":"Yes",
+    "no":"No",
+    "confirm":"Confirm",
+    "cancel":"Cancel",
+    "send":"Send",
+    "select":"Select",
+    "apply":"Apply",
+    "modify": "Modify",
+    "upload": "Upload",
+    "change": "Change",
+    "delete": "Delete",
+    "Leave" : "Leave",
+    "next": "Next",
+    "prev": "Previous",
+    "subscribe":"Subscribe",
+    "subscribed":"Subscribed",
+    "goback":"Go back"
+
+  },
   "mdxEditor":{
     "frontmatterEditor": {
       "title": "Edit frontmatter",

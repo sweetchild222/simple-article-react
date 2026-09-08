@@ -341,9 +341,9 @@ export default function({ref, placeHolder, postImage, markdown, onChange, onPars
             <input ref={refInputAlt} id='input_alt' maxLength="256" type='text' placeholder={t('mdxEditor.imagelink.alternative')}/>
             <div style={{height:'16px'}}/>
             <Horizental style={{justifyContent: 'center'}}>
-              <PrettyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm} style={{width:'64px'}}>확인</PrettyButton>
+              <PrettyButton disabled={isDisabledConfirm} type='success' onClick={insertImageConfirm} style={{width:'64px'}}>{t('system.confirm')}</PrettyButton>
               <div style={{width:'16px'}}/>
-              <PrettyButton type='cancel' onClick={()=>setIsImageModalOpen(false)} style={{width:'64px'}}>취소</PrettyButton>
+              <PrettyButton type='cancel' onClick={()=>setIsImageModalOpen(false)} style={{width:'64px'}}>{t('system.cancel')}</PrettyButton>
             </Horizental>
           </Vertical>
         </Modal>

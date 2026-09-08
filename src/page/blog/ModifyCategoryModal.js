@@ -8,6 +8,7 @@ import {HPad} from "@gui/Pad.js";
 
 import { CiSquarePlus } from "react-icons/ci";
 import { VscTrash } from "react-icons/vsc";
+import { useTranslation } from 'react-i18next';
 
 export default function({isOpen, onClose, onClickApply, categories}) {
       
@@ -16,6 +17,8 @@ export default function({isOpen, onClose, onClickApply, categories}) {
 
   const [isApplyLoading, setIsApplyLoading] = useState(false)
   const [newCategories, setNewCategories] = useState(structuredClone(categories))
+
+  const { t } = useTranslation()
 
   useEffect(() => {
       
@@ -180,9 +183,9 @@ export default function({isOpen, onClose, onClickApply, categories}) {
                 <Horizental style={{alignItems: 'center', alignSelf:'center', marginBottom:'8px', marginTop:'8px', width:'100%'}}>
                   <PrettyButton type='transparent' style={{color:'black'}} onClick={onCliCkAdd}><CiSquarePlus size={25}></CiSquarePlus></PrettyButton>
                   <div style={{flex:'1'}}></div>
-                  <PrettyButton type='confirm' onClick={onClickApplyCore} isLoading={isApplyLoading} style={{width:'64px'}}>적용</PrettyButton>
+                  <PrettyButton type='confirm' onClick={onClickApplyCore} isLoading={isApplyLoading} style={{width:'64px'}}>{t('system.apply')}</PrettyButton>
                   <HPad size={8}/>
-                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>취소</PrettyButton>
+                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>{t('system.cancel')}</PrettyButton>
                 </Horizental>
               </Vertical>
           </dialog>,

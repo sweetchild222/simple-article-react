@@ -3,6 +3,7 @@ import {useState, useRef} from "react";
 import {Vertical} from "@gui/Flex.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {VPad, HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 import TextArea from "./TextArea.js";
 
@@ -12,6 +13,8 @@ export default function(props) {
 
     const [isPostLoading, setIsPostLoading] = useState(false)
     const [inputLength, setInputLength] = useState('0/1000')
+
+    const { t } = useTranslation()
     
     const refArea = useRef(null)
 
@@ -58,9 +61,9 @@ export default function(props) {
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <HPad size={8}/>
-                    <PrettyButton isLoading={isPostLoading} type={'success'} onClick={()=>onClickPost()} style={{width:'64px'}}>{'올리기'}</PrettyButton>
+                    <PrettyButton isLoading={isPostLoading} type={'success'} onClick={()=>onClickPost()} style={{width:'64px'}}>{t('system.upload')}</PrettyButton>
                     <HPad size={8}/>
-                    <PrettyButton disabled={isPostLoading ? true : false} type={'cancel'} onClick={()=>onClickCancel()} style={{width:'64px'}}>{'취소'}</PrettyButton>
+                    <PrettyButton disabled={isPostLoading ? true : false} type={'cancel'} onClick={()=>onClickCancel()} style={{width:'64px'}}>{t('system.cancel')}</PrettyButton>
                 </div>
             </Vertical>
         )

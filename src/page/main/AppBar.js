@@ -13,6 +13,7 @@ import * as SubscribeAPI from '@rest/SubscribeAPI.js'
 import * as BookmarkAPI from '@rest/BookmarkAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import * as BlogAPI from '@rest/BlogAPI.js'
+import { useTranslation } from 'react-i18next';
 
 import { VscBellDot } from "react-icons/vsc";
 import { VscBell } from "react-icons/vsc";
@@ -23,6 +24,8 @@ import SubscribeModal from "./SubscribeModal.js";
 
 
 export default function Sidebar() {
+
+    const { t } = useTranslation()
 
     const {auth, validAuth, removeAuth} = useContext(AuthContext)
     const [alarms, setAlarms] = useState(null)
@@ -236,7 +239,7 @@ export default function Sidebar() {
     const onClickAlarm = async(e) => {
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.appBarMain.requireLogin'), 'info')
             navigate('/account')
             return
         }
@@ -245,7 +248,7 @@ export default function Sidebar() {
             return
 
         if(alarms.length == 0){
-            window.showToast('알람이 없습니다', 'info')
+            window.showToast(t('toast.appBarMain.noAlarm'), 'info')
             return
         }
 
@@ -257,7 +260,7 @@ export default function Sidebar() {
     const onClickSubscribe = async(e) => {
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.appBarMain.requireLogin'), 'info')
             navigate('/account')
             return
         }
@@ -266,7 +269,7 @@ export default function Sidebar() {
             return
 
         if(subscribes.length == 0){
-            window.showToast('구독한 블로그가 없습니다', 'info')
+            window.showToast(t('toast.appBarMain.noSubscribed'), 'info')
             return
         }
 
@@ -277,7 +280,7 @@ export default function Sidebar() {
     const onClickBookmark = async(e) => {
 
         if(!validAuth(auth)){
-            window.showToast('로그인 해주세요', 'info')
+            window.showToast(t('toast.appBarMain.requireLogin'), 'info')
             navigate('/account')
             return
         }
@@ -286,7 +289,7 @@ export default function Sidebar() {
             return
 
         if(bookmarks.length == 0){
-            window.showToast('북마크한 글이 없습니다', 'info')
+            window.showToast(t('toast.appBarMain.noBookmark'), 'info')
             return
         }
 

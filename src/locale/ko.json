@@ -19,7 +19,7 @@
     "goback":"뒤로 가기"
   },
   "toast":{
-      "appBar":{
+      "appBarBlog":{
         "requireLogin":"로그인 해주세요",
         "cannotSubscribeInfo":"구독 정보를 가져 올 수 없습니다",
         "cancelSubscribed":"구독을 취소하였습니다",
@@ -102,8 +102,8 @@
         "successDeletingComment": "댓글 삭제에 성공하였습니다",
         "requireLogin": "로그인 해주세요",
         "noText": "입력된 글이 없습니다",
-        "failedWrtingComment": "댓글 작성에 실패하였습니다",
-        "failedWrtingReply": "답글 작성에 실패하였습니다",
+        "failedWritingComment": "댓글 작성에 실패하였습니다",
+        "failedWritingReply": "답글 작성에 실패하였습니다",
         "successWritingComment": "댓글이 작성 되었습니다",
         "noModified": "수정된 내용이 없습니다",
         "failedModifying": "수정에 실패하였습니다",
@@ -135,6 +135,19 @@
 		    "successDeleting":"삭제 되었습니다",
 		    "failedDraftedSavingArticle":"글의 임시 저장에 실패하였습니다",
 		    "successDraftedSavingArticle":"글이 임시 저장 되었습니다"
+      },
+      "writer":{
+        "noText": "입력된 글이 없습니다",
+		    "successSavingDraft": "임시 저장 되었습니다",
+		    "failedSavingDraft": "임시 저장에 실패하였습니다",
+		    "failedDeleting": "삭제가 실패하였습니다",
+		    "successDeleting": "삭제 되었습니다"
+      },
+      "appBarMain":{
+        "requireLogin": "로그인 해주세요",
+		    "noAlarm": "알람이 없습니다",
+		    "noSubscribed": "구독한 블로그가 없습니다",
+		    "noBookmark": "북마크한 글이 없습니다"
       }
   },
   "mdxEditor":{

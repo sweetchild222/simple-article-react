@@ -102,7 +102,7 @@ export default function() {
         //event.stopPropagation()
 
         if(!validAuth(auth)){
-            window.showToast(t('toast.appBar.requireLogin'), 'info')
+            window.showToast(t('toast.appBarBlog.requireLogin'), 'info')
             navigate('/', {state:{comback:true}})
             return
         }
@@ -115,7 +115,7 @@ export default function() {
 
         if(res.success == false){
             setIsSubscribeLoading(false)
-            window.showToast(t('toast.appBar.cannotSubscribeInfo'), 'system-error')
+            window.showToast(t('toast.appBarBlog.cannotSubscribeInfo'), 'system-error')
             return
         }
 
@@ -127,10 +127,10 @@ export default function() {
 
             if(resDelete.success == true){
                 setIsSubscribe(false)                
-                window.showToast(t('toast.appBar.cancelSubscribed'), 'info')
+                window.showToast(t('toast.appBarBlog.cancelSubscribed'), 'info')
             }
             else
-                window.showToast(t('toast.appBar.failedCancelSubscribed'), 'system-error')
+                window.showToast(t('toast.appBarBlog.failedCancelSubscribed'), 'system-error')
         }
         else{
 
@@ -145,10 +145,10 @@ export default function() {
 
             if(resPost.success == true){
                 setIsSubscribe(true)
-                window.showToast(t('toast.appBar.successSubscribe'), 'info')
+                window.showToast(t('toast.appBarBlog.successSubscribe'), 'info')
             }
             else{
-                window.showToast(t('toast.appBar.failedSubscribe'), 'system-error')
+                window.showToast(t('toast.appBarBlog.failedSubscribe'), 'system-error')
             }
         }
     }

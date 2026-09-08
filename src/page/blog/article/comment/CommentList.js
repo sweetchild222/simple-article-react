@@ -292,7 +292,7 @@ export default function({article_id, article_user_id}) {
         const res = await CommentAPI.postComment(auth.jwt, payload)
 
         if(res.success == false){
-            window.showToast(t('toast.commentList.failedWrtingComment'), 'system-error')
+            window.showToast(t('toast.commentList.failedWritingComment'), 'system-error')
             return false
         }
 
@@ -377,7 +377,7 @@ export default function({article_id, article_user_id}) {
         const res = await CommentAPI.postComment(auth.jwt, payload)
         
         if(res.success == false){
-            window.showToast(t('toast.commentList.failedWrtingReply'), 'system-error')
+            window.showToast(t('toast.commentList.failedWritingReply'), 'system-error')
             return false
         }
 

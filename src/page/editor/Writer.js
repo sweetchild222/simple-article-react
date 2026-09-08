@@ -102,7 +102,7 @@ export default function() {
         const markdown = refMDX.current.getMarkdown()
 
         if(!markdown || markdown.trim().length === 0){
-            window.showToast('입력된 글이 없습니다', 'user-error')
+            window.showToast(t('toast.writer.noText'), 'user-error')
             return 
         }
 
@@ -117,9 +117,9 @@ export default function() {
             setIsTempSaveLoading(false)
             
             if(res != null)
-                window.showToast('임시 저장 되었습니다', 'info')
+                window.showToast(t('toast.writer.successSavingDraft'), 'info')
             else{
-                window.showToast('임시 저장에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.writer.failedSavingDraft'), 'system-error')
                 return
             }
         }
@@ -210,9 +210,9 @@ export default function() {
         setIsTempSaveLoading(false)
 
         if(success == true)
-            window.showToast('임시 저장 되었습니다', 'info')
+            window.showToast(t('toast.writer.successSavingDraft'), 'info')
         else
-            window.showToast('임시 저장에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.writer.failedSavingDraft'), 'system-error')
 
         setIsTouched(success == true ? false : true)
     }
@@ -259,9 +259,9 @@ export default function() {
             setIsTempSaveLoading(false)
 
             if(success == true)
-                window.showToast('임시 저장 되었습니다', 'info')
+                window.showToast(t('toast.writer.successSavingDraft'), 'info')
             else
-                window.showToast('임시 저장에 실패하였습니다', 'system-error')
+                window.showToast(t('toast.writer.failedSavingDraft'), 'system-error')
         }
 
         navigate(-1)
@@ -289,11 +289,11 @@ export default function() {
             const res = await ArticleAPI.deleteArticle(auth.jwt, state.id)
             
             if(res.success == false){
-                window.showToast('삭제가 실패하였습니다', 'system-error')
+                window.showToast(t('toast.writer.failedDeleting'), 'system-error')
                 return
             }
 
-            window.showToast('삭제 되었습니다', 'info')
+            window.showToast(t('toast.writer.successDeleting'), 'info')
 
             navigate(-1)
         }        

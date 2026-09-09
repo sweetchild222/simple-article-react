@@ -1,5 +1,7 @@
 import * as UserRepository from "./UserRepository.js";
 
+import I18n from './I18n.js'
+
 const replaceAsync = async(str, regex, asyncFn) => {
 
   const promises = []
@@ -15,7 +17,7 @@ const replaceAsync = async(str, regex, asyncFn) => {
 }
 
 
-const toUserLinkCore = async(matched)=> {
+const toUserLinkCore = async(matched)=> {  
         
   const match = matched.match(/\<user\>(.*?)\<\/user\>/)
 
@@ -31,7 +33,7 @@ const toUserLinkCore = async(matched)=> {
       const host = 'http://' + window.location.host
 
       if(user == null)
-          return '@알수없음 '
+          return '@' + I18n.t('system.unknown') + ' '
                   
       const link = '<a href=\"' + host + '/user/' + id + '\">'+ '@' + user.nickname + ' ' +'</a>'
   
@@ -56,7 +58,7 @@ const toUserNicknameCore = async(matched)=>{
       const user = await UserRepository.getByID(id)
 
       if(user == null)
-          return '@알수없음 '
+          return '@' + I18n.t('system.unknown') + ' '
       
       return '@' + user.nickname + ' '
   }
@@ -80,7 +82,7 @@ const toUserNicknameGreenCore = async(matched)=>{
       const user = await UserRepository.getByID(id)
 
       if(user == null)
-          return '@알수없음 '
+          return '@' + I18n.t('system.unknown') + ' '
       
       return '<span style="color:darkgreen;">@' + user.nickname + '</span>&nbsp'
   }
@@ -104,7 +106,7 @@ const toUserNicknameGrayCore = async(matched)=>{
       const user = await UserRepository.getByID(id)
 
       if(user == null)
-          return '@알수없음 '
+          return '@' + I18n.t('system.unknown') + ' '
       
       return '<span style="color:darkgray;">@' + user.nickname + '</span>&nbsp'
   }
@@ -115,7 +117,7 @@ const toUserNicknameGrayCore = async(matched)=>{
 
 
 export const toUserLink = async(content) => {
-          
+
   const regex = /\<user\>(.*?)\<\/user\>/g
 
   const replaceString = await replaceAsync(content, regex, toUserLinkCore)

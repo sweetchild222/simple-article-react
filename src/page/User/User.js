@@ -21,8 +21,8 @@ export default function() {
     const user_id = Integer(id)
 
     const {auth, validAuth} = useContext(AuthContext)    
-    const [user, setUser] = useState(null)    
-        
+    const [user, setUser] = useState(null)
+
     const navigate = useNavigate()
     
     useEffect(()=> {

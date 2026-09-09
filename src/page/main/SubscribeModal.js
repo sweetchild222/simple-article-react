@@ -11,7 +11,7 @@ import { GrPrevious } from "react-icons/gr";
 import { useTranslation } from 'react-i18next';
 
 
-export default function({ref, isOpen, onClose, subscribes}) {
+export default function({isOpen, onClose, subscribes}) {
 
   const { t } = useTranslation()
 

@@ -173,11 +173,11 @@ export default function({isOpen, onClose, onClickApply, categories}) {
 
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px'}}>
-              <Vertical ref={refListDiv} style={{alignItems: 'center', marginLeft:'16px', marginRight:'16px', marginTop:'8px', marginBottom:'8px'}}>  
+              <Vertical ref={refListDiv} style={{alignItems: 'center', marginLeft:'16px', marginRight:'16px', marginTop:'8px', marginBottom:'8px'}}>
                   {newCategories && newCategories.map((data, index) => 
                     <Horizental key={data.id} style={{ display: 'flex', flexDirection: 'row', marginTop:'8px', marginBottom:'8px'}}>
                       <input key={data.id} style={{color:'black', width:'256px'}} maxLength={16} defaultValue={data.name} onChange={(e)=> onChange(e, data.id)}/>
-                      <HPad size={8}/>                      
+                      <HPad size={8}/>
                       <PrettyButton type='transparent' style={{color:'black'}} onClick={() => onClickDelete(data.id)}><VscTrash style={{color: ((data.article_count > 0) ? 'gray' : 'black')}} size={25}/></PrettyButton>
                     </Horizental>
                   )}

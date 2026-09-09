@@ -18,7 +18,8 @@
     "subscribed": "구독중",
     "goback": "뒤로 가기",
     "close": "닫기",
-    "more" : "더 보기"
+    "more" : "더 보기",
+    "unknown": "알수없음"
   },
   "page":{
       "user":{
@@ -110,7 +111,6 @@
         "disgreat": "싫어요",
         "pasteText": "글을 입력하세요",
         "modified": "수정됨",
-        "unknown": "알수없음",
         "reply": "답글",
         "writeReply": "답글 작성",
         "writeComment": "댓글 작성",

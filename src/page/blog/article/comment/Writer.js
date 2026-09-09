@@ -61,7 +61,7 @@ export default function(props) {
                 <div style={{display:'flex', flexDirection: 'row', width:'100%', justifyContent:'end', alignItems:'center'}}>
                     <label>{inputLength}</label>
                     <HPad size={8}/>
-                    <PrettyButton isLoading={isPostLoading} type={'success'} onClick={()=>onClickPost()} style={{width:'64px'}}>{t('system.upload')}</PrettyButton>
+                    <PrettyButton isLoading={isPostLoading} type={'success'} onClick={()=>onClickPost()} style={{width:'64px'}}>{t('system.post')}</PrettyButton>
                     <HPad size={8}/>
                     <PrettyButton disabled={isPostLoading ? true : false} type={'cancel'} onClick={()=>onClickCancel()} style={{width:'64px'}}>{t('system.cancel')}</PrettyButton>
                 </div>

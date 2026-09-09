@@ -126,44 +126,44 @@
   "toast":{
       "appBarBlog":{
         "requireLogin":"로그인 해주세요",
-        "cannotSubscribeInfo":"구독 정보를 가져 올 수 없습니다",
-        "cancelSubscribed":"구독을 취소하였습니다",
-        "failedCancelSubscribed":"구독 취소에 실패하였습니다",
-        "successSubscribe":"구독하였습니다",
-        "failedSubscribe":"구독에 실패하였습니다"
+        "cannotSubscribeInfo":"구독 정보 가져오기 실패",
+        "cancelSubscribed":"구독을 취소함",
+        "failedCancelSubscribed":"구독 취소 실패",
+        "successSubscribe":"구독함",
+        "failedSubscribe":"구독 실패"
       },
       "categories":{
-        "failedGettingCategory":"카테고리 가져오기가 실패하였습니다",
+        "failedGettingCategory":"카테고리 가져오기 실패",
         "noCategory":"카테고리가 없습니다",
-        "successDeletingCategory":"{{name}}은 삭제 되었습니다",
-        "failedDeletingCategory":"{{name}}의 삭제가 실패하였습니다",
-        "successAddingCategory":"{{name}}이 추가 되었습니다",
-        "failedAddingCategory":"{{name}} 추가에 실패하였습니다",
-        "successChangingName":"{{name}}로 이름이 변경 되었습니다",
-        "failedChangingName":"{{name}}로 이름 변경이 실패하였습니다",
-        "noChanged":"카테고리가 변경되지 않았습니다"
+        "successDeletingCategory":"{{name}} 삭제됨",
+        "failedDeletingCategory":"{{name}} 삭제 실패",
+        "successAddingCategory":"{{name}} 추가됨",
+        "failedAddingCategory":"{{name}} 추가 실패",
+        "successChangingName":"{{name}}로 변경됨",
+        "failedChangingName":"{{name}}로 변경 실패",
+        "noChanged":"변경된 내용이 없습니다"
       },
       "createArticle":{
-        "failedWritingArticle":"작성 중인 글 가져오기가 실패하였습니다",
+        "failedWritingArticle":"작성 중인 글 가져오기 실패",
         "tooMuchWritingArticle":"작성 중인 글이 너무 많습니다 ({{maxWritingCount}}개 이하)",
-        "failedSearchCategory":"카테고리를 찾을 수 없습니다",
-        "failedCreatingArticle":"새 글 생성에 실패하였습니다"                
+        "failedSearchCategory":"카테고리 찾기 실패",
+        "failedCreatingArticle":"새 글 생성 실패"
       },
       "header":{
-        "unavailableFile":"파일을 사용할 수 없습니다",
-        "failedSettingBlogImage":"블로그 이미지 설정에 실패하였습니다",
+        "unavailableFile":"사용할 수 없는 파일",
+        "failedSettingBlogImage":"블로그 이미지 설정 실패",
         "noTitle":"제목이 없습니다",
-        "failedModifyBlogTitle":"블로그 제목 수정에 실패하였습니다",
-        "successModifyBlogTitle":"블로그 제목을 수정하였습니다",
+        "failedModifyBlogTitle":"블로그 제목 수정 실패",
+        "successModifyBlogTitle":"블로그 제목 수정됨",
         "requireLogin":"로그인 해주세요",
-        "failedGettingSubscribe":"구독 정보를 가져 올 수 없습니다",
-        "cancelSubscribed":"구독을 취소하였습니다",
-        "failedCancelSubscribed":"구독 취소에 실패하였습니다",
-        "successSubscribe":"구독하였습니다",
-        "failedSubscribe":"구독에 실패하였습니다"
+        "failedGettingSubscribe":"구독 정보 가져오기 실패",
+        "cancelSubscribed":"구독이 취소됨",
+        "failedCancelSubscribed":"구독 취소 실패",
+        "successSubscribe":"구독함",
+        "failedSubscribe":"구독 실패"
       },
       "articleItem":{
-        "failedWritingArticle":"작성 중인 글 가져오기가 실패하였습니다"
+        "failedWritingArticle":"작성 중인 글 가져오기 실패"
       },
       "configurationCategoryModal":{
         "pasteCategoryName":"카테고리 이름을 입력하세요",
@@ -172,81 +172,81 @@
         "cannotDeleteCategory": "글이 있는 카테고리는 삭제 할 수 없습니다"
       },
       "recents":{
-        "failedGettingNewArticle":"최근 작성한 글을 가져오기에 실패하였습니다"
+        "failedGettingNewArticle":"최근 작성한 글 가져오기 실패"
       },
       "article":{
-        "failedModifyingArticle": "수정 중인 글을 찾는데 실패하였습니다",
-		    "failedCreatingModifyingArticle": "수정 글 생성에 실패하였습니다",
-		    "successCreatingModifyingArticle": "수정 글을 생성하였습니다",
-		    "moveModifyingArticle": "이미 수정 중인 글로 이동합니다",
-		    "failedDeleteArticle": "삭제가 실패하였습니다",
-		    "successDeleteArticle": "삭제 되었습니다"
+        "failedModifyingArticle": "수정 중인 글 찾기 실패",
+		    "failedCreatingModifyingArticle": "수정 글 생성 실패",
+		    "successCreatingModifyingArticle": "수정할 글이 생성됨",
+		    "moveModifyingArticle": "수정 중인 글로 이동",
+		    "failedDeleteArticle": "삭제 실패",
+		    "successDeleteArticle": "삭제됨"
       },
       "bookmark":{
         "requireLogin": "로그인 해주세요",
-		    "failedGettingBookmark": "북마크를 가져오기가 싶패하였습니다",
-		    "cancelBookmark": "북마크를 취소하였습니다",
-		    "failedCancelBookmark": "북마크 취소에 실패하였습니다",
-		    "successBookmark": "북마크하였습니다",
-		    "failedBookmark": "북마크에 실패하였습니다"
+		    "failedGettingBookmark": "북마크 가져오기 실패",
+		    "cancelBookmark": "북마크가 취소됨",
+		    "failedCancelBookmark": "북마크 취소 실패",
+		    "successBookmark": "북마크됨",
+		    "failedBookmark": "북마크 실패"
       },
       "articleGreat":{
-        "failedChanging": "{{great}}로 변경에 실패하였습니다",
-		    "successChanging": "{{great}}로 변경하였습니다",
-		    "failedCancel": "{{great}} 취소를 실패하였습니다",
-		    "successCancel": "{{great}} 취소를 성공하였습니다",
-		    "failedGreat": "{{great}}에 실패하였습니다",
-		    "successGreat": "{{great}}에 성공하였습니다",
+        "failedChanging": "{{great}}로 변경 실패",
+		    "successChanging": "{{great}}로 변경됨",
+		    "failedCancel": "{{great}} 취소 실패",
+		    "successCancel": "{{great}} 취소됨",
+		    "failedGreat": "{{great}} 실패",
+		    "successGreat": "{{great}}",
 		    "requireLogin": "로그인 해주세요",
         "great":"좋아요",
         "disgreat":"싫어요"
       },
       "commentList":{
-        "failedGettingComment": "댓글 가져오기에 실패하였습니다",
-        "failedDeletingComment": "댓글 삭제에 실패하였습니다",
-        "successDeletingComment": "댓글을 삭제 하였습니다",
+        "failedGettingComment": "댓글 가져오기 실패",
+        "failedDeletingComment": "댓글 삭제 실패",
+        "successDeletingComment": "댓글이 삭제됨",
         "requireLogin": "로그인 해주세요",
         "noText": "입력된 글이 없습니다",
-        "failedWritingComment": "댓글 작성에 실패하였습니다",
-        "failedWritingReply": "답글 작성에 실패하였습니다",
-        "successWritingComment": "댓글이 작성 되었습니다",
+        "failedWritingComment": "댓글 작성 실패",
+        "failedWritingReply": "답글 작성 실패",
+        "successWritingComment": "댓글이 작성됨",
         "noModified": "수정된 내용이 없습니다",
-        "failedModifying": "수정에 실패하였습니다",
-        "sucessWritingReply": "답글이 작성 되었습니다",
-        "successModifying": "수정 하였습니다"
+        "failedModifying": "수정 실패",
+        "sucessWritingReply": "답글이 작성됨",
+        "successModifying": "수정됨"
       },
       "commentGreat":{
-        "failedChanging": "{{great}}로 변경에 실패하였습니다",
-		    "successChanging": "{{great}}로 변경하였습니다",
-		    "failedCancel": "{{great}} 취소를 실패하였습니다",
-		    "successCancel": "{{great}} 취소를 성공하였습니다",
-		    "failedGreat": "{{great}}에 실패하였습니다",
-		    "successGreat": "{{great}}에 성공하였습니다",
+        "failedChanging": "{{great}}로 변경 실패",
+		    "successChanging": "{{great}}로 변경됨",
+		    "failedCancel": "{{great}} 취소 실패",
+		    "successCancel": "{{great}} 취소됨",
+		    "failedGreat": "{{great}} 실패",
+		    "successGreat": "{{great}}",
 		    "requireLogin": "로그인 해주세요",
         "great":"좋아요",
         "disgreat":"싫어요"
       },
       "posting":{
-        "failedGettingCategory": "카테고리 가져오기에 실패하였습니다",
-		    "unavailableFile": "파일을 사용할 수 없습니다",
-		    "failedSettingThumbnail": "썸네일 설정에 실패하였습니다",
+        "failedGettingCategory": "카테고리 가져오기 실패",
+		    "unavailableFile": "사용할 수 없는 파일",
+		    "failedSettingThumbnail": "썸네일 설정 실패",
 		    "noCategory": "카테고리가 설정되지 않았습니다",
 		    "pasteTitle": "제목을 입력하세요",
-		    "failedModifyingArticle": "글 수정에 실패하였습니다",
-		    "failedPostingArticle": "글 등록에 실패하였습니다",
-		    "modifiedArticle": "글이 수정 되었습니다",
-        "postedArticle":"글이 등록 되었습니다",
-        "failedDeleting":"삭제가 실패하였습니다",
-		    "successDeleting":"삭제 되었습니다",
-		    "failedDraftedSavingArticle":"글의 임시 저장에 실패하였습니다",
-		    "successDraftedSavingArticle":"글이 임시 저장 되었습니다"
+		    "failedModifyingArticle": "글 수정 실패",
+		    "failedPostingArticle": "글 등록 실패",
+		    "modifiedArticle": "글이 수정됨",
+        "postedArticle":"글이 등록됨",
+        "failedDeleting":"삭제 실패",
+		    "successDeleting":"삭제됨",
+		    "failedDraftedSavingArticle":"임시 저장 실패",
+		    "successDraftedSavingArticle":"임시 저장이 성공함"
       },
       "writer":{
         "noText": "입력된 글이 없습니다",
-		    "successSavingDraft": "임시 저장 되었습니다",
-		    "failedSavingDraft": "임시 저장에 실패하였습니다",
-		    "failedDeleting": "삭제가 실패하였습니다",
-		    "successDeleting": "삭제 되었습니다"
+		    "successSavingDraft": "임시 저장이 성공함",
+		    "failedSavingDraft": "임시 저장 실패",
+		    "failedDeleting": "삭제 실패",
+		    "successDeleting": "삭제됨"
       },
       "appBarMain":{
         "requireLogin": "로그인 해주세요",
@@ -255,7 +255,7 @@
 		    "noBookmark": "북마크한 글이 없습니다"
       },
       "home":{
-        "failedGettingArticle": "글을 가져오기가 실패하였습니다"
+        "failedGettingArticle": "글 가져오기 실패"
       },
       "sidebar":{
         "requireLogin": "로그인 해주세요",
@@ -264,19 +264,19 @@
       "configuration":{
         "successLogout": "로그아웃 하였습니다",
         "notSupportMobile": "모바일에서는 프로필 설정을 지원하지 않습니다",
-        "unavailableFile": "파일을 사용할 수 없습니다",
-        "failedProfile": "프로필 설정에 실패하였습니다",
+        "unavailableFile": "사용할 수 없는 파일",
+        "failedProfile": "프로필 설정 실패",
         "pasteCurrentPassword": "현재 비밀번호를 입력하세요",
         "wrongPassword": "비밀번호가 틀렸습니다",
-        "failedWithdrawal": "회원 탈퇴가 실패하였습니다",
-        "successWithdrawal": "회원 탈퇴가 되었습니다",
+        "failedWithdrawal": "회원 탈퇴 실패",
+        "successWithdrawal": "회원을 탈퇴함",
         "pasteNickname": "닉네임을 입력하세요",
-        "failedModifyingNickname": "닉네임 수정에 실패하였습니다",
-        "successModifyingNickname": "닉네임이 수정 되었습니다"
+        "failedModifyingNickname": "닉네임 수정 실패",
+        "successModifyingNickname": "닉네임을 수정함"
       },
       "login":{
-        "failedLogin": "로그인이 실패하였습니다",
-		    "successLogin": "로그인 되었습니다"
+        "failedLogin": "로그인 실패",
+		    "successLogin": "로그인됨"
       },
       "passwordModal":{
         "pasteCurrentPassword": "현재 비밀번호를 입력하세요",
@@ -284,30 +284,30 @@
 		    "pasteComfirmPassword": "비밀번호 확인을 입력하세요",
 		    "notMatchPassword": "새 비밀번호와 비밀번호 확인이 일치하지 않습니다",
 		    "notMeetRequirementPassword": "새 비밀번호가 조건에 맞지 않습니다",
-		    "failedChangingPassword": "비밀번호 변경이 실패하였습니다",
-		    "successChangingPassword": "비밀번호가 변경 되었습니다"
+		    "failedChangingPassword": "비밀번호 변경 실패",
+		    "successChangingPassword": "비밀번호가 변경됨"
       },
       "passwordReset":{
         "invalidEmail": "잘못된 형식의 이메일입니다",
 		    "noEmail": "입력한 이메일을 찾을 수 없습니다",
-		    "successSendVerificationCode": "인증코드가 발송 되었습니다",
-		    "failedSendVerificationCode": "인증코드 발송이 실패하였습니다",		
+		    "successSendVerificationCode": "인증코드가 발송됨",
+		    "failedSendVerificationCode": "인증코드 발송 실패",		
 		    "wrongVerificationCode": "인증코드를 잘못 입력하였습니다",
-		    "successVerified": "인증 되었습니다",
-		    "failedVerified": "인증에 실패하였습니다",		
-		    "failedSendingTemporaryPassword": "임시 비밀번호 발송에 실패하였습니다",
-		    "successSendingTemporaryPassword": "임시 비밀번호가 발송 되었습니다"
+		    "successVerified": "인증됨",
+		    "failedVerified": "인증 실패",		
+		    "failedSendingTemporaryPassword": "임시 비밀번호 발송 실패",
+		    "successSendingTemporaryPassword": "임시 비밀번호 발송됨"
       },
       "regist":{
         "invalidEmail": "잘못된 형식의 이메일입니다",
-        "successSendVerificationCode": "인증코드가 발송 되었습니다",
-        "failedSendVerificationCode": "인증코드 발송이 실패하였습니다",
+        "successSendVerificationCode": "인증코드가 발송됨",
+        "failedSendVerificationCode": "인증코드 발송 실패",
         "existRegistedUser": "이미 가입한 사용자입니다",
         "wrongVerificationCode": "인증코드를 잘못 입력하였습니다",
-        "successVerified": "인증 되었습니다",
-        "failedVerified": "인증에 실패하였습니다",
-        "failedRegistUser": "회원 가입이 실패하였습니다",
-        "successRegistUser": "회원 가입이 되었습니다",
+        "successVerified": "인증됨",
+        "failedVerified": "인증 실패",
+        "failedRegistUser": "회원 가입 실패",
+        "successRegistUser": "회원이 가입됨",
         "existUser": "이미 존재하는 사용자입니다"
       }
   },

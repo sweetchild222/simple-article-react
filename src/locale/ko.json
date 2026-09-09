@@ -65,7 +65,10 @@
       },
       "common":{
         "errorOccured": "오류가 발생하였습니다",
-		    "contactSiteAdminisrator": "관리자에게 문의하세요"
+		    "contactSiteAdminisrator": "관리자에게 문의하세요",
+        "sessionTimeout": "세션이 만료 되었습니다. 다시 로그인 해주세요",
+		    "relogin": "로그인 다시 하기",
+		    "pageNotFound": "페이지를 찾을 수 없습니다"
       }
   },
   "toast":{

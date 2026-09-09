@@ -127,7 +127,7 @@ export default function() {
   const onClickNewest = async()=> {
         
     setCurrentType(0)
-    setOffset(0)
+    setOffset(0)    
   }
 
   const onClickFavorite = async()=>{

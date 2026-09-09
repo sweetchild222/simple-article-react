@@ -20,7 +20,7 @@ class ErrorCatch extends React.Component {
   }
 
   componentDidCatch(error, info) {
-        
+    
     const stack = info.componentStack
     
     const errorMsg = `${error.toString()}\n${stack}`
@@ -36,8 +36,8 @@ class ErrorCatch extends React.Component {
 
       return (
               <Vertical style={{alignItems: 'center'}}>
-                <h1>{t('page.entry.errorOccured')}</h1>
-                <h1>{t('page.entry.contactSiteAdminisrator')}</h1>
+                <h1>{t('page.common.errorOccured')}</h1>
+                <h1>{t('page.common.contactSiteAdminisrator')}</h1>
               </Vertical>
             )
     }

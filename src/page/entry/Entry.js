@@ -24,7 +24,7 @@ import {VPad} from "@gui/Pad.js";
 import '@util/I18n.js';
 
 import './Entry.css'
-import ErrorCatch from './ErrorCatch.js'
+import ErrorCatch from '../common/ErrorCatch.js'
 
 const Aplication = function() {
 

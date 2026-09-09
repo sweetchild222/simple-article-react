@@ -3,10 +3,13 @@ import PrettyButton from "@gui/PrettyButton.js"
 import {Vertical} from "@gui/Flex.js";
 import {VPad} from "@gui/Pad.js";
 import ReactDOM from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
 
 export default function({isOpen, onClose, onSelect, categories}) {
-      
+  
+  const { t } = useTranslation()
+
   const refDialog = useRef(null)
   const refListDiv = useRef(null)
   
@@ -47,7 +50,7 @@ export default function({isOpen, onClose, onSelect, categories}) {
                     <PrettyButton type={'transparent'} key={data.id} style={{color:'black', marginTop:'4px', marginBottom:'4px', fontSize:'16px'}} onClick={()=>onSelectInner(data)}>{data.name + ' (' + data.article_count + ')'}</PrettyButton>
                   )}
                 <VPad size={8}></VPad>
-                <PrettyButton type='cancel' onClick={onClose} style={{width:'64px', alignSelf:'end'}}>닫기</PrettyButton>
+                <PrettyButton type='cancel' onClick={onClose} style={{width:'64px', alignSelf:'end'}}>{t('system.close')}</PrettyButton>
               </Vertical>
           </dialog>,
           document.getElementById('modal-root')

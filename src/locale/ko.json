@@ -84,6 +84,37 @@
 		    "wantDelete": "정말 삭제 하시겠습니까?",
 		    "completeModify": "수정 완료",
 		    "completeWrite": "작성 완료"
+      },
+
+      "blog":{
+        "recentArticle": "최근 글",
+        "failedLoad": "불러오기 실패",
+        "noArticleInCategory": "카테고리에 글이 없습니다",
+        "pasteBlogTitle": "블로그 제목을 입력하세요",
+        "modifyTitle": "제목 수정",
+        "modifyBackground": "배경 수정",
+        "subscriber": "구독자",
+        "writeNewArticle": "새글 작성",
+        "daily": "일상",
+        "travel": "여행",
+        "cook": "요리",
+        "health": "건강",
+        "restaurant": "맛집",
+        "category": "카테고리",
+        "loading": "로딩중",
+        "modifyCategory": "카테고리 수정",
+        "noContent": "내용 없음",
+        "othersInCategory":"카테고리의 다른 글",
+        "wantDelete": "정말 삭제 하시겠습니까?",
+        "great": "좋아요",
+        "disgreat": "싫어요",
+        "pasteText": "글을 입력하세요",
+        "modified": "수정됨",
+        "unknown": "알수없음",
+        "reply": "답글",
+        "writeReply": "답글 작성",
+        "writeComment": "댓글 작성",
+        "comment": "댓글"
       }
   },
   "toast":{

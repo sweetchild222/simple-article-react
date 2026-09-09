@@ -54,7 +54,7 @@ export default function({blog_id, article_id, category_id, category_name}) {
 
     return articles ? (
         <Vertical style={{width:'100%'}}>
-            <div style={{marginBottom:'8px', fontSize:'14px', color:'dimgray'}}>{'\'' + category_name + '\' ≫ 카테고리의 다른 글'}</div>
+            <div style={{marginBottom:'8px', fontSize:'14px', color:'dimgray'}}>{'\'' + category_name + '\' ≫ ' + t('page.blog.othersInCategory')}</div>
             <Vertical style={{alignItems:'left', padding:'8px', borderRadius:'3px', backgroundColor:'#EDEFF4', border:'1px solid #E4E6EA'}}>
                 {articles.toReversed().map((data, index) => 
                     <Horizental key={data.id} style={{alignItems:'center'}}>

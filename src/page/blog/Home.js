@@ -166,15 +166,15 @@ export default function() {
                     {articles.map((data, index) => <ArticleItem key={data.id} article={data} categoryName={getCategoryName(data.category_id)} style={{margin:'8px'}}/>)}
                   </div>
                   <Horizental style={{width:'100%', justifyContent:'center'}}>
-                    {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}                    
+                    {selectedCategory.article_count > countPerPage && <Pagination key={reloadKey} totalPageCount={Math.ceil(selectedCategory.article_count / countPerPage)} displayPageCount={3} onClickPage={onClickPage}/>}
                   </Horizental>
                 </Vertical>) : 
                 (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center'}}>
                   {<img src={'/image/empty.png'} style={{width:'128px', height: '128px', height: '128px', marginTop:'64px', marginBottom:'16px'}}/>}
-                  {<div style={{fontSize:'18px'}}>{'카테고리에 글이 없습니다'}</div>}
+                  {<div style={{fontSize:'18px'}}>{t('page.blog.noArticleInCategory')}</div>}
                 </Vertical>)
               )}
-              {!isSuccess && <Horizental style={{justifyContent:'center', alignItems:'center',  marginTop:'32px'}}>{'불러오기 실패'}</Horizental>}
+              {!isSuccess && <Horizental style={{justifyContent:'center', alignItems:'center',  marginTop:'32px'}}>{t('page.blog.failedLoad')}</Horizental>}
           </Vertical>
           {isSpinner && <Spinner type={'absolute'}/>}
           </div>
@@ -205,11 +205,11 @@ export default function() {
                   </Vertical>) : 
                   (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%'}}>
                     {<img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'64px', marginBottom:'16px'}}/>}
-                    {<div style={{fontSize:'18px', marginBottom:'16px'}}>{'카테고리에 글이 없습니다'}</div>}
+                    {<div style={{fontSize:'18px', marginBottom:'16px'}}>{t('page.blog.noArticleInCategory')}</div>}
                     {isEditable() && <CreateArticle blogId={blog_id} categoryId={findCategoryId(selectedCategory)}/>}
-                  </Vertical>)                              
+                  </Vertical>)
                 )}
-                {!isSuccess && <Horizental style={{justifyContent:'center', alignItems:'center',  marginTop:'32px'}}>{'불러오기 실패'}</Horizental>}
+                {!isSuccess && <Horizental style={{justifyContent:'center', alignItems:'center',  marginTop:'32px'}}>{t('page.blog.failedLoad')}</Horizental>}
             </Vertical>
             {isSpinner && <Spinner type={'absolute'}/>}
           </div>

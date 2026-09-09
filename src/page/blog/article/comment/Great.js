@@ -192,14 +192,14 @@ export default function({comment_id, greatSet, style}) {
 
     return greatSet ? (
         <Horizental key={reloadKey} style={{alignItems:'center', ...style}}>
-            <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
+            <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={t('page.blog.great')} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                 {greatSet.great == 1 && <FaThumbsUp size={22}/>}
                 {greatSet.great != 1 && <FaRegThumbsUp size={22}/>}
                 <HPad size={4}/>
                 <div>{CountWithUnit(greatSet.like_count)}</div>
             </PrettyButton>
             <HPad size={16}/>
-            <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
+            <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={t('page.blog.disgreat')} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
                 {greatSet.great == -1 && <FaThumbsDown size={22}/>}
                 {greatSet.great != -1 && <FaRegThumbsDown size={22}/>}
                 <HPad size={4}/>

@@ -32,8 +32,7 @@ export default function({article_id, article_user_id}) {
     const location = useLocation()
 
     const {auth, validAuth} = useContext(AuthContext)
-    const [comments, setComments] = useState(null)
-    const [greats, setGreats] = useState(null)
+    const [comments, setComments] = useState(null)    
     const [openReplyEditCommentId, setOpenReplyEditCommentId] = useState(-1)
     const [isOpenCommentEdit, setIsOpenCommentEdit] = useState(false)
     const [modifyModeCommentId, setModifyModeCommentId] = useState(-1)
@@ -494,41 +493,6 @@ export default function({article_id, article_user_id}) {
     }
 
 
-    const findGreatValue = (comment_id)=>{
-
-        if(greats == null)
-            return 0
-
-        const find = greats.find(great => great.comment_id == comment_id)
-
-        if(find == null)
-            return 0
-
-        return find.great
-    }
-
-
-    const onUpdateGreat = (comment_id, great, like_count, dislike_count) =>{
-                
-        const findGreat = greats.find(great => great.comment_id == comment_id)
-                            
-        if(findGreat != null){
-            findGreat.great = great
-            setGreats(structuredClone(greats))
-        }
-        else
-            greats.push({article_id:article_id, comment_id:comment_id, great:great, user_id:auth.user_id, id:5})
-        
-        const comment = findComment(comment_id)
-
-        if(comment != null){
-            comment.like_count = like_count
-            comment.dislike_count = dislike_count
-            setComments(comments)
-        }
-    }
-
-
     return comments ? (
         <Vertical style={{marginTop:'16px', width:'100%'}}>
             {isOpenCommentEdit && <Writer onPostText={onPostComment} atCandidates={atCandidates} onCancel={()=>{setIsOpenCommentEdit(false)}}/>}
@@ -536,7 +500,7 @@ export default function({article_id, article_user_id}) {
                 {comments.length > 0 && 
                     <PrettyButton type={'transparent'} style={{color:'black', alignSelf:'flex-start'}} onClick={()=> setIsShowComments(item => !item)}>
                         <Horizental>
-                            {'댓글 (' + comments.length + ')'}
+                            {t('page.blog.comment') + ' (' + comments.length + ')'}
                         </Horizental>
                         <div style={{width:'8px'}}/>
                         {isShowComments ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
@@ -544,7 +508,7 @@ export default function({article_id, article_user_id}) {
                 }
 
                 <div style={{flex:'1'}}></div>
-                {!isOpenCommentEdit && <PrettyButton type={'default'}  onClick={onOpenCommentEdit}>{'댓글 작성'}</PrettyButton>}
+                {!isOpenCommentEdit && <PrettyButton type={'default'}  onClick={onOpenCommentEdit}>{t('page.blog.writeComment')}</PrettyButton>}
             </Horizental>
             
             {isShowComments && comments.map((data, index) => 
@@ -559,8 +523,8 @@ export default function({article_id, article_user_id}) {
                         
                         <Vertical style={{width:'100%'}}>
                             <Horizental>
-                                <div className={'clamped-text'} style={{'--line-count':1, fontSize:'14px', marginRight:'8px', color:'gray'}}>{data.user != null ? data.user.nickname : '알수없음'}</div>
-                                <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(수정됨)' : '')}</div>
+                                <div className={'clamped-text'} style={{'--line-count':1, fontSize:'14px', marginRight:'8px', color:'gray'}}>{data.user != null ? data.user.nickname : t('page.blog.unknown')}</div>
+                                <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(data.create_at) + (data.update_at ? '(' + t('page.blog.modified') + ')' : '')}</div>
                             </Horizental>
                             
                             <VPad size={4}/>
@@ -576,7 +540,7 @@ export default function({article_id, article_user_id}) {
                             {!(modifyModeCommentId == data.id) && 
                                 <Horizental style={{justifyContent:'space-between', marginBottom:'4px'}}>
                                     <Great comment_id={data.id} greatSet={data.greatSet}></Great>
-                                    <PrettyButton type={'default'} tooltip={'답글 작성'} onClick={() => onClickReplyEditOpen(data.id)}>{'답글 작성'}</PrettyButton>
+                                    <PrettyButton type={'default'} tooltip={t('page.blog.writeReply')} onClick={() => onClickReplyEditOpen(data.id)}>{t('page.blog.writeReply')}</PrettyButton>
                                 </Horizental>
                             }
 
@@ -590,7 +554,7 @@ export default function({article_id, article_user_id}) {
 
                             {data.replies.length > 0 &&
                                 <PrettyButton id={'replyButton'} type={'transparent'} style={{marginBottom:'10px', color:'black', alignSelf:'flex-start'}} onClick={()=> onClickShowReplies(data.id)}>
-                                    {'답글 (' + data.replies.length + ')'}
+                                    {t('page.blog.reply') + ' (' + data.replies.length + ')'}
                                     <HPad size={8}/>
                                     {isShowReplies(data.id) ? <SlArrowUp size={16}/> : <SlArrowDown size={16}/>}
                                 </PrettyButton>
@@ -606,8 +570,8 @@ export default function({article_id, article_user_id}) {
                                     </Vertical>
                                     <Vertical style={{width:'100%'}}>
                                         <Horizental>
-                                            <div className={'clamped-text'} style={{'--line-count':1, fontSize:'14px', marginRight:'8px', color:'gray'}}>{reply.user != null ? data.user.nickname : '알수없음'}</div>
-                                            <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(수정됨)' : '')}</div>
+                                            <div className={'clamped-text'} style={{'--line-count':1, fontSize:'14px', marginRight:'8px', color:'gray'}}>{reply.user != null ? data.user.nickname : t('page.blog.unknown')}</div>
+                                            <div style={{fontSize:'14px', color:'gray', whiteSpace:'pre'}}>{ElapsedTime(reply.create_at) + (reply.update_at ? '(' + t('page.blog.modified') + ')' : '')}</div>
                                         </Horizental>
 
                                         <VPad size={4}/>

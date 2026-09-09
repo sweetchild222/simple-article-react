@@ -281,7 +281,7 @@ export default function() {
                         <Horizental style={{alignItems: 'center'}}>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{nickname != null ? '@' + nickname: ' ' }</label>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'  •  '}</label>
-                            <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'구독자 ' + (subscribeCount != null ? CountWithUnit(subscribeCount) : '')}</label>
+                            <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{t('page.blog.subscriber') + ' ' + (subscribeCount != null ? CountWithUnit(subscribeCount) : '')}</label>
                             <HPad size={8}/>
                             {!isEditable() && isSubscribe != null && <PrettyButton tooltip={t('system.subscribe')} type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe} style={{minWidth:'64px'}}>{isSubscribe ? t('system.subscribed') : t('system.subscribe')}</PrettyButton>}
                         </Horizental>
@@ -289,10 +289,10 @@ export default function() {
                             <div className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1, color:'white', fontSize:'24px', borderColor:'white'}}>{blog.title}</div>
                             {isEditable() && <Horizental>
                                 <HPad size={8}/>
-                                <PrettyButton tooltip='제목 수정' type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>
-                                <Modal title= {'블로그 제목을 입력하세요'} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
+                                <PrettyButton tooltip={t('page.blog.modifyTitle')} type='transparent' onClick={onClickEditTitle}><MdEdit size={30}/></PrettyButton>
+                                <Modal title= {t('page.blog.pasteBlogTitle')} type={'input'} defaultValue={blog.title} isCloseOutsideClick={false} isOpen={isBlogTitleModalOpen} maxLength={256} onInput={onInputBlogTitle} onClose={()=>setIsBlogTitleModalOpen(false)}></Modal>
                                 <HPad size={8}/>
-                                <PrettyButton tooltip='배경 수정' type='transparent' onClick={onClickEditImage}><RiImageAiFill size={30}/></PrettyButton>
+                                <PrettyButton tooltip={t('page.blog.modifyBackground')} type='transparent' onClick={onClickEditImage}><RiImageAiFill size={30}/></PrettyButton>
                                 {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickImageApply} keepRatio={1.7}></ImageCropModal>}
                             </Horizental>}
                         </Horizental>

@@ -131,7 +131,7 @@ export default function({isOpen, onClose, onClickApply, categories}) {
 
     const randomId = random(0, 100000) // avoid warning Duplicate form field id in the same form
 
-    const radomNames = ['일상', '여행', '요리', '건강', '맛집']
+    const radomNames = [t('page.blog.daily'), t('page.blog.travel'), t('page.blog.cook'), t('page.blog.health'), t('page.blog.restaurant')]
 
     const categorie = {id:randomId, name:radomNames[random(0, radomNames.length - 1)], is_default:0, article_count:0}
 

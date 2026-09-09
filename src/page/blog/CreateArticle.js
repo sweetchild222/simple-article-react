@@ -72,7 +72,7 @@ export default function({blogId, categoryId}) {
 
     return (
         <Vertical style={{alignItems:'right'}}>
-            <PrettyButton type={'default'} tooltip='새글 작성' style={{marginTop:'8px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}>{'새글 작성'}</PrettyButton>
+            <PrettyButton type={'default'} tooltip='새글 작성' style={{marginTop:'8px',  whiteSpace: 'nowrap'}} onClick={onClickNewArticle}>{t('page.blog.writeNewArticle')}</PrettyButton>
         </Vertical>
     )
 }

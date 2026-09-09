@@ -2,10 +2,13 @@ import {useState, useEffect, useRef, useImperativeHandle, useCallback} from "rea
 
 import getCaretCoordinates from 'textarea-caret';
 import PrettyButton from "@gui/PrettyButton.js";
+import { useTranslation } from 'react-i18next';
 
 import './TextArea.css'
 
 export default function({ref, comment, atCandidates, onInput, maxCharLength = 1000}) {
+
+    const { t } = useTranslation()
         
     const [menuPosition, setMenuPosition] = useState(null)
     const [focusItemIndex, setFocusItemIndex] = useState(null)
@@ -265,7 +268,7 @@ export default function({ref, comment, atCandidates, onInput, maxCharLength = 10
     return (
             <div style={{width:'100%'}}>
                 {<div style={{display:'grid', gridTemplateColumns:'1fr', width:'100%'}}>
-                    <textarea ref={refTextArea} className={'area'}  placeholder={'글을 입력하세요'} defaultValue={comment} suppressContentEditableWarning={true} maxLength={maxCharLength}
+                    <textarea ref={refTextArea} className={'area'}  placeholder={t('page.blog.pasteText')} defaultValue={comment} suppressContentEditableWarning={true} maxLength={maxCharLength}
                     style={{width:'100%',  minHeight: '4lh', maxHeight:'6lh', resize:'none',  border:'1px solid lightgray', fieldSizing: 'content', overflowY:'auto', padding:'4px', borderRadius:'3px'}} onInput={onInputInner}/>
                 </div>
                 }

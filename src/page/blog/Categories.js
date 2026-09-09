@@ -272,16 +272,16 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
             </Horizental>
         ) : <Horizental>
                 <HPad size={8}/>
-                <PrettyButton style={{fontSize:'16px', backgroundColor:'#faebd7', color:'black'}}>{'로딩중'}</PrettyButton>
+                <PrettyButton style={{fontSize:'16px', backgroundColor:'#faebd7', color:'black'}}>{t('page.blog.loading')}</PrettyButton>
             </Horizental>
     }
     else{
         return categories ? (
             <Vertical>
-                <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'8px'}}>카테고리</label>
+                <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'8px'}}>{t('page.blog.category')}</label>
                 <Vertical style={{alignItems:'start', padding:'4px 8px 4px 8px', borderRadius:'3px', backgroundColor:'`#EDEFF4', border:'1px solid #E4E6EA'}}>
                     {categories.map((data, index) => <div key={data.id} className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', marginTop:'8px', marginBottom:'8px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</div>)}
-                    {isEditable() && <div title='카테고리 수정' style={{color:'black', cursor:'pointer', marginTop:'16px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={26}/></div>}
+                    {isEditable() && <div title={t('page.blog.modifyCategory')} style={{color:'black', cursor:'pointer', marginTop:'16px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={26}/></div>}
                     {isEditable() && isOpenCategoryModal && <ConfigurationCategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => (item.static == false))}></ConfigurationCategoryModal>}
                 </Vertical>
             </Vertical>

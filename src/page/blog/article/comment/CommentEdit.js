@@ -99,7 +99,6 @@ export default function({comment, editable, onClickModifyComplete, onClickModify
         if(onClickModifyCancel)
             onClickModifyCancel()
     }
-        
 
     return seenComment ? (
             <Vertical className={backgroundSmooth == true ? 'background-smooth' : ''} style={{position:'relative', justifyContent:'end', alignItems:'start', width:editable ? '100%' : 'auto'}}>

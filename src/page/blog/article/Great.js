@@ -212,14 +212,14 @@ export default function({article_id, like_count, dislike_count, style}) {
         
     return (
             <Horizental style={{justifyContent:'center', alignItems:'center', ...style}}>
-                <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={'좋아요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
+                <PrettyButton isLoading={isLikeLoading} disabled={isDislikeLoading} type={'transparent'} title={t('page.blog.great')} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatLike}>
                     {currentGreat != null && currentGreat == 1 && <FaThumbsUp size={22}/>}
                     {(currentGreat == null || (currentGreat != null && (currentGreat != 1))) && <FaRegThumbsUp size={22}/>}
                     <HPad size={4}/>
                     <div>{CountWithUnit(likeCount)}</div>
                 </PrettyButton>
                 <HPad size={16}/>
-                <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={'싫어요'} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
+                <PrettyButton isLoading={isDislikeLoading} disabled={isLikeLoading} type={'transparent'} title={t('page.blog.disgreat')} style={{color:'black', display: 'flex', flexDirection: 'row'}} onClick={onClickGreatDislike}>
                     {currentGreat != null && currentGreat == -1 && <FaThumbsDown size={22}/>}
                     {(currentGreat == null || (currentGreat != null && (currentGreat != -1))) && <FaRegThumbsDown size={22}/>}
                     <HPad size={4}/>

@@ -210,7 +210,7 @@ export default function() {
 
     
     return article ? (
-        <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', maxWidth:'960px', marginTop:(isMobile() ? '64px' : '0px'), paddingLeft:'8px', paddingRight:'8px'}}>            
+        <Vertical style={{alignItems:'center', margin:'0 auto', width:'100%', justifyContent:'center', maxWidth:'960px', marginTop:(isMobile() ? '64px' : '0px'), paddingLeft:'8px', paddingRight:'8px'}}>
             <div className={'clamped-text'} style={{'--line-count':3, fontSize:'26px'}}>{article.title}</div>
             <VPad size={16}/>
             <Horizental style={{width:'100%', alignItems:'center'}}>
@@ -230,7 +230,7 @@ export default function() {
                     {article.post_at ? ElapsedTime(article.post_at): ''}
                     {isEditable() && <HPad size={8}/>}
                     {isEditable() && <ControlMenu isLoading={isControlLoading} onRemove={onClickDelete} onModify={onClickEdit}></ControlMenu>}
-                    {isEditable() && <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
+                    {isEditable() && <Modal title={t('page.blog.wantDelete')} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>}
                 </Horizental>
 
             </Horizental>

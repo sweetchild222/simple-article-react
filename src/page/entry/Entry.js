@@ -51,9 +51,9 @@ const Aplication = function() {
     
     <Vertical style={{width:'100%', height:'100%'}}>
       <BlogHeader/>
-      <VPad size={16}/>      
+      <VPad size={16}/>
       <Outlet/>
-      <VPad size={32}/>      
+      <VPad size={32}/>
     </Vertical>
   )
 

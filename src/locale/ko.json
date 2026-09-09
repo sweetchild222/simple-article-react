@@ -62,6 +62,10 @@
 		    "search": "검색",
 		    "noArticle": "글이 없습니다",
 		    "bookmark": "북마크"
+      },
+      "entry":{
+        "errorOccured": "오류가 발생하였습니다",
+		    "contactSiteAdminisrator": "관리자에게 문의하세요"
       }
   },
   "toast":{

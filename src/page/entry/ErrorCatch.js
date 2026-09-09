@@ -1,13 +1,17 @@
 import React from 'react';
 
 import {Vertical} from "@gui/Flex.js";
+import { useTranslation } from 'react-i18next';
+
+
 
 class ErrorCatch extends React.Component {
-  
+
   constructor(props) {
     
     super(props)
     this.state = { hasError: false }
+    
   }
 
   static getDerivedStateFromError(error) {
@@ -28,10 +32,12 @@ class ErrorCatch extends React.Component {
 
     if (this.state.hasError) {
 
+      const { t } = useTranslation()
+
       return (
               <Vertical style={{alignItems: 'center'}}>
-                <h1>오류가 발생하였습니다</h1>
-                <h1>관리자에게 문의하세요</h1>
+                <h1>{t('page.entry.errorOccured')}</h1>
+                <h1>{t('page.entry.contactSiteAdminisrator')}</h1>
               </Vertical>
             )
     }

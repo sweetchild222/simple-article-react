@@ -2,12 +2,14 @@ import React from 'react';
 
 import {Vertical} from "@gui/Flex.js";
 
+import I18n from '@util/I18n.js'
+
 class ErrorCatch extends React.Component {
 
   constructor(props) {
     
     super(props)
-    this.state = { hasError: false }    
+    this.state = { hasError: false }
   }
 
   static getDerivedStateFromError(error) {
@@ -30,8 +32,8 @@ class ErrorCatch extends React.Component {
 
       return (
               <Vertical style={{alignItems: 'center'}}>
-                <h1>{'Sorry, Aplication has error'}</h1>
-                <h1>{'Please contact site adminisrator'}</h1>
+                <h1>{I18n.t('page.common.errorOccured')}</h1>
+                <h1>{I18n.t('page.common.contactSiteAdminisrator')}</h1>
               </Vertical>
             )
     }

@@ -5,10 +5,13 @@ import * as PasswordResetAPI from '@rest/PasswordResetAPI.js'
 import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
 import {VPad, HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 import * as validator from './Validator.js'
 
 export default function({onClose}) {
+
+    const { t } = useTranslation()
     
     const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)
     const [isLoadingCertify, setIsLoadingCertify] = useState(false)
@@ -27,7 +30,7 @@ export default function({onClose}) {
         
         if(!validator.email(email)){
             input_email.focus()
-            window.showToast('잘못된 형식의 이메일입니다', 'user-error')
+            window.showToast(t('toast.passwordReset.invalidEmail'), 'user-error')
             return
         }
 
@@ -38,7 +41,7 @@ export default function({onClose}) {
             return
 
         if(resExist.payload.exist == 0){
-            window.showToast('입력한 이메일을 가진 사용자가 없습니다', 'user-error')
+            window.showToast(t('toast.passwordReset.noEmail'), 'user-error')
             return
         }
 
@@ -50,9 +53,9 @@ export default function({onClose}) {
         input_email.disabled = false
 
         if(success)
-            window.showToast('인증 코드 발송이 성공하였습니다', 'info')
+            window.showToast(t('toast.passwordReset.successSendVerificationCode'), 'info')
         else
-            window.showToast('인증 코드 발송이 실패하였습니다', 'system-error')
+            window.showToast(t('toast.passwordReset.failedSendVerificationCode'), 'system-error')
     }
     
 
@@ -70,7 +73,7 @@ export default function({onClose}) {
         
         if(!validator.email(email)){
             input_email.focus()
-            window.showToast('잘못된 형식의 이메일입니다', 'user-error')
+            window.showToast(t('toast.passwordReset.invalidEmail'), 'user-error')
             return
         }
 
@@ -78,7 +81,7 @@ export default function({onClose}) {
 
         if(!validator.certifyCode(certifyCode)){
             input_certifyCode.focus()
-            window.showToast('인증 코드를 잘못 입력하였습니다', 'user-error')
+            window.showToast(t('toast.passwordReset.wrongVerificationCode'), 'user-error')
             return
         }
         
@@ -93,9 +96,9 @@ export default function({onClose}) {
         setIsLoadingCertify(false)
 
         if(success)
-            window.showToast('인증에 성공하였습니다', 'info')
+            window.showToast(t('toast.passwordReset.successVerified'), 'info')
         else
-            window.showToast('인증에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.passwordReset.failedVerified'), 'system-error')
         
         setIsCertified(success)
     }
@@ -118,7 +121,7 @@ export default function({onClose}) {
         
         if(!validator.email(email)){
             input_email.focus()
-            window.showToast('잘못된 형식의 이메일입니다', 'user-error')
+            window.showToast(t('toast.passwordReset.invalidEmail'), 'user-error')
             return
         }
 
@@ -130,11 +133,11 @@ export default function({onClose}) {
         onClose()
 
         if(res.success == false){
-            window.showToast('임시 비밀 번호 발송에 실패하였습니다', 'system-error')
+            window.showToast(t('toast.passwordReset.failedSendingTemporaryPassword'), 'system-error')
             return false
         }
 
-        window.showToast('임시 비밀 번호가 발송 되었습니다', 'info')
+        window.showToast(t('toast.passwordReset.successSendingTemporaryPassword'), 'info')
     }
 
 

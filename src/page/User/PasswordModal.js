@@ -68,31 +68,31 @@ export default function({isOpen, onClose}) {
 
         if(current_password == ''){
             refCurPassword.current.focus()
-            window.showToast('기존 비밀번호를 입력하세요', 'user-error')
+            window.showToast(t('toast.passwordModal.pasteCurrentPassword'), 'user-error')
             return
         }
 
         if(new_password == ''){
             refNewPassword.current.focus()
-            window.showToast('새 비밀번호를 입력하세요', 'user-error')
+            window.showToast(t('toast.passwordModal.pasteNewPassword'), 'user-error')
             return
         }
 
         if(repeat_password == ''){
             refRepeatPassword.current.focus()
-            window.showToast('비밀번호 확인을 입력하세요', 'user-error')
+            window.showToast(t('toast.passwordModal.pasteComfirmPassword'), 'user-error')
             return
         }
 
         if(new_password != repeat_password){
-            window.showToast('새 비밀번호와 비밀번호 확인이 일치하지 않습니다', 'user-error')
+            window.showToast(t('toast.passwordModal.notMatchPassword'), 'user-error')
             return
         }
 
         const valid = (validator.password(new_password))
 
         if(valid == false) {
-            window.showToast('새 비밀번호가 조건에 맞지 않습니다', 'user-error')
+            window.showToast(t('toast.passwordModal.notMeetRequirementPassword'), 'user-error')
             return
         }
 
@@ -103,11 +103,11 @@ export default function({isOpen, onClose}) {
         setIsSpinner(false)
 
         if(result == null){
-            window.showToast('비밀번호 변경이 실패하였습니다', 'system-error')
+            window.showToast(t('toast.passwordModal.failedChangingPassword'), 'system-error')
             return
         }
         
-        window.showToast('비밀번호 변경이 성공하였습니다', 'info')
+        window.showToast(t('toast.passwordModal.successChangingPassword'), 'info')
         onClose()
     }
     

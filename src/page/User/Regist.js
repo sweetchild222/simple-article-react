@@ -8,10 +8,13 @@ import GoBack from "@page/common/GoBack.js";
 import PrettyButton from "@gui/PrettyButton.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import {VPad, HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 import * as validator from './Validator.js'
 
 export default function() {
+
+  const { t } = useTranslation()
 
   const navigate = useNavigate();
   const {auth, updateAuth, validAuth} = useContext(AuthContext)  
@@ -33,7 +36,7 @@ export default function() {
     
     if(!validator.email(email)){
       input_email.focus()
-      window.showToast('잘못된 형식의 이메일입니다', 'user-error')
+      window.showToast(t('toast.regist.invalidEmail'), 'user-error')
       return
     }
 
@@ -44,9 +47,9 @@ export default function() {
     input_email.disabled = false
 
     if(success)
-      window.showToast('인증 코드 발송이 성공하였습니다', 'info')
+      window.showToast(t('toast.regist.successSendVerificationCode'), 'info')
     else
-      window.showToast('인증 코드 발송이 실패하였습니다', 'system-error')
+      window.showToast(t('toast.regist.failedSendVerificationCode'), 'system-error')
   }
 
 
@@ -58,7 +61,7 @@ export default function() {
       return false
 
     if(resExist.payload.exist == 1){
-      window.showToast('이미 가입한 사용자입니다', 'user-error')
+      window.showToast(t('toast.regist.existRegistedUser'), 'user-error')
       return false
     }
 
@@ -74,7 +77,7 @@ export default function() {
     
     if(!validator.email(email)){
       input_email.focus()
-      window.showToast('잘못된 형식의 이메일입니다', 'user-error')
+      window.showToast(t('toast.regist.invalidEmail'), 'user-error')
       return
     }
 
@@ -82,7 +85,7 @@ export default function() {
 
     if(!validator.certifyCode(certifyCode)){
       input_certifyCode.focus()
-      window.showToast('인증 코드를 잘못 입력하였습니다', 'user-error')
+      window.showToast(t('toast.regist.wrongVerificationCode'), 'user-error')
       return
     }
     
@@ -97,9 +100,9 @@ export default function() {
     setIsLoadingCertify(false)
 
     if(success)
-      window.showToast('인증에 성공하였습니다', 'info')
+      window.showToast(t('toast.regist.successVerified'), 'info')
     else
-      window.showToast('인증에 실패하였습니다', 'system-error')
+      window.showToast(t('toast.regist.failedVerified'), 'system-error')
     
     setIsCertified(true)
 
@@ -136,19 +139,19 @@ export default function() {
     setIsLoadingRegist(false)
         
     if(auth == null){
-      window.showToast('회원 가입이 실패하였습니다', 'system-error')
+      window.showToast(t('toast.regist.failedRegistUser'), 'system-error')
       return
     }
 
     if(!(Object.hasOwn(auth, "jwt") && Object.hasOwn(auth, "user_id"))){
 
-      window.showToast('회원 가입이 실패하였습니다', 'system-error')
+      window.showToast(t('toast.regist.failedRegistUser'), 'system-error')
       return
     }
 
     updateAuth(auth)
     
-    window.showToast('회원 가입이 성공하였습니다', 'info')
+    window.showToast(t('toast.regist.successRegistUser'), 'info')
     
     navigate(comback == true ? -1 : '/')
   }
@@ -178,7 +181,7 @@ export default function() {
       return null
 
     if(resExist.payload.exist == 1){
-      window.showToast('이미 존재하는 사용자입니다', 'user-error')
+      window.showToast(t('toast.regist.existUser'), 'user-error')
       return null
     }
     

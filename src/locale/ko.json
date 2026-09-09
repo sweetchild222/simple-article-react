@@ -168,6 +168,42 @@
         "pasteNickname": "닉네임을 입력하세요",
         "failedModifyingNickname": "닉네임 수정에 실패하였습니다",
         "successModifyingNickname": "닉네임 수정 되었습니다"
+      },
+      "login":{
+        "failedLogin": "로그인이 실패하였습니다",
+		    "successLogin": "로그인이 성공하였습니다"
+      },
+      "passwordModal":{
+        "pasteCurrentPassword": "현재 비밀번호를 입력하세요",
+		    "pasteNewPassword": "새 비밀번호를 입력하세요",
+		    "pasteComfirmPassword": "비밀번호 확인을 입력하세요",
+		    "notMatchPassword": "새 비밀번호와 비밀번호 확인이 일치하지 않습니다",
+		    "notMeetRequirementPassword": "새 비밀번호가 조건에 맞지 않습니다",
+		    "failedChangingPassword": "비밀번호 변경이 실패하였습니다",
+		    "successChangingPassword": "비밀번호 변경이 성공하였습니다"
+      },
+      "passwordReset":{
+        "invalidEmail": "잘못된 형식의 이메일입니다",
+		    "noEmail": "입력한 이메일을 가진 사용자가 없습니다",
+		    "successSendVerificationCode": "인증 코드 발송이 성공하였습니다",
+		    "failedSendVerificationCode": "인증 코드 발송이 실패하였습니다",		
+		    "wrongVerificationCode": "인증 코드를 잘못 입력하였습니다",
+		    "successVerified": "인증에 성공하였습니다",
+		    "failedVerified": "인증에 실패하였습니다",		
+		    "failedSendingTemporaryPassword": "임시 비밀 번호 발송에 실패하였습니다",
+		    "successSendingTemporaryPassword": "임시 비밀 번호가 발송 되었습니다"
+      },
+      "regist":{
+        "invalidEmail": "잘못된 형식의 이메일입니다",
+        "successSendVerificationCode": "인증 코드 발송이 성공하였습니다",
+        "failedSendVerificationCode": "인증 코드 발송이 실패하였습니다",
+        "existRegistedUser": "이미 가입한 사용자입니다",
+        "wrongVerificationCode": "인증 코드를 잘못 입력하였습니다",
+        "successVerified": "인증에 성공하였습니다",
+        "failedVerified": "인증에 실패하였습니다",
+        "failedRegistUser": "회원 가입이 실패하였습니다",
+        "successRegistUser": "회원 가입이 성공하였습니다",
+        "existUser": "이미 존재하는 사용자입니다"
       }
   },
   "mdxEditor":{

@@ -20,7 +20,7 @@
     "goback": "뒤로 가기",
     "close": "닫기",
     "more" : "더 보기",
-    "unknown": "알수없음",
+    "unknown": "알 수 없음",
     "justNow":"방금",
     "minuteAgo":"{{minute}}분 전",
     "hourAgo":"{{hour}} 전",
@@ -29,17 +29,17 @@
   },
   "page":{
       "user":{
-        "editUserConfiguration": "회원 정보 수정",
+        "editUserConfiguration": "회원정보 수정",
         "visitBlog": "블로그 구경하기",
         "email": "이메일",
-        "sendVerificationCode": "인증 번호 발송",
-        "confirmVerificationCode": "인증 번호 확인",
-        "VerificationCode": "인증 코드",
+        "sendVerificationCode": "인증코드 발송",
+        "confirmVerificationCode": "인증코드 확인",
+        "VerificationCode": "인증코드",
         "passwordLength": "비밀번호 (8~20자)",
         "registUser": "회원 가입",
         "notAccessLoggedinUser": "로그인된 사용자는 접근 할 수 없습니다",
-        "sendTemporaryPassword": "임시 비밀 번호 발송",
-        "currentPassword": "기존 비밀번호",
+        "sendTemporaryPassword": "임시 비밀번호 발송",
+        "currentPassword": "현재 비밀번호",
         "passwordRequirements": "8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함",
         "newPassword": "새 비밀번호",
         "confirmPassword": "비밀번호 확인",
@@ -51,7 +51,7 @@
         "changePassword": "비밀번호 변경",
         "logout": "로그아웃",
         "withdrawUser": "회원 탈퇴",
-        "remainBlogThoughWithdraw": "회원을 탈퇴하더라도 블로그는 남습니다",
+        "remainBlogThoughWithdraw": "회원을 탈퇴해도 블로그는 남습니다",
         "pastNickname": "닉네임을 입력하세요",
         "wantlogout": "로그아웃 하시겠습니까?",
         "pastePassowrd": "패스워드를 입력하세요"
@@ -129,20 +129,20 @@
         "cannotSubscribeInfo":"구독 정보를 가져 올 수 없습니다",
         "cancelSubscribed":"구독을 취소하였습니다",
         "failedCancelSubscribed":"구독 취소에 실패하였습니다",
-        "successSubscribe":"구독에 성공하였습니다",
+        "successSubscribe":"구독하였습니다",
         "failedSubscribe":"구독에 실패하였습니다"
       },
       "categories":{
         "failedGettingCategory":"카테고리 가져오기가 실패하였습니다",
         "noCategory":"카테고리가 없습니다",
-        "successDeletingCategory":"{{name}} 삭제 되었습니다",
-        "failedDeletingCategory":"{{name}} 삭제가 실패하였습니다",
+        "successDeletingCategory":"{{name}}은 삭제 되었습니다",
+        "failedDeletingCategory":"{{name}}의 삭제가 실패하였습니다",
         "successAddingCategory":"{{name}}이 추가 되었습니다",
         "failedAddingCategory":"{{name}} 추가에 실패하였습니다",
-        "successChangingName":"{{name}} 이름이 변경 되었습니다",
-        "failedChangingName":"{{name}} 이름 변경이 실패하였습니다",
+        "successChangingName":"{{name}}로 이름이 변경 되었습니다",
+        "failedChangingName":"{{name}}로 이름 변경이 실패하였습니다",
         "noChanged":"카테고리가 변경되지 않았습니다"
-      },      
+      },
       "createArticle":{
         "failedWritingArticle":"작성 중인 글 가져오기가 실패하였습니다",
         "tooMuchWritingArticle":"작성 중인 글이 너무 많습니다 ({{maxWritingCount}}개 이하)",
@@ -154,12 +154,12 @@
         "failedSettingBlogImage":"블로그 이미지 설정에 실패하였습니다",
         "noTitle":"제목이 없습니다",
         "failedModifyBlogTitle":"블로그 제목 수정에 실패하였습니다",
-        "successModifyBlogTitle":"블로그 제목 수정에 성공하였습니다",
+        "successModifyBlogTitle":"블로그 제목을 수정하였습니다",
         "requireLogin":"로그인 해주세요",
         "failedGettingSubscribe":"구독 정보를 가져 올 수 없습니다",
         "cancelSubscribed":"구독을 취소하였습니다",
         "failedCancelSubscribed":"구독 취소에 실패하였습니다",
-        "successSubscribe":"구독에 성공하였습니다",
+        "successSubscribe":"구독하였습니다",
         "failedSubscribe":"구독에 실패하였습니다"
       },
       "articleItem":{
@@ -177,7 +177,7 @@
       "article":{
         "failedModifyingArticle": "수정 중인 글을 찾는데 실패하였습니다",
 		    "failedCreatingModifyingArticle": "수정 글 생성에 실패하였습니다",
-		    "successCreatingModifyingArticle": "수정 글 생성에 성공하였습니다",
+		    "successCreatingModifyingArticle": "수정 글을 생성하였습니다",
 		    "moveModifyingArticle": "이미 수정 중인 글로 이동합니다",
 		    "failedDeleteArticle": "삭제가 실패하였습니다",
 		    "successDeleteArticle": "삭제 되었습니다"
@@ -187,7 +187,7 @@
 		    "failedGettingBookmark": "북마크를 가져오기가 싶패하였습니다",
 		    "cancelBookmark": "북마크를 취소하였습니다",
 		    "failedCancelBookmark": "북마크 취소에 실패하였습니다",
-		    "successBookmark": "북마크에 성공하였습니다",
+		    "successBookmark": "북마크하였습니다",
 		    "failedBookmark": "북마크에 실패하였습니다"
       },
       "articleGreat":{
@@ -202,9 +202,9 @@
         "disgreat":"싫어요"
       },
       "commentList":{
-        "failedGettingComment": "댓글을 가져오기에 실패하였습니다",
+        "failedGettingComment": "댓글 가져오기에 실패하였습니다",
         "failedDeletingComment": "댓글 삭제에 실패하였습니다",
-        "successDeletingComment": "댓글 삭제에 성공하였습니다",
+        "successDeletingComment": "댓글을 삭제 하였습니다",
         "requireLogin": "로그인 해주세요",
         "noText": "입력된 글이 없습니다",
         "failedWritingComment": "댓글 작성에 실패하였습니다",
@@ -213,7 +213,7 @@
         "noModified": "수정된 내용이 없습니다",
         "failedModifying": "수정에 실패하였습니다",
         "sucessWritingReply": "답글이 작성 되었습니다",
-        "successModifying": "수정에 성공하였습니다"
+        "successModifying": "수정 하였습니다"
       },
       "commentGreat":{
         "failedChanging": "{{great}}로 변경에 실패하였습니다",
@@ -255,28 +255,28 @@
 		    "noBookmark": "북마크한 글이 없습니다"
       },
       "home":{
-        "failedGettingArticle": "글을 가져오는데 실패하였습니다"
+        "failedGettingArticle": "글을 가져오기가 실패하였습니다"
       },
       "sidebar":{
         "requireLogin": "로그인 해주세요",
         "noAlarm": "알람이 없습니다"
       },
       "configuration":{
-        "successLogout": "로그 아웃이 성공하였습니다",
+        "successLogout": "로그아웃 하였습니다",
         "notSupportMobile": "모바일에서는 프로필 설정을 지원하지 않습니다",
         "unavailableFile": "파일을 사용할 수 없습니다",
         "failedProfile": "프로필 설정에 실패하였습니다",
         "pasteCurrentPassword": "현재 비밀번호를 입력하세요",
         "wrongPassword": "비밀번호가 틀렸습니다",
         "failedWithdrawal": "회원 탈퇴가 실패하였습니다",
-        "successWithdrawal": "회원 탈퇴가 성공하였습니다",
+        "successWithdrawal": "회원 탈퇴가 되었습니다",
         "pasteNickname": "닉네임을 입력하세요",
         "failedModifyingNickname": "닉네임 수정에 실패하였습니다",
-        "successModifyingNickname": "닉네임 수정 되었습니다"
+        "successModifyingNickname": "닉네임이 수정 되었습니다"
       },
       "login":{
         "failedLogin": "로그인이 실패하였습니다",
-		    "successLogin": "로그인이 성공하였습니다"
+		    "successLogin": "로그인 되었습니다"
       },
       "passwordModal":{
         "pasteCurrentPassword": "현재 비밀번호를 입력하세요",
@@ -285,29 +285,29 @@
 		    "notMatchPassword": "새 비밀번호와 비밀번호 확인이 일치하지 않습니다",
 		    "notMeetRequirementPassword": "새 비밀번호가 조건에 맞지 않습니다",
 		    "failedChangingPassword": "비밀번호 변경이 실패하였습니다",
-		    "successChangingPassword": "비밀번호 변경이 성공하였습니다"
+		    "successChangingPassword": "비밀번호가 변경 되었습니다"
       },
       "passwordReset":{
         "invalidEmail": "잘못된 형식의 이메일입니다",
-		    "noEmail": "입력한 이메일을 가진 사용자가 없습니다",
-		    "successSendVerificationCode": "인증 코드 발송이 성공하였습니다",
-		    "failedSendVerificationCode": "인증 코드 발송이 실패하였습니다",		
-		    "wrongVerificationCode": "인증 코드를 잘못 입력하였습니다",
-		    "successVerified": "인증에 성공하였습니다",
+		    "noEmail": "입력한 이메일을 찾을 수 없습니다",
+		    "successSendVerificationCode": "인증코드가 발송 되었습니다",
+		    "failedSendVerificationCode": "인증코드 발송이 실패하였습니다",		
+		    "wrongVerificationCode": "인증코드를 잘못 입력하였습니다",
+		    "successVerified": "인증 되었습니다",
 		    "failedVerified": "인증에 실패하였습니다",		
-		    "failedSendingTemporaryPassword": "임시 비밀 번호 발송에 실패하였습니다",
-		    "successSendingTemporaryPassword": "임시 비밀 번호가 발송 되었습니다"
+		    "failedSendingTemporaryPassword": "임시 비밀번호 발송에 실패하였습니다",
+		    "successSendingTemporaryPassword": "임시 비밀번호가 발송 되었습니다"
       },
       "regist":{
         "invalidEmail": "잘못된 형식의 이메일입니다",
-        "successSendVerificationCode": "인증 코드 발송이 성공하였습니다",
-        "failedSendVerificationCode": "인증 코드 발송이 실패하였습니다",
+        "successSendVerificationCode": "인증코드가 발송 되었습니다",
+        "failedSendVerificationCode": "인증코드 발송이 실패하였습니다",
         "existRegistedUser": "이미 가입한 사용자입니다",
-        "wrongVerificationCode": "인증 코드를 잘못 입력하였습니다",
-        "successVerified": "인증에 성공하였습니다",
+        "wrongVerificationCode": "인증코드를 잘못 입력하였습니다",
+        "successVerified": "인증 되었습니다",
         "failedVerified": "인증에 실패하였습니다",
         "failedRegistUser": "회원 가입이 실패하였습니다",
-        "successRegistUser": "회원 가입이 성공하였습니다",
+        "successRegistUser": "회원 가입이 되었습니다",
         "existUser": "이미 존재하는 사용자입니다"
       }
   },
@@ -326,7 +326,7 @@
       "dialogTitle": "이미지 업로드",
       "uploadInstructions": "로컬에서 이미지 업로드:",
       "addViaUrlInstructions": "URL로 이미지 가져오기:",
-      "autoCompletePlaceholder": "이미지 소스를 선택하거나 붙여넣으세요.",
+      "autoCompletePlaceholder": "이미지 소스를 선택하거나 붙여넣으세요",
       "alt": "Alt:",
       "title": "제목:",
       "width": "너비:",
@@ -338,7 +338,7 @@
     },
     "createLink": {
       "url": "URL",
-      "urlPlaceholder": "URL을 선택하거나 붙여넣으세요.",
+      "urlPlaceholder": "URL을 선택하거나 붙여넣으세요",
       "text": "앵커 텍스트",
       "textTooltip": "링크에 표시될 텍스트",
       "title": "제목",
@@ -419,7 +419,7 @@
       "pasteUrl":"유튜브 URL을 입력하세요"
     },
     "imagefile":{
-      "cannotUpload":"파일을 업로할 수 없습니다",
+      "cannotUpload":"파일을 업로드할 수 없습니다",
       "abnormalFile":"파일을 사용할 수 없습니다"
     },
     "imagelink":{

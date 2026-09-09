@@ -6,8 +6,11 @@ import * as ArticleAPI from '@rest/ArticleAPI.js'
 import ElapsedTime from "@util/ElapsedTime.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import {HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 export default function({blog_id, article_id, category_id, category_name}) {
+
+    const { t } = useTranslation()
 
     const [articles, setArticles] = useState(null)
 

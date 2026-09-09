@@ -30,7 +30,7 @@ export default function() {
     const state = location.state
 
     if(state == null)
-        return (<div>접근 할 수 없습니다</div>)
+        return (<div>{t('page.editor.notAccess')}</div>)
     
     const refTitle = useRef(null)    
     const refImageCrop = useRef(null)
@@ -289,17 +289,17 @@ export default function() {
     return validAuth(auth) ? (
         <Vertical style={{margin:'auto', height:'100%', alignItems:'start', position:'relative'}}>
             {isSpinner && <Spinner type={'absolute'}/>}
-            <label htmlFor='input_title'>제목</label>
+            <label htmlFor='input_title'>{t('page.editor.title')}</label>
             <VPad size={4}/>
-            <input ref={refTitle} id='input_title' placeholder="제목을 입력하세요" type='text' defaultValue={title} style={{width:'100%', boxSizing:'border-box'}}/>
+            <input ref={refTitle} id='input_title' placeholder={t('page.editor.pasteTitle')} type='text' defaultValue={title} style={{width:'100%', boxSizing:'border-box'}}/>
             <VPad size={16}/>
-            <label htmlFor='input_category'>카테고리</label>
+            <label htmlFor='input_category'>{t('page.editor.category')}</label>
             <VPad size={4}/>
             <select style={{width:'100%'}} id='input_category' value={categories ? categories[selectedCategoryIndex].name : ''} onChange={onChangeCategory}>
                 {categories && categories.map((data, index) => <option key={data.id}>{data.name}</option>)}
             </select>
             <VPad size={16}/>
-            <label onClick={onClickThumbnail}>썸네일</label>
+            <label onClick={onClickThumbnail}>{t('page.editor.thumbnail')}</label>
             <VPad size={4}/>
             <StateProgsImage src={thumbnail} onClick={onClickThumbnail} width={384} height={384} style={{alignSelf:'center'}}/>
             {imageFile && isImageCropModalOpen && <ImageCropModal ref={refImageCrop} isOpen={isImageCropModalOpen} onClose={()=>setIsImageCropModalOpen(false)} file={imageFile} onClickApply={onClickThumbnailApply} keepRatio={1}></ImageCropModal>}
@@ -307,10 +307,10 @@ export default function() {
             <Horizental style={{width:'100%'}}>
                 <PrettyButton type='danger' onClick={onClickDelete} style={{width:'64px'}}>{t('system.delete')}</PrettyButton>
                 <HPad size={64}/>
-                <PrettyButton type='success' onClick={onClickSave} style={{flex:'1'}}>임시 저장</PrettyButton>
-                <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
+                <PrettyButton type='success' onClick={onClickSave} style={{flex:'1'}}>{t('page.editor.temporarySave')}</PrettyButton>
+                <Modal title={t('page.editor.wantDelete')} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
                 <HPad size={16}/>
-                <PrettyButton type='success' onClick={onClickPost} style={{flex:'1'}}>{state.source_id != null ? '수정 완료': '작성 완료'}</PrettyButton>
+                <PrettyButton type='success' onClick={onClickPost} style={{flex:'1'}}>{state.source_id != null ? t('page.editor.completeModify'): t('page.editor.completeWrite')}</PrettyButton>
             </Horizental>
         </Vertical>
         ) : (<GoLogin/>)

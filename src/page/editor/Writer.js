@@ -26,7 +26,7 @@ export default function() {
     const state = location.state
 
     if(state == null)
-        return (<div>접근 할 수 없습니다</div>)
+        return (<div>{t('page.editor.notAccess')}</div>)
     
     const refMDX = useRef(null)
     const refPreview = useRef(null)
@@ -63,7 +63,7 @@ export default function() {
                 return
             }
 
-            const proceed = window.confirm("저장하지 않고 나가시겠습니까?")
+            const proceed = window.confirm(t('page.editor.wantLeavWithoutSave'))
 
             if (proceed)
                 blocker.proceed()
@@ -316,7 +316,7 @@ export default function() {
 
     const memoMDXEditor = useMemo(() => {
 
-        return <MDXEditor ref={refMDX} placeHolder={"글을 작성해보세요"} postImage={postImage} markdown={state.content}
+        return <MDXEditor ref={refMDX} placeHolder={t('page.editor.writeArticle')} postImage={postImage} markdown={state.content}
                     onChange={onChangeContent} onUserError={onUserError} readOnly={false} onParsingError={onParsingError}/>
                             
     }, [])
@@ -339,11 +339,11 @@ export default function() {
                 <Horizental style={{flex: 0, alignItems: 'center', marginTop:'16px'}}>
                     <PrettyButton type='cancel' style={{marginRight:'8px'}} onClick={onClickLeave}>{t('system.leave')}</PrettyButton>
                     <PrettyButton type='danger' style={{marginRight:'8px'}} onClick={onClickDelete}>{t('system.delete')}</PrettyButton>
-                    <Modal title={'정말 삭제 하시겠습니까?'} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
+                    <Modal title={t('page.editor.wantDelete')} type={'yesno'} isOpen={isConfirmDeleteModalOpen} onResult={onResultConfirmDelete} onClose={()=>setIsConfirmDeleteModalOpen(false)}></Modal>
                     <div style={{flex:'1'}}/>
-                    <PrettyButton type='success' style={{marginRight:'8px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>임시 저장</PrettyButton>
-                    <Modal title={'나가기 전에 임시 저장 하시겠습니까?'} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
-                    <PrettyButton type='confirm' style={{marginRight:'8px'}} onClick={onClickPreview}>미리 보기</PrettyButton>
+                    <PrettyButton type='success' style={{marginRight:'8px'}} disabled={!isTouched} isLoading={isTempSaveLoading} onClick={onClickSave}>{t('page.editor.temporarySave')}</PrettyButton>
+                    <Modal title={t('page.editor.temporarySavebeforeLeave')} type={'yesno'} isOpen={isConfirmSaveModalOpen} onResult={onResultConfirmSave} onClose={()=>setIsConfirmSaveModalOpen(false)}></Modal>
+                    <PrettyButton type='confirm' style={{marginRight:'8px'}} onClick={onClickPreview}>{t('page.editor.preview')}</PrettyButton>
                     <PrettyButton type='default' onClick={onClickPost}>{t('system.next')}</PrettyButton>
                 </Horizental>
             </div>

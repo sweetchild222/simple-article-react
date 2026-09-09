@@ -210,20 +210,20 @@ export default function() {
     <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px', marginTop:(isMobile() ? '64px' : '0px')}}>
       <VPad size={8}/>
         <Horizental>
-          <PrettyButton onClick={onClickNewest} style={{width:'fit-content'}}>{'최신순'}</PrettyButton>
+          <PrettyButton onClick={onClickNewest} style={{width:'fit-content'}}>{t('page.main.newestFirst')}</PrettyButton>
           <HPad size={8}/>
-          <PrettyButton onClick={onClickFavorite} style={{width:'fit-content'}}>{'인기순'}</PrettyButton>
+          <PrettyButton onClick={onClickFavorite} style={{width:'fit-content'}}>{t('page.main.popularityFirst')}</PrettyButton>
           <HPad size={8}/>
-          <PrettyButton onClick={onClickManyComment} style={{width:'fit-content'}}>{'댓글순'}</PrettyButton>
+          <PrettyButton onClick={onClickManyComment} style={{width:'fit-content'}}>{t('page.main.commentFirst')}</PrettyButton>
           {blogIds && <HPad size={8}/>}
-          {blogIds && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{'구독한 블로그 글'}</PrettyButton>}
+          {blogIds && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{t('page.main.subscribedArticle')}</PrettyButton>}
           <HPad size={8}/>
           <div style={{flex:'1'}}/>
-          {isMobile() && <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{'검색'}</PrettyButton>}
-          {isMobile() && <Modal title= {'검색할 글을 입력하세요'} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
-          {isNotMobile() && <input id="search" placeholder="검색" maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>}
+          {isMobile() && <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{t('page.main.search')}</PrettyButton>}
+          {isMobile() && <Modal title= {t('page.main.pastSearchingText')} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
+          {isNotMobile() && <input id="search" placeholder={t('page.main.search')} maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>}
           {isNotMobile() && <HPad size={8}/>}
-          {isNotMobile() && <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>검색</PrettyButton>}
+          {isNotMobile() && <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>{t('page.main.search')}</PrettyButton>}
         </Horizental>
       <VPad size={8}/>
       <div style={{flex:'1', position:'relative'}}>
@@ -236,7 +236,7 @@ export default function() {
           </Vertical>) : 
           (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%'}}>
             {<img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'64px', marginBottom:'16px'}}/>}
-            {<div style={{fontSize:'18px', marginBottom:'32px'}}>{'글이 없습니다.'}</div>}
+            {<div style={{fontSize:'18px', marginBottom:'32px'}}>{t('page.main.noArticle')}</div>}
           </Vertical>)
         )}
         {isSpinner && <Spinner type={'absolute'}/>}

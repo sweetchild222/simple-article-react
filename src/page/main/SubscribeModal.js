@@ -8,9 +8,12 @@ import { HPad } from "@gui/Pad.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
+import { useTranslation } from 'react-i18next';
 
 
 export default function({ref, isOpen, onClose, subscribes}) {
+
+  const { t } = useTranslation()
 
   const refDialog = useRef(null)
   
@@ -80,7 +83,7 @@ export default function({ref, isOpen, onClose, subscribes}) {
                   <HPad size={16}/>
                   {newSubscribes.length > pageCount && <PrettyButton type='transparent' disabled={!(newSubscribes.length > (fromIndex + pageCount))} style={{color:'black'}} onClick={onClickNext}><GrNext size={20}/></PrettyButton>}
                   <div style={{flex:'1'}}/>
-                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>닫기</PrettyButton>
+                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>{t('system.close')}</PrettyButton>
                 </Horizental>
               </Vertical>
           </dialog>,

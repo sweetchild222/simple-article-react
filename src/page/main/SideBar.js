@@ -237,10 +237,6 @@ export default function () {
     }
 
 
-    const onClickSearch = (e) => {
-
-    }
-
     const onClickAtError= (e) => {
 
         removeAuth()
@@ -326,11 +322,11 @@ export default function () {
         <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`} style={{padding:'8px'}}>
             <Horizental style={{justifyContent:'space-between'}}>
                 {isOpen && <Horizental style={{alignItems:'center'}}>
-                    {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>로그인</PrettyButton>}
+                    {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>{t('page.main.login')}</PrettyButton>}
                     {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
                         <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
                         {alarms != null && <div style={{width:'8px'}}/>}
-                        {alarms != null && <PrettyButton  type='transparent' style={{color:'white'}} onClick={onClickSearch} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
+                        {alarms != null && <PrettyButton  type='transparent' style={{color:'white'}} onClick={onClickAlarm}>{(alarms.filter(item => item.checked == 0).length > 0 ? <VscBellDot size={32}/> : <VscBell size={32}/>)}</PrettyButton>}
                         {alarms != null && <AlarmModal isOpen={isOpenAlarmModal} onClose={onCloseAlarmModal} onUpdatedAlarms={onUpdatedAlarms} alarms={alarms}></AlarmModal>}
                         </Horizental>
                     }
@@ -342,12 +338,12 @@ export default function () {
             </Horizental>
 
             {validAuth(auth) && <div style={{borderBottom: '1px solid #2d2d44', borderTop: '1px solid #2d2d44'}}>
-                    <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%', minWidth:'fit-content'}} onClick={onClickNavigateMyBlog}>{'내 블로그'}</PrettyButton>
+                    <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%', minWidth:'fit-content'}} onClick={onClickNavigateMyBlog}>{t('page.main.myBlog')}</PrettyButton>
                 </div>
             }
         
             {validAuth(auth) && subscribes && subscribes.length > 0 && <Vertical style={{marginTop:'16px', marginBottom:'8px', paddingBottom:'8px', borderBottom: '1px solid #2d2d44'}}>
-                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{'구독한 블로그'}</label>
+                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{t('page.main.subscribedBlog')}</label>
                 <VPad size={8}/>
                 {subscribes.slice(0, subscribeCount).map((data, index) => 
                     <Horizental key={data.id} style={{alignItems:'center', marginTop:'8px', marginBottom:'8px'}} onClick={() => onClickNavigateBlog(data.blog_id)}>
@@ -358,13 +354,13 @@ export default function () {
                 )}
                 {subscribes.length > subscribeCount && <Horizental style={{alignItems:'center', cursor:'pointer'}} onClick={onClickMoreSubscribe}>
                     <IoIosArrowDown size={32}/>
-                    <div className={'clamped-text'} style={{'--line-count':1, whiteSpace: 'nowrap', color:'ghostwhite', marginLeft:'8px'}}>{'더 보기'}</div>
+                    <div className={'clamped-text'} style={{'--line-count':1, whiteSpace: 'nowrap', color:'ghostwhite', marginLeft:'8px'}}>{t('system.more')}</div>
                     </Horizental>
                 }
             </Vertical>}
 
             {validAuth(auth) && bookmarks && bookmarks.length > 0 && <Vertical style={{marginTop:'8px', marginBottom:'8px', paddingBottom:'8px', borderBottom: '1px solid #2d2d44'}}>
-                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{'북마크한 글'}</label>
+                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{t('page.main.bookmarkArticle')}</label>
                 <VPad size={8}/>
                 {bookmarks.slice(0, bookmarkCount).map((data, index) =>
                     <Horizental key={data.id} style={{alignItems:'center', marginTop:'8px', marginBottom:'8px'}} onClick={() => onClickNavigateArticle(data.article)}>
@@ -375,7 +371,7 @@ export default function () {
                 )}
                 {bookmarks.length > bookmarkCount && <Horizental style={{alignItems:'center', cursor:'pointer'}} onClick={onClickMoreBookmark}>
                     <IoIosArrowDown size={32}/>
-                    <div className={'clamped-text'} style={{'--line-count':1, whiteSpace: 'nowrap', color:'ghostwhite', marginLeft:'8px'}}>{'더 보기'}</div>
+                    <div className={'clamped-text'} style={{'--line-count':1, whiteSpace: 'nowrap', color:'ghostwhite', marginLeft:'8px'}}>{t('system.more')}</div>
                     </Horizental>
                 }
             </Vertical>}

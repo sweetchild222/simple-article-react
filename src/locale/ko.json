@@ -14,9 +14,11 @@
     "leave" : "나가기",
     "next": "다음",
     "prev": "이전",
-    "subscribe":"구독",
-    "subscribed":"구독중",
-    "goback":"뒤로 가기"
+    "subscribe":" 구독",
+    "subscribed": "구독중",
+    "goback": "뒤로 가기",
+    "close": "닫기",
+    "more" : "더 보기"
   },
   "page":{
       "user":{
@@ -46,8 +48,21 @@
         "pastNickname": "닉네임을 입력하세요",
         "wantlogout": "로그아웃 하시겠습니까?",
         "pastePassowrd": "패스워드를 입력하세요"
+      },
+      "main":{
+        "login": "로그인",
+		    "myBlog": "내 블로그",
+		    "subscribedBlog": "구독한 블로그",
+		    "bookmarkArticle": "북마크한 글",
+		    "newestFirst": "최신순",
+		    "popularityFirst": "인기순",
+		    "commentFirst": "댓글순",
+		    "subscribedArticle": "구독한 블로그 글",
+		    "pastSearchingText": "검색할 글을 입력하세요",
+		    "search": "검색",
+		    "noArticle": "글이 없습니다",
+		    "bookmark": "북마크"
       }
-
   },
   "toast":{
       "appBarBlog":{

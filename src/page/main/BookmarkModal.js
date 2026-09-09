@@ -5,11 +5,11 @@ import ReactDOM from 'react-dom';
 import PrettyButton from "@gui/PrettyButton.js"
 import ProfileImage from "@gui/ProfileImage.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
-import AuthContext from "@util/AuthContext.js";
 
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import {HPad} from "@gui/Pad.js";
+import { t } from 'i18next';
 
 
 export default function({isOpen, onClose, bookmarks}) {
@@ -74,7 +74,7 @@ export default function({isOpen, onClose, bookmarks}) {
                         <ProfileImage shape={'circle'} user={data.article.user} size={32}></ProfileImage>
                         <HPad size={8}/>
                         <div className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', whiteSpace: 'nowrap', color:'black'}}>{data.article.title}</div>
-                    </Horizental>                      
+                    </Horizental>
                   )}
                 <Horizental style={{alignItems: 'center', marginTop:'8px', justifyContent:'center', width:'100%', marginBottom:'8px'}}>
                   <div style={{flex:'1'}}/>
@@ -82,7 +82,7 @@ export default function({isOpen, onClose, bookmarks}) {
                   <HPad size={16}/>
                   {newBookmarks.length > pageCount && <PrettyButton type='transparent' disabled={!(newBookmarks.length > (fromIndex + pageCount))} style={{color:'black'}} onClick={onClickNext}><GrNext size={20}/></PrettyButton>}
                   <div style={{flex:'1'}}/>
-                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>닫기</PrettyButton>
+                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>{t('system.close')}</PrettyButton>
                 </Horizental>
               </Vertical>
           </dialog>,

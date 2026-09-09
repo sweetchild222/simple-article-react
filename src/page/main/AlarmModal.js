@@ -10,12 +10,15 @@ import PrettyButton from "@gui/PrettyButton.js"
 import ProfileImage from "@gui/ProfileImage.js";
 import {HPad} from "@gui/Pad.js";
 import {Vertical, Horizental} from "@gui/Flex.js";
+import { useTranslation } from 'react-i18next';
 
 import { VscTrash } from "react-icons/vsc";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 
 export default function({isOpen, onClose, onUpdatedAlarms, alarms}) {
+
+  const { t } = useTranslation()
       
   const refDialog = useRef(null)
 
@@ -118,7 +121,7 @@ export default function({isOpen, onClose, onUpdatedAlarms, alarms}) {
                   <HPad size={16}/>
                   {newAlarms.length > pageCount && <PrettyButton type='transparent' disabled={!(newAlarms.length > (fromIndex + pageCount))} style={{color:'black'}} onClick={onClickNext}><GrNext size={20}/></PrettyButton>}
                   <div style={{flex:'1'}}/>
-                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>닫기</PrettyButton>
+                  <PrettyButton type='cancel' onClick={onClose} style={{width:'64px'}}>{t('system.close')}</PrettyButton>
                 </Horizental>
               </Vertical>
           </dialog>,

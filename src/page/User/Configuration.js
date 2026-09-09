@@ -263,17 +263,17 @@ export default function() {
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <VPad size={16}/>
         <Vertical>
-            <Modal title={'닉네임을 입력하세요'} type={'input'} isCloseOutsideClick={false} defaultValue={user.nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
-            <PrettyButton onClick={onClickUserNickname} type='default'>닉네임 설정</PrettyButton>
+            <Modal title={t('page.user.pastNickname')} type={'input'} isCloseOutsideClick={false} defaultValue={user.nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
+            <PrettyButton onClick={onClickUserNickname} type='default'>{t('page.user.setNickname')}</PrettyButton>
             <VPad size={16}/>
-            <PrettyButton onClick={onClickPassword} type='default'>비밀번호 변경</PrettyButton>
+            <PrettyButton onClick={onClickPassword} type='default'>{t('page.user.changePassword')}</PrettyButton>
             <PasswordModal isOpen={isModalPassword} onClose={() => setIsModalPassword(false)}/>
             <VPad size={16}/>
-            <PrettyButton onClick={onClickLogout} type='warning'>로그아웃</PrettyButton>
-            <Modal title={'로그아웃 하시겠습니까?'} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
+            <PrettyButton onClick={onClickLogout} type='warning'>{t('page.user.logout')}</PrettyButton>
+            <Modal title={t('page.user.wantlogout')} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
             <VPad size={16}/>
-            <Modal title={'패스워드를 입력하세요'} description={user.blog_id ? '회원을 탈퇴하더라도 블로그는 남습니다' : null} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPasswordForUser}/>
-            <PrettyButton onClick={onClickUserWithdraw} type='danger'>회원 탈퇴</PrettyButton>
+            <Modal title={t('page.user.pastePassowrd')} description={user.blog_id ? t('page.user.remainBlogThoughWithdraw') : null} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPasswordForUser}/>
+            <PrettyButton onClick={onClickUserWithdraw} type='danger'>{t('page.user.withdrawUser')}</PrettyButton>
         </Vertical>
       </Vertical>) : <Spinner/>
 }

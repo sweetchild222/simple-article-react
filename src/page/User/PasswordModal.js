@@ -161,16 +161,16 @@ export default function({isOpen, onClose}) {
             <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'8px'}}>
                 <Vertical style={{alignItems: 'start', position:'relative'}}>
                     {isSpinner && <Spinner type={'absolute'} radius={100} spinnerWidth={15}/>}
-                    <label htmlFor='input_current_password'>기존 비밀번호</label>
+                    <label htmlFor='input_current_password'>{t('page.user.currentPassword')}</label>
                     <VPad size={4}/>
                     <input ref={refCurPassword} id='input_current_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownCurrent}/>
-                    <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
+                    <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>{t('page.user.passwordRequirements')}</div>
                     <VPad size={16}/>
-                    <label htmlFor='input_new_password'>새 비밀번호</label>
+                    <label htmlFor='input_new_password'>{t('page.user.newPassword')}</label>
                     <VPad size={4}/>
                     <input ref={refNewPassword} id='input_new_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownNew}/>
                     <VPad size={16}/>
-                    <label htmlFor='input_repeat_password'>비밀번호 확인</label>
+                    <label htmlFor='input_repeat_password'>{t('page.user.confirmPassword')}</label>
                     <VPad size={4}/>
                     <input ref={refRepeatPassword} id='input_repeat_password' type='password' maxLength={20} style={{width:'100%', boxSizing:'border-box'}} onKeyDown={onKeyDownRepeat}/>
                     <VPad size={16}/>

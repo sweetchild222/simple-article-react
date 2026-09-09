@@ -90,20 +90,20 @@ export default function() {
     
     return (
             <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
-                <label htmlFor='input_username'>사용자 이름</label>
+                <label htmlFor='input_username'>{t('page.user.userName')}</label>
                 <VPad size={4}/>
                 <input id='input_username' type='text' onKeyDown={onKeyDownUserName} maxLength={254} style={{width:'256px'}}/>
                 <VPad size={16}/>
-                <label htmlFor='input_password'>비밀번호</label>
+                <label htmlFor='input_password'>{t('page.user.password')}</label>
                 <VPad size={4}/>
                 <input id='input_password' type='password' onKeyDown={onKeyDownPassword} maxLength={254} style={{width:'256px'}}/>
                 <VPad size={16}/>
                 <Vertical>
-                    <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>로그인</PrettyButton>
+                    <PrettyButton onClick={onClickLogin}  isLoading={isLoading} type='success'>{t('page.user.login')}</PrettyButton>
                     <VPad size={16}/>
-                    <PrettyButton onClick={() => {navigate('regist', {state:{comback:comback}, replace:true})}}>회원가입</PrettyButton>
+                    <PrettyButton onClick={() => {navigate('regist', {state:{comback:comback}, replace:true})}}>{t('page.user.registUser')}</PrettyButton>
                     <VPad size={16}/>
-                    <PrettyButton onClick={() => setIsModalPasswordReset(true)} style={{width:'100%'}}>비밀번호 찾기</PrettyButton>
+                    <PrettyButton onClick={() => setIsModalPasswordReset(true)} style={{width:'100%'}}>{t('page.user.findPassword')}</PrettyButton>
                 </Vertical>
                 {isModalPasswordReset && <Modal type={'custom'} isOpen={isModalPasswordReset} onClose={()=>setIsModalPasswordReset(false)} isCloseOutsideClick={true}>
                     <PasswordReset onClose={() => setIsModalPasswordReset(false)}/>

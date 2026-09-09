@@ -242,24 +242,24 @@ export default function() {
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
         <input id={'input_email'} disabled={isCertified} type={'text'} onChange={onChangeEmail} placeholder="이메일" maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
         <HPad size={8}/>
-        <PrettyButton isLoading={isLoadingSendCode} type='success' disabled={isCertified} onClick={onClickSendCertifyCode}>인증 번호 발송</PrettyButton>
+        <PrettyButton isLoading={isLoadingSendCode} type='success' disabled={isCertified} onClick={onClickSendCertifyCode}>{t('page.user.sendVerificationCode')}</PrettyButton>
       </Horizental>
       <VPad size={8}/>
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
-        <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder="인증 코드" style={{flex:'1', boxSizing:'border-box'}}/>
+        <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder={t('page.user.VerificationCode')} style={{flex:'1', boxSizing:'border-box'}}/>
         <HPad size={8}/>
-        <PrettyButton isLoading={isLoadingCertify} type='success' disabled={isCertified} onClick={onClickRequestCertify}>인증 번호 확인</PrettyButton>
+        <PrettyButton isLoading={isLoadingCertify} type='success' disabled={isCertified} onClick={onClickRequestCertify}>{t('page.user.confirmVerificationCode')}</PrettyButton>
       </Horizental>
       <VPad size={16}/>
       <Vertical style={{ alignItems: 'center', width:'100%'}}>
-        <input id='input_password' type="password" disabled={!isCertified} onChange={onChangePassword} placeholder="비밀번호 (8~20자)" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
+        <input id='input_password' type="password" disabled={!isCertified} onChange={onChangePassword} placeholder={t('page.user.passwordLength')} maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
         <VPad size={8}/>
-        <input id='input_confirm_password' type="password" disabled={!isCertified} onChange={onChangeConfirmPassword} placeholder="비밀번호 확인" maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
-        <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함</div>
+        <input id='input_confirm_password' type="password" disabled={!isCertified} onChange={onChangeConfirmPassword} placeholder={t('page.user.confirmPassword')} maxLength={20} style={{width:'100%', boxSizing:'border-box'}}/>
+        <div style={{color:'darkgray', fontStyle:'italic', fontSize:'14px'}}>{t('page.user.passwordRequirements')}</div>
       </Vertical>
       <VPad size={16}/>
-      <PrettyButton isLoading={isLoadingRegist} disabled={!(isCertified && passwordValid)} onClick={onClickRegist} type='success' style={{width:'100%', boxSizing:'border-box'}}>회원 가입</PrettyButton>
+      <PrettyButton isLoading={isLoadingRegist} disabled={!(isCertified && passwordValid)} onClick={onClickRegist} type='success' style={{width:'100%', boxSizing:'border-box'}}>{t('page.user.registUser')}</PrettyButton>
     </Vertical>
     </Vertical>
-  ) : (<GoBack value={'로그인된 사용자는 접근 할 수 없습니다'}/>)
+  ) : (<GoBack value={t('page.user.notAccessLoggedinUser')}/>)
 }

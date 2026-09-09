@@ -9,9 +9,12 @@ import {Vertical} from "@gui/Flex.js";
 import {VPad} from "@gui/Pad.js";
 import Integer from "@util/Integer.js";
 import AuthContext from "@util/AuthContext.js";
+import { useTranslation } from 'react-i18next';
 
 
 export default function() {
+
+    const { t } = useTranslation()
 
     const { id } = useParams()
 
@@ -77,8 +80,8 @@ export default function() {
         <label style={{fontSize:'18px', color:'gray'}}>{user.username}</label>
         <VPad size={32}/>
         <Vertical>
-            {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'32px'}}>회원 정보 수정</PrettyButton>}
-            {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='default'>블로그 구경하기</PrettyButton>}
+            {isEditable() && <PrettyButton onClick={onClickNavigateProfile} type='default' style={{marginBottom:'32px'}}>{t('page.user.editUserConfiguration')}</PrettyButton>}
+            {user.blog_id && <PrettyButton onClick={onClickNavigateBlog} type='default'>{t('page.user.visitBlog')}</PrettyButton>}
         </Vertical>
     </Vertical>
       ) : <Spinner/>

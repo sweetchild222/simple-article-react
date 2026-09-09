@@ -145,18 +145,18 @@ export default function({onClose}) {
     return (
         <Vertical>
             <Horizental style={{ alignItems: 'center', width:'100%'}}>
-                <input id={'input_email'} type={'text'} onChange={onChangeEmail} disabled={isCertified} placeholder="이메일" maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
+                <input id={'input_email'} type={'text'} onChange={onChangeEmail} disabled={isCertified} placeholder={t('page.user.email')} maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
                 <HPad size={8}/>
-                <PrettyButton isLoading={isLoadingSendCode} disabled={isCertified} onClick={onClickSendCertifyCode} type={'success'}>인증 번호 발송</PrettyButton>
+                <PrettyButton isLoading={isLoadingSendCode} disabled={isCertified} onClick={onClickSendCertifyCode} type={'success'}>{t('page.user.sendVerificationCode')}</PrettyButton>
             </Horizental>
             <VPad size={8}/>
             <Horizental style={{ alignItems: 'center', width:'100%'}}>
-                <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder="인증 코드" style={{flex:'1', boxSizing:'border-box'}}/>
+                <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder={t('page.user.VerificationCode')} style={{flex:'1', boxSizing:'border-box'}}/>
                 <HPad size={8}/>
-                <PrettyButton isLoading={isLoadingCertify} disabled={isCertified} onClick={onClickRequestCertify} type={'success'}>인증 번호 확인</PrettyButton>
+                <PrettyButton isLoading={isLoadingCertify} disabled={isCertified} onClick={onClickRequestCertify} type={'success'}>{t('page.user.confirmVerificationCode')}</PrettyButton>
             </Horizental>
             <VPad size={16}/>
-            <PrettyButton isLoading={isLoadingPasswordReset} disabled={!isCertified} onClick={onClickPasswordReset} style={{width:'100%'}} type={'success'}>임시 비밀 번호 발송</PrettyButton>
+            <PrettyButton isLoading={isLoadingPasswordReset} disabled={!isCertified} onClick={onClickPasswordReset} style={{width:'100%'}} type={'success'}>{t('page.user.sendVerificationCode')}</PrettyButton>
         </Vertical>
     )
 }

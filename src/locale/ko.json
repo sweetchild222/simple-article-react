@@ -18,6 +18,37 @@
     "subscribed":"구독중",
     "goback":"뒤로 가기"
   },
+  "page":{
+      "user":{
+        "editUserConfiguration": "회원 정보 수정",
+        "visitBlog": "블로그 구경하기",
+        "email": "이메일",
+        "sendVerificationCode": "인증 번호 발송",
+        "confirmVerificationCode": "인증 번호 확인",
+        "VerificationCode": "인증 코드",
+        "passwordLength": "비밀번호 (8~20자)",
+        "registUser": "회원 가입",
+        "notAccessLoggedinUser": "로그인된 사용자는 접근 할 수 없습니다",
+        "sendTemporaryPassword": "임시 비밀 번호 발송",
+        "currentPassword": "기존 비밀번호",
+        "passwordRequirements": "8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함",
+        "newPassword": "새 비밀번호",
+        "confirmPassword": "비밀번호 확인",
+        "userName": "사용자 이름",
+        "password": "비밀번호",
+        "login": "로그인",
+        "findPassword": "비밀번호 찾기",
+        "setNickname": "닉네임 설정",
+        "changePassword": "비밀번호 변경",
+        "logout": "로그아웃",
+        "withdrawUser": "회원 탈퇴",
+        "remainBlogThoughWithdraw": "회원을 탈퇴하더라도 블로그는 남습니다",
+        "pastNickname": "닉네임을 입력하세요",
+        "wantlogout": "로그아웃 하시겠습니까?",
+        "pastePassowrd": "패스워드를 입력하세요"
+      }
+
+  },
   "toast":{
       "appBarBlog":{
         "requireLogin":"로그인 해주세요",

@@ -26,7 +26,7 @@ export default function() {
 
     const { t } = useTranslation()
 
-    const { b_id } = useParams()    
+    const { b_id } = useParams()
     
     const blog_id = Integer(b_id)
 
@@ -279,11 +279,11 @@ export default function() {
                     <ProfileImage size={96} shape={'circle'} userId={blog.user_id} onClick={onClickNavigateBlog}/>
                     <Vertical style={{marginLeft:'32px', marginRight:'32px'}}>
                         <Horizental style={{alignItems: 'center'}}>
-                            <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{nickname != null ? '@' + nickname: ' ' }</label>
+                            <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{nickname != null ? '@' + nickname: t('system.unknown') }</label>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{'  •  '}</label>
                             <label style={{color:'lightgray', whiteSpace:'pre-wrap'}}>{t('page.blog.subscriber') + ' ' + (subscribeCount != null ? CountWithUnit(subscribeCount) : '')}</label>
                             <HPad size={8}/>
-                            {!isEditable() && isSubscribe != null && <PrettyButton tooltip={t('system.subscribe')} type='default' isLoading={isSubscribeLoading} onClick={onClickSubscribe} style={{minWidth:'64px'}}>{isSubscribe ? t('system.subscribed') : t('system.subscribe')}</PrettyButton>}
+                            {!isEditable() && isSubscribe != null && <PrettyButton tooltip={t('system.subscribe')} type={isSubscribe ? 'success' : 'confirm'} isLoading={isSubscribeLoading} onClick={onClickSubscribe} style={{minWidth:'64px'}}>{isSubscribe ? t('system.subscribed') : t('system.subscribe')}</PrettyButton>}
                         </Horizental>
                         <Horizental style={{alignItems: 'center'}}>
                             <div className={'clamped-text'} ref={refLabelTitle} style={{'--line-count':1, color:'white', fontSize:'24px', borderColor:'white'}}>{blog.title}</div>

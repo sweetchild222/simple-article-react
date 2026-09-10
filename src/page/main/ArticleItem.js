@@ -9,10 +9,13 @@ import {HPad, VPad} from "@gui/Pad.js";
 import { MdThumbUpAlt } from "react-icons/md";
 import { IoMdHeart } from "react-icons/io";
 import { PiChatTeardropTextFill } from "react-icons/pi";
+import { useTranslation } from 'react-i18next';
 
 import './ArticleItem.css'
 
 export default function({article, style}) {
+
+    const { t } = useTranslation()
     
     const navigate = useNavigate()
     
@@ -53,7 +56,7 @@ export default function({article, style}) {
             <Horizental style={{alignItems:'center', marginTop:'8px'}}>
                 <ProfileImage shape={'circle'} size={48} user={article.user} style={{borderWidth:'1px'}}></ProfileImage>
                 <HPad size={8}/>
-                <div className={'clamped-text'} style={{'--line-count':1, fontSize:'18px', color:'black'}}>{article.user.nickname}</div>
+                <div className={'clamped-text'} style={{'--line-count':1, fontSize:'18px', color:'black'}}>{article.user ? article.user.nickname : t('system.unknown')}</div>
             </Horizental>
 
         </Vertical>

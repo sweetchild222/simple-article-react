@@ -47,7 +47,7 @@ export default function({article_id, article_user_id}) {
 
     useEffect(()=>{
 
-        loadComments(article_id).then((comments) =>{
+        loadComments(article_id, article_user_id).then((comments) =>{
 
             if(comments == null){
                 window.showToast(t('toast.commentList.failedGettingComment'), 'system-error')
@@ -82,7 +82,7 @@ export default function({article_id, article_user_id}) {
     }, [article_id])
 
 
-    const loadComments = async(article_id) => {
+    const loadComments = async(article_id, article_user_id) => {
 
         const resComments = await CommentAPI.getArticleComments(article_id)
 
@@ -93,8 +93,9 @@ export default function({article_id, article_user_id}) {
 
         comments.sort((a, b) => { return b.create_at - a.create_at})
 
-        const userIDList = comments.map(item => item.user_id)
-        
+        const userIDList = comments.map(item => item.user_id)        
+        userIDList.push(article_user_id)
+    
         const resUsers = await UserRepository.getByIDList([...new Set(userIDList)])
                 
         if(resUsers == null)
@@ -308,7 +309,6 @@ export default function({article_id, article_user_id}) {
 
         if(user && user.nickname != '' && !atCandidates.find(item => item.id == user.id))
             setAtCandidates([...atCandidates, user])
-
         
         await postAlarmCore(article_user_id, 'COMMENT', res.payload.id)
 

@@ -183,9 +183,9 @@ export default function() {
             return
         }
 
-        const res = await withdraw(input)
+        const result = await withdraw(input)
 
-        if(res.success == false){
+        if(result == false){
             window.showToast(t('toast.configuration.failedWithdrawal'), 'system-error')
             return
         }
@@ -233,19 +233,21 @@ export default function() {
     const withdraw = async(password) => {
 
         if(!validAuth(auth))
-            return
+            return false
     
         const resPasswordCheck = await UserAPI.postUserPasswordCheck(auth.jwt, auth.user_id, password)
-
+        
         if(resPasswordCheck.success == false)
-            return null
+            return false
 
         if(resPasswordCheck.payload.correct == false)
-            return null
+            return false
 
         const payload = {withdraw:true}
 
-        return await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
+        const resPatch = await UserAPI.patchUser(auth.jwt, auth.user_id, payload)
+
+        return resPatch.success        
     }
 
     

@@ -9,9 +9,12 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import {HPad} from "@gui/Pad.js";
+import { useTranslation } from 'react-i18next';
 
 
 export default function({isOpen, onClose, bookmarks}) {
+
+  const { t } = useTranslation()
 
   const refDialog = useRef(null)
   

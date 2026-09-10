@@ -273,7 +273,7 @@ export default function() {
             <PrettyButton onClick={onClickLogout} type='warning'>{t('page.user.logout')}</PrettyButton>
             <Modal title={t('page.user.wantlogout')} type={'yesno'} isOpen={isModalLogout} onResult={onResultLogout} onClose={()=>setIsModalLogout(false)}></Modal>
             <VPad size={16}/>
-            <Modal title={t('page.user.pastePassowrd')} description={user.blog_id ? t('page.user.remainBlogThoughWithdraw') : null} type={'input'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPasswordForUser}/>
+            <Modal title={t('page.user.pastePassowrd')} description={user.blog_id ? t('page.user.remainBlogThoughWithdraw') : null} type={'inputPassword'} isCloseOutsideClick={false} maxLength={20} isOpen={isModalWithdraw} onClose={()=>setIsModalWithdraw(false)} onInput={onInputPasswordForUser}/>
             <PrettyButton onClick={onClickUserWithdraw} type='danger'>{t('page.user.withdrawUser')}</PrettyButton>
         </Vertical>
       </Vertical>) : <Spinner/>

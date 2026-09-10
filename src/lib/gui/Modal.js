@@ -133,6 +133,19 @@ export default ({type, title, description, isCloseOutsideClick=true, defaultValu
                     <PrettyButton onClick={onClickNo} type='cancel' style={{width:'64px'}}>{t('system.cancel')}</PrettyButton>
                 </div>
             </div>}
+
+
+            {type == 'inputPassword' && <div style={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignItems:'center', width:'100%'}}>
+                <input id={randomId} ref={refInput} onKeyDown={onKeyDownInput} type='password' maxLength={maxLength} style={{width:'100%', minWidth:'256px', boxSizing:'border-box'}}/>
+                <div style={{height:'16px'}}/>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
+                    <PrettyButton onClick={onClickInputYes} type='confirm' style={{width:'64px'}}>{t('system.confirm')}</PrettyButton>
+                    <div style={{width:'16px'}}/>
+                    <PrettyButton onClick={onClickNo} type='cancel' style={{width:'64px'}}>{t('system.cancel')}</PrettyButton>
+                </div>
+            </div>}
+
+
             {type == 'confirm' && <PrettyButton onClick={onClickConfirm} style={{width:'64px'}} type='confirm'>{t('system.confirm')}</PrettyButton>}
             {type == 'yesno' && <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
                 <PrettyButton onClick={onClickYes} type='success' style={{width:'64px'}}>{t('system.yes')}</PrettyButton>

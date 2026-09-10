@@ -124,7 +124,24 @@ export default function() {
         }
 
         if(!copiedArticle){
+        
+            const resNotPosted = await ArticleAPI.getBlogArticles(auth.jwt, auth.blog_id, 'posted=0')
 
+            if(resNotPosted.success == false){
+                window.showToast(t('toast.createArticle.failedWritingArticle'), 'system-error')
+                setIsControlLoading(false)
+                return
+            }
+
+            const maxWritingCount = 10
+
+            if(resNotPosted.payload.length >= maxWritingCount){
+
+                window.showToast(t('toast.createArticle.tooMuchWritingArticle', {maxWritingCount:maxWritingCount}), 'user-error')
+                setIsControlLoading(false)
+                return
+            }
+        
             const resPost = await ArticleAPI.postArticle(auth.jwt, payload)
 
             setIsControlLoading(false)

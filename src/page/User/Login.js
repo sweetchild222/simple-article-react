@@ -7,10 +7,13 @@ import PrettyButton from '@gui/PrettyButton.js';
 import Modal from '@gui/Modal.js';
 import {VPad} from "@gui/Pad.js";
 import {Vertical} from "@gui/Flex.js";
+import { useTranslation } from 'react-i18next';
 
 import PasswordReset from './PasswordReset';
 
 export default function() {
+
+    const { t } = useTranslation()
 
     const {auth, updateAuth, validAuth} = useContext(AuthContext)    
     const [isLoading, setIsLoading] = useState(false)

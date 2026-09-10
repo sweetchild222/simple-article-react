@@ -73,9 +73,10 @@ export default function() {
     
     if(category == null){
       setIsSpinner(false)
+      setSelectedCategory(null)
       return
     }
-      
+    
     setIsSpinner(true)
 
     setSelectedCategory(category)

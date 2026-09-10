@@ -264,7 +264,7 @@
       },
       "configuration":{
         "successLogout": "로그아웃 하였습니다",
-        "notSupportMobile": "모바일에서는 프로필 설정을 지원하지 않습니다",
+        "notSupportMobile": "프로필 설정은 데스크탑에서만 지원합니다",
         "unavailableFile": "사용할 수 없는 파일",
         "failedProfile": "프로필 설정 실패",
         "pasteCurrentPassword": "현재 비밀번호를 입력하세요",

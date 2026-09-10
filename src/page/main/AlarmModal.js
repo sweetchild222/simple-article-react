@@ -41,8 +41,6 @@ export default function({isOpen, onClose, onUpdatedAlarms, alarms}) {
   }, [isOpen]);
 
 
-
-  
   const onKeyDownDialog=(event)=>{
 
       if(event.nativeEvent.key == 'Escape'){
@@ -106,7 +104,8 @@ export default function({isOpen, onClose, onUpdatedAlarms, alarms}) {
                         <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} userId={data.from_user_id} onClick={()=> onClickAlarm(data)}/>
                         <Vertical style={{marginLeft:'8px'}}>
                           <Horizental style={{marginBottom:'4px', alignItems:'center', cursor:'pointer'}} onClick={()=> onClickAlarm(data)}>
-                            <div style={{color:'gray', fontSize:'14px', marginRight:'8px'}}>{data.user.nickname}</div>
+                            {data.user && <div style={{color:'gray', fontSize:'14px', marginRight:'8px'}}>{data.user.nickname}</div>}
+                            {data.user == null && <div style={{color:'gray', fontSize:'14px', marginRight:'8px'}}>{t('system.unknown')}</div>}
                             <div style={{color:'gray', fontSize:'14px', whiteSpace:'pre'}}>{ElapsedTime(data.create_at)}</div>
                           </Horizental>
                           <div className={'clamped-text underline-text'} style={{'--line-count':1, height:'1lh', color:(data.checked == 0 ? 'black' : 'darkgray')}} dangerouslySetInnerHTML={{ __html: data.seenComment}} onClick={()=> onClickAlarm(data)}></div>

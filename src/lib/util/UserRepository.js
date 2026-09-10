@@ -24,6 +24,12 @@ export const getByIDList = async(userIDList) => {
         }
     }
 
+    const uniqueList = [...new Map(repository.map(item => [item.id, item])).values()]
+
+    repository.length = 0
+
+    uniqueList.forEach((item) => { repository.push(item) })
+
     return repository.filter(item => userIDList.find(id => item.id == id))
 }
 
@@ -39,6 +45,12 @@ export const getByID = async(userId) => {
         if(newUserList.success == true)
             newUserList.payload.forEach(item=>repository.push(item))
     }
+
+    const uniqueList = [...new Map(repository.map(item => [item.id, item])).values()]
+
+    repository.length = 0
+
+    uniqueList.forEach((item) => { repository.push(item) })
 
     return repository.find(item => item.id == userId)
 }

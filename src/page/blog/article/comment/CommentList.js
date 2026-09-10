@@ -76,7 +76,7 @@ export default function({article_id, article_user_id}) {
 
                 setComments(upperComments)
                 autoShowReplies(upperComments, scrollCommentId)
-            })            
+            })
         })
 
     }, [article_id])
@@ -93,7 +93,7 @@ export default function({article_id, article_user_id}) {
 
         comments.sort((a, b) => { return b.create_at - a.create_at})
 
-        const userIDList = comments.map(item => item.user_id)        
+        const userIDList = comments.map(item => item.user_id)
         userIDList.push(article_user_id)
     
         const resUsers = await UserRepository.getByIDList([...new Set(userIDList)])
@@ -149,7 +149,7 @@ export default function({article_id, article_user_id}) {
                     }, 4000)
                     
                 }, 400)
-            }            
+            }
         }
 
     }, [comments])
@@ -333,7 +333,7 @@ export default function({article_id, article_user_id}) {
     const postMentionAlarm = async(user_ids, comment_id) => {
                         
         for (const [index, user_id] of user_ids.entries())
-            await postAlarmCore(user_id, 'MENTION', comment_id)    
+            await postAlarmCore(user_id, 'MENTION', comment_id)
     }
 
 

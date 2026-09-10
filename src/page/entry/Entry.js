@@ -21,7 +21,6 @@ import {isMobile} from "@util/DeviceType.js";
 import ToastContainer from '@gui/ToastContainer.js'
 import {Vertical, Horizental} from "@gui/Flex.js";
 import {VPad} from "@gui/Pad.js";
-import '@util/I18n.js';
 
 import './Entry.css'
 import ErrorCatch from '../common/ErrorCatch.js'

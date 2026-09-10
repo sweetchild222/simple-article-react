@@ -6,6 +6,7 @@ import AuthContext from "@util/AuthContext.js";
 import SmoothScroll from "@util/SmoothScroll.js";
 import ToInteger from "@util/Integer.js";
 import {isMobile} from "@util/DeviceType.js";
+import { useTranslation } from 'react-i18next';
 
 import Spinner from "@gui/Spinner.js";
 import {VPad, HPad} from "@gui/Pad.js";
@@ -19,6 +20,8 @@ import Pagination from "./Pagination.js";
 
 
 export default function() {
+
+  const { t } = useTranslation()
 
   const { b_id } = useParams()
   

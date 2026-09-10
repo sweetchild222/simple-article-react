@@ -9,7 +9,6 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import {HPad} from "@gui/Pad.js";
-import { t } from 'i18next';
 
 
 export default function({isOpen, onClose, bookmarks}) {

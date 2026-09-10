@@ -25,6 +25,10 @@ export default function() {
     
     const comback = location.state != null && location.state.comback == true
 
+    useEffect(()=>{
+        document.title = 'Leafstory'
+    }, [])
+
     useEffect(() => {
 
         if(validAuth(auth)){

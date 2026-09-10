@@ -44,6 +44,10 @@ export default function() {
 
     const user_id = Integer(id)
 
+    useEffect(()=>{
+        document.title = 'Leafstory'
+    }, [])
+
     useEffect(()=> {
 
         if(!validAuth(auth)){

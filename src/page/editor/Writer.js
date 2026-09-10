@@ -7,6 +7,7 @@ import PrettyButton from '@gui/PrettyButton.js'
 import {Horizental} from "@gui/Flex.js";
 import Modal from '@gui/Modal.js'
 import * as BlobAPI from '@rest/BlobAPI.js'
+import * as BlogAPI from '@rest/BlogAPI.js'
 import * as ArticleAPI from '@rest/ArticleAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import MarkdownToHtml from '@util/MarkdownToHtml.js'
@@ -52,6 +53,17 @@ export default function() {
         else
             return false
     })
+
+
+    useEffect(()=>{
+
+        BlogAPI.getBlog(auth.blog_id).then((resBlog)=> {
+
+            if(resBlog.success == true)
+                document.title = resBlog.payload.title
+        })
+    
+    }, [])
 
 
     useEffect(() => {

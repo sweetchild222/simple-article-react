@@ -1,7 +1,8 @@
-import {useState, useContext, useRef } from "react";
+import {useState, useContext, useRef, useEffect } from "react";
 import {useNavigate, useLocation, useParams} from 'react-router-dom';
 
 import * as ArticleAPI from '@rest/ArticleAPI.js'
+import * as BlogAPI from '@rest/BlogAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import SmoothScroll from "@util/SmoothScroll.js";
 import ToInteger from "@util/Integer.js";
@@ -47,6 +48,19 @@ export default function() {
 
     return (validAuth(auth) && auth.blog_id == blog_id)
   }
+  
+
+  useEffect(()=>{
+
+    BlogAPI.getBlog(blog_id).then((resBlog)=> {
+
+      if(resBlog.success == true)                
+        document.title = resBlog.payload.title
+    })
+
+  }, [])
+
+  
 
 
   const getBlogArticles = async(page, category_id, posted) => {

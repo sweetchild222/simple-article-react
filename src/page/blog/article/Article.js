@@ -75,7 +75,10 @@ export default function() {
                 }
 
                 setArticle(article.payload)
+
                 setCategory(category.payload)
+                
+                document.title = article.payload.title;
 
                 ArticleAPI.postArticleShowed(article_id).then(showed => {
                     
@@ -88,6 +91,8 @@ export default function() {
         })
 
     }, [auth, blog_id, article_id])
+
+    
 
 
     const isEditable = ()=> {

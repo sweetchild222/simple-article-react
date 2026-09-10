@@ -24,6 +24,10 @@ export default function() {
     const [user, setUser] = useState(null)
 
     const navigate = useNavigate()
+
+    useEffect(()=>{
+        document.title = 'Leafstory'
+    }, [])
     
     useEffect(()=> {
 

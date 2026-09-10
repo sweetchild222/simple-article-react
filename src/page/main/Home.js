@@ -36,6 +36,12 @@ export default function() {
   
   const countPerPage = 6
 
+  useEffect(()=>{
+    
+    document.title = 'Leafstory'
+
+  }, [])
+
   useEffect(() => {
         
     const query = getQueryByType(currentType, offset, keyword)

@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import { useNavigate, useLocation} from 'react-router-dom';
 
 import * as RegistAPI from '@rest/RegistAPI.js'
@@ -29,6 +29,9 @@ export default function() {
   const location = useLocation()
   const comback = location.state != null && location.state.comback == true
 
+  useEffect(()=>{
+    document.title = 'Leafstory'
+  }, [])
   
   const onClickSendCertifyCode = async() => {
 

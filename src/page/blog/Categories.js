@@ -24,6 +24,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
     const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
     const [isOpenSelectCategoryModal, setIsOpenSelectCategoryModal] = useState(false)
     const { t } = useTranslation()
+    
 
     useEffect(()=> {
         
@@ -54,6 +55,9 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         }
 
         if(categories.length == 0) {
+            setSelectIndex(-1)
+            setCategories([])
+            onClickCategory(null)
             window.showToast(t('toast.categories.noCategory'), 'user-error')
             return
         }
@@ -64,7 +68,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
         if(isEditable() && isNotMobile()){
 
-            const count = await loadWrtingCount(blogId)            
+            const count = await loadWrtingCount(blogId)
 
             categories.push({blog_id:blogId, article_count:count, name:'작성 중인 글', id:'WRITING', static:true})
         }        
@@ -72,7 +76,7 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
         setCategories(categories)
 
         if(onClickCategory != null){
-            
+
             const findIndex = categories.findIndex(categorie => categorie.id === initCategoryId)
             
             if(findIndex == -1 && categories.length == 0)
@@ -264,23 +268,22 @@ export default function({ref, blogId, onClickCategory, initCategoryId, isEdit}) 
 
 
     if(isMobile()) {
-        return categories && selectIndex != -1 ? (
-            <Horizental>
+        return categories ?  
+            (<Horizental>
                 <HPad size={8}/>
-                <PrettyButton style={{fontSize:'16px', backgroundColor:'#faebd7', color:'black'}} onClick={()=>setIsOpenSelectCategoryModal(true)}>{categories[selectIndex].name + ' (' + categories[selectIndex].article_count + ')'}</PrettyButton>
-                <SelectCategoryModal isOpen={isOpenSelectCategoryModal} onClose={()=>setIsOpenSelectCategoryModal(false)} categories={categories.filter(item => (item.id != 'WRITING'))} onSelect={onSelectCategory}></SelectCategoryModal>
-            </Horizental>
-        ) : <Horizental>
-                <HPad size={8}/>
-                <PrettyButton style={{fontSize:'16px', backgroundColor:'#faebd7', color:'black'}}>{t('page.blog.loading')}</PrettyButton>
-            </Horizental>
+                {categories.length > 0 && selectIndex != -1 && <PrettyButton style={{fontSize:'16px', backgroundColor:'#faebd7', color:'black'}} onClick={()=>setIsOpenSelectCategoryModal(true)}>{categories[selectIndex].name + ' (' + categories[selectIndex].article_count + ')'}</PrettyButton>}
+                {categories.length > 0 && selectIndex == -1 && <PrettyButton style={{fontSize:'16px', backgroundColor:'#faebd7', color:'black'}}>{t('page.blog.loading')}</PrettyButton>}
+                {categories.length > 0 && <SelectCategoryModal isOpen={isOpenSelectCategoryModal} onClose={()=>setIsOpenSelectCategoryModal(false)} categories={categories.filter(item => (item.id != 'WRITING'))} onSelect={onSelectCategory}></SelectCategoryModal>}
+                {categories.length == 0 && <div className={'clamped-text'} style={{'--line-count':1, marginTop:'8px', marginBottom:'8px'}}>{t('page.blog.noCategory')}</div>}
+            </Horizental>)  : null
     }
     else{
         return categories ? (
             <Vertical>
                 <label style={{fontWeight:'bold', fontStyle:'italic', marginBottom:'8px'}}>{t('page.blog.category')}</label>
                 <Vertical style={{alignItems:'start', padding:'4px 8px 4px 8px', borderRadius:'3px', backgroundColor:'`#EDEFF4', border:'1px solid #E4E6EA'}}>
-                    {categories.map((data, index) => <div key={data.id} className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', marginTop:'8px', marginBottom:'8px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</div>)}
+                    {categories.length > 0 && categories.map((data, index) => <div key={data.id} className={'clamped-text'} style={{'--line-count':1, cursor:'pointer', marginTop:'8px', marginBottom:'8px', whiteSpace: 'nowrap', textDecoration:(index == selectIndex ? 'underline' : 'none')}} onClick={()=> onClickCategoryInner(data.id)}>{data.name + ' (' + data.article_count + ')'}</div>)}
+                    {categories.length == 0 && <div className={'clamped-text'} style={{'--line-count':1, marginTop:'8px', marginBottom:'8px'}}>{t('page.blog.noCategory')}</div>}
                     {isEditable() && <div title={t('page.blog.modifyCategory')} style={{color:'black', cursor:'pointer', marginTop:'16px',  whiteSpace: 'nowrap'}} onClick={onClickModifyCategory}><MdCategory size={26}/></div>}
                     {isEditable() && isOpenCategoryModal && <ConfigurationCategoryModal isOpen={isOpenCategoryModal} onClose={()=>setIsOpenCategoryModal(false)} onClickApply={onClickApplyCategory} categories={categories.filter(item => (item.static == false))}></ConfigurationCategoryModal>}
                 </Vertical>

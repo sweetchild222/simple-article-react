@@ -70,6 +70,11 @@ export default function() {
 
 
   const onClickCategory = async(category) => {
+    
+    if(category == null){
+      setIsSpinner(false)
+      return
+    }
       
     setIsSpinner(true)
 

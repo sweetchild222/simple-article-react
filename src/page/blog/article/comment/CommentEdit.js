@@ -80,7 +80,7 @@ export default function({comment, editable, onClickModifyComplete, onClickModify
                 return
 
             setIsModifyLoading(true)
-                
+
             let value = refArea.current.value()
             
             for(const candidate of atCandidates){
@@ -120,5 +120,4 @@ export default function({comment, editable, onClickModifyComplete, onClickModify
             </Vertical>
         ) : null
 }
-
 

@@ -229,7 +229,6 @@ export default function() {
     }
 
 
-
     const withdraw = async(password) => {
 
         if(!validAuth(auth))

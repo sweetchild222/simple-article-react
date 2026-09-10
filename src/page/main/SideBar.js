@@ -76,8 +76,9 @@ export default function () {
 
     }, [auth])
 
-    
+
     const loadBookmarks = async() => {
+
 
         if(!validAuth(auth))
             return null
@@ -145,6 +146,7 @@ export default function () {
 
         const promises = []
 
+        
         alarms.map(alarm => promises.push(alarm.checked == 0 ? ReplaceUserTag.toUserNicknameGreen(alarm.comment) : ReplaceUserTag.toUserNicknameGray(alarm.comment)))
 
         const resPromise = await Promise.all(promises)
@@ -155,7 +157,7 @@ export default function () {
         resPromise.map((data, index) => alarms[index].seenComment = data)
 
         const user_ids = alarms.map(({from_user_id}) => from_user_id)
-
+        
         const users = await UserRepository.getByIDList([...new Set(user_ids)])
 
         for(const alarm of alarms)

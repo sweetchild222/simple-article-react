@@ -94,14 +94,14 @@ export default function({isOpen, onClose, onUpdatedAlarms, alarms}) {
 
     setFromIndex(index => (index - pageCount < 0) ? 0 : (index - pageCount))
 
-  }  
+  }
   
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px', width:'90%', maxWidth:'512px'}}>
               <Vertical style={{alignItems: 'start', marginLeft:'16px', marginRight:'16px', marginTop:'8px', marginBottom:'8px'}}>
                   {newAlarms && newAlarms.slice(fromIndex, fromIndex + pageCount).map((data, index) =>
                       <Horizental key={data.id} style={{marginTop:'8px', marginBottom:'8px', width:'100%'}}>
-                        <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} userId={data.from_user_id} onClick={()=> onClickAlarm(data)}/>
+                        <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} user={data.user} onClick={()=> onClickAlarm(data)}/>
                         <Vertical style={{marginLeft:'8px'}}>
                           <Horizental style={{marginBottom:'4px', alignItems:'center', cursor:'pointer'}} onClick={()=> onClickAlarm(data)}>
                             {data.user && <div style={{color:'gray', fontSize:'14px', marginRight:'8px'}}>{data.user.nickname}</div>}

@@ -113,7 +113,7 @@ export default function() {
     else if(currentType == 2)
       return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=comment_count&order=1'
     else if(currentType == 3){
-
+      
       if(blogIds == null || blogIds.length == 0)
           return null
         
@@ -125,6 +125,7 @@ export default function() {
 
 
   const onClickNewest = async()=> {
+    
         
     setCurrentType(0)
     setOffset(0)
@@ -205,7 +206,6 @@ export default function() {
   }
 
   
-  
   return (
     <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px', marginTop:(isMobile() ? '64px' : '0px')}}>
       <VPad size={8}/>
@@ -215,8 +215,8 @@ export default function() {
           <PrettyButton onClick={onClickFavorite} style={{width:'fit-content'}}>{t('page.main.popularityFirst')}</PrettyButton>
           <HPad size={8}/>
           <PrettyButton onClick={onClickManyComment} style={{width:'fit-content'}}>{t('page.main.commentFirst')}</PrettyButton>
-          {blogIds && <HPad size={8}/>}
-          {blogIds && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{t('page.main.subscribedArticle')}</PrettyButton>}
+          {blogIds && blogIds.length > 0 && <HPad size={8}/>}
+          {blogIds && blogIds.length > 0 && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{t('page.main.subscribedArticle')}</PrettyButton>}
           <HPad size={8}/>
           <div style={{flex:'1'}}/>
           {isMobile() && <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{t('page.main.search')}</PrettyButton>}

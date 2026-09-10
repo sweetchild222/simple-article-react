@@ -235,7 +235,7 @@ export default function() {
         if(!validAuth(auth))
             return
     
-        const resPasswordCheck = await UserAPI.getUserPasswordCheck(auth.jwt, auth.user_id, password)
+        const resPasswordCheck = await UserAPI.postUserPasswordCheck(auth.jwt, auth.user_id, password)
 
         if(resPasswordCheck.success == false)
             return null

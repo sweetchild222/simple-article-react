@@ -114,7 +114,7 @@ export default function({isOpen, onClose}) {
 
     const passwordChange = async(current_password, new_password)=>{
         
-        const resPasswordCheck = await UserAPI.getUserPasswordCheck(auth.jwt, auth.user_id, current_password)
+        const resPasswordCheck = await UserAPI.postUserPasswordCheck(auth.jwt, auth.user_id, current_password)
 
         if(resPasswordCheck.success == false)
             return null

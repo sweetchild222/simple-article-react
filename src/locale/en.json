@@ -118,8 +118,8 @@
         "pasteText": "Put the text",
         "modified": "Modified",
         "reply": "Reply",
-        "writeReply": "Write reply",
-        "writeComment": "Write comment",
+        "writeReply": "Reply",
+        "writeComment": "Comment",
         "comment": "Comment"
       }
   },

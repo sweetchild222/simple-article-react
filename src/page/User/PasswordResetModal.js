@@ -1,4 +1,5 @@
-import {useState} from "react";
+import {useState, useEffect, useRef} from "react";
+import ReactDOM from 'react-dom';
 
 import * as RegistAPI from '@rest/RegistAPI.js'
 import * as PasswordResetAPI from '@rest/PasswordResetAPI.js'
@@ -9,15 +10,37 @@ import { useTranslation } from 'react-i18next';
 
 import * as validator from './Validator.js'
 
-export default function({onClose}) {
+export default function({isOpen, onClose}) {
 
     const { t } = useTranslation()
+
+    const refDialog = useRef(null)
     
     const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)
     const [isLoadingCertify, setIsLoadingCertify] = useState(false)
     const [isLoadingPasswordReset, setIsLoadingPasswordReset] = useState(false)
 
     const [isCertified, setIsCertified] = useState(false)
+
+    
+    useEffect(() => {
+
+        if(isOpen)
+            refDialog.current.showModal()
+        else
+            refDialog.current.close()
+
+    }, [isOpen])
+    
+    
+    const onKeyDownDialog=(event)=>{
+
+        if(event.nativeEvent.key == 'Escape'){
+            event.preventDefault()
+        }
+    }
+    
+        
 
     const onChangeEmail = (event) => {
 
@@ -143,21 +166,25 @@ export default function({onClose}) {
 
 
     return (
-        <Vertical>
-            <Horizental style={{ alignItems: 'center', width:'100%'}}>
-                <input id={'input_email'} type={'text'} onChange={onChangeEmail} disabled={isCertified} placeholder={t('page.user.email')} maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
-                <HPad size={8}/>
-                <PrettyButton isLoading={isLoadingSendCode} disabled={isCertified} onClick={onClickSendCertifyCode} type={'success'}>{t('page.user.sendVerificationCode')}</PrettyButton>
-            </Horizental>
-            <VPad size={8}/>
-            <Horizental style={{ alignItems: 'center', width:'100%'}}>
-                <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder={t('page.user.VerificationCode')} style={{flex:'1', boxSizing:'border-box'}}/>
-                <HPad size={8}/>
-                <PrettyButton isLoading={isLoadingCertify} disabled={isCertified} onClick={onClickRequestCertify} type={'success'}>{t('page.user.confirmVerificationCode')}</PrettyButton>
-            </Horizental>
-            <VPad size={16}/>
-            <PrettyButton isLoading={isLoadingPasswordReset} disabled={!isCertified} onClick={onClickPasswordReset} style={{width:'100%'}} type={'success'}>{t('page.user.sendTemporaryPassword')}</PrettyButton>
-        </Vertical>
-    )
+        ReactDOM.createPortal(
+            <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'8px'}}>
+                <Vertical style={{alignItems: 'start', position:'relative'}}>
+                    <Horizental style={{ alignItems: 'center', width:'100%'}}>
+                        <input id={'input_email'} type={'text'} onChange={onChangeEmail} disabled={isCertified} placeholder={t('page.user.email')} maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
+                        <HPad size={8}/>
+                        <PrettyButton isLoading={isLoadingSendCode} disabled={isCertified} onClick={onClickSendCertifyCode} type={'success'}>{t('page.user.sendVerificationCode')}</PrettyButton>
+                    </Horizental>
+                    <VPad size={8}/>
+                    <Horizental style={{ alignItems: 'center', width:'100%'}}>
+                        <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder={t('page.user.VerificationCode')} style={{flex:'1', boxSizing:'border-box'}}/>
+                        <HPad size={8}/>
+                        <PrettyButton isLoading={isLoadingCertify} disabled={isCertified} onClick={onClickRequestCertify} type={'success'}>{t('page.user.confirmVerificationCode')}</PrettyButton>
+                    </Horizental>
+                    <VPad size={16}/>
+                    <PrettyButton isLoading={isLoadingPasswordReset} disabled={!isCertified} onClick={onClickPasswordReset} style={{width:'100%'}} type={'success'}>{t('page.user.sendTemporaryPassword')}</PrettyButton>
+                </Vertical>
+            </dialog>,
+            document.getElementById('modal-root'))
+        )
 }
 

@@ -4,12 +4,11 @@ import { useNavigate, useLocation} from 'react-router-dom';
 import AuthContext from "@util/AuthContext.js";
 import * as UserAPI from '@rest/UserAPI.js'
 import PrettyButton from '@gui/PrettyButton.js';
-import Modal from '@gui/Modal.js';
-import {VPad} from "@gui/Pad.js";
-import {Vertical} from "@gui/Flex.js";
+import { VPad } from "@gui/Pad.js";
+import { Vertical} from "@gui/Flex.js";
 import { useTranslation } from 'react-i18next';
 
-import PasswordReset from './PasswordReset';
+import PasswordResetModal from './PasswordResetModal';
 
 export default function() {
 
@@ -112,10 +111,7 @@ export default function() {
                     <VPad size={16}/>
                     <PrettyButton onClick={() => setIsModalPasswordReset(true)} style={{width:'100%'}}>{t('page.user.findPassword')}</PrettyButton>
                 </Vertical>
-                {isModalPasswordReset && <Modal type={'custom'} isOpen={isModalPasswordReset} onClose={()=>setIsModalPasswordReset(false)} isCloseOutsideClick={true}>
-                    <PasswordReset onClose={() => setIsModalPasswordReset(false)}/>
-                </Modal>
-                }
+                <PasswordResetModal isOpen={isModalPasswordReset} onClose={() => setIsModalPasswordReset(false)}/>
             </Vertical>
     )
 }

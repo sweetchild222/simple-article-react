@@ -64,6 +64,7 @@
 		    "newestFirst": "Newest",
 		    "popularityFirst": "Popularity",
 		    "commentFirst": "Comments",
+        "order": "Order",
 		    "subscribedArticle": "Subscribed blogs",
 		    "pasteSearchingText": "Input searching text",
 		    "search": "Search",

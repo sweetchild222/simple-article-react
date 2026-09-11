@@ -34,7 +34,6 @@ export default function() {
 
   const [isSearchModal, setIsSearchModal] = useState(null)
   
-  
   const countPerPage = 6
 
   useEffect(()=>{

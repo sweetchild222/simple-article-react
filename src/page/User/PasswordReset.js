@@ -156,7 +156,7 @@ export default function({onClose}) {
                 <PrettyButton isLoading={isLoadingCertify} disabled={isCertified} onClick={onClickRequestCertify} type={'success'}>{t('page.user.confirmVerificationCode')}</PrettyButton>
             </Horizental>
             <VPad size={16}/>
-            <PrettyButton isLoading={isLoadingPasswordReset} disabled={!isCertified} onClick={onClickPasswordReset} style={{width:'100%'}} type={'success'}>{t('page.user.sendVerificationCode')}</PrettyButton>
+            <PrettyButton isLoading={isLoadingPasswordReset} disabled={!isCertified} onClick={onClickPasswordReset} style={{width:'100%'}} type={'success'}>{t('page.user.sendTemporaryPassword')}</PrettyButton>
         </Vertical>
     )
 }

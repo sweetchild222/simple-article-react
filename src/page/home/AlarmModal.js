@@ -100,9 +100,9 @@ export default function({isOpen, onClose, onUpdatedAlarms, alarms}) {
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px', width:'90%', maxWidth:'512px'}}>
               <Vertical style={{alignItems: 'start', marginLeft:'16px', marginRight:'16px', marginTop:'8px', marginBottom:'8px'}}>
                   {newAlarms && newAlarms.slice(fromIndex, fromIndex + pageCount).map((data, index) =>
-                      <Vertical style={{width:'100%'}}>
+                      <Vertical key={data.id} style={{width:'100%'}}>
                         <VPad size={8}/>
-                        <Horizental key={data.id} style={{width:'100%', alignItems:'center'}}>
+                        <Horizental style={{width:'100%', alignItems:'center'}}>
                           <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} user={data.user} onClick={()=> onClickAlarm(data)}/>
                           <HPad size={16}/>
                           <Vertical>

@@ -28,7 +28,7 @@ const CopyPlug = new CopyWebpackPlugin(
     [
       { 
         from: path.resolve(__dirname, 'public'),
-        to: path.resolve(__dirname, 'react_dist'),
+        to: path.resolve(__dirname, 'dist_package'),
         globOptions: {
           ignore: ['**/index.html'],
         },
@@ -43,7 +43,7 @@ export default {
 
   output: {
     filename: 'main.js',
-    path: path.join(__dirname, 'react_dist'),
+    path: path.join(__dirname, 'dist_package'),
     clean: true,
     publicPath: '/'
   },

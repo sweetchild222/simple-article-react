@@ -96,7 +96,7 @@ export default function() {
     
     return (
             <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
-                <label htmlFor='input_username'>{t('page.user.userName')}</label>
+                <label htmlFor='input_username'>{t('page.user.email')}</label>
                 <VPad size={4}/>
                 <input id='input_username' type='text' onKeyDown={onKeyDownUserName} maxLength={254} style={{width:'256px'}}/>
                 <VPad size={16}/>

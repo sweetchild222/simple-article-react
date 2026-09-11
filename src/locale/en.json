@@ -1,34 +1,320 @@
 {
   "system":{
-    "yes":"Yes",
-    "no":"No",
-    "confirm":"Confirm",
-    "cancel":"Cancel",
-    "send":"Send",
-    "select":"Select",
-    "apply":"Apply",
+    "title": "Leaf story",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "send": "Send",
+    "select": "Select",
+    "apply": "Apply",
     "modify": "Modify",
     "upload": "Upload",
+    "post": "Post",
     "change": "Change",
     "delete": "Delete",
-    "Leave" : "Leave",
+    "leave" : "Leave",
     "next": "Next",
     "prev": "Previous",
-    "subscribe":"Subscribe",
-    "subscribed":"Subscribed",
-    "goback":"Go back"
+    "subscribe":" Subscribe",
+    "subscribed": "Subscribed",
+    "goback": "Go back",
+    "close": "Close",
+    "more" : "More",
+    "unknown": "Unknown",
+    "justNow":"Just now",
+    "minuteAgo":"{{minute}} minutes ago",
+    "hourAgo":"{{hour}} hours ago",
+    "today":"Today",
+    "yesterday":"Yesterday"
+  },
+  "page":{
+      "user":{
+        "editUserConfiguration": "Edit Profile",
+        "visitBlog": "Visit blog",
+        "email": "Email",
+        "sendVerificationCode": "Send verification code",
+        "confirmVerificationCode": "Confirm verification code",
+        "VerificationCode": "Verification code",
+        "passwordLength": "Password (8~20 characters)",
+        "registUser": "Sign up",
+        "notAccessLoggedinUser": "Logged-in users cannot access this",
+        "sendTemporaryPassword": "Send temporary password",
+        "currentPassword": "Current password",
+        "passwordRequirements": "8~20 characters including uppercase, lowercase, number, special characters",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm password",
+        "password": "Password",
+        "login": "Login",
+        "findPassword": "Find password 찾기",
+        "setNickname": "Set nickname",
+        "changePassword": "Change password",
+        "logout": "Logout",
+        "withdrawUser": "Withdraw user",
+        "remainBlogThoughWithdraw": "Your blog will remain even if you withdraw your account",
+        "pasteNickname": "Please enter nickname",
+        "wantlogout": "Would you like to log out?",
+        "pastePassowrd": "Please enter your password"
+      },
+      "main":{
+        "login": "Login",
+		    "myBlog": "My blog",
+		    "subscribedBlog": "Subscribed blogs",
+		    "bookmarkArticle": "Bookmarked post",
+		    "newestFirst": "Newest",
+		    "popularityFirst": "Popularity",
+		    "commentFirst": "Comments",
+		    "subscribedArticle": "subscribed blogs",
+		    "pasteSearchingText": "Input searching text",
+		    "search": "Search",
+		    "noArticle": "No article",
+		    "bookmark": "Bookmark"
+      },
+      "common":{
+        "errorOccured": "An error has occurred",
+		    "contactSiteAdminisrator": "Please contact the administrator(crazygun22@nate.com)",
+        "sessionTimeout": "Your session has expired. Please log in again",
+		    "relogin": "Log in again",
+		    "pageNotFound": "Page not found"
+      },
+      "editor":{
+        "notAccess": "Access is denied",
+		    "writeArticle": "Try writing something",
+		    "temporarySave": "Temporary save",
+		    "temporarySavebeforeLeave": "Would you like to save a draft before leaving?",
+		    "preview": "Preview",
+		    "wantLeavWithoutSave": "Do you want to leave without saving?",
+		    "title": "Title",
+		    "pasteTitle": "Input title",
+		    "category": "Category",
+		    "thumbnail": "Thumbnail",
+		    "wantDelete": "Do you want to delete?",
+		    "completeModify": "Done modify",
+		    "completeWrite": "Done write"
+      },
+
+      "blog":{
+        "recentArticle": "Newest",
+        "failedLoad": "Failed to load",
+        "noArticleInCategory": "No article in this category",
+        "pasteBlogTitle": "Enter the blog title",
+        "modifyTitle": "Edit Title",
+        "modifyBackground": "Edit background",
+        "noCategory":"There are no categories",
+        "subscriber": "Subscriber",
+        "writeNewArticle": "Write a new post",
+        "daily": "Daily",
+        "travel": "Traver",
+        "cook": "Cook",
+        "health": "Health",
+        "restaurant": "Restaurant",
+        "category": "Category",
+        "loading": "Loading",
+        "modifyCategory": "Edit Category",
+        "noContent": "No content",
+        "othersInCategory":"The others in this category",
+        "wantDelete": "Do you want to delete?",
+        "great": "Great",
+        "disgreat": "Disgreat",
+        "pasteText": "Put the text",
+        "modified": "Modified",
+        "reply": "Reply",
+        "writeReply": "Write reply",
+        "writeComment": "Write comment",
+        "comment": "Comment"
+      }
   },
   "toast":{
-
-
-    "category":{
-      "nameMaxLength": "카테고리 이름은 최대 {{maxLength}}자 입니다"
-    }
-
+      "appBarBlog":{
+        "requireLogin":"Please log in",
+        "cannotSubscribeInfo":"Failed to retrieve subscription",
+        "cancelSubscribed":"Subscription cancelled",
+        "failedCancelSubscribed":"Failed to cancel subscription",
+        "successSubscribe":"Subscribed",
+        "failedSubscribe":"Subscription failed"
+      },
+      "categories":{
+        "failedGettingCategory":"Failed to retrieve category",
+        "noCategory":"No category",
+        "successDeletingCategory":"{{name}} deleted",
+        "failedDeletingCategory":"Failed to delete {{name}}",
+        "successAddingCategory":"{{name}} added",
+        "failedAddingCategory":"Failed to add {{name}}",
+        "successChangingName":"Changed to {{name}}",
+        "failedChangingName":"Failed to change to {{name}}",
+        "noChanged":"No changed"
+      },
+      "createArticle":{
+        "failedWritingArticle":"Failed to retrieve the posts in progress",
+        "tooMuchWritingArticle":"You have too many posts in progress ({{maxWritingCount}} or fewer)",
+        "failedSearchCategory":"Failed to find category",
+        "failedCreatingArticle":"Failed to create new post"
+      },
+      "header":{
+        "unavailableFile":"Unusable file",
+        "failedSettingBlogImage":"Failed to set blog image",
+        "noTitle":"No title",
+        "failedModifyBlogTitle":"Failed to update blog title",
+        "successModifyBlogTitle":"Blog title updated",
+        "requireLogin":"Please log in",
+        "failedGettingSubscribe":"Failed to retrieve subscription",
+        "cancelSubscribed":"Subscription cancelled",
+        "failedCancelSubscribed":"Failed to cancel subscription",
+        "successSubscribe":"Subscribed",
+        "failedSubscribe":"Subscription failed"
+      },
+      "articleItem":{
+        "failedWritingArticle":"Failed to retrieve the posts in progress"
+      },
+      "configurationCategoryModal":{
+        "pasteCategoryName":"Input category name",
+        "nameMaxLength": "Category names can be up to {{maxLength}} characters long",
+        "maxCreateCategory": "Categorie can be create up to {{maxCount}}",
+        "cannotDeleteCategory": "Categorie that contain posts can't be delete"
+      },
+      "recents":{
+        "failedGettingNewArticle":"Failed to retrieve recently posts"
+      },
+      "article":{
+        "failedModifyingArticle": "Failed to find the post in progress",
+		    "failedCreatingModifyingArticle": "Failed to create the post to modify",
+		    "successCreatingModifyingArticle": "Created the post to modify",
+		    "moveModifyingArticle": "Go to the post being edited",
+		    "failedDeleteArticle": "Failed to delete",
+		    "successDeleteArticle": "Deleted"
+      },
+      "bookmark":{
+        "requireLogin": "Please log in",
+		    "failedGettingBookmark": "Failed to retrieve the bookmarks",
+		    "cancelBookmark": "Bookmark removed",
+		    "failedCancelBookmark": "Failed to remove bookmark",
+		    "successBookmark": "Bookmarked",
+		    "failedBookmark": "Bookmark failed"
+      },
+      "articleGreat":{
+        "failedChanging": "Failed to update {{great}} status",
+		    "successChanging": "Changed to {{great}}",
+		    "failedCancel": "Failed to cancel {{great}}",
+		    "successCancel": "{{great}} cancelled",
+		    "failedGreat": "Failed to {{great}}",
+		    "successGreat": "{{great}}",
+		    "requireLogin": "Please log in",
+        "great":"great",
+        "disgreat":"disgreat"
+      },
+      "commentGreat":{
+        "failedChanging": "Failed to update {{great}} status",
+		    "successChanging": "Changed to {{great}}",
+		    "failedCancel": "Failed to cancel {{great}}",
+		    "successCancel": "{{great}} cancelled",
+		    "failedGreat": "Failed to {{great}}",
+		    "successGreat": "{{great}}",
+		    "requireLogin": "Please log in",
+        "great":"great",
+        "disgreat":"disgreat"
+      },
+      "commentList":{
+        "failedGettingComment": "Failed to retrieve comments",
+        "failedDeletingComment": "Failed to delete comment",
+        "successDeletingComment": "Done deleting comment",
+        "requireLogin": "Please log in",
+        "noText": "No text",
+        "failedWritingComment": "Failed to update comment",
+        "failedWritingReply": "Failed to update reply",
+        "successWritingComment": "Comment posted",
+        "noModified": "No changed",
+        "failedModifying": "Modification failed",
+        "sucessWritingReply": "Reply posted",
+        "successModifying": "Modified"
+      },
+      "posting":{
+        "failedGettingCategory": "Failed to retrieve categories",
+		    "unavailableFile": "Unusable file",
+		    "failedSettingThumbnail": "Failed to set thumbnail",
+		    "noCategory": "No category has been set",
+		    "pasteTitle": "Input title",
+		    "failedModifyingArticle": "Failed to edit the post",
+		    "failedPostingArticle": "Failed to post",
+		    "modifiedArticle": "The post has been edited",
+        "postedArticle":"posted",
+        "failedDeleting":"Deletion failed",
+		    "successDeleting":"Deleted",
+		    "failedDraftedSavingArticle":"Failed to save the post in progress",
+		    "successDraftedSavingArticle":"Temporary saved"
+      },
+      "writer":{
+        "noText": "No text",
+		    "successSavingDraft": "Temporary saved",
+		    "failedSavingDraft": "Failed to temporary save",
+		    "failedDeleting": "Failed to save",
+		    "successDeleting": "Deleted"
+      },
+      "appBarMain":{
+        "requireLogin": "Please log in",
+		    "noAlarm": "No alarm",
+		    "noSubscribed": "No subscribed blogs",
+		    "noBookmark": "No bookmarked posts"
+      },
+      "home":{
+        "failedGettingArticle": "Failed to retrieve the post"
+      },
+      "sidebar":{
+        "requireLogin": "Please log in",
+        "noAlarm": "No alarm"
+      },
+      "configuration":{
+        "successLogout": "Logged out",
+        "notSupportMobile": "Profile settings are supported only on desktop",
+        "unavailableFile": "Unusable file",
+        "failedProfile": "Failed to set up profile",
+        "pasteCurrentPassword": "Input current password",
+        "wrongPassword": "Wrong password",
+        "failedWithdrawal": "Failed to withdraw",
+        "successWithdrawal": "Withdrawed",
+        "pasteNickname": "Input nickname",
+        "failedModifyingNickname": "Failed to update nickname",
+        "successModifyingNickname": "Nickname updated"
+      },
+      "login":{
+        "failedLogin": "Login failed",
+		    "successLogin": "Logged in"
+      },
+      "passwordModal":{
+        "pasteCurrentPassword": "Input current password",
+		    "pasteNewPassword": "Input new password",
+		    "pasteConfirmPassword": "Input confirmation password",
+		    "notMatchPassword": "The new password and the confirmation password do not match",
+		    "notMeetRequirementPassword": "The new password does not meet the requirements",
+		    "failedChangingPassword": "failed to update password",
+		    "successChangingPassword": "Updated password"
+      },
+      "passwordReset":{
+        "invalidEmail": "Invalid email format",
+		    "noEmail": "The email cannot be found",
+		    "successSendVerificationCode": "Verification code sent",
+		    "failedSendVerificationCode": "Failed to send verification code",
+		    "wrongVerificationCode": "The verification code is wrong",
+		    "successVerified": "Verified",
+		    "failedVerified": "Failed Verification",
+		    "failedSendingTemporaryPassword": "Failed to send temporary password",
+		    "successSendingTemporaryPassword": "Temporary password sent"
+      },
+      "regist":{
+        "invalidEmail": "Invalid email format",
+        "successSendVerificationCode": "Verification code sent",
+        "failedSendVerificationCode": "Failed to send verification code",
+        "existRegistedUser": "This email is already registered",
+        "wrongVerificationCode": "Wrong verifiaction code",
+        "successVerified": "Verified",
+        "failedVerified": "Failed Verification",
+        "failedRegistUser": "Sign-up failed",
+        "successRegistUser": "Registered",
+        "existUser": "This email already exists"
+      }
   },
   "mdxEditor":{
     "frontmatterEditor": {
-      "title": "Edit frontmatter",
+      "title": "Edit document frontmatter",
       "key": "Key",
       "value": "Value",
       "addEntry": "Add entry"
@@ -40,8 +326,8 @@
     "uploadImage": {
       "dialogTitle": "Upload image",
       "uploadInstructions": "Upload image from local:",
-      "addViaUrlInstructions": "Image url:",
-      "autoCompletePlaceholder": "Select or paste an image source.",
+      "addViaUrlInstructions": "Import image from URL:",
+      "autoCompletePlaceholder": "Select or paste an image source",
       "alt": "Alt:",
       "title": "Title:",
       "width": "Width:",
@@ -53,13 +339,13 @@
     },
     "createLink": {
       "url": "URL",
-      "urlPlaceholder": "Paste the URL",
-      "text": "text",
-      "textTooltip": "Text to be displayed on the link",
+      "urlPlaceholder": "Select or paste a URL",
+      "text": "Anchor text",
+      "textTooltip": "Text on the link",
       "title": "Title",
-      "titleTooltip": "The title tooltip on mouse hover",
-      "saveTooltip": "Save tooltip",
-      "cancelTooltip": "Cancel tooltip"
+      "titleTooltip": "The title attribute of the link on mouse hover",
+      "saveTooltip": "URL Settings",
+      "cancelTooltip": "Cancel changes"
     },
     "linkPreview": {
       "open": "Open {{url}} in a new window",
@@ -71,12 +357,12 @@
     "table": {
       "deleteTable": "Delete table",
       "columnMenu": "Column menu",
-      "textAlignment": "Text alignment",
-      "alignLeft": "Left alignment",
-      "alignCenter": "Center alignment",
-      "alignRight": "Right alignment",
-      "insertColumnLeft": "Add column to the left",
-      "insertColumnRight": "Add column to the right",
+      "textAlignment": "Alignment text",
+      "alignLeft": "Alignment left",
+      "alignCenter": "Alignment center",
+      "alignRight": "Alignment right",
+      "insertColumnLeft": "Insert column to the left",
+      "insertColumnRight": "Insert column to the right",
       "deleteColumn": "Delete this column",
       "rowMenu": "Row menu",
       "insertRowAbove": "Insert row above",
@@ -92,7 +378,7 @@
       "blockTypeSelect": {
         "selectBlockTypeTooltip": "Select block type",
         "placeholder": "Block type"
-      },    
+      },
       "toggleGroup": "Toggle group",
       "removeBold": "Remove bold",
       "bold": "Bold",
@@ -102,26 +388,26 @@
       "removeUnderline": "Remove underline",
       "removeInlineCode": "Remove inline code",
       "inlineCode": "Inline code",
-      "link": "link",
+      "link": "Insert link",
       "richText": "Rich text",
       "diffMode": "Diff mode",
       "source": "Source mode",
       "admonition": "Admonition",
-      "codeBlock": "Code block",
-      "editFrontmatter": "Edit frontmatter",
+      "codeBlock": "Insert code block",
+      "editFrontmatter": "Edit frontmetter",
       "insertFrontmatter": "Insert frontmatter",
       "image": "Insert image",
       "insertSandpack": "Insert sandpack",
-      "table": "table",
-      "thematicBreak": "Thematic break",
-      "bulletedList": "Bulleted list",
-      "numberedList": "Numbered list",
-      "checkList": "Check list",
-      "deleteSandpack": "Delete sandpack",
-      "undo": "Undo {{shortcut}}",
+      "table": "Table",
+      "thematicBreak": "ThematicBreak",
+      "bulletedList": "Bulleted List",
+      "numberedList": "Numbered List",
+      "checkList": "Check List",
+      "deleteSandpack": "Delete this code block",
+      "undo": "Cancel {{shortcut}}",
       "redo": "Redo {{shortcut}}",
       "highlight": "Highlight",
-      "removeHighlight": "Remove highligt",
+      "removeHighlight": "Remove highlight",
       "strikethrough": "Strikethrough",
       "subscript":"Subscript",
       "superscript":"Superscript",
@@ -130,34 +416,34 @@
       "imagelink":"Insert image link"
     },
     "youtube":{
-      "invalidUrl":"Invalid url",
-      "pasteUrl":"Paste youtube url"
+      "invalidUrl":"Wrong URL",
+      "pasteUrl":"Input youtube URL"
     },
     "imagefile":{
-      "cannotUpload":"Can not upload file",
-      "abnormalFile":"Abnormal file!"
+      "cannotUpload":"The file cannot be uploaded",
+      "abnormalFile":"Unavailable file"
     },
     "imagelink":{
-      "pasteLink":"Paste image link",
+      "pasteLink":"Input image link",
       "title":"Image title",
-      "alternative":"Alternative name if image is unavailable",
-      "wrongUrl":"Wrong url"
+      "alternative":"Alternative name if no image is available",
+      "wrongUrl":"The URL format is invalid"
     },
     "admonitions": {
-      "note": "note",
+      "note": "Note",
       "tip": "tip",
-      "danger": "danger",
-      "info": "info",
-      "caution": "caution",
-      "changeType": "Change type",
-      "placeholder": "Placeholder"
+      "danger": "Danger",
+      "info": "Info",
+      "caution": "Caution",
+      "changeType": "Select admonition type",
+      "placeholder": "Admonition type"
     },
     "codeBlock": {
-      "language": "Codeblock language",
-      "selectLanguage": "Select codeblock language"
+      "language": "Code block language",
+      "selectLanguage": "Select code block language"
     },
     "contentArea": {
-      "editableMarkdown": "Editable markdown"
+      "editableMarkdown": "Editable Markdown"
     }
   }
 }

@@ -44,7 +44,6 @@
         "passwordRequirements": "8~20자 사이 영어 문자열로 대소문자, 숫자, 특수문자 포함",
         "newPassword": "새 비밀번호",
         "confirmPassword": "비밀번호 확인",
-        "userName": "사용자 이름",
         "password": "비밀번호",
         "login": "로그인",
         "findPassword": "비밀번호 찾기",
@@ -53,7 +52,7 @@
         "logout": "로그아웃",
         "withdrawUser": "회원 탈퇴",
         "remainBlogThoughWithdraw": "회원을 탈퇴해도 블로그는 남습니다",
-        "pastNickname": "닉네임을 입력하세요",
+        "pasteNickname": "닉네임을 입력하세요",
         "wantlogout": "로그아웃 하시겠습니까?",
         "pastePassowrd": "패스워드를 입력하세요"
       },
@@ -66,14 +65,14 @@
 		    "popularityFirst": "인기순",
 		    "commentFirst": "댓글순",
 		    "subscribedArticle": "구독한 블로그 글",
-		    "pastSearchingText": "검색할 글을 입력하세요",
+		    "pasteSearchingText": "검색할 글을 입력하세요",
 		    "search": "검색",
 		    "noArticle": "글이 없습니다",
 		    "bookmark": "북마크"
       },
       "common":{
         "errorOccured": "오류가 발생하였습니다",
-		    "contactSiteAdminisrator": "관리자에게 문의하세요",
+		    "contactSiteAdminisrator": "관리자에게 문의하세요(crazygun22@nate.com)",
         "sessionTimeout": "세션이 만료 되었습니다. 다시 로그인 해주세요",
 		    "relogin": "로그인 다시 하기",
 		    "pageNotFound": "페이지를 찾을 수 없습니다"
@@ -131,7 +130,7 @@
         "cannotSubscribeInfo":"구독 정보 가져오기 실패",
         "cancelSubscribed":"구독을 취소함",
         "failedCancelSubscribed":"구독 취소 실패",
-        "successSubscribe":"구독함",
+        "successSubscribe":"구독 완료",
         "failedSubscribe":"구독 실패"
       },
       "categories":{
@@ -161,7 +160,7 @@
         "failedGettingSubscribe":"구독 정보 가져오기 실패",
         "cancelSubscribed":"구독이 취소됨",
         "failedCancelSubscribed":"구독 취소 실패",
-        "successSubscribe":"구독함",
+        "successSubscribe":"구독 완료",
         "failedSubscribe":"구독 실패"
       },
       "articleItem":{
@@ -241,11 +240,11 @@
         "failedDeleting":"삭제 실패",
 		    "successDeleting":"삭제됨",
 		    "failedDraftedSavingArticle":"임시 저장 실패",
-		    "successDraftedSavingArticle":"임시 저장이 성공함"
+		    "successDraftedSavingArticle":"임시 저장됨"
       },
       "writer":{
         "noText": "입력된 글이 없습니다",
-		    "successSavingDraft": "임시 저장이 성공함",
+		    "successSavingDraft": "임시 저장됨",
 		    "failedSavingDraft": "임시 저장 실패",
 		    "failedDeleting": "삭제 실패",
 		    "successDeleting": "삭제됨"
@@ -283,7 +282,7 @@
       "passwordModal":{
         "pasteCurrentPassword": "현재 비밀번호를 입력하세요",
 		    "pasteNewPassword": "새 비밀번호를 입력하세요",
-		    "pasteComfirmPassword": "비밀번호 확인을 입력하세요",
+		    "pasteConfirmPassword": "비밀번호 확인을 입력하세요",
 		    "notMatchPassword": "새 비밀번호와 비밀번호 확인이 일치하지 않습니다",
 		    "notMeetRequirementPassword": "새 비밀번호가 조건에 맞지 않습니다",
 		    "failedChangingPassword": "비밀번호 변경 실패",
@@ -304,7 +303,7 @@
         "invalidEmail": "잘못된 형식의 이메일입니다",
         "successSendVerificationCode": "인증코드가 발송됨",
         "failedSendVerificationCode": "인증코드 발송 실패",
-        "existRegistedUser": "이미 가입한 사용자입니다",
+        "existRegistedUser": "이미 가입된 사용자입니다",
         "wrongVerificationCode": "인증코드를 잘못 입력하였습니다",
         "successVerified": "인증됨",
         "failedVerified": "인증 실패",
@@ -385,8 +384,8 @@
       "bold": "굵게",
       "removeItalic": "기울임 제거",
       "italic": "기울임",
-      "underline": "밑줄 제거",
-      "removeUnderline": "밑줄",
+      "underline": "밑줄",
+      "removeUnderline": "밑줄 제거",
       "removeInlineCode": "코드 형식 제거",
       "inlineCode": "인라인 코드 형식",
       "link": "링크 삽입",

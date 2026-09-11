@@ -80,7 +80,7 @@ export default function({isOpen, onClose}) {
 
         if(repeat_password == ''){
             refRepeatPassword.current.focus()
-            window.showToast(t('toast.passwordModal.pasteComfirmPassword'), 'user-error')
+            window.showToast(t('toast.passwordModal.pasteConfirmPassword'), 'user-error')
             return
         }
 

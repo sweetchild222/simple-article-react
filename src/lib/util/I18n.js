@@ -6,7 +6,7 @@ import ko from '@locale/ko.json'
 
 //const language = navigator.language.split('-')[0];
 
-const language = 'ko'
+const language = 'en'
 
 i18n.use(initReactI18next).init({
 

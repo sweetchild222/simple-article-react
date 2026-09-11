@@ -243,7 +243,7 @@ export default function() {
     <Vertical style={{width:'100%', height:'100%', alignItems:'center', justifyContent:'center'}}>
       <Vertical>
       <Horizental style={{ alignItems: 'center', width:'100%'}}>
-        <input id={'input_email'} disabled={isCertified} type={'text'} onChange={onChangeEmail} placeholder="이메일" maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
+        <input id={'input_email'} disabled={isCertified} type={'text'} onChange={onChangeEmail} placeholder={t('page.user.email')} maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
         <HPad size={8}/>
         <PrettyButton isLoading={isLoadingSendCode} type='success' disabled={isCertified} onClick={onClickSendCertifyCode}>{t('page.user.sendVerificationCode')}</PrettyButton>
       </Horizental>

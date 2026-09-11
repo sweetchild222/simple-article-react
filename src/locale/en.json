@@ -46,7 +46,7 @@
         "confirmPassword": "Confirm password",
         "password": "Password",
         "login": "Login",
-        "findPassword": "Find password 찾기",
+        "findPassword": "Find password",
         "setNickname": "Set nickname",
         "changePassword": "Change password",
         "logout": "Logout",
@@ -64,7 +64,7 @@
 		    "newestFirst": "Newest",
 		    "popularityFirst": "Popularity",
 		    "commentFirst": "Comments",
-		    "subscribedArticle": "subscribed blogs",
+		    "subscribedArticle": "Subscribed blogs",
 		    "pasteSearchingText": "Input searching text",
 		    "search": "Search",
 		    "noArticle": "No article",
@@ -81,18 +81,17 @@
         "notAccess": "Access is denied",
 		    "writeArticle": "Try writing something",
 		    "temporarySave": "Temporary save",
-		    "temporarySavebeforeLeave": "Would you like to save a draft before leaving?",
+		    "temporarySavebeforeLeave": "Would you like to temporary save before leaving?",
 		    "preview": "Preview",
 		    "wantLeavWithoutSave": "Do you want to leave without saving?",
 		    "title": "Title",
-		    "pasteTitle": "Input title",
+		    "pasteTitle": "Title",
 		    "category": "Category",
 		    "thumbnail": "Thumbnail",
 		    "wantDelete": "Do you want to delete?",
 		    "completeModify": "Done modify",
-		    "completeWrite": "Done write"
+		    "completeWrite": "Upload"
       },
-
       "blog":{
         "recentArticle": "Newest",
         "failedLoad": "Failed to load",
@@ -199,8 +198,8 @@
 		    "failedGreat": "Failed to {{great}}",
 		    "successGreat": "{{great}}",
 		    "requireLogin": "Please log in",
-        "great":"great",
-        "disgreat":"disgreat"
+        "great":"Great",
+        "disgreat":"Disgreat"
       },
       "commentGreat":{
         "failedChanging": "Failed to update {{great}} status",
@@ -210,8 +209,8 @@
 		    "failedGreat": "Failed to {{great}}",
 		    "successGreat": "{{great}}",
 		    "requireLogin": "Please log in",
-        "great":"great",
-        "disgreat":"disgreat"
+        "great":"Great",
+        "disgreat":"Disgreat"
       },
       "commentList":{
         "failedGettingComment": "Failed to retrieve comments",
@@ -236,7 +235,7 @@
 		    "failedModifyingArticle": "Failed to edit the post",
 		    "failedPostingArticle": "Failed to post",
 		    "modifiedArticle": "The post has been edited",
-        "postedArticle":"posted",
+        "postedArticle":"Posted",
         "failedDeleting":"Deletion failed",
 		    "successDeleting":"Deleted",
 		    "failedDraftedSavingArticle":"Failed to save the post in progress",
@@ -285,7 +284,7 @@
 		    "pasteConfirmPassword": "Input confirmation password",
 		    "notMatchPassword": "The new password and the confirmation password do not match",
 		    "notMeetRequirementPassword": "The new password does not meet the requirements",
-		    "failedChangingPassword": "failed to update password",
+		    "failedChangingPassword": "Failed to update password",
 		    "successChangingPassword": "Updated password"
       },
       "passwordReset":{
@@ -402,7 +401,7 @@
       "thematicBreak": "ThematicBreak",
       "bulletedList": "Bulleted List",
       "numberedList": "Numbered List",
-      "checkList": "Check List",
+      "checkList": "Check list",
       "deleteSandpack": "Delete this code block",
       "undo": "Cancel {{shortcut}}",
       "redo": "Redo {{shortcut}}",

@@ -268,7 +268,7 @@ export default function() {
         {imageFile && isModalImageCrop && <ImageCropModal ref={refImageCrop} isOpen={isModalImageCrop} onClose={()=>setIsModalImageCrop(false)} file={imageFile} onClickApply={onClickApply} keepRatio={1}></ImageCropModal>}
         <VPad size={16}/>
         <Vertical>
-            <Modal title={t('page.user.pastNickname')} type={'input'} isCloseOutsideClick={false} defaultValue={user.nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
+            <Modal title={t('page.user.pasteNickname')} type={'input'} isCloseOutsideClick={false} defaultValue={user.nickname} maxLength={50} isOpen={isModalNickname} onClose={()=>setIsModalNickname(false)} onInput={onInputNickname}/>
             <PrettyButton onClick={onClickUserNickname} type='default'>{t('page.user.setNickname')}</PrettyButton>
             <VPad size={16}/>
             <PrettyButton onClick={onClickPassword} type='default'>{t('page.user.changePassword')}</PrettyButton>

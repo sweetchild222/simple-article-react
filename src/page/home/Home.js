@@ -226,7 +226,7 @@ export default function() {
           <HPad size={8}/>
           <div style={{flex:'1'}}/>
           {isMobile() && <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{t('page.main.search')}</PrettyButton>}
-          {isMobile() && <Modal title= {t('page.main.pastSearchingText')} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
+          {isMobile() && <Modal title= {t('page.main.pasteSearchingText')} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
           {isNotMobile() && <input id="search" placeholder={t('page.main.search')} maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>}
           {isNotMobile() && <HPad size={8}/>}
           {isNotMobile() && <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>{t('page.main.search')}</PrettyButton>}

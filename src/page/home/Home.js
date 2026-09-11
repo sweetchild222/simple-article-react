@@ -34,11 +34,12 @@ export default function() {
 
   const [isSearchModal, setIsSearchModal] = useState(null)
   
+  
   const countPerPage = 6
 
   useEffect(()=>{
     
-    document.title = 'Leafstory'
+    document.title = t('system.title')
 
   }, [])
 

@@ -25,7 +25,7 @@ export default function() {
     const comback = location.state != null && location.state.comback == true
 
     useEffect(()=>{
-        document.title = 'Leafstory'
+        document.title = t('system.title')
     }, [])
 
     useEffect(() => {

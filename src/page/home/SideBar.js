@@ -23,6 +23,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import AlarmModal from "./AlarmModal.js";
 import {VPad, HPad} from "@gui/Pad.js";
 import { useTranslation } from 'react-i18next';
+import packageJson from '../../../package.json';
 
 import './SideBar.css';
 
@@ -319,6 +320,8 @@ export default function () {
         setBookmarkCount(item => item + bookmarkMoreCount)
     }
 
+    console.log()
+
     
     return (
         <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`} style={{padding:'8px'}}>
@@ -379,10 +382,12 @@ export default function () {
             </Vertical>}
 
         <div style={{flex:'1'}}/>
-        <Horizental style={{justifyContent:'center'}}>
-            <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
-        </Horizental>
-        <VPad size={32}/>
+            <Vertical style={{justifyContent:'center', alignItems:'center'}}>
+                <img src='/logo/logo.svg' alt='logo' height='64px' width='64px' onClick={onClickNavigateHome}/>
+                <VPad size={16}/>
+                <div>{packageJson.version}</div>
+            </Vertical>
+            <VPad size={32}/>
         </div>
     );
 }

@@ -45,7 +45,7 @@ export default function() {
     const user_id = Integer(id)
 
     useEffect(()=>{
-        document.title = 'Leafstory'
+        document.title = t('system.title')
     }, [])
 
     useEffect(()=> {

@@ -26,7 +26,7 @@ export default function() {
     const navigate = useNavigate()
 
     useEffect(()=>{
-        document.title = 'Leafstory'
+        document.title = t('system.title')
     }, [])
     
     useEffect(()=> {

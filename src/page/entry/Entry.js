@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
 
-import BlogHeader from '@page/blog/Header.js'
-import BlogAppBar from '@page/blog/AppBar.js'
-import BlogHome  from '@page/blog/Home.js'
+import BlogHeader from '@page/blog/home/Header.js'
+import BlogAppBar from '@page/blog/home/AppBar.js'
+import BlogHome  from '@page/blog/home/Home.js'
 import Article  from '@page/blog/article/Article.js'
 import SideBar from '@page/main/SideBar.js'
 import AppBar from '@page/main/AppBar.js'

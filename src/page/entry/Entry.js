@@ -5,9 +5,9 @@ import BlogHeader from '@page/blog/home/Header.js'
 import BlogAppBar from '@page/blog/home/AppBar.js'
 import BlogHome  from '@page/blog/home/Home.js'
 import Article  from '@page/blog/article/Article.js'
-import SideBar from '@page/main/SideBar.js'
-import AppBar from '@page/main/AppBar.js'
-import MainHome from '@page/main/Home.js'
+import SideBar from '@page/home/SideBar.js'
+import AppBar from '@page/home/AppBar.js'
+import MainHome from '@page/home/Home.js'
 import Configuration from '@page/user/Configuration.js'
 import User from '@page/user/User.js'
 import Regist from '@page/user/Regist.js'
@@ -119,7 +119,6 @@ root.render(
       <Aplication />
   </AuthProvider>
 </ErrorCatch>
-  
 //</React.StrictMode>
 )
 

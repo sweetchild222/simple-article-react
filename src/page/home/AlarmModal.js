@@ -95,20 +95,21 @@ export default function({isOpen, onClose, onUpdatedAlarms, alarms}) {
     setFromIndex(index => (index - pageCount < 0) ? 0 : (index - pageCount))
 
   }
-  
+     
   return ReactDOM.createPortal(
           <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'2px', width:'90%', maxWidth:'512px'}}>
               <Vertical style={{alignItems: 'start', marginLeft:'16px', marginRight:'16px', marginTop:'8px', marginBottom:'8px'}}>
                   {newAlarms && newAlarms.slice(fromIndex, fromIndex + pageCount).map((data, index) =>
-                      <Horizental key={data.id} style={{marginTop:'8px', marginBottom:'8px', width:'100%'}}>
+                      <Horizental key={data.id} style={{marginTop:'8px', marginBottom:'8px', width:'100%', backgroundColor:'red', alignItems:'center'}}>
                         <ProfileImage shape={'rect'} gray={data.checked == 1} size={48} user={data.user} onClick={()=> onClickAlarm(data)}/>
                         <Vertical style={{marginLeft:'8px'}}>
-                          <Horizental style={{marginBottom:'4px', alignItems:'center', cursor:'pointer'}} onClick={()=> onClickAlarm(data)}>
-                            {data.user && <div style={{color:'gray', fontSize:'14px', marginRight:'8px'}}>{data.user.nickname}</div>}
-                            {data.user == null && <div style={{color:'gray', fontSize:'14px', marginRight:'8px'}}>{t('system.unknown')}</div>}
+                          <Horizental style={{marginBottom:'4px', alignItems:'center', cursor:'pointer', backgroundColor:'blue'}} onClick={()=> onClickAlarm(data)}>
+                            {data.user && <div className={'clamped-text'} style={{'--line-count':1, color:'gray', fontSize:'14px'}}>{data.user.nickname}</div>}
+                            {data.user == null && <div className={'clamped-text'}  style={{'--line-count':1, color:'gray', fontSize:'14px'}}>{t('system.unknown')}</div>}
+                            {<div style={{color:'gray', marginRight:'8px', marginLeft:'8px', fontSize:'14px'}}>{'•'}</div>}
                             <div style={{color:'gray', fontSize:'14px', whiteSpace:'pre'}}>{ElapsedTime(data.create_at)}</div>
                           </Horizental>
-                          <div className={'clamped-text underline-text'} style={{'--line-count':1, height:'1lh', color:(data.checked == 0 ? 'black' : 'darkgray')}} dangerouslySetInnerHTML={{ __html: data.seenComment}} onClick={()=> onClickAlarm(data)}></div>
+                          <div className={'clamped-text underline-text'} style={{'--line-count':1, height:'1lh', color:(data.checked == 0 ? 'black' : 'darkgray'), backgroundColor:'yellow'}} dangerouslySetInnerHTML={{ __html: data.seenComment}} onClick={()=> onClickAlarm(data)}></div>
                         </Vertical>
                         <Horizental style={{flex:'1'}} onClick={()=> onClickAlarm(data)}></Horizental>
                         <PrettyButton type='transparent' style={{color:'black', height:'fit-content', marginLeft:'8px', alignSelf:'center'}}  onClick={() => onClickDelete(data.id)}>{<VscTrash size={25}/>}</PrettyButton>

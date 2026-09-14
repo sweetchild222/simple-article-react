@@ -12,6 +12,7 @@ import {Vertical, Horizental} from "@gui/Flex.js";
 import Modal from "@gui/Modal.js";
 import {VPad, HPad} from "@gui/Pad.js";
 import { useTranslation } from 'react-i18next';
+import packageJson from '../../../package.json';
 
 import SelectOrderModal from "./SelectOrderModal.js";
 
@@ -247,7 +248,7 @@ export default function() {
   return (
     <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px', marginTop:(isMobile() ? '64px' : '0px')}}>
       <VPad size={8}/>
-        <Horizental>
+        <Horizental style={{alignItems:'center'}}>
           {isNotMobile() && <PrettyButton onClick={onClickNewest} style={{width:'fit-content'}}>{t('page.home.newestFirst')}</PrettyButton>}
           {isNotMobile() && <HPad size={8}/>}
           {isNotMobile() && <PrettyButton onClick={onClickFavorite} style={{width:'fit-content'}}>{t('page.home.popularityFirst')}</PrettyButton>}
@@ -260,6 +261,7 @@ export default function() {
           {isNotMobile() && blogIds && blogIds.length > 0 && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{t('page.home.subscribedArticle')}</PrettyButton>}
           <HPad size={8}/>
           <div style={{flex:'1'}}/>
+          {isMobile() && <div>{'v' + packageJson.version}</div>}
           {isNotMobile() && <input id="search" placeholder={t('page.home.search')} maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>}
           {isNotMobile() && <HPad size={8}/>}
           {isNotMobile() && <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>{t('page.home.search')}</PrettyButton>}

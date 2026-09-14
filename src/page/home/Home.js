@@ -115,7 +115,7 @@ export default function() {
 
 
   const getQueryByType = (currentType, offset, keyword) => {
-
+    
     if(currentType == 0)
       return 'offset=' + offset + '&limit=' + countPerPage + '&order_type=post_at&order=1'
     else if(currentType == 1)
@@ -189,7 +189,7 @@ export default function() {
           search.value = ''
           setKeyword(keyword)
           setCurrentType(4)
-          
+          setOffset(0)
         }
       }
   }
@@ -202,6 +202,7 @@ export default function() {
       search.value = ''
       setKeyword(keyword)
       setCurrentType(4)
+      setOffset(0)
     }
   }
 
@@ -211,14 +212,35 @@ export default function() {
     if(keyword.length > 0){
         setKeyword(keyword)
         setCurrentType(4)
+        setOffset(0)
     }
   }
 
 
   const onSelectOrder = (order) =>{
-    
-    setCurrentType(order.index)
-    setOffset(0)
+
+    if(order.index != 4){
+      setCurrentType(order.index)
+      setOffset(0)
+    }
+
+    if(order.index == 4)
+      setIsSearchModal(true)
+  }
+
+
+  const orderButtonText = () => {
+
+    if(currentType == 0)
+      return t('page.home.newestFirst')
+    else if(currentType == 1)
+      return t('page.home.popularityFirst')
+    else if(currentType == 2)
+      return t('page.home.commentFirst')
+    else if(currentType == 3)
+      return t('page.home.subscribedArticle')
+    else if(currentType == 4)
+      return t('page.home.search')
   }
 
   
@@ -231,14 +253,13 @@ export default function() {
           {isNotMobile() && <PrettyButton onClick={onClickFavorite} style={{width:'fit-content'}}>{t('page.home.popularityFirst')}</PrettyButton>}
           {isNotMobile() && <HPad size={8}/>}
           {isNotMobile() && <PrettyButton onClick={onClickManyComment} style={{width:'fit-content'}}>{t('page.home.commentFirst')}</PrettyButton>}
-          {isMobile() && <PrettyButton onClick={()=>setIsOpenSelectCategoryModal(true)}>{t('page.home.order')}</PrettyButton>}
+          {isMobile() && <PrettyButton type={'success'} onClick={()=>setIsOpenSelectCategoryModal(true)}>{orderButtonText()}</PrettyButton>}
           {isMobile() && <SelectOrderModal isOpen={isOpenSelectCategoryModal} onClose={()=>setIsOpenSelectCategoryModal(false)} onSelect={onSelectOrder} isSubscribedBlog={blogIds && blogIds.length > 0}></SelectOrderModal>}
+          {isMobile() && <Modal title= {t('page.home.pasteSearchingText')} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
           {isNotMobile() && blogIds && blogIds.length > 0 && <HPad size={8}/>}
           {isNotMobile() && blogIds && blogIds.length > 0 && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{t('page.home.subscribedArticle')}</PrettyButton>}
           <HPad size={8}/>
           <div style={{flex:'1'}}/>
-          {isMobile() && <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{t('page.home.search')}</PrettyButton>}
-          {isMobile() && <Modal title= {t('page.home.pasteSearchingText')} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
           {isNotMobile() && <input id="search" placeholder={t('page.home.search')} maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>}
           {isNotMobile() && <HPad size={8}/>}
           {isNotMobile() && <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>{t('page.home.search')}</PrettyButton>}

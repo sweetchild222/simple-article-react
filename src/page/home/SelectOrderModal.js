@@ -33,6 +33,8 @@ export default function({isOpen, onClose, onSelect, isSubscribedBlog}) {
     if(isSubscribedBlog == true)
       list.push({ index:3, name:t('page.home.subscribedArticle')})
 
+    list.push({ index:4, name:t('page.home.search')})
+
     setOrderType(list)
 
   }, [isSubscribedBlog])

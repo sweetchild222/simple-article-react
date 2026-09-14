@@ -28,10 +28,10 @@ export default function({isOpen, onClose, onSelect, isSubscribedBlog}) {
 
   useEffect(()=>{
 
-    const list = [{ index:0, name:t('page.main.newestFirst')}, { index:1, name:t('page.main.popularityFirst')}, { index:2, name:t('page.main.commentFirst')}]
+    const list = [{ index:0, name:t('page.home.newestFirst')}, { index:1, name:t('page.home.popularityFirst')}, { index:2, name:t('page.home.commentFirst')}]
 
     if(isSubscribedBlog == true)
-      list.push({ index:3, name:t('page.main.subscribedArticle')})
+      list.push({ index:3, name:t('page.home.subscribedArticle')})
 
     setOrderType(list)
 

@@ -226,22 +226,22 @@ export default function() {
     <Vertical style={{width:'100%', paddingLeft:'8px', paddingRight:'8px', marginTop:(isMobile() ? '64px' : '0px')}}>
       <VPad size={8}/>
         <Horizental>
-          {isNotMobile() && <PrettyButton onClick={onClickNewest} style={{width:'fit-content'}}>{t('page.main.newestFirst')}</PrettyButton>}
+          {isNotMobile() && <PrettyButton onClick={onClickNewest} style={{width:'fit-content'}}>{t('page.home.newestFirst')}</PrettyButton>}
           {isNotMobile() && <HPad size={8}/>}
-          {isNotMobile() && <PrettyButton onClick={onClickFavorite} style={{width:'fit-content'}}>{t('page.main.popularityFirst')}</PrettyButton>}
+          {isNotMobile() && <PrettyButton onClick={onClickFavorite} style={{width:'fit-content'}}>{t('page.home.popularityFirst')}</PrettyButton>}
           {isNotMobile() && <HPad size={8}/>}
-          {isNotMobile() && <PrettyButton onClick={onClickManyComment} style={{width:'fit-content'}}>{t('page.main.commentFirst')}</PrettyButton>}
-          {isMobile() && <PrettyButton onClick={()=>setIsOpenSelectCategoryModal(true)}>{t('page.main.order')}</PrettyButton>}
+          {isNotMobile() && <PrettyButton onClick={onClickManyComment} style={{width:'fit-content'}}>{t('page.home.commentFirst')}</PrettyButton>}
+          {isMobile() && <PrettyButton onClick={()=>setIsOpenSelectCategoryModal(true)}>{t('page.home.order')}</PrettyButton>}
           {isMobile() && <SelectOrderModal isOpen={isOpenSelectCategoryModal} onClose={()=>setIsOpenSelectCategoryModal(false)} onSelect={onSelectOrder} isSubscribedBlog={blogIds && blogIds.length > 0}></SelectOrderModal>}
           {isNotMobile() && blogIds && blogIds.length > 0 && <HPad size={8}/>}
-          {isNotMobile() && blogIds && blogIds.length > 0 && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{t('page.main.subscribedArticle')}</PrettyButton>}
+          {isNotMobile() && blogIds && blogIds.length > 0 && <PrettyButton onClick={onClickSubscribe} style={{width:'fit-content'}}>{t('page.home.subscribedArticle')}</PrettyButton>}
           <HPad size={8}/>
           <div style={{flex:'1'}}/>
-          {isMobile() && <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{t('page.main.search')}</PrettyButton>}
-          {isMobile() && <Modal title= {t('page.main.pasteSearchingText')} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
-          {isNotMobile() && <input id="search" placeholder={t('page.main.search')} maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>}
+          {isMobile() && <PrettyButton type='success' onClick={()=>setIsSearchModal(true)} style={{width:'fit-content'}}>{t('page.home.search')}</PrettyButton>}
+          {isMobile() && <Modal title= {t('page.home.pasteSearchingText')} type={'input'} isCloseOutsideClick={false} isOpen={isSearchModal} maxLength={256} onInput={onInputSearchText} onClose={()=>setIsSearchModal(false)}></Modal>}
+          {isNotMobile() && <input id="search" placeholder={t('page.home.search')} maxLength="256" style={{width:'100%', minWidth:'64px', maxWidth:'256px'}} onKeyDown={onKeyDown}></input>}
           {isNotMobile() && <HPad size={8}/>}
-          {isNotMobile() && <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>{t('page.main.search')}</PrettyButton>}
+          {isNotMobile() && <PrettyButton  type='success' onClick={onClickSearch} style={{width:'fit-content'}}>{t('page.home.search')}</PrettyButton>}
         </Horizental>
       <VPad size={8}/>
       <div style={{flex:'1', position:'relative'}}>
@@ -254,7 +254,7 @@ export default function() {
           </Vertical>) : 
           (<Vertical style={{alignItems:'center', width:'100%', justifyContent:'center', height:'100%'}}>
             {<img src={'/image/empty.png'} style={{width:'128px', height: '128px', marginTop:'64px', marginBottom:'16px'}}/>}
-            {<div style={{fontSize:'18px', marginBottom:'32px'}}>{t('page.main.noArticle')}</div>}
+            {<div style={{fontSize:'18px', marginBottom:'32px'}}>{t('page.home.noArticle')}</div>}
           </Vertical>)
         )}
         {isSpinner && <Spinner type={'absolute'}/>}

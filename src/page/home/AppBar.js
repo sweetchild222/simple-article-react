@@ -309,15 +309,15 @@ export default function Sidebar() {
             <img src='/logo/logo.svg' alt='logo' height='48px' width='48px' onClick={onClickNavigateHome}/>
             {!validAuth(auth) &&
                 <Vertical style={{width:'100%'}}>
-                    <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content', alignSelf: 'end'}}>{t('page.main.login')}</PrettyButton>
+                    <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content', alignSelf: 'end'}}>{t('page.home.login')}</PrettyButton>
                 </Vertical>
             }
             {validAuth(auth) && <Horizental style={{alignItems: 'center', width:'100%'}}>
                 {((bookmarks != null && bookmarks.length > 0) || (subscribes != null && subscribes.length > 0)) && <HPad size={8}/>}
-                {bookmarks != null && bookmarks.length > 0 && <PrettyButton type='default' onClick={onClickBookmark}>{t('page.main.bookmark')}</PrettyButton>}
+                {bookmarks != null && bookmarks.length > 0 && <PrettyButton type='default' onClick={onClickBookmark}>{t('page.home.bookmark')}</PrettyButton>}
                 {bookmarks != null && bookmarks.length > 0 && <BookmarkModal isOpen={isOpenBookmarkModal} onClose={() => setIsOpenBookmarkModal(false)} bookmarks={bookmarks}></BookmarkModal>}
                 {bookmarks != null && bookmarks.length > 0 && <HPad size={8}/>}
-                {subscribes != null && subscribes.length > 0 && <PrettyButton type='default' onClick={onClickSubscribe}>{t('page.main.subscribedBlog')}</PrettyButton>}
+                {subscribes != null && subscribes.length > 0 && <PrettyButton type='default' onClick={onClickSubscribe}>{t('page.home.subscribedBlog')}</PrettyButton>}
                 {subscribes != null && subscribes.length > 0 && <SubscribeModal isOpen={isOpenSubscribeModal} onClose={() => setIsOpenSubscribeModal(false)} subscribes={subscribes}></SubscribeModal>}
                 {subscribes != null && subscribes.length > 0 && <HPad size={8}/>}
                 <div style={{flex:'1'}}/>

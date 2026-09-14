@@ -327,7 +327,7 @@ export default function () {
         <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`} style={{padding:'8px'}}>
             <Horizental style={{justifyContent:'space-between'}}>
                 {isOpen && <Horizental style={{alignItems:'center'}}>
-                    {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>{t('page.main.login')}</PrettyButton>}
+                    {!validAuth(auth) && <PrettyButton type='success' onClick={onClickLogIn} style={{height:'fit-content'}}>{t('page.home.login')}</PrettyButton>}
                     {validAuth(auth) && <Horizental style={{alignItems: 'center'}}>
                         <ProfileImage shape={'circle'}  userId={auth.user_id} size={48} onClick={onClickUser} onClickAtError={onClickAtError}/>
                         {alarms != null && <div style={{width:'8px'}}/>}
@@ -343,12 +343,12 @@ export default function () {
             </Horizental>
 
             {validAuth(auth) && <div style={{borderBottom: '1px solid #2d2d44', borderTop: '1px solid #2d2d44'}}>
-                    <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%', minWidth:'fit-content'}} onClick={onClickNavigateMyBlog}>{t('page.main.myBlog')}</PrettyButton>
+                    <PrettyButton style={{marginTop:'8px', marginBottom:'8px', width:'100%', minWidth:'fit-content'}} onClick={onClickNavigateMyBlog}>{t('page.home.myBlog')}</PrettyButton>
                 </div>
             }
         
             {validAuth(auth) && subscribes && subscribes.length > 0 && <Vertical style={{marginTop:'16px', marginBottom:'8px', paddingBottom:'8px', borderBottom: '1px solid #2d2d44'}}>
-                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{t('page.main.subscribedBlog')}</label>
+                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{t('page.home.subscribedBlog')}</label>
                 <VPad size={8}/>
                 {subscribes.slice(0, subscribeCount).map((data, index) => 
                     <Horizental key={data.id} style={{alignItems:'center', marginTop:'8px', marginBottom:'8px'}} onClick={() => onClickNavigateBlog(data.blog_id)}>
@@ -365,7 +365,7 @@ export default function () {
             </Vertical>}
 
             {validAuth(auth) && bookmarks && bookmarks.length > 0 && <Vertical style={{marginTop:'8px', marginBottom:'8px', paddingBottom:'8px', borderBottom: '1px solid #2d2d44'}}>
-                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{t('page.main.bookmarkArticle')}</label>
+                <label style={{color:'lightgray', whiteSpace: 'nowrap'}}>{t('page.home.bookmarkArticle')}</label>
                 <VPad size={8}/>
                 {bookmarks.slice(0, bookmarkCount).map((data, index) =>
                     <Horizental key={data.id} style={{alignItems:'center', marginTop:'8px', marginBottom:'8px'}} onClick={() => onClickNavigateArticle(data.article)}>

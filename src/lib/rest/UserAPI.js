@@ -71,7 +71,7 @@ export async function postUser(usename, password, image, nickname){
 
 export async function getExistUser(username){
 
-  const url = '/api/user/exist/' + username
+  const url = '/api/user/' + username + '/exist'
 
   return await restAPI.get(url)
 }

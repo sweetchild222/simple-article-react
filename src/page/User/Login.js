@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import { useNavigate, useLocation} from 'react-router-dom';
 
 import AuthContext from "@util/AuthContext.js";
-import * as UserAPI from '@rest/UserAPI.js'
+import * as AuthentaicateAPI from '@rest/AuthenticateAPI.js'
 import PrettyButton from '@gui/PrettyButton.js';
 import { VPad } from "@gui/Pad.js";
 import { Vertical} from "@gui/Flex.js";
@@ -56,7 +56,7 @@ export default function() {
         
         setIsLoading(true)
 
-        const resAuth = await UserAPI.postAuthenticate(username, password)
+        const resAuth = await AuthentaicateAPI.postAuthenticate(username, password)
 
         setIsLoading(false)
         

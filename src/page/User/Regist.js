@@ -2,6 +2,7 @@ import {useContext, useState, useEffect} from 'react';
 import { useNavigate, useLocation} from 'react-router-dom';
 
 import * as UserAPI from '@rest/UserAPI.js'
+import * as AuthenticateAPI  from '@rest/AuthenticateAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import GoBack from "@page/common/GoBack.js";
 import PrettyButton from "@gui/PrettyButton.js";
@@ -197,7 +198,7 @@ export default function() {
     if(resUser.success == false)
       return null
     
-    const resAuthenticate = await UserAPI.postAuthenticate(email, password)
+    const resAuthenticate = await AuthenticateAPI.postAuthenticate(email, password)
               
     if(resAuthenticate.success == false)
       return null

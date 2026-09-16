@@ -16,15 +16,6 @@ export async function getUsers(query) {
 }
 
 
-export async function postAuthenticate(username, password) {
-
-  const url = '/api/authenticate'
-  const payload =  {username: username, password: password}
-      
-  return await restAPI.post(url, payload)
-}
-
-
 export async function postUserPasswordCheck(jwt, user_id, password) {
     
   const url = '/api/user/' + user_id + '/password'

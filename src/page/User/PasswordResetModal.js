@@ -18,9 +18,6 @@ export default function({isOpen, onClose}) {
     
     const [isLoadingSendCode, setIsLoadingSendCode] = useState(false)
     const [isLoadingCertify, setIsLoadingCertify] = useState(false)
-    const [isLoadingPasswordReset, setIsLoadingPasswordReset] = useState(false)
-
-    const [isCertified, setIsCertified] = useState(false)
 
     
     useEffect(() => {
@@ -110,20 +107,26 @@ export default function({isOpen, onClose}) {
         
         setIsLoadingCertify(true)
         setIsLoadingSendCode(true)
-        input_certifyCode.disabled = true
 
         const success = await requestCertify(email, certifyCode)
-        
-        input_certifyCode.disabled = false
-        setIsLoadingSendCode(false)
-        setIsLoadingCertify(false)
 
-        if(success)
-            window.showToast(t('toast.passwordReset.successVerified'), 'info')
-        else
+        if(!success){
             window.showToast(t('toast.passwordReset.failedVerified'), 'system-error')
-        
-        setIsCertified(success)
+            setIsLoadingSendCode(false)
+            setIsLoadingCertify(false)
+            return
+        }
+
+        const res = await UserAPI.patchPasswordReset(email)
+
+        if(res.success == false){
+            window.showToast(t('toast.passwordReset.failedSendingTemporaryPassword'), 'system-error')
+            onClose()
+            return
+        }
+
+        window.showToast(t('toast.passwordReset.successSendingTemporaryPassword'), 'info')
+        onClose()
     }
 
 
@@ -133,55 +136,27 @@ export default function({isOpen, onClose}) {
 
         if(resEmail.success == false)
             return false
-            
+
         return resEmail.payload.match
     }
     
-
-    const onClickPasswordReset = async() => {
-
-        const email = input_email.value
-        
-        if(!validator.email(email)){
-            input_email.focus()
-            window.showToast(t('toast.passwordReset.invalidEmail'), 'user-error')
-            return
-        }
-
-        setIsLoadingPasswordReset(true)
-        
-        const res = await UserAPI.patchPasswordReset(email)
-
-        setIsLoadingPasswordReset(false)
-        onClose()
-
-        if(res.success == false){
-            window.showToast(t('toast.passwordReset.failedSendingTemporaryPassword'), 'system-error')
-            return false
-        }
-
-        window.showToast(t('toast.passwordReset.successSendingTemporaryPassword'), 'info')
-    }
-
-
-
     return (
         ReactDOM.createPortal(
             <dialog ref={refDialog} onKeyDown={onKeyDownDialog} style={{padding:'8px'}}>
                 <Vertical style={{alignItems: 'start', position:'relative'}}>
                     <Horizental style={{ alignItems: 'center', width:'100%'}}>
-                        <input id={'input_email'} type={'text'} onChange={onChangeEmail} disabled={isCertified} placeholder={t('page.user.email')} maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
+                        <input id={'input_email'} type={'text'} onChange={onChangeEmail} disabled={isLoadingSendCode} placeholder={t('page.user.email')} maxLength={50} style={{flex:'1', boxSizing:'border-box'}}/>
                         <HPad size={8}/>
-                        <PrettyButton isLoading={isLoadingSendCode} disabled={isCertified} onClick={onClickSendCertifyCode} type={'success'}>{t('page.user.sendVerificationCode')}</PrettyButton>
+                        <PrettyButton isLoading={isLoadingSendCode}  onClick={onClickSendCertifyCode} type={'success'}>{t('page.user.sendVerificationCode')}</PrettyButton>
                     </Horizental>
                     <VPad size={8}/>
                     <Horizental style={{ alignItems: 'center', width:'100%'}}>
-                        <input id={'input_certifyCode'} type={'number'} disabled={isCertified} placeholder={t('page.user.VerificationCode')} style={{flex:'1', boxSizing:'border-box'}}/>
+                        <input id={'input_certifyCode'} type={'number'} disabled={isLoadingCertify} placeholder={t('page.user.VerificationCode')} style={{flex:'1', boxSizing:'border-box'}}/>
                         <HPad size={8}/>
-                        <PrettyButton isLoading={isLoadingCertify} disabled={isCertified} onClick={onClickRequestCertify} type={'success'}>{t('page.user.confirmVerificationCode')}</PrettyButton>
+                        <PrettyButton isLoading={isLoadingCertify} onClick={onClickRequestCertify} type={'success'}>{t('page.user.confirmVerificationCode')}</PrettyButton>
                     </Horizental>
-                    <VPad size={16}/>
-                    <PrettyButton isLoading={isLoadingPasswordReset} disabled={!isCertified} onClick={onClickPasswordReset} style={{width:'100%'}} type={'success'}>{t('page.user.sendTemporaryPassword')}</PrettyButton>
+                    <VPad size={8}/>
+                    <PrettyButton type='cancel' onClick={onClose} style={{alignSelf: 'end'}}>{t('system.cancel')}</PrettyButton>
                 </Vertical>
             </dialog>,
             document.getElementById('modal-root'))

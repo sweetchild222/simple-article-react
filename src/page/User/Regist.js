@@ -1,7 +1,6 @@
 import {useContext, useState, useEffect} from 'react';
 import { useNavigate, useLocation} from 'react-router-dom';
 
-import * as RegistAPI from '@rest/RegistAPI.js'
 import * as UserAPI from '@rest/UserAPI.js'
 import AuthContext from "@util/AuthContext.js";
 import GoBack from "@page/common/GoBack.js";
@@ -58,7 +57,7 @@ export default function() {
 
   const sendCertifyCodeCore = async(email) => {
     
-    const resExist = await RegistAPI.getExistUser(email)
+    const resExist = await UserAPI.getExistUser(email)
 
     if(resExist.success == false)
       return false
@@ -68,7 +67,7 @@ export default function() {
       return false
     }
 
-    const resCerify =  await RegistAPI.postCertifyUserJoin(email)
+    const resCerify =  await UserAPI.postCertifyUserJoin(email)
 
     return resCerify.success
   }
@@ -118,7 +117,7 @@ export default function() {
 
   const requestCertify = async(email, certifyCode) => {
 
-    const resEmail = await RegistAPI.patchCertifyUserJoin(email, certifyCode)
+    const resEmail = await UserAPI.patchCertifyUserJoin(email, certifyCode)
 
     if(resEmail.success == false)
       return false
@@ -178,7 +177,7 @@ export default function() {
   
   const regist = async(email, password) => {
       
-    const resExist = await RegistAPI.getExistUser(email)
+    const resExist = await UserAPI.getExistUser(email)
 
     if(resExist.success == false)
       return null
@@ -193,7 +192,7 @@ export default function() {
     const image = process.env.API_TARGET + '/api/blob/profile/' + random + '.webp'
     const nickname = random + ' ' +  Math.floor(Math.random() * 1001)
 
-    const resUser = await RegistAPI.postUser(email, password, image, nickname)
+    const resUser = await UserAPI.postUser(email, password, image, nickname)
 
     if(resUser.success == false)
       return null

@@ -1,8 +1,8 @@
 import {useState, useEffect, useRef} from "react";
 import ReactDOM from 'react-dom';
 
-import * as RegistAPI from '@rest/RegistAPI.js'
-import * as PasswordResetAPI from '@rest/PasswordResetAPI.js'
+
+import * as UserAPI from '@rest/UserAPI.js'
 import PrettyButton from '@gui/PrettyButton.js';
 import {Vertical, Horizental} from "@gui/Flex.js";
 import {VPad, HPad} from "@gui/Pad.js";
@@ -58,7 +58,7 @@ export default function({isOpen, onClose}) {
         }
 
 
-        const resExist = await RegistAPI.getExistUser(email)
+        const resExist = await UserAPI.getExistUser(email)
 
         if(resExist.success == false)
             return
@@ -84,7 +84,7 @@ export default function({isOpen, onClose}) {
 
     const sendCertifyCodeCore = async(email) => {
         
-        const resCerify =  await PasswordResetAPI.postCertifyPasswordReset(email)
+        const resCerify =  await UserAPI.postCertifyPasswordReset(email)
 
         return resCerify.success
     }
@@ -129,7 +129,7 @@ export default function({isOpen, onClose}) {
 
     const requestCertify = async(email, certifyCode) => {
 
-        const resEmail = await PasswordResetAPI.patchCertifyPasswordReset(email, certifyCode)
+        const resEmail = await UserAPI.patchCertifyPasswordReset(email, certifyCode)
 
         if(resEmail.success == false)
             return false
@@ -150,7 +150,7 @@ export default function({isOpen, onClose}) {
 
         setIsLoadingPasswordReset(true)
         
-        const res = await PasswordResetAPI.patchPasswordReset(email)
+        const res = await UserAPI.patchPasswordReset(email)
 
         setIsLoadingPasswordReset(false)
         onClose()
